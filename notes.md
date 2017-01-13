@@ -1,0 +1,2 @@
+- should we describe all skills targeted in an output, or narrow on a key number?
+- 
