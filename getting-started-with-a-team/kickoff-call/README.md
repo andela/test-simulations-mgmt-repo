@@ -1,5 +1,7 @@
 **Using**:  debrief notes
-**With**: your team members, product owner, and projet manager
+
+**With**: your team members, product owner, and project manager
+
 **Deliver**: documented feedback and reflection on your ability to establish rapport, demonstrate value, and better align yourself with the vision of the client during the kickoff call
 
 Targeted Learning Outcomes:
