@@ -1,8 +1,9 @@
+#### Output
 **Using**: 
 **Deliver**:  
 **With**: 
 
-Targeted Learning Outcomes:
+#### Targeted Learning Outcomes
 - []()
 - []()
 
@@ -12,8 +13,10 @@ Targeted Learning Outcomes:
 - [Asks Questions](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/03%20-%20Asks%20Questions)
 - [Attention to Detail](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/04%20-%20Attention%20to%20Detail)
 - [Client Vision Alignment](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/50%20-%20Client%20Vision%20Alignment)
+- [Command Line (Unix)](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/42%20-%20Command%20Line%20(Unix))
 - [Cultural Awareness](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/06%20-%20Cultural%20Awareness)
 - [Focus & Concentration](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/08%20-%20Focus%20%26%20Concentration)
+- [Git](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/43%20-%20Git)
 - [Holistic & Big Picture](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/10%20-%20Holistic%20%26%20Big%20Picture%20Thinking)
 - [Motivation & Commitment](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/12%20-%20Motivation%20%26%20Commitment)
 - [Organizational Functional Awareness](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/13%20-%20Organizational%20Functional%20Awareness)

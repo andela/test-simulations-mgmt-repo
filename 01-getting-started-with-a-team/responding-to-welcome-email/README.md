@@ -1,8 +1,9 @@
-**Using**:  Gmail
-**With**: independently
-**Deliver**: a response to the Simulations welcome email that acknowledges anyrequests, builds rapport, and demonstrates the value you will add to the team.
+#### Output
+- **Using**:  Gmail
+- **With**: independently
+- **Deliver**: a response to the Simulations welcome email that acknowledges anyrequests, builds rapport, and demonstrates the value you will add to the team.
 
-Targeted Learning Outcomes:
+#### Targeted Learning Outcomes
 - [Writing Professionally](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/20%20-%20Writing%20Professionally)
 - [Relationship Building](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/16%20-%20Relationship%20Building)
 - [Attention to Detail](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/04%20-%20Attention%20to%20Detail)

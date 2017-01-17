@@ -1,10 +1,9 @@
-**Using**: debrief notes
+#### Output
+- **Using**: debrief notes
+- **Deliver**: documented feedback and reflection on your ability to establish rapport, demonstrate value, and better align yourself with the vision of the client during the kickoff call
+- **With**: your team members, product owner, and project manager
 
-**Deliver**: documented feedback and reflection on your ability to establish rapport, demonstrate value, and better align yourself with the vision of the client during the kickoff call
-
-**With**: your team members, product owner, and project manager
-
-Targeted Learning Outcomes:
+#### Targeted Learning Outcomes
 - [Relationship Building](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/16%20-%20Relationship%20Building)
 - [Cultural Awareness](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/06%20-%20Cultural%20Awareness)
 - [Motivation & Commitment](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/12%20-%20Motivation%20%26%20Commitment)
