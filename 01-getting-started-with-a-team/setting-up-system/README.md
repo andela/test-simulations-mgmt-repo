@@ -1,7 +1,7 @@
 #### Output
-**Using**: your Andela machine and your Simulations project repo
-**Deliver**: ???
-**With**: *[independent]*
+- **Using**: your Andela machine and your Simulations project repo
+- **Deliver**: ???
+- **With**: *[independent]*
 
 #### Targeted Learning Outcomes
 - [Attention to Detail](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/04%20-%20Attention%20to%20Detail)
