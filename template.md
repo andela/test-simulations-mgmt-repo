@@ -1,6 +1,6 @@
-**Using**:  
+**Using**: 
+**Deliver**:  
 **With**: 
-**Deliver**: 
 
 Targeted Learning Outcomes:
 - []()
