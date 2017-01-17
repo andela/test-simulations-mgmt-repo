@@ -18,12 +18,14 @@ Distributed design is our mantra in the Learning Department. This work is intend
 Read the instructins below, get started, ask questions, and lets build yet another powerful learning mechanism.
 
 ## Instructions
+##### Embrace co-design...
+- If you are reading this, you are a codesigner of this initiative! We need you to evolve this tool and its contents to best suit the needs of Andela Simulations. Jump in, make suggestions, ask questions, and lets design towards more impactful learning experiences together!
+
 ##### How are branches structured?
 - master: the Simulations-approved suite of supercontexts, experiences, and outputs
 - facilitator: each Facilitator sets up a branch of their own, identical to the master
 - facilitator-team: for each team, the Facilitator sets up a branch off of their own branch, with which each Fellow will have their own personal branch for output submission
 - facilitator-team-fellow: this is the branch that an individual Fellow will use to submit outputs and receive feedback on individual outputs. Example -- njira-croners-njoroge
-
 
 ##### How are folders structured within branches?
 Branch >> Supercontext >> Experience >> Output >> README
