@@ -1,5 +1,7 @@
 **Using**: Slack
+
 **Deliver**: screenshots of conversations that demonstrate appropriate engagement on Slack
+
 **With**: other Andelans in DMs, team slack channels, and broad-audience channels (100+ people) 
 
 Targeted Learning Outcomes:

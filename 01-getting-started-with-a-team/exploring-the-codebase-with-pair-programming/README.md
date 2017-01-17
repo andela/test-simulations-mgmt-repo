@@ -1,5 +1,7 @@
 **Using**: the codebase for your project
+
 **Deliver**: documented reflection and feedback from the team member(s) you paired with demonstrating your ability to gain a functional understanding of a new codebase
+
 **With**: one or more members of your team
 
 Targeted Learning Outcomes:

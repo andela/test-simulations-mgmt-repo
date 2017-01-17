@@ -1,5 +1,7 @@
 **Using**: a video call technology and debrief notes
+
 **Deliver**: documented reflection and feedback from your team on your ability to communicate seamlessly and handle connection interuptions on video calls
+
 **With**: your team members and TTL
 
 Targeted Learning Outcomes:
