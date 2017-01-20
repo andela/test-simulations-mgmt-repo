@@ -1,7 +1,7 @@
 #### Output
 - **Using**: debrief notes
-- **Deliver**: documented feedback and reflection on your ability to adapt to a challenging team workflow
-- **With**: your team and TTL
+- **Deliver**: documented feedback and reflection on your ability to adapt to your new work environment and add value to the team
+- **With**: your team
 
 #### Targeted Learning Outcomes
 - [Adaptability](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/02%20-%20Adaptability)

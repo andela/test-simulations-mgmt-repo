@@ -1,0 +1,12 @@
+#### Output
+- **Using**: Gmail
+- **Deliver**: an email to your team demonstrating you have a holistic understanding of the business, addressing any questions you have, and indicating how you are going to add value to the business through your work
+- **With**: your team or *independently*
+
+#### Targeted Learning Outcomes
+- [Client Vision Alignment](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/50%20-%20Client%20Vision%20Alignment)
+- [Holistic & Big Picture](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/10%20-%20Holistic%20%26%20Big%20Picture%20Thinking)
+- [Organizational Functional Awareness](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/13%20-%20Organizational%20Functional%20Awareness)
+- [Motivation & Commitment](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/12%20-%20Motivation%20%26%20Commitment)
+
+*Submit this output via a pull request to your Facilitator in this folder.*
