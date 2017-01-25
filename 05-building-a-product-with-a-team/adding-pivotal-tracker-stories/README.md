@@ -1,6 +1,8 @@
 #### Output
 - **Using**: Pivotal Tracker
-- **Deliver**: a story that you suggested, got buy in for from your team on, and added to Pivotal Tracker, which follows team conventions and is in line with Product Owner priorities
+- **Deliver**: a link to a pivotal tracker story that you suggested, got buy in for from your team on, and added to Pivotal Tracker, which follows team conventions and is in line with Product Owner priorities
+- **Deliver**: a video recording of yourself adding pivotal tracker stories, adding their priorities, assigning and delivering them
+
 - **With**: your team, TTL, and PO
 
 #### Targeted Learning Outcomes
