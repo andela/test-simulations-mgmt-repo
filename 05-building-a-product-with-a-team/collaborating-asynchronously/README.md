@@ -1,6 +1,7 @@
 #### Output
 - **Using**: Slack and Docs or Spreadsheets
 - **Deliver**: a link to a Doc or Spreadsheet where you have engaged in asynchronous collaboration with at least one member of your team AND documented feedback and reflection on your ability to collaborate asynchronously
+- **Deliver**: Screenshots showing your communication on slack and demonstrating the use of @channel @here group messages, DMs, threads and comments
 - **With**: at least one member of your team, and/or TTL, PO, PM
 
 #### Targeted Learning Outcomes
