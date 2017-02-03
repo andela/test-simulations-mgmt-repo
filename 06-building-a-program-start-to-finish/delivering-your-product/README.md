@@ -1,6 +1,6 @@
 #### Output
-- **Using**: Medium
-- **Deliver**: a link to a post detailing your product and sharing your learning events/experiences
+- **Using**: Google Doc
+- **Deliver**: `Release notes` for your final product
 - **With**: *independently*
 
 #### Targeted Learning Outcomes
