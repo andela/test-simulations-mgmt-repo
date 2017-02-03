@@ -1,6 +1,6 @@
 #### Output
 - **Using**: GitHub
-- **Deliver**: the repository for your proposed project and a Pull Request showing your *initial commit* from your *development* branch to *master*
+- **Deliver**: the repository for your proposed project and at least one `Pull Request`
 - **With**: *independently*
 
 #### Targeted Learning Outcomes
