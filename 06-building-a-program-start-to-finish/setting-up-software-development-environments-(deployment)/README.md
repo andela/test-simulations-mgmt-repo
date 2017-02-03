@@ -1,6 +1,6 @@
 #### Output
 - **Using**: Heroku
-- **Deliver**: two live URLs to your `staging` & `production` apps
+- **Deliver**: live URLs to a `review` app, your `staging` & `production` apps
 - **With**: *independently*
 
 #### Targeted Learning Outcomes
