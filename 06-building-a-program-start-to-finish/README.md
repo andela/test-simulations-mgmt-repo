@@ -10,7 +10,7 @@ It is envisioned that the outputs for this Supercontext would move to pre-fellow
 - Fellows are to create two branches off their Facilitator's branch with these naming conventions:
   - `<facilitator>-<team>-<fellow username (without 'andela-')>` e.g. `bayo-izanagi-oagunbiade`. This will be your working branch.
   - `<facilitator>-<team>-<fellow username (without 'andela-')>-output` e.g. `bayo-izanagi-oagunbiade-output`
-- For output submissions, fellows are to create a folder called `output` which will contain deliverables to respective skill e.g. links to Documents, Pull Requests, Screencasts...
-- Fellows will then create PRs to their corresponding `output` branches and add their Facilitators as reviewers.
+- For output submissions, fellows are to create a folder called `output` inside the folders for each context. The submissions will then be placed in the output folders for each context e.g. links to Documents, Pull Requests, Screencasts...
+- Fellows will then create PRs to their `output` branches and add their Facilitators as reviewers.
 - Facilitators will then review, leave comments if necessary and accept or request changes if necessary.
 - The fellow is deemed to have completed that output once the PR is accepted and merged.
