@@ -4,4 +4,4 @@
 - **With**: *independently*
 
 #### Link to GitHub Repo
-- [andela-cofor/invertedIndex](https://github.com/andela-iamao/inverted-index)
+- [andela-iamao/invertedIndex](https://github.com/andela-iamao/inverted-index)
