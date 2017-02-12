@@ -7,4 +7,4 @@
 
 
 ## Link to my GitHub Repo
-https://github.com/andela-mugorji/Inverted-Index
+[https://github.com/andela-mugorji/Inverted-Index]
