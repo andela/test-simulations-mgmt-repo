@@ -5,3 +5,5 @@
 
 #### Screencast - Gulp Automatically Refreshing Browser
 ![gifimage](https://cloud.githubusercontent.com/assets/25608336/22861267/5151a6fe-f115-11e6-87cd-1671c8b869bf.gif)
+
+- [Click here to see full video](https://youtu.be/dCPbpSIRDIs)
