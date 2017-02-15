@@ -4,5 +4,5 @@
 - **With**: *independently*
 
 ####Link to GitHub Repo
-- [ andela-uibrahim / invertedIndex](https://github.com/andela-uibrahim/inverted-index/pull/2)
+- [ andela-uibrahim / invertedIndex](https://github.com/andela-uibrahim/inverted-index/tree/chore/1/setting-up-repository)
 
