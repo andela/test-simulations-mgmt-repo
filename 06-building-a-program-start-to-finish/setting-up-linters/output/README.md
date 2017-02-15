@@ -4,7 +4,7 @@
 - **With**: *independently*
 
 #### Link to github repo
-- [andela-iamao/inverted-index](https://github.com/andela-eshaibu/inverted-index)
+- [andela-eshaibu/inverted-index](https://github.com/andela-eshaibu/inverted-index)
 
 #### Screenshots
 
