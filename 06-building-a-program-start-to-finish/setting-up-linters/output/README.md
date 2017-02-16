@@ -1,6 +1,6 @@
 #### Output
 - **Using**: Terminal & GitHub
-- **Deliver**: wo screenshots of ESLint Airbnb style violations in the terminal and HoundCI comment on a PR
+- **Deliver**: Screenshots of ESLint Airbnb style violations in the terminal and HoundCI comment on a PR
 - **With**: *independently*
 
 #### Link to screenshot for ESLint Airbnb style voilation
