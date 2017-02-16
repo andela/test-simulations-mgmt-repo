@@ -4,8 +4,8 @@
 - **With**: *independently*
 
 #### Link to screenshot for ESLint Airbnb style voilation
-- ESLint
+- HoundCI 
 - ![screenshot 41](https://cloud.githubusercontent.com/assets/25608370/22980217/2fa6ac58-f399-11e6-974f-28076f2489b3.png)
 
-- HoundCI 
+- ESLint
 - ![screenshot 33](https://cloud.githubusercontent.com/assets/25608370/22980329/5efcd310-f399-11e6-9b5b-905081943150.png)
