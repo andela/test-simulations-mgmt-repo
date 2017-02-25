@@ -1,0 +1,18 @@
+<table class="table table-striped table-bordered">
+	<thead>
+		<tr>
+			<th class="text-center">Word</th>
+			<th class="text-center">Doc_1</th>
+			<th class="text-center">Doc_2</th>
+			<th class="text-center">Doc_3</th>
+		</tr>
+	</thead>
+	<tbody class="table-content">
+		<tr ng-repeat="(word, wordArr) in tabObject">
+			<td class="text-center">{{word}}</td>
+			<td class="text-center"><span ng-class="{'glyphicon glyphicon-ok' : wordArr[0] === true , 'glyphicon glyphicon-remove' : wordArr[0] === false}"></span></td>
+			<td class="text-center"><span ng-class="{'glyphicon glyphicon-ok' : wordArr[1] === true , 'glyphicon glyphicon-remove' : wordArr[1] === false}"></span></td>
+			<td class="text-center"><span ng-class="{'glyphicon glyphicon-ok' : wordArr[2] === true , 'glyphicon glyphicon-remove' : wordArr[2] === false}"></span></td>
+		</tr>
+	</tbody>
+</table>
