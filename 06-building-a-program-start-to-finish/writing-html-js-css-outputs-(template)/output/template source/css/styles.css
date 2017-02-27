@@ -1,0 +1,99 @@
+#about{
+	color:blue;
+	padding-left: 10%;
+	max-height: 100%;
+}
+.blue{
+	background-color: #428bca;
+	background-image: url("../images/bg.jpg");
+	background-repeat: repeat;
+	height: auto;
+}
+.search-input{
+	margin-top: 10px;
+	width: 300px;  
+}
+
+#searchSelect{
+	height: 35px; 
+	margin-top: 10px;
+	width : 100px; 
+	margin-left:35px;  
+	margin-right:15px; 
+	border-radius: 5px
+}
+
+#searchWords{
+	height: 35px; 
+	margin-top: 10px; 
+	margin-right:15px;
+}
+
+.white{
+	background-color: white;
+	margin-top: 20px;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+#top{
+	height: 50px;
+}
+
+#small{
+	border-radius: 15px;
+	background-color: white;
+}
+
+.upload{
+	width: 100px;
+	height: 100px;
+	position: fixed;
+	margin-left:20%;  
+	bottom: 20px;
+	right: 50px; 
+	border-radius: 50%;
+	box-shadow: 5px 5px 5px 5px #000;
+	-webkit-transition: width 0.5s, height 0.5s; 
+	transition: width 0.5s, height 0.5s;
+}
+
+.upload span, .process span{
+	font-size: 50px;
+	color: #428bca;
+}
+.upload:hover{
+	width: 110px;
+	height: 110px;
+}
+
+.tablist{
+	max-height: 90%;
+	overflow-y: scroll;
+}
+
+.process{
+	width: 100px;
+	height: 100px;
+	position: fixed;
+	margin-left:20%;  
+	bottom: 150px;
+	right: 50px; 
+	border-radius: 50%;
+	box-shadow: 5px 5px 5px 5px #000;
+	-webkit-transition: width 0.5s, height 0.5s; 
+	transition: width 0.5s, height 0.5s;
+}
+
+.process:hover{
+	width: 110px;
+	height: 110px;
+}
+.tooltip-inner{
+	background-color: #428bca;
+}
+.select{
+	color: #428bca;
+}
+.select span{
+	color: #428bca;
+}

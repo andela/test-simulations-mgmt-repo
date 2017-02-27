@@ -1,0 +1,95 @@
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>An inverted index application</title>
+
+<link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" href="css/styles.css"/>
+</head>
+
+<body ng-app="myApp">
+<div class="container-fluid blue">
+	<div class="row" id="top">
+			
+	</div>
+		<span ng-controller= "homeController">
+
+	<div class="row">
+		<div class="col-md-2">
+			<br><br><br>
+			
+		</div>
+	
+		<div class="col-md-8" id="small" >
+			<button type="button" id="searchWords" ng-click ="getSearchResults()" class="btn btn-primary pull-right" data-dismiss="modal">Search</button>
+			<select class="pull-right select" id="searchSelect" ng-model="selected">
+				<option class="selFile" value ="All">All files</option>
+				<option class="selFile" ng-repeat="file in books" value="{{file.name}}" style="height: 30px;">{{file.name +'  '+file.size +'Kb'}}</option>
+			</select>
+			<input type="text" class="form-control search-input pull-right" ng-model="searchWords" id="search" placeholder="search words">
+			<br><br>
+
+			<div class="white" ng-view>
+	
+			</div>
+		</div>
+
+<!-- section to upload your files -->	
+	<div class="col-md-2" >
+		<span class="modal-x hidden" data-toggle="modal" data-target="#myModal"></span>
+
+		<button class="process" data-toggle="tooltip" data-placement="top" title="Select file">
+			<span class= "glyphicon glyphicon-file"></span>
+		</button>
+
+		<input id="upload" type="file" accept=".JSON" multiple class="hidden" onchange="angular.element(this).scope().fileNameChanged(this)">
+		<button class="upload" data-toggle="tooltip" data-placement="top" title="Upload file"><span class= "glyphicon glyphicon-open"></span>
+			
+		</button>
+		
+	</div>
+	
+	
+</div>	
+
+<div class="modal fade" tabindex="-1" id="myModal" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" >
+				<div class="modal-header alert alert-warning">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class=" "></h4>
+				</div>
+				<div class="modal-body">
+					<div class="col-sm-9 col-sm-offset-1 select" style = "color : #428bca;" ><h2 style= "padding-left: 20px;">Select File To process <span class="glyphicon glyphicon-cloud"></span></h></div>
+					<select class="col-sm-6 col-sm-offset-2 select" style="height: 40px;" ng-model="selected">
+						<option class="selFile" ng-repeat="file in books" value="{{file.name}}" style="height: 30px;">{{file.name +'  '+file.size +'Kb'}}</option>
+					
+					</select>
+					
+				</div>
+				<div class="modal-footer" style= "margin-top: 100px; background-color: #428bca; height: 100px !important;">
+<!--			      			<form >-->
+						</br></br>
+						<input id="btn" ng-click='createIndex()' class="btn btn-default" type="submit" value="Create Index">
+						<button type="button" id="close" class="btn btn-danger" data-dismiss="modal">Close</button>
+<!--							</form>-->
+				</div>
+			</div> <!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+		
+</div><!-- /.modal -->
+</span>
+	
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+<script src="https://code.angularjs.org/1.6.1/angular-route.min.js"></script>
+<script type="text/javascript" src="js/helper.js"></script>
+<script type="text/javascript" src="js/events.js"></script>
+<script type="text/javascript" src="js/inverted_index.js"></script>
+<script type="text/javascript" src="js/inverted_indexUI.js"></script>
+</body>
+</html>
