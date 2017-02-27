@@ -86,7 +86,7 @@ describe('Test suite for Inverted Index Class', () => {
         { name: 'file1',
           data: InvertedIndexTest.generateIndex(data) }, 
         { name: 'file2', 
-          data: InvertedIndexTest.generateIndex(data) }])).toEqual(searchAll);
+          data: InvertedIndexTest.generateIndex(data) }])).toEqual(search_all_result);
     });
   });
 });

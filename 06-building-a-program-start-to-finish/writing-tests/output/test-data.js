@@ -29,7 +29,7 @@ const fake_data = [
   }
 ];
 
-const search_all = {
+const search_all_result = {
   file1: {
     good: ['A good bot'],
     knock: ['A bad bot'],
@@ -66,3 +66,4 @@ const searchResults = [
     good: ['A good bot']
   }
 ];
+
