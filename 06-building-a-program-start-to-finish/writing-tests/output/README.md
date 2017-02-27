@@ -3,5 +3,5 @@
 - **Deliver**: a Pull Request showing all tests required for your project
 - **With**: *independently*
 
-#### Link to  test file
-- [test](https://github.com/andela-iamao/inverted-index/blob/feature/140182663/tests-dev/dist/js/components/index-table/index-table.component.spec.js)
+#### Link to  test PR file
+- [test PR](https://github.com/andela-iamao/inverted-index/pull/9)
