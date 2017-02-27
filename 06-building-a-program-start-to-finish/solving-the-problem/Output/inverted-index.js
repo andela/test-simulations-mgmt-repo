@@ -5,8 +5,7 @@ class InvertedIndex {
     /**
      * class constructor
      */
-  constructor() {
-            // object to store the indices
+  constructor() {          
     this.indices = {};
   }
         /**
@@ -15,17 +14,17 @@ class InvertedIndex {
          * @param{String} text - The name of the string to be normalized
          * @return{String} normalized string
          */
-  static normalizedText(text) {
+  normalizedText(text) {
     return text.toLowerCase().match(/[A-Za-z]+/g, (matched) => {
-      console.log(matched).sort();
+      return matched.sort();
     });
   }
         /**
          * @param{String} words - String to be filtered
          * @return{Array} token - Array without duplicate words
          */
-  static uniqueWords(words) {
-    const tokens = InvertedIndex.normalizedText(words);
+  uniqueWords(words) {
+    const tokens = this.normalizedText(words);
     return tokens.filter((item, index) =>
                 tokens.indexOf(item) === index);
   }
@@ -47,11 +46,11 @@ class InvertedIndex {
         wordsToIndex.push(`${doc.title} ${doc.text}`.toLowerCase());
       }
     });
-    const uniqueContent = InvertedIndex.uniqueWords(wordsToIndex.join(' '));
+    const uniqueContent = this.uniqueWords(wordsToIndex.join(' '));
     uniqueContent.forEach((word) => {
       indexedFile[word] = [];
       wordsToIndex.forEach((doc, index) => {
-        if (doc.indexOf(word) > -1) {
+        if (doc.includes(word)) {
           indexedFile[word].push(index);
         }
       });
@@ -73,20 +72,21 @@ class InvertedIndex {
          */
   searchIndex(query, indexToSearch) {
     const searchResult = {};
-    const searchTerms = InvertedIndex.uniqueWords(query);
+    const searchTerms = this.uniqueWords(query);
     searchTerms.forEach((word) => {
+      let errorMessage = 'We are Sorry but ' + `${word}` + ' is not found in our database';
       if (indexToSearch) {
         if (this.indices[indexToSearch][word]) {
           searchResult[word] = this.indices[indexToSearch][word];
         } else {
-          searchResult[word] = 'We are Sorry but' + `${word}` + 'is not found in our database';
+          searchResult[word] = errorMessage;
         }
       } else {
         Object.keys(this.indices).forEach((key) => {
           if (this.indices[key][word]) {
             searchResult[word] = this.indices[key][word];
           } else {
-            searchResult[word] = 'We are Sorry but' + `${word}` + 'is not found in our database';
+            searchResult[word] = errorMessage;
           }
         });
       }
