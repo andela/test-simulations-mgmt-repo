@@ -1,6 +1,6 @@
 #### Output
 - **Using**: Google Doc
-- **Deliver**: `Release notes` for your final product
+- **Deliver**: `Release notes` for your final product in your repo's wiki
 - **With**: *independently*
 
 #### Targeted Learning Outcomes
