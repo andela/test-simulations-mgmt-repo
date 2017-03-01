@@ -26,12 +26,10 @@ describe('Test suite for Inverted Index Class', () => {
   
   describe('Should test for validity of data', () => {
     it('should return true on valid json data', () => {
-      // data is found in test-data.js
       expect(InvertedIndexTest.isValid(model.data)).toBe(true);
     });
     
     it('should return false on invalid json data', () => {
-      // fake_data is found in test-data.js
       expect(InvertedIndexTest.isValid(model.fake_data)).toBe(false);
     });
     
@@ -44,7 +42,6 @@ describe('Test suite for Inverted Index Class', () => {
     });
     
     it('should return false on wrong format', () => {
-      // f is found in test-data.js
       expect(InvertedIndexTest.isValid(model.invalidData)).toBe(false);
     });
     

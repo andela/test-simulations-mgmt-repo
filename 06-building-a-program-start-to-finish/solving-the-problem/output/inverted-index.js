@@ -25,7 +25,8 @@ class InvertedIndex {
     const valid = data.map((book) => {
       if (!book.title || !book.text) {
         return false;
-      } else if (typeof book.title === 'string' && typeof book.text === 'string'){
+      } else if (typeof book.title === 'string' 
+                 && typeof book.text === 'string'){
         return true;
       }
     });
@@ -61,7 +62,6 @@ class InvertedIndex {
     });
 
     this.indices[fileName] = helpers.sort(index);
-    // sort is found in helper.js
     return helpers.sort(index);
   }
   
@@ -86,9 +86,9 @@ class InvertedIndex {
   
   /**
    * Searches for a keyword or phrase within multiple generated indices
-   * @param   {String} query   [[word or phrase to search for]]
-   * @param   {Array} dataset [[Array containing all generated index in which to search in]]
-   * @returns {Object} searchResults [[Object containing mapping of file name to the search result in each file]]
+   * @param   {String} query - word or phrase to search for
+   * @param   {Array} dataset - Array containing all generated index in which to search in
+   * @returns {Object} searchResults - Object containing mapping of file name to the search result in each file
    */
   searchAll(query) {
     const searchResults = {};
