@@ -38,7 +38,7 @@ class InvertedIndex {
  * @returns {String} text- returns boolean if conditions are not met
  * @memberOf InvertedIndex
  */
-  getBookAsText(book) {
+  getBookText(book) {
     const status = this.validateInput([book]);
     if (status) {
       this.bookNames.push(book.title);
@@ -62,13 +62,13 @@ class InvertedIndex {
 
 /**
  * Gets an array of Words and makes element have unique occurences
- * @param {Object} arrayOfWords - an  book object with title and text property
- * @returns {Array} arrayOfWords - a filtered array with unique elements
+ * @param {Object} Words - a book object with title and text property
+ * @returns {Array} Words - a filtered array with unique elements
  * @memberOf InvertedIndex
  */
-  returnUniqueWords(arrayOfWords) {
-    return arrayOfWords.filter((element, index) =>
-        arrayOfWords.indexOf(element) === index);
+  createUniqueWords(Words) {
+    return Words.filter((element, index) =>
+        Words.indexOf(element) === index);
   }
 
 
@@ -82,8 +82,8 @@ class InvertedIndex {
     let nonUniqueWords = '';
     let words = '';
     books.forEach((book) => {
-      nonUniqueWords = this.generateToken(this.getBookAsText(book));
-      words = this.returnUniqueWords(nonUniqueWords);
+      nonUniqueWords = this.generateToken(this.getBookText(book));
+      words = this.createUniqueWords(nonUniqueWords);
       words.forEach((word) => {
         this.addWordToMainIndex(word, book.title);
       });
@@ -94,8 +94,8 @@ class InvertedIndex {
 
 /**
  * Takes a word and a book title and stores it in tne mainindex
- * @param {any} word
- * @param {any} bookTitle
+ * @param {String} word
+ * @param {String} bookTitle
  * @returns {none} ...
  * @memberOf InvertedIndex
  */
@@ -117,7 +117,7 @@ class InvertedIndex {
   searchIndex(searchedWords) {
     let searchResult = [];
     let output = '';
-    const wordsToSearch = this.returnUniqueWords(this
+    const wordsToSearch = this.createUniqueWords(this
        .generateToken(searchedWords));
     wordsToSearch.forEach((searchedWord) => {
       const indexedWords = Object.keys(this.mainIndex);
