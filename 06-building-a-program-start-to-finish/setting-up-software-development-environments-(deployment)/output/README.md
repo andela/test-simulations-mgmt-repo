@@ -8,9 +8,9 @@
 #### Link to inverted index production app
  - [Production](https://e-inverted-index.herokuapp.com/)
 
- #### Link to inverted index staging app
+#### Link to inverted index staging app
  - [Staging](https://e-inverted-index-staging.herokuapp.com/)
 
-  #### Link to inverted index review app
+#### Link to inverted index review app
  - [Staging](https://e-inverted-index-staging-pr-8.herokuapp.com/)
 
