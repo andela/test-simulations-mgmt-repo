@@ -13,9 +13,9 @@ const mockData = [
 ];
 
 
-describe('Inverted Index Test', () => {
-  describe('It Validate Book Data', () => {
-    it('should return invalid file type if book is not an array of objects',
+describe('INVERTED INDEX TEST', () => {
+  describe('IT VALIDATES BOOK DATA', () => {
+    it('should return validation status for the input file',
      () => {
        expect(invertedIndex.validateInput('rowland')).toBe(false);
        expect(invertedIndex.validateInput(2)).toBe(false);
@@ -27,21 +27,26 @@ describe('Inverted Index Test', () => {
        expect(invertedIndex.validateInput(mockData)).toBe(true);
      });
   });
-  describe('Returns a concatenated string', () => {
+  describe('RETURNS A CONCATENATED STRING', () => {
     it(`an object with a title and text property
     returns a string concatenating those two properties`,
      () => {
        const data = { title: 'Alice in wonderland',
          text: 'how did she get there abeg ?' };
-       expect(invertedIndex.getBookAsText(data))
+       expect(invertedIndex.getBookText(data))
        .toBe('Alice in wonderland how did she get there abeg ?');
-       expect(invertedIndex.getBookAsText([{ sex: 'male', age: 18 }]))
+     });
+  });
+  describe('DOES NOT RETURN A CONCATENATED STRING', () => {
+    it('for invalid book inputs',
+     () => {
+       expect(invertedIndex.getBookText([{ sex: 'male', age: 18 }]))
        .toBe(false);
-       expect(invertedIndex.getBookAsText({ title: 'rage of, angels',
+       expect(invertedIndex.getBookText({ title: 'rage of, angels',
          type: [1, 2, 3] })).toBe(false);
      });
   });
-  describe('Returns a string without characters and all in lower case',
+  describe('RETURNS A STRING WITHOUT CHARACTERS AND ALL IN LOWER CASE',
    () => {
      it('should return a string all in lower cases', () => {
        expect(invertedIndex.generateToken('ABC.(D?RFG,HIJKL'))
@@ -50,23 +55,23 @@ describe('Inverted Index Test', () => {
         WONDERLAND`)).toEqual(['alice', 'in', 'wonderland']);
      });
    });
-  describe('Returns an array of non-repeting strings', () => {
+  describe('RETURNS AN ARRAY OF NON-REPETING STRINGS', () => {
     it('should return an array of unique strings', () => {
-      expect(invertedIndex.returnUniqueWords(['alice',
+      expect(invertedIndex.createUniqueWords(['alice',
         'alice'])).toEqual(['alice']);
-      expect(invertedIndex.returnUniqueWords(['alice', 'alice',
+      expect(invertedIndex.createUniqueWords(['alice', 'alice',
         'boy', 'girl', 'child', 'boy'])).toEqual(['alice',
           'boy', 'girl', 'child']);
     });
   });
-  describe('Returns an index', () => {
-    it('should return an index when given valid data', () => {
+  describe('RETURNS A BUILT INDEX', () => {
+    it('should return "index built" when given valid data', () => {
       const data = [{ title: 'Alice', text: 'how' }, { title: 'Rings',
         text: 'how' }];
       expect(invertedIndex.buildIndex(data)).toBe('Index Built');
     });
   });
-  describe('Return an array for a given search parameters', () => {
+  describe('RETURN AN ARRAY FOR GIVEN SEARCH PARAMETERS', () => {
     it(`should take in a word and an indexed book and
      return matches for that word`, () => {
       const newData = [{ title: 'Jane the virgin', text: 'rowland in' }];
