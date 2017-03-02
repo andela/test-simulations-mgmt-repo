@@ -1,0 +1,8 @@
+[
+  { "title": "Heroku",
+    "text": "You will be asked to enter your Heroku credentials the first time you run a command; after the first time, your email address and an API token will be saved"
+  },
+  { "title": "Coveralls",
+    "text": "See the latest code-coverage statistics on all of your repositories including the total percentages covered and the lines covered."
+  }
+]
