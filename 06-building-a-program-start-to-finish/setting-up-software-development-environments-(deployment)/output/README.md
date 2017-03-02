@@ -12,5 +12,5 @@
  - [Staging](https://e-inverted-index-staging.herokuapp.com/)
 
 #### Link to inverted index review app
- - [Staging](https://e-inverted-index-staging-pr-8.herokuapp.com/)
+ - [Review app](https://e-inverted-index-staging-pr-8.herokuapp.com/)
 
