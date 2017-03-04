@@ -4,4 +4,4 @@
 - **With**: *independently*
 
 #### Targeted Learning Outcomes
-- [Test](https://github.com/andela-hchukwu/Inverted-Index/pull/13)
+- [Test](https://github.com/andela-hchukwu/Inverted-Index/pull/39)
