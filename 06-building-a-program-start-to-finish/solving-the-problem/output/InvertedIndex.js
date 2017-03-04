@@ -33,7 +33,7 @@ class InvertedIndex {
 /**
  * Builds an index for a Book Objects
  * @param {Array} books - An Array of book objects
- * @returns {String} Build status as a feedback message
+ * @returns {Boolean} Build status as a feedback message
  * @memberOf InvertedIndex
  */
   buildIndex(books) {
@@ -75,7 +75,6 @@ class InvertedIndex {
 */
   searchIndex(searchedWords) {
     let searchResult = [];
-    // let output = '';
     const wordsToSearch = InvertedIndexUtility
     .createUniqueWords(InvertedIndexUtility
        .generateToken(searchedWords));
