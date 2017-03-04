@@ -1,3 +1,6 @@
+/* eslint-disable no-unsed-vars */
+/* eslint-disable no-undef */
+
 const emptyBook = require('./empty-book..json');
 const badBookOne = require('./bad-book-one.json');
 const badData = require('./bad-book-two.json');

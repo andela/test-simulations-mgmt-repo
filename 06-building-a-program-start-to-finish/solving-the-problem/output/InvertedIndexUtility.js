@@ -1,3 +1,6 @@
+/* eslint-disable no-unsed-vars */
+/* eslint-disable no-undef */
+
 /**
  * Utility class for InvertedIndex class
  * @class InvertedIndexUtility
