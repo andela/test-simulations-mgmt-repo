@@ -12,16 +12,16 @@
         <div>
             <div id="upload-div">
                 <div>
-                <ul>
-                    <li>Upload a valid json book that has a title and text property here by clicking upload</li>
-                    <li>Don't have a file like that ? <span> Dont worry we'll create one for you to save locally... click create book to begin</li>
-                    <li>A file having multiple books will be indexed on the go</li>
-                    <li>Create an Index for the book file by selecting the book in the upload list</li>
-                    <li>Build a word library by selecting multiple files during uploads and creating index for them each</li>
-                    <li>Search the Library by entering a query in the search field and press the search button</li>
-                    <li>Search results are displayed automatically</li>
-                    <li>Found Words are marked with an X</li>
-                </ul>
+                    <ul>
+                        <li>**Upload a valid json book that has a title and text property here by clicking upload</li>
+                        <li>**Don't have a file like that ? <span> Dont worry we'll create one for you to save locally... click create book to begin</li>
+                        <li>**A file having multiple books will be indexed on the go</li>
+                        <li>**Create an Index for the book file by selecting the book in the upload list</li>
+                        <li>**Build a word library by selecting multiple files during uploads and creating index for them each</li>
+                        <li>**Search the Library by entering a query in the search field and press the search button</li>
+                        <li>**Search results are displayed automatically</li>
+                        <li>**Found Words are marked with an X</li>
+                    </ul>
                 </div>
                 <br></br>
                 <select ng-model="selectedFile" ng-options="file.name for file in bookList">
@@ -30,46 +30,44 @@
                 <!-- <button class= "btn" id ="btnUpload" onclick = "getFile()">upload</button> -->
                 <input class="btn" id="bookFile" accept=".json" style="display: none" type="file" multiple>
                 <label class="btn" for="bookFile">upload</label>
-            <button class="btn" id="btnCreateBook" onclick="switchDiv('create-book-div', 'upload-div')">Create book</button>   <button class="btn" type="button" ng-click="buildIndex(selectedFile)">Create Index</button>
-            <button class="btn" id="btnSearch" onclick="switchDiv('search-div', 'upload-div', 'main-index-table')">Search</button>
-            <button class="btn" onclick="showLibrary()" type="button">Index Library</button>
+                <button class="btn" id="btnCreateBook" onclick="switchDiv('create-book-div', 'upload-div')">Create book</button>   <button class="btn" type="button" ng-click="buildIndex(selectedFile)">Create Index</button>
+                <button class="btn" id="btnSearch" onclick="switchDiv('search-div', 'upload-div', 'main-index-table')">Search</button>
+                <button class="btn" onclick="showLibrary()" type="button">Index Library</button>
 
-            <br></br>
+                <br></br>
                 <p class="warning">{{buildMessage}}</p>
-            <div id = "index-table">
-                <table>
-                    <thead>
-                    <tr>
-                        <th>{{words}}</th>
-                        <th ng-repeat ="(key_1, value_1) in bookNames">{{value_1}}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="(key_2, value_2) in newIndex">
-                        <td>{{key_2}}</td>
-                        <td ng-repeat ="(key, value) in bookNames">{{value_2.indexOf(value) !== -1 ? 'X':''}}</td>
-                    </tr>
-                    </tbody>
-
-                </table>
-            </div>
-            <div id = "mainIndex-table" style="display: none">
-                <table>
-                    <thead>
-                    <tr>
-                        <th class="words" ></th>
-                        <th ng-repeat ="(mkey_1, mvalue_1) in library">{{mvalue_1}}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="(mkey_2, mvalue_2) in mainIndex">
-                        <td>{{mkey_2}}</td>
-                        <td ng-repeat="(mkey, mval) in library">{{mvalue_2.indexOf(mval) !== -1 ? 'X':''}}</td>
-                    </tr>
-                    </tbody>
-
-                </table>
-            </div>
+                <div id = "index-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>{{words}}</th>
+                                <th ng-repeat ="(key_1, value_1) in bookNames">{{value_1}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="(key_2, value_2) in newIndex">
+                                <td>{{key_2}}</td>
+                                <td ng-repeat ="(key, value) in bookNames">{{value_2.indexOf(value) !== -1 ? 'X':''}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id = "mainIndex-table" style="display: none">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="words" ></th>
+                                <th ng-repeat ="(mkey_1, mvalue_1) in library">{{mvalue_1}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="(mkey_2, mvalue_2) in mainIndex">
+                                <td>{{mkey_2}}</td>
+                                <td ng-repeat="(mkey, mval) in library">{{mvalue_2.indexOf(mval) !== -1 ? 'X':''}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div id="create-book-div" style="display:none;">
                 <p>create a new book here</p>
@@ -93,45 +91,45 @@
 
             <div id="search-div" style="display:none">
                 <p>Select a file to search in or Search in all books</p>
+                <select ng-model="selectedFile" ng-options="file.name for file in bookList">
+                    <option value="" selected="selected">Select a Book File</option>
+                </select>
                 <br></br>
-                <input id="id="search-text" type="text" placeholder="Enter word(s) to initiate search" ng-model = "query"/>
-                <button id="search-btn" class="btn" id="btnSearch" ng-click="search(query)">Search</button>
+                <input id= "search-text" type= "text" placeholder= "Enter word(s) to initiate search" ng-model = "query"/>
+            
+                <button id= "search-btn" class= "btn" id= "btnSearch" ng-click= "search(query)" >Search</button>
                 <button class= "btn" id ="btnUpload" onclick = "switchDiv('upload-div', 'search-div')">Back</button>
                 <div class="clear"></div>
                 <p ng-model="badMessage"></p>
                 <div id = "search-result-table">
-                <table>
-                    <thead>
-                    <tr>
-                        <th class="words" ></th>
-                        <th ng-repeat ="(mkey_1, mvalue_1) in library">{{mvalue_1}}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="(mkey_2, mvalue_2) in searchResult">
-                        <td>{{mkey_2}}</td>
-                        <td ng-repeat="(mkey, mval) in library">{{mvalue_2.indexOf(mval) !== -1 ? 'X':''}}</td>
-                    </tr>
-                    </tbody>
-
-                </table>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="words" ></th>
+                                <th ng-repeat ="(mkey_1, mvalue_1) in library">{{mvalue_1}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="(mkey_2, mvalue_2) in searchResult">
+                                <td>{{mkey_2}}</td>
+                                <td ng-repeat="(mkey, mval) in library">{{mvalue_2.indexOf(mval) !== -1 ? 'X':''}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
             </div>
-
-
-                </table>
-            </div>
-            <div>
-                <p> {{badMessage}}</p>
-            </div>
-
+        </div>
+        <div>
+            <p> {{badMessage}}</p>
+        </div>
     </div>
-</div>
-<footer>
-  <p>By: Henshaw Rowland</p>
-</footer>
-<script type="text/javascript" src = "./inverted-index-app/InvertedIndex.js"></script>
-<script src="./js/index.js"></script>
-<script type="text/javascript" src="./app/app.js"></script>
+    <footer>
+        <p>By: Henshaw Rowland</p>
+    </footer>
+
+    <script type="text/javascript" src = "inverted-index-app/InvertedIndexUtility.js"></script>
+    <script type="text/javascript" src = "inverted-index-app/InvertedIndex.js"></script>
+    <script src="js/index.js"></script>
+    <script type="text/javascript" src="./app/app.js"></script>
 
 </body>
 
