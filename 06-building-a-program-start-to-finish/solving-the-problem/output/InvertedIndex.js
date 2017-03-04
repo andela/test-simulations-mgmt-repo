@@ -1,6 +1,5 @@
 /**
- *
- *
+ *Class for creating an inverted index.
  * @class InvertedIndex
  */
 class InvertedIndex {
@@ -12,65 +11,21 @@ class InvertedIndex {
     this.mainIndex = {};
     this.bookNames = [];
   }
-
 /**
- * Checks input to see if it comforms to specific standards.
- * @param {Array} book - Book file to be validated
- * @returns {boolean} true/false - returns validation status.
- * @memberOf InvertedIndex
- */
-  validateInput(book) {
-    if (Array.isArray(book) && book.length > 0 && typeof book[0] === 'object') {
-      if (book[0].text && book[0].title) {
-        if (typeof (book[0].text) === 'number') {
-          return false;
-        }
-        return true;
-      }
-    }
-    return false;
-  }
-
-
-/**
- * Gets a book and returns it as as a concatenated text
+ * Gets a book and returns it's text property
  * @param {Object} book - a book object with title and text property
- * @returns {String} text- returns boolean if conditions are not met
+ * @returns {String} or {boolean} - returns boolean
+ *  or string depending on if data is valid
  * @memberOf InvertedIndex
  */
   getBookText(book) {
-    const status = this.validateInput([book]);
+    const status = InvertedIndexUtility.validateInput([book]);
     if (status) {
       this.bookNames.push(book.title);
-      return `${book.title} ${book.text}`;
+      return book.text;
     }
     return status;
   }
-
-/**
-* Removes characters, whitespaces and converts text to array elements.
-* @param {String} text returned from getBookAsText
-* @returns {Array} -returns an array of words in lower-cases with no characters
-* @memberOf InvertedIndex
-*/
-  generateToken(text) {
-    return text.toLowerCase()
-    .replace(/[^\w\s]|_/g, '')
-    .split(/\s+/);
-  }
-
-
-/**
- * Gets an array of Words and makes element have unique occurences
- * @param {Object} Words - a book object with title and text property
- * @returns {Array} Words - a filtered array with unique elements
- * @memberOf InvertedIndex
- */
-  createUniqueWords(Words) {
-    return Words.filter((element, index) =>
-        Words.indexOf(element) === index);
-  }
-
 
 /**
  * Builds an index for a Book Objects
@@ -79,21 +34,24 @@ class InvertedIndex {
  * @memberOf InvertedIndex
  */
   buildIndex(books) {
-    let nonUniqueWords = '';
-    let words = '';
-    books.forEach((book) => {
-      nonUniqueWords = this.generateToken(this.getBookText(book));
-      words = this.createUniqueWords(nonUniqueWords);
-      words.forEach((word) => {
-        this.addWordToMainIndex(word, book.title);
+    try {
+      let nonUniqueWords = '';
+      let words = '';
+      books.forEach((book) => {
+        nonUniqueWords = InvertedIndexUtility
+        .generateToken(this.getBookText(book));
+        words = InvertedIndexUtility.createUniqueWords(nonUniqueWords);
+        words.forEach((word) => {
+          this.addWordToMainIndex(word, book.title);
+        });
       });
-    });
-    return 'Index Built';
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
-
-
 /**
- * Takes a word and a book title and stores it in tne mainindex
+ * Takes a word and a book title and stores it in tne mainIndex
  * @param {String} word
  * @param {String} bookTitle
  * @returns {none} ...
@@ -106,9 +64,7 @@ class InvertedIndex {
       this.mainIndex[word] = [bookTitle];
     }
   }
-
 /**
- *
  * Takes in word(s) and returns found results based on created index
  * @param {String} searchedWords - Word(s) used to initiate a search
  * @returns {Array} searchResult - An array of matched books
@@ -116,15 +72,15 @@ class InvertedIndex {
 */
   searchIndex(searchedWords) {
     let searchResult = [];
-    let output = '';
-    const wordsToSearch = this.createUniqueWords(this
+    // let output = '';
+    const wordsToSearch = InvertedIndexUtility
+    .createUniqueWords(InvertedIndexUtility
        .generateToken(searchedWords));
     wordsToSearch.forEach((searchedWord) => {
       const indexedWords = Object.keys(this.mainIndex);
       indexedWords.forEach((indexedWord) => {
         if (searchedWord === indexedWord) {
-          output = this.mainIndex[indexedWord];
-          searchResult = output;
+          searchResult = this.mainIndex[indexedWord];
         }
       });
     });
