@@ -24,7 +24,7 @@ class InvertedIndex {
    * @return {string} - returns a string of the file extension of the uploaded file
    * @memberOf InvertedIndex
    */
-  checkFileExtension(uploadedFileName) {
+  static checkFileExtension(uploadedFileName) {
     const array = uploadedFileName.split('.');
     return array[array.length - 1];
   }
@@ -44,7 +44,7 @@ class InvertedIndex {
    * @memberOf InvertedIndex
    */
   containsTitleText() {
-    for (let arrayIndex = 0; arrayIndex < this.uploadedFile.length; arrayIndex++) {
+    for (let arrayIndex = 0; arrayIndex < this.uploadedFile.length; arrayIndex += 1) {
       if (('title' in this.uploadedFile[arrayIndex]) && ('text' in this.uploadedFile[arrayIndex])) {
         return true;
       }
@@ -91,11 +91,11 @@ class InvertedIndex {
    * @returns {Array} - an array of unique words
    * @memberOf InvertedIndex
    */
-  cleanIndexedWords(uncleanWords) {
+  static cleanIndexedWords(uncleanWords) {
     const cleanWords = uncleanWords.replace(/\.|,/g, '').split(' ');
     return cleanWords.filter((element, index) => {
-      return cleanWords.indexOf(element) === index}
-    );
+      return cleanWords.indexOf(element) === index;
+    });
   }
   /**
    * contentToDisplay (it returns an Object of data to display to the user)
@@ -108,7 +108,7 @@ class InvertedIndex {
     const indexedWords = this.getIndexedWords();
     displayIndexedWords.push(indexedWords);
 
-    for (let arrayIndex = 0; arrayIndex < fileToDisplay[1].texts.length; arrayIndex++) {
+    for (let arrayIndex = 0; arrayIndex < fileToDisplay[1].texts.length; arrayIndex += 1) {
       const temporaryData = [];
       const newIndexedWords = this.cleanIndexedWords(fileToDisplay[1].texts[arrayIndex]);
 
@@ -134,7 +134,7 @@ class InvertedIndex {
     const dataToFormat = this.contentToDisplay();
     const formatedData = [];
 
-    for (let arrayIndex = 0; arrayIndex < dataToFormat[0].length; arrayIndex++) {
+    for (let arrayIndex = 0; arrayIndex < dataToFormat[0].length; arrayIndex += 1) {
       formatedData.push(this.returnElementsAtIndex(arrayIndex, dataToFormat.length, dataToFormat));
     }
     return formatedData;
@@ -148,9 +148,9 @@ class InvertedIndex {
    * @returns {Array} - the array returns the row of elements to display
    * @memberOf InvertedIndex
    */
-  returnElementsAtIndex(currentIndex, dataLength, dataToFormat) {
+  static returnElementsAtIndex(currentIndex, dataLength, dataToFormat) {
     const elementsToReturn = [];
-    for (let arrayIndex = 0; arrayIndex < dataLength; arrayIndex++) {
+    for (let arrayIndex = 0; arrayIndex < dataLength; arrayIndex += 1) {
       elementsToReturn.push(dataToFormat[arrayIndex][currentIndex]);
     }
     return elementsToReturn;
@@ -167,14 +167,14 @@ class InvertedIndex {
     const temporaryData = [];
 
     const wordsToCheck = this.displayInTableFormat();
-    for (let arrayIndex = 0; arrayIndex < wordsToCheck.length; arrayIndex++) {
+    for (let arrayIndex = 0; arrayIndex < wordsToCheck.length; arrayIndex += 1) {
       if (wordsToSearch.includes(wordsToCheck[arrayIndex][0])) {
         foundWords.push(wordsToCheck[arrayIndex]);
       }
     }
 
     if (foundWords.length === 0) {
-      for (let arrayIndex = 0; arrayIndex < wordsToCheck[0].length; arrayIndex++) {
+      for (let arrayIndex = 0; arrayIndex < wordsToCheck[0].length; arrayIndex += 1) {
         if (arrayIndex === 0) {
           temporaryData.push('no results');
         } else {
@@ -187,7 +187,3 @@ class InvertedIndex {
     return foundWords;
   }
 }
-
-
-
-
