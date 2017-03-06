@@ -6,7 +6,7 @@
 #### Output
 
 - [Link to folder containing template for proposed frontend of project](https://github.com/andela-hchukwu/Inverted-Index/tree/feature/139456431/front-end-development/src)
-
+ 
 #### Screenshots
 
 **_Screenshot of proposed frontend template_**
