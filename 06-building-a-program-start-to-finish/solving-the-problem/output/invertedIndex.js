@@ -26,13 +26,13 @@ class InvertedIndex {
    * Create index
    * @function
    * @param {string} filename
-   * @param {Array} data
+   * @param {Array} filedata
    * @return {Object} index object
    */
-  createIndex(filename, data) {
+  createIndex(filename, filedata) {
     const dictionary = {};
 
-    data.forEach((doc, arrayIndex) => {
+    filedata.forEach((doc, arrayIndex) => {
       const docWords = doc.text;
       const words = InvertedIndex.getWords(docWords);
 
@@ -49,7 +49,7 @@ class InvertedIndex {
 
     this.indexes[filename] = {
       words: dictionary,
-      docCount: data.length
+      docCount: filedata.length
     };
   }
 

@@ -18,7 +18,7 @@ describe('InvertedIndex Class', () => {
     });
   });
 
- describe('GetWords', () => {
+  describe('GetWords', () => {
     it('should return an array of words', () => {
       expect(InvertedIndex.getWords(books[0].title))
         .toEqual(['alice', 'in', 'wonderland']);
@@ -32,8 +32,8 @@ describe('InvertedIndex Class', () => {
 
   describe('CreateIndex', () => {
     beforeAll(() => {
-       invertedIndex.createIndex('books', books);
-       invertedIndex.createIndex('books2', books2);
+      invertedIndex.createIndex('books', books);
+      invertedIndex.createIndex('books2', books2);
     });
     it('creates an index', () => {
       expect(invertedIndex.getIndex('books')).toBeTruthy();
@@ -59,13 +59,13 @@ describe('InvertedIndex Class', () => {
     it('returns the exact result of the index', () => {
       invertedIndex.createIndex('books3', books3);
       expect(invertedIndex.getIndex('books3')).toEqual({
-        words:{
-          'by':[0,1], 
-          'malcolm':[0,1], 
-          'gladwell':[0,1],
-          'sequel':[1],
-          'to':[1],
-          'outliers':[1]
+        words: {
+          by: [0, 1],
+          malcolm: [0, 1],
+          gladwell: [0, 1],
+          sequel: [1],
+          to: [1],
+          outliers: [1]
         },
         docCount: 2
       });
@@ -87,22 +87,22 @@ describe('InvertedIndex Class', () => {
       expect(invertedIndex.searchIndex('alice unusual', 'books'))
       .toEqual({
         words: {
-          'alice': [0], 
-          'unusual': [1,2] 
+          alice: [0],
+          unusual: [1, 2]
         },
         docCount: 3
       });
       expect(invertedIndex.searchIndex('room', 'books2'))
       .toEqual({
         words: {
-          'room': [0]
+          room: [0]
         },
         docCount: 2
       });
       expect(invertedIndex.searchIndex('brushing', 'books2'))
       .toEqual({
         words: {
-        'brushing': [1]
+          brushing: [1]
         },
         docCount: 2
       });
@@ -110,17 +110,15 @@ describe('InvertedIndex Class', () => {
   });
 
   describe('Search All Indexes', () => {
-
     it('should return object with search words', () => {
-      console.log(invertedIndex.searchAllIndexes('alice unusual outliers gladwell'))
       expect(invertedIndex.searchAllIndexes('alice unusual outliers gladwell'))
       .toEqual({
         books: {
           words: {
-            'alice': [0], 
-            'unusual': [1,2] 
+            alice: [0],
+            unusual: [1, 2]
           },
-            docCount: 3
+          docCount: 3
         },
         books2: {
           words: {},
@@ -128,10 +126,10 @@ describe('InvertedIndex Class', () => {
         },
         books3: {
           words: {
-            'outliers': [1], 
-            'gladwell': [0,1] 
+            outliers: [1],
+            gladwell: [0, 1]
           },
-            docCount: 2
+          docCount: 2
         },
       });
     });
