@@ -12,6 +12,19 @@ class InvertedIndex {
   }
 
   /**
+   * Validate File
+   * @function
+   * @param {string} filedata
+   * @return {Boolean} true or false
+   */
+  static validate(filedata) {
+    if (!(filedata[0] && filedata[0].title)) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
    * Get individual words from a string of text.
    * @function
    * @param {String} text text to be getWords.
@@ -31,7 +44,6 @@ class InvertedIndex {
    */
   createIndex(filename, filedata) {
     const dictionary = {};
-
     filedata.forEach((doc, arrayIndex) => {
       const docWords = doc.text;
       const words = InvertedIndex.getWords(docWords);
@@ -91,7 +103,7 @@ class InvertedIndex {
     return result;
   }
 
-/**
+  /**
    * Search Index.
    * @function
    * @param {String} query query string

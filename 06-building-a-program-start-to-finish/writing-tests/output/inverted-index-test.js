@@ -1,20 +1,23 @@
 const books = require('./books.json');
-const books2 = require('./books2.json');
-const books3 = require('./books3.json');
+const bios = require('./bios.json');
+const stories = require('./stories.json');
+const wrongdata = require('./wrongdata.json');
+const emptyfile = require('./emptyfile.json');
+const wrongfile = require('./wrongfile.js');
 
 describe('InvertedIndex Class', () => {
   beforeAll(() => {
-    invertedIndex = new InvertedIndex();
+    this.invertedIndex = new InvertedIndex();
   });
 
   describe('Constructor', () => {
     it('can create inverted index instance', () => {
-      expect(typeof invertedIndex).toEqual('object');
-      expect(invertedIndex instanceof InvertedIndex).toBe(true);
+      expect(typeof this.invertedIndex).toEqual('object');
+      expect(this.invertedIndex instanceof InvertedIndex).toBe(true);
     });
 
     it('has an indexes object to hold all indexes', () => {
-      expect(typeof invertedIndex.indexes).toEqual('object');
+      expect(typeof this.invertedIndex.indexes).toEqual('object');
     });
   });
 
@@ -30,35 +33,47 @@ describe('InvertedIndex Class', () => {
     });
   });
 
+  describe('Validate Files ', () => {
+    it('ensures that the file content is a JSON array', () => {
+      expect(Array.isArray(books)).toBeTruthy();
+    });
+    it('verifies that the JSON file is valid', () => {
+      expect(InvertedIndex.validate(books)).toBe(true);
+      expect(InvertedIndex.validate(wrongfile)).toBe(false);
+      expect(InvertedIndex.validate(emptyfile)).toBe(false);
+      expect(InvertedIndex.validate(wrongdata)).toBe(false);
+    });
+  });
+
   describe('CreateIndex', () => {
     beforeAll(() => {
-      invertedIndex.createIndex('books', books);
-      invertedIndex.createIndex('books2', books2);
+      this.invertedIndex.createIndex('books', books);
+      this.invertedIndex.createIndex('bios', bios);
     });
     it('creates an index', () => {
-      expect(invertedIndex.getIndex('books')).toBeTruthy();
-      expect(invertedIndex.getIndex('books2')).toBeTruthy();
+      expect(this.invertedIndex.getIndex('books')).toBeTruthy();
+      expect(this.invertedIndex.getIndex('bios')).toBeTruthy();
     });
     it('creates the correct index', () => {
-      expect(invertedIndex.getIndex('books').words.a).toEqual([0, 1, 2]);
-      expect(invertedIndex.getIndex('books').words.alice).toEqual([0]);
-      expect(invertedIndex.getIndex('books2').words.brushing).toEqual([1]);
-      expect(invertedIndex.getIndex('books2').words.room).toEqual([0]);
+      expect(this.invertedIndex.getIndex('books').words.a).toEqual([0, 1, 2]);
+      expect(this.invertedIndex.getIndex('books').words.alice).toEqual([0]);
+      expect(this.invertedIndex.getIndex('bios').words.brushing).toEqual([1]);
+      expect(this.invertedIndex.getIndex('bios').words.room).toEqual([0]);
     });
     it('saves document length', () => {
-      expect(invertedIndex.getIndex('books').docCount).toEqual(3);
-      expect(invertedIndex.getIndex('books2').docCount).toEqual(2);
+      expect(this.invertedIndex.getIndex('books').docCount).toEqual(3);
+      expect(this.invertedIndex.getIndex('bios').docCount).toEqual(2);
     });
   });
 
   describe('GetIndex', () => {
     it('should return "undefined" if index does not exist', () => {
-      expect(invertedIndex.getIndex(' ')).toEqual(undefined);
-      expect(invertedIndex.getIndex('books4')).toEqual(undefined);
+      expect(this.invertedIndex.getIndex(' ')).toEqual(undefined);
+      expect(this.invertedIndex.getIndex('books4')).toEqual(undefined);
     });
     it('returns the exact result of the index', () => {
-      invertedIndex.createIndex('books3', books3);
-      expect(invertedIndex.getIndex('books3')).toEqual({
+      this.invertedIndex.createIndex('stories', stories);
+      expect(this.invertedIndex.getIndex('stories')).toEqual({
         words: {
           by: [0, 1],
           malcolm: [0, 1],
@@ -74,17 +89,17 @@ describe('InvertedIndex Class', () => {
 
   describe('SearchIndex', () => {
     it('should return "not exist" if index does not exist', () => {
-      expect(invertedIndex.searchIndex('alice in wonderland', 'movies'))
+      expect(this.invertedIndex.searchIndex('alice in wonderland', 'movies'))
         .toEqual('Index with movies does not exist.');
     });
 
     it('should return "{}" for words not in index', () => {
-      expect(invertedIndex.searchIndex('', 'books').words)
+      expect(this.invertedIndex.searchIndex('', 'books').words)
         .toEqual({});
     });
 
     it('should return object with search words', () => {
-      expect(invertedIndex.searchIndex('alice unusual', 'books'))
+      expect(this.invertedIndex.searchIndex('alice unusual', 'books'))
       .toEqual({
         words: {
           alice: [0],
@@ -92,14 +107,14 @@ describe('InvertedIndex Class', () => {
         },
         docCount: 3
       });
-      expect(invertedIndex.searchIndex('room', 'books2'))
+      expect(this.invertedIndex.searchIndex('room', 'bios'))
       .toEqual({
         words: {
           room: [0]
         },
         docCount: 2
       });
-      expect(invertedIndex.searchIndex('brushing', 'books2'))
+      expect(this.invertedIndex.searchIndex('brushing', 'bios'))
       .toEqual({
         words: {
           brushing: [1]
@@ -111,7 +126,7 @@ describe('InvertedIndex Class', () => {
 
   describe('Search All Indexes', () => {
     it('should return object with search words', () => {
-      expect(invertedIndex.searchAllIndexes('alice unusual outliers gladwell'))
+      expect(this.invertedIndex.searchAllIndexes('alice unusual outliers gladwell'))
       .toEqual({
         books: {
           words: {
@@ -120,11 +135,11 @@ describe('InvertedIndex Class', () => {
           },
           docCount: 3
         },
-        books2: {
+        bios: {
           words: {},
           docCount: 2
         },
-        books3: {
+        stories: {
           words: {
             outliers: [1],
             gladwell: [0, 1]
