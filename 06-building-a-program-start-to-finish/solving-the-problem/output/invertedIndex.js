@@ -21,7 +21,8 @@ class InvertedIndex {
   /**
    * checkFileExtension (it returns the file extension)
    * @param {string} uploadedFileName
-   * @return {string} - returns a string of the file extension of the uploaded file
+   * @return {string} - returns a string of the
+   * file extension of the uploaded file
    * @memberOf InvertedIndex
    */
   static checkFileExtension(uploadedFileName) {
@@ -39,13 +40,17 @@ class InvertedIndex {
     return fileExtension.toLowerCase() === 'json';
   }
   /**
-   * containsTitleText (it checks if the content of the file contains title and text)
-   * @returns {Boolean} - returns true if the file contains title and text or false if it does not
+   * containsTitleText (it checks if the content of
+   * the file contains title and text)
+   * @returns {Boolean} - returns true if the file
+   * contains title and text or false if it does not
    * @memberOf InvertedIndex
    */
   containsTitleText() {
-    for (let arrayIndex = 0; arrayIndex < this.uploadedFile.length; arrayIndex += 1) {
-      if (('title' in this.uploadedFile[arrayIndex]) && ('text' in this.uploadedFile[arrayIndex])) {
+    for (let arrayIndex = 0; arrayIndex < this.uploadedFile.length;
+    arrayIndex += 1) {
+      if (('title' in this.uploadedFile[arrayIndex])
+      && ('text' in this.uploadedFile[arrayIndex])) {
         return true;
       }
     }
@@ -74,8 +79,9 @@ class InvertedIndex {
   getIndexedWords() {
     let uncleanIndexedWords = '';
     const fileToIndex = this.getTitlesAndTexts();
+    const arrayIndex = 1;
 
-    fileToIndex[1].texts.forEach((e) => {
+    fileToIndex[arrayIndex].texts.forEach((e) => {
       uncleanIndexedWords += `${e} `;
     });
 
@@ -99,7 +105,8 @@ class InvertedIndex {
   }
   /**
    * contentToDisplay (it returns an Object of data to display to the user)
-   * @returns {Array} - an array of indexed word in a format that can be displayed to the users
+   * @returns {Array} - an array of indexed word in a
+   * format that can be displayed to the users
    * @memberOf InvertedIndex
    */
   contentToDisplay() {
@@ -108,16 +115,14 @@ class InvertedIndex {
     const indexedWords = this.getIndexedWords();
     displayIndexedWords.push(indexedWords);
 
-    for (let arrayIndex = 0; arrayIndex < fileToDisplay[1].texts.length; arrayIndex += 1) {
+    for (let arrayIndex = 0; arrayIndex < fileToDisplay[1].texts.length;
+    arrayIndex += 1) {
       const temporaryData = [];
-      const newIndexedWords = this.cleanIndexedWords(fileToDisplay[1].texts[arrayIndex]);
+      const newIndexedWords = this.cleanIndexedWords(
+        fileToDisplay[1].texts[arrayIndex]);
 
       indexedWords.forEach((e) => {
-        if (newIndexedWords.includes(e)) {
-          temporaryData.push(true);
-        } else {
-          temporaryData.push(false);
-        }
+        temporaryData.push(newIndexedWords.includes(e));
       });
 
       displayIndexedWords.push(temporaryData);
@@ -126,7 +131,8 @@ class InvertedIndex {
     return displayIndexedWords;
   }
   /**
-   * displayInTableFormat (it returns an Object of data to display to the user in table format)
+   * displayInTableFormat (it returns an Object of data
+   * to display to the user in table format)
    * @returns {Array} - the array contains data to be displayed in table format
    * @memberOf InvertedIndex
    */
@@ -134,8 +140,10 @@ class InvertedIndex {
     const dataToFormat = this.contentToDisplay();
     const formatedData = [];
 
-    for (let arrayIndex = 0; arrayIndex < dataToFormat[0].length; arrayIndex += 1) {
-      formatedData.push(this.returnElementsAtIndex(arrayIndex, dataToFormat.length, dataToFormat));
+    for (let arrayIndex = 0; arrayIndex < dataToFormat[0].length;
+    arrayIndex += 1) {
+      formatedData.push(this.returnElementsAtIndex(
+        arrayIndex, dataToFormat.length, dataToFormat));
     }
     return formatedData;
   }
@@ -167,14 +175,16 @@ class InvertedIndex {
     const temporaryData = [];
 
     const wordsToCheck = this.displayInTableFormat();
-    for (let arrayIndex = 0; arrayIndex < wordsToCheck.length; arrayIndex += 1) {
+    for (let arrayIndex = 0; arrayIndex < wordsToCheck.length;
+    arrayIndex += 1) {
       if (wordsToSearch.includes(wordsToCheck[arrayIndex][0])) {
         foundWords.push(wordsToCheck[arrayIndex]);
       }
     }
 
     if (foundWords.length === 0) {
-      for (let arrayIndex = 0; arrayIndex < wordsToCheck[0].length; arrayIndex += 1) {
+      for (let arrayIndex = 0; arrayIndex < wordsToCheck[0].length;
+      arrayIndex += 1) {
         if (arrayIndex === 0) {
           temporaryData.push('no results');
         } else {
