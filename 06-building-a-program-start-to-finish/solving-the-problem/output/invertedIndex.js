@@ -18,7 +18,7 @@ class InvertedIndex {
    * @return {Boolean} true or false
    */
   static validate(filedata) {
-    if (!(filedata[0] && filedata[0].title)) {
+    if (!(filedata[0] && filedata[0].title && filedata[0].text)) {
       return false;
     }
     return true;
