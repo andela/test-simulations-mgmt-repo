@@ -129,13 +129,14 @@ describe('Test the searchIndex functionality',
      expect(typeof (invertedIndex.searchIndex(tokens, indexx))).toBe('object');
    });
 
-   it('should return a collection of objects with tokens and their indexes ', () => {
-     expect(invertedIndex.searchIndex(tokens, indexx)).toEqual({
-       hello: [true, true, false],
-       world: [false, false, false],
-       alice: [false, false, false],
-       man: [true, false, false] });
-   });
+   it('should return a collection of objects with tokens and their indexes ',
+    () => {
+      expect(invertedIndex.searchIndex(tokens, indexx)).toEqual({
+        hello: [true, true, false],
+        world: [false, false, false],
+        alice: [false, false, false],
+        man: [true, false, false] });
+    });
  });
 
 describe('Test the updateSearchResult functionality',
@@ -153,7 +154,7 @@ describe('Test the updateSearchResult functionality',
 
    it('should return a collection of objects with tokens and their' +
    'indexes ', () => {
-     expect(invertedIndex.updateSearchResult(file, tokens)).toEqual({ 
+     expect(invertedIndex.updateSearchResult(file, tokens)).toEqual({
        'touch.json': {
          alice: [true, false, false],
          ee: [false, false, true],

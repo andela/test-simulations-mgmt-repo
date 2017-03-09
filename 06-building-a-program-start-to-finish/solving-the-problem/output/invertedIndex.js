@@ -76,7 +76,6 @@ class InvertedIndex {
   * @return  {object}  - this.searchMap;
   */
   searchIndex(tokens, indexx) {
-    console.log('line 72', tokens);
     this.searchMap = {};
     tokens.forEach((word) => {
       if (word in indexx) {
