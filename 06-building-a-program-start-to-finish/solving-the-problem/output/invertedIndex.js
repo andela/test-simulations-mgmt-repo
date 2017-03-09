@@ -7,6 +7,7 @@ class InvertedIndex {
 
   constructor() {
     this.indexedFiles = {};
+    this.searchResults = {};
   }
 
   /** creates index and update the indexed files
@@ -16,7 +17,7 @@ class InvertedIndex {
    * @return  {object}  wordMap - a map of each token to
    *  there respective indexes
    */
-  checkForIndex(word, filteredContents, wordMap) {
+  static checkForIndex(word, filteredContents, wordMap) {
     filteredContents.forEach((book) => {
       if (book.includes(word)) {
         if (!wordMap[word]) {
@@ -42,7 +43,7 @@ class InvertedIndex {
   createIndex(tokens, filteredContents) {
     this.wordMap = {};
     tokens.forEach((word) => {
-      this.checkForIndex(word, filteredContents, this.wordMap);
+      InvertedIndex.checkForIndex(word, filteredContents, this.wordMap);
     });
     return this.wordMap;
   }
@@ -56,7 +57,6 @@ class InvertedIndex {
    */
   createFileIndex(books, file) {
     this.selectedBook = books[file].content;
-    console.log(this.selectedBook);
     this.validateContent = helpers.validFileContent(this.selectedBook);
     if (this.validateContent) {
       this.filteredContents = helpers.filterBookContents(this.selectedBook);
@@ -76,6 +76,7 @@ class InvertedIndex {
   * @return  {object}  - this.searchMap;
   */
   searchIndex(tokens, indexx) {
+    console.log('line 72', tokens);
     this.searchMap = {};
     tokens.forEach((word) => {
       if (word in indexx) {
@@ -86,4 +87,17 @@ class InvertedIndex {
     });
     return this.searchMap;
   }
+
+  /** updates searches object with search results
+   * @param {String} file - name of file to search from
+   * @param {Array} tokens - Array of words to search
+   * @return  {object}  - word and index map of search words
+   */
+  updateSearchResult(file, tokens) {
+    const search = this.searchIndex(tokens,
+    this.indexedFiles[file]);
+    this.searchResults[file] = search;
+    return this.searchResults;
+  }
 }
+

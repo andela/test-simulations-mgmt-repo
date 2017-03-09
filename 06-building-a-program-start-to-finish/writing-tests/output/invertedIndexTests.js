@@ -1,10 +1,6 @@
+const invertedIndex = new InvertedIndex();
 describe('Test if the object exist and new instances can be created from it',
  () => {
-   let invertedIndex;
-   beforeEach(() => {
-     invertedIndex = new InvertedIndex();
-   });
-
    it('should return "function" when its type is checked', () => {
      expect(typeof (InvertedIndex)).toEqual('function');
    });
@@ -20,42 +16,41 @@ describe('Test if the object exist and new instances can be created from it',
   });
  });
 
-describe('Test the check for index functionality',
+describe('Test the checkForIndex functionality',
  () => {
    let firstContent; let secondContent; let filteredContents;
-   let invertedIndex; let wordMap; let word, word2, word3;
+   let wordMap; let word, word2, word3;
    beforeEach(() => {
      wordMap = {};
      word = 'hello';
      word2 = 'usman';
      word3 = 'world';
-     invertedIndex = new InvertedIndex();
      firstContent = ['hello', 'world'];
      secondContent = ['hello', 'bayo'];
      filteredContents = [firstContent, firstContent, secondContent];
    });
 
    it('should return "object" when its type is checked', () => {
-     expect(typeof (invertedIndex.checkForIndex(word,
+     expect(typeof (InvertedIndex.checkForIndex(word,
      filteredContents, wordMap))).toBe('object');
    });
 
    it('should return an object with search word matched with' +
     'an array of true if the word is found in all documents', () => {
-     expect(invertedIndex.checkForIndex(word,
+     expect(InvertedIndex.checkForIndex(word,
      filteredContents, wordMap)).toEqual({
        hello: [true, true, true] });
    });
    it('should return an object with search word matched with' +
     'an array of "false" if the word is not found in all documents', () => {
-     expect(invertedIndex.checkForIndex(word2,
+     expect(InvertedIndex.checkForIndex(word2,
      filteredContents, wordMap)).toEqual({
        usman: [false, false, false] });
    });
    it('should return an object with search word matched with' +
    'an array of boolean with false if present in a document' +
    'and true if otherwise', () => {
-     expect(invertedIndex.checkForIndex(word3,
+     expect(InvertedIndex.checkForIndex(word3,
      filteredContents, wordMap)).toEqual({
        world: [true, true, false] });
    });
@@ -64,7 +59,6 @@ describe('Test the check for index functionality',
 describe('Test the createFileIndex functionality',
  () => {
    let books; let file; let file2;
-   let invertedIndex;
    beforeEach(() => {
      books = { 'touch.json': {
        content: [{ title: 'Alice , / ?', text: 'enters a a.' },
@@ -77,7 +71,6 @@ describe('Test the createFileIndex functionality',
      };
      file = 'touch.json';
      file2 = 'tests.json';
-     invertedIndex = new InvertedIndex();
    });
 
    it('should return an object map of tokens and their indexes', () => {
@@ -100,12 +93,10 @@ describe('Test the createFileIndex functionality',
    });
  });
 
-describe('Test the create index functionality',
+describe('Test the createIndex functionality',
  () => {
    let firstContent; let secondContent; let filteredContents;
-   let invertedIndex;
    beforeEach(() => {
-     invertedIndex = new InvertedIndex();
      firstContent = ['hello', 'world'];
      secondContent = ['hello', 'bayo'];
      filteredContents = [firstContent, firstContent, secondContent];
@@ -124,12 +115,10 @@ describe('Test the create index functionality',
    });
  });
 
-describe('Test the search index functionality',
+describe('Test the searchIndex functionality',
  () => {
    let tokens; let indexx;
-   let invertedIndex;
    beforeEach(() => {
-     invertedIndex = new InvertedIndex();
      tokens = ['hello', 'world', 'alice', 'man'];
      indexx = { man: [true, false, false],
        hello: [true, true, false],
@@ -140,12 +129,36 @@ describe('Test the search index functionality',
      expect(typeof (invertedIndex.searchIndex(tokens, indexx))).toBe('object');
    });
 
-   it('should return an array of objects with tokens and their indexs ', () => {
+   it('should return a collection of objects with tokens and their indexes ', () => {
      expect(invertedIndex.searchIndex(tokens, indexx)).toEqual({
        hello: [true, true, false],
        world: [false, false, false],
        alice: [false, false, false],
        man: [true, false, false] });
+   });
+ });
+
+describe('Test the updateSearchResult functionality',
+ () => {
+   let tokens, file;
+   beforeEach(() => {
+     tokens = ['alice', 'ee', 'enters'];
+     file = 'touch.json';
+   });
+
+   it('should return "object" when its type is checked', () => {
+     expect(typeof (invertedIndex.updateSearchResult(file, tokens)))
+     .toBe('object');
+   });
+
+   it('should return a collection of objects with tokens and their' +
+   'indexes ', () => {
+     expect(invertedIndex.updateSearchResult(file, tokens)).toEqual({ 
+       'touch.json': {
+         alice: [true, false, false],
+         ee: [false, false, true],
+         enters: [true, false, false] }
+     });
    });
  });
 
