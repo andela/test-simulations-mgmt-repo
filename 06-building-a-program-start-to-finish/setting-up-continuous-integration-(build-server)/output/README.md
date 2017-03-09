@@ -4,7 +4,7 @@
 - **With**: *independently*
 
 #### link to a successful TravisCI build of your development branch
-- [Travis on Development](https://travis-ci.org/andela-cofor/invertedIndex/builds/209067916)
+- [Travis on Development](https://travis-ci.org/andela-cofor/invertedIndex/builds/209434095)
 
 #### Author
 - Ofor Chinedu
