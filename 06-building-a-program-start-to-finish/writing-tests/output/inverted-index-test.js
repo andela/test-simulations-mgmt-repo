@@ -1,6 +1,6 @@
 const books = require('../books.json');
 const adventureBooks = require('../adventure-books.json');
-const emptyArray = require('../empty.json');
+const emptyArray = require('../emptyBook.json');
 const invalidContent = require('../invalid-content.json');
 const invalidFile = require('../invalid-file.json');
 const invalidKey = require('../invalid-key.json');
@@ -36,9 +36,22 @@ describe('JSON file tokenized', () => {
   });
 });
 
+describe('Create index for a JSON file', () => {
+  beforeAll(() => {
+    invertedIndex.createIndex(books, 'books.json');
+    invertedIndex.createIndex(adventureBooks, 'adventure-books.json');
+  });
+  it('generates the correct index', () => {
+    expect(invertedIndex.getIndex('books.json').and).toEqual(
+      [0, 1]
+    );
+    expect(invertedIndex.getIndex('adventure-books.json').bringing).toEqual(
+      [1]
+    );
+  });
+});
+
 describe('Get index of a JSON file', () => {
-  invertedIndex.createIndex(books, 'books.json');
-  invertedIndex.createIndex(adventureBooks, 'adventure-books.json');
   it('should return `undefined` if index does not exist', () => {
     expect(invertedIndex.getIndex(' ')).toEqual(undefined);
     expect(invertedIndex.getIndex('books4')).toEqual(undefined);
