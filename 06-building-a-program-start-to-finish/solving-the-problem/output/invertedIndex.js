@@ -34,7 +34,7 @@ class InvertedIndex {
     return null;
   }
 
-/** creates index and update the indexed files
+/** creates index for selected files
   * @param {Array} tokens - object to br returned
   * @param {Array} filteredContents - an array of all contents in selectedBook
   * @return  {object}  - this.wordMap;- A map of tokens to their indexes
