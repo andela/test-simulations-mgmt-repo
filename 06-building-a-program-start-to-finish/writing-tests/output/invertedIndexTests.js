@@ -43,16 +43,15 @@ describe('Tests the invertedIndex.js class: ', () => {
     });
   });
 
-  describe('Checks if value returned by getIndexedWords()', () => {
-    const returnedObject = invertedIndexTrue.getIndexedWords();
+  describe('Checks getIndexedWords(), contentToDisplay(), displayInTableFormat() and searchIndexedWords()',
+   () => {
+    let returnedObject = invertedIndexTrue.getIndexedWords();
 
     it('should return true for instanceof returnedObject', () => {
     expect(returnedObject instanceof Array).toBeTruthy();
     });
-  });
 
-  describe('Checks the value returned by contentToDisplay()', () => {
-    const returnedObject = invertedIndexTrue.contentToDisplay();
+    returnedObject = invertedIndexTrue.contentToDisplay();
     const bool = (returnedObject[0].length === returnedObject[1].length);
 
     it('should return true if the values at indexes are equal', () => {
@@ -62,11 +61,9 @@ describe('Tests the invertedIndex.js class: ', () => {
     it('should return true for instanceof returnedObject', () => {
     expect(returnedObject instanceof Array).toBeTruthy();
     });
-  });
 
-  describe('Checks the value returned by displayInTableFormat()', () => {
-    const returnedObject = invertedIndexTrue.displayInTableFormat();
-    const bool = (returnedObject[0].length === returnedObject[1].length);
+    returnedObject = invertedIndexTrue.displayInTableFormat();
+    bool = (returnedObject[0].length === returnedObject[1].length);
 
     it('should return true if the values at indexes are equal', () => {
     expect(bool).toEqual(true);
@@ -75,11 +72,8 @@ describe('Tests the invertedIndex.js class: ', () => {
     it('should return true for instanceof returnedObject', () => {
     expect(returnedObject instanceof Array).toBeTruthy();
     });
-  });
 
-  describe('Checks if the value returned by searchIndexedWords() is an Object',
-  () => {
-    const returnedObject = invertedIndexTrue.searchIndexedWords(
+    returnedObject = invertedIndexTrue.searchIndexedWords(
       ['quick', 'An', 'unusual']);
 
     it('should return true for instanceof returnedObject', () => {
