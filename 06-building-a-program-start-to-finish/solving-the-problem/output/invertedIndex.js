@@ -27,7 +27,7 @@ class InvertedIndex {
       this.tokens = helpers.getToken(this.filteredContents);
       if (!(this.indexedFiles.hasOwnProperty(file))) {
         this.indexedFiles[file] = this.createIndex(this.tokens,
-        this.filteredContents, this.checkForIndex);
+        this.filteredContents);
       }
       return this.indexedFiles;
     }
