@@ -4,80 +4,100 @@ const model = require('./testmodels');
 
 const InvertedIndexTest = new InvertedIndex();
 
-describe('Test suite for helper functions', () => {
-  it('Given an unordered object, function should return an alphabetically ordered version of the object',
+describe('sort function', () => {
+  it('Should sort unordered objects alphabetically',
    () => {
      const sortedObject = helpers.sort(model.unorderedObject);
      expect(Object.keys(sortedObject))
     .toEqual(Object.keys(model.orderedObject));
    });
+});
 
-  it('Given a json object, where each object contains a title key, function should compile all title values into an array and return it',
+describe('fetchTitle function', () => {
+  it('Should compile all value of title key in an array of objects',
   () => {
     expect(helpers.fetchTitle(model.validJsonTestData[0]))
     .toEqual(['A good bot', 'A bad bot']);
   });
+});
 
-  it('Given that every key in an object has the value of null, function return true',
+describe('allIsEmpty function', () => {
+  it('should return true if every key in object is null',
   () => {
     expect(helpers.allIsEmpty(model.searchResults[5])).toEqual(true);
   });
+});
 
-  it('Given a string, function should check a given array if the string matches the string in an index, if found function return true',
+describe('isFound function', () => {
+  it('should return true if string is found in array',
   () => {
-    expect(helpers.isFound('A good bot', ['A good bot', 'A bad bot'])).toEqual(true);
+    expect(helpers.isFound('A good bot', ['A good bot', 'A bad bot']))
+    .toEqual(true);
   });
 
-  it('Given a string, function should check a given array if the string matches the string in an index, if found function return false',
+  it('Should return false if string is not found in array',
   () => {
-    expect(helpers.isFound('A red bot', ['A good bot', 'A bad bot'])).toEqual(false);
+    expect(helpers.isFound('A red bot', ['A good bot', 'A bad bot']))
+    .toEqual(false);
   });
+});
 
-  it('Given a string, function should remove all special symbols, convert the string to lowercase and return the new value',
+describe('stripStr function', () => {
+  it('Should return lowercase string without any symbols',
   () => {
     expect(helpers
     .stripStr('"#NothIng liKe breaKing lIke glAss!", wrote the blonde girl'))
     .toEqual('nothing like breaking like glass wrote the blonde girl');
+  });
+  it('Should return null when searching for symbols in striped string',
+  () => {
     expect(helpers
     .stripStr('"#NothIng liKe breaKing lIke glAss!", wrote the blonde girl')
     .match(/[-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/))
     .toEqual(null);
   });
+  it('Should return null when input is not of type String',
+  () => {
+    expect(helpers.stripStr(32239923023)).toEqual(null);
+  });
 });
 
-describe('Given that a parameter is passed into this method, it should check if the parameter is in a valid format',
+describe('isValid function',
 () => {
-  it('Given a valid json object, function should return true',
+  it('Should return true if input is in a valid format',
   () => {
     expect(helpers.isValid(model.validJsonTestData[0])).toBe(true);
   });
 
-  it('Given an invalid json object, function should return false',
+  it('Should return false if input is in an invalid format',
   () => {
     expect(helpers.isValid(model.invalidData[1])).toBe(false);
   });
 
-  it('Given that null is passed in as an argument, function should return false',
+  it('Shoul return false if null is passed in',
   () => {
     expect(helpers.isValid(null)).toBe(false);
   });
 
-  it('Given that nothing is passed in as an argument, function should return false',
+  it('Should return false if nothing is passed in',
   () => {
     expect(helpers.isValid()).toBe(false);
   });
 
-  it('Given that a non object data type is passed as an argument, function should return false',
+  it('Should return false if input is not an Array of objects',
   () => {
     expect(helpers.isValid('A json file')).toBe(false);
     expect(helpers.isValid([])).toBe(false);
     expect(helpers.isValid(32323)).toBe(false);
   });
 
-  it('Given that there is neither a text key or title key in the json object, function should return false',
+  it('Should return false if the text key is empty',
   () => {
     expect(helpers.isValid([{ title: 'Great', text: '' }]))
     .toBe(false);
+  });
+  it('Should return false if the title key is empty',
+  () => {
     expect(helpers
     .isValid([
       { title: '', author: 'Scott Fizgerald', text: 'Gatsby and Daisy' }]))
@@ -86,27 +106,26 @@ describe('Given that a parameter is passed into this method, it should check if 
 });
 
 
-describe('Given a file name and a valid json object, method should return a generated index',
+describe('generateIndex function',
 () => {
-  it('Given a file name and a valid json object, method should return a generated index',
+  it('Should return generated inverted index for an input',
   () => {
     expect(InvertedIndexTest
     .generateIndex('book1', model.validJsonTestData[0]))
     .toEqual(model.index);
   });
 
-  it('Given that an index was generated, the index should be stores in the indices property of the class',
-  () => {
-    expect(InvertedIndexTest.indices).toEqual(model.indices);
-  });
-
-  it('Given that an empty parameter or a null value is passed in, method should return null',
+  it('Should return null for an empty input',
   () => {
     expect(InvertedIndexTest.generateIndex()).toEqual(null);
+  });
+
+  it('Should return null if null is passed in',
+  () => {
     expect(InvertedIndexTest.generateIndex(null)).toEqual(null);
   });
 
-  it('Given that the parameter passed in is not an object, method should return null',
+  it('Should return null fif input is not of type Array',
   () => {
     expect(InvertedIndexTest.generateIndex({})).toEqual(null);
     expect(InvertedIndexTest.generateIndex(2323)).toEqual(null);
@@ -114,41 +133,44 @@ describe('Given a file name and a valid json object, method should return a gene
     .toEqual(null);
   });
 
-  it('Given that the object passed in is in an invalid format, method should return null',
+  it('Should return null if data is not in a valid format',
   () => {
-    expect(InvertedIndexTest.generateIndex('invalid data', model.invalidData[0]))
+    expect(InvertedIndexTest
+    .generateIndex('invalid data', model.invalidData[0]))
     .toEqual(null);
-    expect(InvertedIndexTest.generateIndex('invalid data', model.invalidData[1]))
+    expect(InvertedIndexTest
+    .generateIndex('invalid data', model.invalidData[1]))
     .toEqual(null);
   });
 });
 
+describe('Indices property', () => {
+  it('Should return object of all generated Index',
+  () => {
+    expect(InvertedIndexTest.indices).toEqual(model.indices);
+  });
+});
 
-describe('Given that a searh query is passed in as well as a file name, method should search for the query in the file name stored in the indices property',
+
+describe('Search function',
 () => {
-  it('Given a search query and a file name is passed into the method, method should return the words found in tht file',
+  it('Should return search results for query string in file name',
   () => {
     expect(InvertedIndexTest.search('bad good bot knock', 'book1'))
     .toEqual(model.searchResults[0]);
   });
 
-  it('Given the search query is not found in the indices, method should return null',
+  it('Should return null if search query is not found in file',
   () => {
     expect(InvertedIndexTest
     .search('a really good knock for the bot', 'book1'))
     .toEqual(model.searchResults[1]);
   });
-
-  it('Given the query is not found in the indices property, method should return null', () => {
-    expect(InvertedIndexTest
-    .search('He sticks to his wild side', 'book1'))
-    .toEqual(null);
-  });
 });
 
-describe('Given a search query, method should search the query in all files in the indices',
+describe('searchAll function',
 () => {
-  it('Given a search query menthod, should return an object mapping each word found to file name in indices',
+  it('Should return search results for query string in all generated files',
   () => {
     InvertedIndexTest
     .generateIndex('book2', model.validJsonTestData[1]);
@@ -157,7 +179,7 @@ describe('Given a search query, method should search the query in all files in t
     .toEqual(model.searchResults[4]);
   });
 
-  it('Given a search query is not found in the indices, method should return null',
+  it('Should return filename to null if search query is not found in file',
   () => {
     expect(InvertedIndexTest
     .searchAll('He sticks to his wild side'))

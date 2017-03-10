@@ -43,6 +43,7 @@ const model = {
     }]
   ],
 
+  // Generated Index Model
   index: {
     give: ['A good bot', 'A bad bot'],
     a: ['A good bot', 'A bad bot'],
@@ -57,6 +58,7 @@ const model = {
     head: ['A bad bot']
   },
 
+  // Indices Model
   indices: {
     book1: {
       give: ['A good bot', 'A bad bot'],
