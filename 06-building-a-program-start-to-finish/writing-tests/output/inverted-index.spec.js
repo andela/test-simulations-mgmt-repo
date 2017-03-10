@@ -37,7 +37,8 @@ describe('Tokenize function ', () => {
       .tokenize(`${bookToTokenize[0].title} ${bookToTokenize[0].text}`)))
       .toBe(true);
   });
-  it('should return an array of filtered words for a file content input', () => {
+  it(`should return an "array" of filtered words for a 
+  file content input`, () => {
     expect(InvertedIndex
       .tokenize(`${bookToTokenize[0].title} ${bookToTokenize[0].text}`))
       .toEqual(
