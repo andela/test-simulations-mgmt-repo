@@ -7,4 +7,3 @@
 - [Production](https://coforinvetedindex.herokuapp.com/)
 - [Staging App](https://appstaging.herokuapp.com/)
 - [Review App](https://coforinvetedindex-pr-41.herokuapp.com/)
-
