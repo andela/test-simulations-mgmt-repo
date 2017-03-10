@@ -14,14 +14,20 @@ class InvertedIndex {
   /**
    * Validate File
    * @function
-   * @param {string} filedata
-   * @return {Boolean} true or false
+   * @param {string} filedata content of the file uploaded
+   * @return {Boolean} true if file is valid and false otherwise
    */
   static validate(filedata) {
-    if (!(filedata[0] && filedata[0].title && filedata[0].text)) {
-      return false;
+    if ((Array.isArray(filedata) && filedata.length > 0)) {
+      let flag = true;
+      filedata.forEach((doc) => {
+        if ((doc.title && doc.text) === undefined) {
+          flag = false;
+        }
+      });
+      return flag;
     }
-    return true;
+    return false;
   }
 
   /**

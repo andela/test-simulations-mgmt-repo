@@ -34,9 +34,6 @@ describe('InvertedIndex Class', () => {
   });
 
   describe('Validate Files ', () => {
-    it('ensures that the file content is a JSON array', () => {
-      expect(Array.isArray(books)).toBeTruthy();
-    });
     it('verifies that the JSON file is valid', () => {
       expect(InvertedIndex.validate(books)).toBe(true);
       expect(InvertedIndex.validate(wrongfile)).toBe(false);
