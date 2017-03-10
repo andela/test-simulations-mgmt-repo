@@ -7,27 +7,29 @@
  */
 class InvertedIndexUtility {
 /**
- * Checks input to see if it conforms to specific standards.
+ * Checks input to see if it conforms to specific standards
  * @param {Array} file - Book file to be validated
- * @returns {boolean} true/false - returns validation status.
+ * @returns {Boolean} true/false - returns validation status
  * @memberOf InvertedIndex
  */
   static validateInput(file) {
-    if (Array.isArray(file) && file.length) {
+    if (Array.isArray(file) && file.length > 0) {
       const books = Object.keys(file);
-      for (let i = 0; i < books.length; i += 1) {
+      for (let i = 0; i < books.length;) {
         if (file[i].text && file[i].title) {
-          return true;
+          i += 1;
+        } else {
+          return false;
         }
-        return false;
       }
     } else {
       return false;
     }
+    return true;
   }
 
 /**
-* Removes characters, whitespaces and converts text to array elements.
+* Removes characters, whitespaces and converts text to array elements
 * @param {String} text returned from getBookAsText
 * @returns {Array} -returns words in lower-cases with no characters
 * @memberOf InvertedIndexUtility
@@ -39,8 +41,8 @@ class InvertedIndexUtility {
   }
 
 /**
- * Gets an array of words and makes element have unique occurrences
- * @param {Object} words - a book object with title and text property
+ * Gets an array of words and makes elements have unique occurrences
+ * @param {Array} words - a book object with title and text property
  * @returns {Array} words - a filtered array with unique elements
  * @memberOf InvertedIndexUtility
  */
@@ -49,3 +51,4 @@ class InvertedIndexUtility {
         words.indexOf(element) === index);
   }
 }
+
