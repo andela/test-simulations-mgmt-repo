@@ -4,4 +4,4 @@
 - **With**: *independently*
 
 #### Targeted Learning Outcomes
-- [Medium](https://medium.com/p/849b651bc7bf/edit)
+- [Medium](https://medium.com/@henry.chukwu/from-bootcamp-to-checkpoint-849b651bc7bf#.n8zao9ugv)

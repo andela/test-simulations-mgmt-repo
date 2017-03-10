@@ -16,7 +16,7 @@ class InvertedIndex {
    */
   static tokenize(words) {
     return words.trim().replace(/-/g, ' ')
-      .replace(/[.,/#!$%^&@*;:'{}=_`~()]/g, '')
+      .replace(/[^A-z\s]/g, '')
       .toLowerCase()
       .split(' ')
       .sort();
@@ -86,6 +86,8 @@ class InvertedIndex {
     InvertedIndex.uniqueWords(searchQuery).forEach((word) => {
       if (Array.isArray(fileToSearch[word])) {
         searchResult[word] = fileToSearch[word];
+      } else {
+        searchResult[word] = [];
       }
     });
     return searchResult;
