@@ -43,7 +43,7 @@ describe('Tests the invertedIndex.js class: ', () => {
     });
   });
 
-  describe('Checks if value returned by getIndexedWords() is an object', () => {
+  describe('Checks if value returned by getIndexedWords()', () => {
     const returnedObject = invertedIndexTrue.getIndexedWords();
 
     it('should return true for instanceof returnedObject', () => {
