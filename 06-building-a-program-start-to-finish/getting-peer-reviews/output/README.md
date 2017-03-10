@@ -4,4 +4,4 @@
 - **With**: *independently*
 
 #### Link to peer review
-- [Agile Process](https://github.com/andela-cofor/invertedIndex/pull/41)
+- [Peer review](https://github.com/andela-cofor/invertedIndex/pull/41)
