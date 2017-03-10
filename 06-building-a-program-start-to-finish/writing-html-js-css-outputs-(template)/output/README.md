@@ -4,4 +4,4 @@
 - **With**: *independently*
 
 #### Link to screenshot
-- [Screenshot of my proposed front end](https://cloud.githubusercontent.com/assets/25608370/23742826/b2d72a3c-04ae-11e7-9ea7-ca3cd5b51ec9.png)
+- [Screenshot of my proposed front end](https://cloud.githubusercontent.com/assets/25608370/23794233/695e804e-058f-11e7-9e50-6a61568705c8.png)
