@@ -1,6 +1,5 @@
 /**
  * InvertedIndex Class
- *
  * @class
  */
 class InvertedIndex {
@@ -33,9 +32,9 @@ class InvertedIndex {
       .match(/\w+/g);
     token.forEach((item) => {
       if (!uniqueWords.includes(item)) {
-        uniqueWords.push(item);
-      }
-    });
+      uniqueWords.push(item);
+    }
+  });
     return uniqueWords;
   }
 
@@ -49,17 +48,18 @@ class InvertedIndex {
   createIndex(fileContents, fileName) {
     const fileMap = {};
     fileContents.forEach((jsonObject, index) => {
-      const tokens = InvertedIndex.tokenize(`${jsonObject.title} ${jsonObject.text}`);
-      tokens.forEach((token) => {
-        if (token in fileMap) {
-          fileMap[token].push(index);
-        } else {
-          fileMap[token] = [];
-          fileMap[token].push(index);
-        }
-      });
-      this.indexedFiles[fileName] = fileMap;
-    });
+      const tokens = InvertedIndex
+        .tokenize(`${jsonObject.title} ${jsonObject.text}`);
+    tokens.forEach((token) => {
+      if (token in fileMap) {
+      fileMap[token].push(index);
+    } else {
+      fileMap[token] = [];
+      fileMap[token].push(index);
+    }
+  });
+    this.indexedFiles[fileName] = fileMap;
+  });
     return this.indexedFiles;
   }
 
@@ -84,20 +84,21 @@ class InvertedIndex {
    */
   searchIndex(query, fileName = 'all') {
     const result = {};
-    fileName = (fileName !== 'all') ? [fileName] : Object.keys(this.indexedFiles);
+    fileName = (fileName !== 'all') ? [fileName]
+      : Object.keys(this.indexedFiles);
     const searchWords = InvertedIndex.tokenize(query);
     fileName.forEach((file) => {
       result[file] = {};
-      const fileIndex = this.indexedFiles[file];
-      searchWords.forEach((word) => {
-        const indexedWords = Object.keys(fileIndex);
-        if (indexedWords.includes(word)) {
-          result[file][word] = fileIndex[word];
-        } else {
-          result[file][word] = [];
-        }
-      });
-    });
+    const fileIndex = this.indexedFiles[file];
+    searchWords.forEach((word) => {
+      const indexedWords = Object.keys(fileIndex);
+    if (indexedWords.includes(word)) {
+      result[file][word] = fileIndex[word];
+    } else {
+      result[file][word] = [];
+    }
+  });
+  });
     return result;
   }
 
@@ -109,14 +110,15 @@ class InvertedIndex {
   validateFile(fileObject) {
     let result = this.validationResponse.VALID_FILE;
     try {
-      if (typeof fileObject !== 'object' || Object.keys(fileObject).length === 0) {
+      if (typeof fileObject !== 'object'
+        || Object.keys(fileObject).length === 0) {
         result = this.validationResponse.EMPTY_FILE;
       }
       fileObject.forEach((key) => {
         if (typeof key.title !== 'string' || typeof key.text !== 'string') {
-          result = this.validationResponse.INVALID_CONTENT;
-        }
-      });
+        result = this.validationResponse.INVALID_CONTENT;
+      }
+    });
     } catch (error) {
       result = this.validationResponse.INVALID_FILE;
     }
