@@ -5,58 +5,22 @@
  */
 class InvertedIndex {
 
+  /**
+   * Creates an instance of InvertedIndex.
+   * @memberOf InvertedIndex
+   */
   constructor() {
     this.indexedFiles = {};
     this.searchResults = {};
   }
 
   /** creates index and update the indexed files
-   * @param {Array} word - object to br returned
-   * @param {Array} filteredContents - an array of all contents in file
-   * @param {object} wordMap - an array of all contents in file
-   * @return  {object}  wordMap - a map of each token to
-   *  there respective indexes
-   */
-  static checkForIndex(word, filteredContents, wordMap) {
-    filteredContents.forEach((book) => {
-      if (book.includes(word)) {
-        if (!wordMap[word]) {
-          wordMap[word] = [true];
-        } else {
-          wordMap[word].push(true);
-        }
-      } else if (!wordMap[word]) {
-        wordMap[word] = [false];
-      } else {
-        wordMap[word].push(false);
-      }
-    });
-    return wordMap;
-  }
-
-/** creates index and update the indexed files
-  * @param {Array} tokens - object to br returned
-  * @param {Array} filteredContents - an array of all contents in file
-  * @param {function} checkForIndex - an array of all contents in file
-  * @return  {object}  - this.wordMap;
-  */
-  createIndex(tokens, filteredContents) {
-    this.wordMap = {};
-    tokens.forEach((word) => {
-      InvertedIndex.checkForIndex(word, filteredContents, this.wordMap);
-    });
-    return this.wordMap;
-  }
-
-
-  /** creates index and update the indexed files
-   * @param {object} books - object containing books
+   * @param {object} uploadedFiles - object containing uploaded books
    * @param {Sting} file - file name
-   * @param {function} alerts - function to alert error
-   * @return  {null}  - null
+   * @return  {object}  - this.indexedFiles
    */
-  createFileIndex(books, file) {
-    this.selectedBook = books[file].content;
+  updateIndexedFilesRecords(uploadedFiles, file) {
+    this.selectedBook = uploadedFiles[file].content;
     this.validateContent = helpers.validFileContent(this.selectedBook);
     if (this.validateContent) {
       this.filteredContents = helpers.filterBookContents(this.selectedBook);
@@ -70,27 +34,35 @@ class InvertedIndex {
     return null;
   }
 
-/** search for words in indexFiles and return the result
+/** creates index and update the indexed files
   * @param {Array} tokens - object to br returned
-  * @param {object} indexx - a collection of indexed files
-  * @return  {object}  - this.searchMap;
+  * @param {Array} filteredContents - an array of all contents in selectedBook
+  * @return  {object}  - this.wordMap;- A map of tokens to their indexes
   */
-  searchIndex(tokens, indexx) {
-    this.searchMap = {};
-    tokens.forEach((word) => {
-      if (word in indexx) {
-        this.searchMap[word] = indexx[word];
-      } else {
-        this.searchMap[word] = Array(3).fill(false);
-      }
+  createIndex(tokens, filteredContents) {
+    this.wordMap = {};
+    tokens.forEach((token) => {
+      filteredContents.forEach((document) => {
+        if (document.includes(token)) {
+          if (!this.wordMap[token]) {
+            this.wordMap[token] = [true];
+          } else {
+            this.wordMap[token].push(true);
+          }
+        } else if (!this.wordMap[token]) {
+          this.wordMap[token] = [false];
+        } else {
+          this.wordMap[token].push(false);
+        }
+      });
     });
-    return this.searchMap;
+    return this.wordMap;
   }
 
   /** updates searches object with search results
    * @param {String} file - name of file to search from
-   * @param {Array} tokens - Array of words to search
-   * @return  {object}  - word and index map of search words
+   * @param {Array} tokens - Array of tokens to search
+   * @return  {object}  - tokens and searchResults of searched tokens
    */
   updateSearchResult(file, tokens) {
     const search = this.searchIndex(tokens,
@@ -98,5 +70,23 @@ class InvertedIndex {
     this.searchResults[file] = search;
     return this.searchResults;
   }
+
+ /** search for words in indexFiles and return the result
+  * @param {Array} tokens - search words
+  * @param {object} selectedFileIndexMap - indexMap for selected file
+  * @return  {object}  - this.searchMap map of search token to it searchResult
+  */
+  searchIndex(tokens, selectedFileIndexMap) {
+    this.searchMap = {};
+    tokens.forEach((token) => {
+      if (token in selectedFileIndexMap) {
+        this.searchMap[token] = selectedFileIndexMap[token];
+      } else {
+        this.searchMap[token] = Array(3).fill(false);
+      }
+    });
+    return this.searchMap;
+  }
+
 }
 
