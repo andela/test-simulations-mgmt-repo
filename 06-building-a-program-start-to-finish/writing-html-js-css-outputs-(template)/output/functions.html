@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Inverted Index</title>
+
+    <!-- meta tags -->
+    <meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans|Roboto|Roboto+Condensed|Roboto+Mono|Sansita" rel="stylesheet">
+ 
+    <!-- style sheets -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/stylesheet.css">
+
+  </head>
+
+  <body>
+    <div class='page-header' id='page-header-functions'>
+      <p id='p-functions'>Inverted Index<p>
+    </div>
+
+    <div class='functions-container'>
+      <div class='page-body'>
+        <div class='search-field'>
+          <select id='select-file-search'>
+            <option id='optionChoose'>Choose File</option>
+            <option id='optionAll'>All</option>
+          </select>
+          <input type='text' id='search-field-id' name='search' placeholder='e.g. quick brown fox'>
+          <button type='button' class='button-search'>Search</button>
+        </div>
+
+        <div class='file-upload'>
+          <input id='image-file' accept='.json' type='file' multiple />
+          <button type='button' class='button-file' id='button-upload-file'>Upload File</button>
+          <div id='upload-error'>uploaded files cannot be empty or more than 5</div>
+        </div>
+
+        <div class='file-index'>
+          <select id='select-file'>
+          </select>
+          <button type='button' class='button-file' id='button-create-index'>Create Index</button>
+          <div id='back-upload'>< Upload</div>
+        </div>
+
+        <div class='table-display'>
+          <div id='table-display-error'>NO FILES INDEXED</div>
+          <table id='indexTable'>
+            <tr id='indexTableHeader'></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  
+
+    <!-- page footer -->
+    <div class='page-footer'>
+    </div>
+
+    <!-- libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+
+    <!-- custom scripts -->
+    <script type="text/javascript" src="/js/invertedIndex.js"></script>
+    <script type="text/javascript" src="/js/index.js"></script>  
+
+  </body>
+
+</html>
