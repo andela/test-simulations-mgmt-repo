@@ -11,6 +11,8 @@ class InvertedIndex {
   }
 
   /**
+   * strips words of all special characters and numbers
+   * and returns an Array of each words
    * @param{String} words - String to tokenize
    * @return{Array} list of words devoid of special characters or symbols
    */
@@ -23,6 +25,7 @@ class InvertedIndex {
   }
 
   /**
+   * remove duplicate words in tokenize array
    * @param{String} words - The string to be filtered
    * @return{Array} tokens - Without duplicated words
    */
@@ -32,9 +35,15 @@ class InvertedIndex {
   }
 
   /**
+   * creates an inverted index
+   * takes a file name and array of words as
+   * argument and creates inverted index
    * @param{String} fileName - The name of the file to be indexed
    * @param{Array} fileToIndex - Array of contents of the JSON file to index
-   * @return{Object} index - That maps words to locations(documents)
+   * @return{String} for invalid files - JSON file is Empty
+   * @return{Object || String} for valid files returns
+   * index - That maps words to locations(documents)
+   * while for empty files returns JSON file is empty
    */
   createIndex(fileName, fileToIndex) {
     const wordsToIndex = [];
@@ -62,7 +71,9 @@ class InvertedIndex {
     this.index[fileName] = fileIndex;
   }
 
-  /**
+  /** gets an indexed file
+   * takes an indexed file as argument and return the indexes of the
+   * file
    * @param{String} fileName - The name of the file whose index is required
    * @return{Object} index - The correct mapping of words
    *  to locations for specified file
@@ -72,7 +83,10 @@ class InvertedIndex {
     return file || undefined;
   }
 
-  /**
+  /** search inverted index
+   * takes a string of words to search with the fileName
+   * and returns an object with words mapped
+   * to document locations
    * @param{String} searchQuery - Words to search for
    * @param{String} fileName - file to query
    * @return{Object} searchResults - Maps searched words to document locations

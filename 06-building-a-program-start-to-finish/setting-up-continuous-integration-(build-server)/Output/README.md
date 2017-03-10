@@ -4,4 +4,4 @@
 - **With**: *independently*
 
 #### Outcome
-- [Travis-Build](https://travis-ci.org/andela-hchukwu/Inverted-Index)
+- [Travis-Build](https://travis-ci.org/andela-hchukwu/Inverted-Index/builds/209798463)
