@@ -1,109 +1,105 @@
-const invertedObject = new InvertedIndex();
+/**
+ * An inverted-index class
+ * @class
+ */
+class InvertedIndex {
+  /**
+  * class constructor
+  * @constructor
+  */
+  constructor() {
+    this.allIndex = {};
+    this.allFiles = {};
+    this.allLength = {};
+    this.allFilesTitle = [];
+  }
 
-
-const correctBook = require('./book.json');
-const wrongBook = require('./wrongFormat.json');
-const zeroLength = require('./length.json');
-const book = require('./News');
-
-
-
-describe('Inverted Index test Suit', () => {
-  describe('Testing Inverted index create method', () => {
-    const outputObject = invertedObject.createIndex(correctBook, 'correctBook');
-    const outputObject2 = invertedObject.createIndex(book, 'book');
-
-    it('should return Object as object type of outputObject', () => {
-      expect(outputObject instanceof Object).toBeTruthy();
+  /**
+   * Sanitizer
+   * @param {Object} BookObject recieves json object
+   * @return {Object} returns an Object of names
+   */
+  sanitizer(BookObject) {
+    Object.keys(BookObject).forEach((titles) => {
+      this.allFilesTitle.push(BookObject[titles].title);
     });
+  }
 
-    it('matches outputObject with the expect alice: { 0: true }', () => {
-      expect(outputObject).toEqual(jasmine.objectContaining({
-        alice: { 0: true }
-      }));
+  /**
+   * Gets Indexes
+   * @param {Object} BookObject receives json object
+   * @param {string} bookName of the books
+   * @return {object} returns an object of Indexes
+   */
+  createIndex(BookObject, bookName) {
+    this.sanitizer(BookObject);
+    this.allLength[bookName] = BookObject.length;
+    BookObject.forEach((document, position) => {
+      const words = document.text
+      .toLowerCase()
+      .match(/\w+/g);
+      words.forEach((word) => {
+        if (this.allIndex[word]) {
+          if (!this.allIndex[word][position]) {
+            this.allIndex[word][position] = true;
+          }
+        } else {
+          const wordIndex = {};
+          wordIndex[position] = true;
+          this.allIndex[word] = wordIndex;
+        }
+      });
     });
+    this.allFiles[bookName] = this.allIndex;
+    this.allIndex = {};
+    return this.allFiles[bookName];
+  }
 
-    it('matches outputObject with the expect alice: { 0: false }', () => {
-      expect(outputObject).not.toEqual(jasmine.objectContaining({
-        alice: { 0: false }
-      }));
+  /**
+   * Get all Indecies
+   * @param {string} bookName name of the individaul book
+   * @returns {Object} allIndicies returns all indexed allFiles
+   */
+  getAllIndecies(bookName) {
+    if (bookName !== undefined) {
+      return this.allFiles[bookName];
+    } return false;
+  }
+
+  /**
+   * Search function
+   * @param {string} queryString word to Search
+   * @param {string} filterName book name to search
+   * @return {Object} searchResult
+   */
+  searchFiles(queryString, filterName) {
+    const searchResult = {};
+    const allSearchQuery = queryString;
+    let searchResultKey = {};
+    if (filterName === 'All') {
+      Object.keys(this.allFiles).forEach((keys) => {
+        searchResultKey = {};
+        Object.keys(allSearchQuery).forEach((query) => {
+          searchResultKey[allSearchQuery[query]] = { 0: false };
+          Object.keys(this.allFiles[keys]).forEach((key) => {
+            if (allSearchQuery[query] === key) {
+              searchResultKey[allSearchQuery[query]] = this.allFiles[keys][key];
+            }
+          });
+        });
+        searchResult[keys] = searchResultKey;
+      });
+      return searchResult;
+    }
+    Object.keys(allSearchQuery).forEach((query) => {
+      searchResultKey[allSearchQuery[query]] = { 0: false };
+      Object.keys(this.allFiles[filterName]).forEach((key) => {
+        if (allSearchQuery[query] === key) {
+          searchResultKey[allSearchQuery[query]] = this.allFiles[filterName][key];
+        }
+      });
     });
-
-    it('matches outputObject with the expect alice: { 0: false }', () => {
-      expect(outputObject).toEqual(jasmine.objectContaining({
-        of: { 0: true, 1: true }
-      }));
-    });
-
-    it('matches outputObject with the expect party: { 0: true, 5: true }', () => {
-      expect(outputObject2).toEqual(jasmine.objectContaining({
-        party: { 0: true, 5: true }
-      }));
-    });
-
-    it('matches outputObject with the expect party: { 0: true, 5: true }', () => {
-      expect(outputObject2).not.toEqual(jasmine.objectContaining({
-        party: { 0: true, 4: true }
-      }));
-    });
-
-    const searchObject = invertedObject.searchFiles(['alice'], 'All');
-    const searchObject2 = invertedObject.searchFiles(['party'], 'All');
-    const searchObject3 = invertedObject.searchFiles(['alice'], 'correctBook');
-    const searchObject4 = invertedObject.searchFiles(['party'], 'book');
-
-    it('should return Object as object type of searchObject for All', () => {
-      expect(searchObject instanceof Object).toBeTruthy();
-    });
-
-    it('matches searchObject with the expect alice: { 0: true }', () => {
-      expect(searchObject.correctBook).toEqual(jasmine.objectContaining({
-        alice: { 0: true }
-      }));
-    });
-
-    it('matches searchObject with the expect alice: { 0: false }', () => {
-      expect(searchObject.correctBook).not.toEqual(jasmine.objectContaining({
-        alice: { 0: false }
-      }));
-    });
-
-    it('matches searchObject2 with the expect party: { 0: true, 5: true }', () => {
-      expect(searchObject2.book).toEqual(jasmine.objectContaining({
-        party: { 0: true, 5: true }
-      }));
-    });
-
-    it('matches searchObject2 with the expect party: { 0: true, 1: true }', () => {
-      expect(searchObject2.book).not.toEqual(jasmine.objectContaining({
-        party: { 0: true, 1: true }
-      }));
-    });
-
-    it('should return Object as object type of searchObject for correctBook', () => {
-      expect(searchObject3 instanceof Object).toBeTruthy();
-    });
-
-    it('matches searchObject3 with the expect alice: { 0: true }', () => {
-      expect(searchObject3.correctBook).toEqual(jasmine.objectContaining({
-        alice: { 0: true }
-      }));
-    });
-
-    it('matches searchObject3 with the expect alice: { 0: false }', () => {
-      expect(searchObject3.correctBook).not.toEqual(jasmine.objectContaining({
-        alice: { 0: false }
-      }));
-    });
-
-    it('should return Object as object type of searchObject for book', () => {
-      expect(searchObject4 instanceof Object).toBeTruthy();
-    });
-
-    it('matches searchObject4 with the expect party: { 0: true, 5: true }', () => {
-      expect(searchObject4.book).toEqual(jasmine.objectContaining({
-        party: { 0: true, 5: true }
-      }));
-    });
-  });
-});
+    searchResult[filterName] = searchResultKey;
+    return searchResult;
+  }
+}

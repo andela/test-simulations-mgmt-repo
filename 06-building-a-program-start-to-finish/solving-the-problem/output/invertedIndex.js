@@ -13,19 +13,31 @@ class InvertedIndex {
     this.allLength = {};
     this.allFilesTitle = [];
   }
+
   /**
-   * Gets Indexes
-   * @param {jsonObj} BookObject receives json object
-   * @param {string} fileName of the books
-   * @return {object} returns an object of Indexes
+   * Sanitizer
+   * @param {Object} BookObject recieves json object
+   * @return {Object} returns an Object of names
    */
-  createIndex(BookObject, fileName) {
+  sanitizer(BookObject) {
     Object.keys(BookObject).forEach((titles) => {
       this.allFilesTitle.push(BookObject[titles].title);
     });
-    this.allLength[fileName] = BookObject.length;
+  }
+
+  /**
+   * Gets Indexes
+   * @param {Object} BookObject receives json object
+   * @param {string} bookName of the books
+   * @return {object} returns an object of Indexes
+   */
+  createIndex(BookObject, bookName) {
+    this.sanitizer(BookObject);
+    this.allLength[bookName] = BookObject.length;
     BookObject.forEach((document, position) => {
-      const words = document.text.toLowerCase().match(/\w+/g);
+      const words = document.text
+      .toLowerCase()
+      .match(/\w+/g);
       words.forEach((word) => {
         if (this.allIndex[word]) {
           if (!this.allIndex[word][position]) {
@@ -38,14 +50,26 @@ class InvertedIndex {
         }
       });
     });
-    this.allFiles[fileName] = this.allIndex;
+    this.allFiles[bookName] = this.allIndex;
     this.allIndex = {};
-    return this.allFiles[fileName];
+    return this.allFiles[bookName];
   }
+
+  /**
+   * Get all Indecies
+   * @param {string} bookName name of the individaul book
+   * @returns {Object} allIndicies returns all indexed allFiles
+   */
+  getAllIndecies(bookName) {
+    if (bookName !== undefined) {
+      return this.allFiles[bookName];
+    } return false;
+  }
+
   /**
    * Search function
    * @param {string} queryString word to Search
-   * @param {fileName} filterName book name to search
+   * @param {string} filterName book name to search
    * @return {Object} searchResult
    */
   searchFiles(queryString, filterName) {
