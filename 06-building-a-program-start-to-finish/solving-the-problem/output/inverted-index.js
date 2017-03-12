@@ -12,6 +12,19 @@ class InvertedIndex {
     this.allFiles = {};
     this.allLength = {};
     this.allFilesTitle = [];
+    this.validatedFile = {};
+  }
+
+  /**
+   * Validate Method
+   * @param {Object} validateFile an object to be validated
+   * @returns {Object} file that has been validated
+   */
+  validateFileFunc(validateFile) {
+    this.validatedFile = validateFile;
+    if (validateFile.title !== undefined && validateFile.text !== undefined) {
+      return validateFile;
+    } return false;
   }
 
   /**
@@ -23,6 +36,17 @@ class InvertedIndex {
     Object.keys(BookObject).forEach((titles) => {
       this.allFilesTitle.push(BookObject[titles].title);
     });
+  }
+
+  /**
+   * Get all Indecies
+   * @param {string} bookName name of the individaul book
+   * @returns {Object} allIndicies returns all indexed file
+   */
+  getAllIndecies(bookName) {
+    if (bookName !== undefined) {
+      return this.allFiles[bookName];
+    } return false;
   }
 
   /**
@@ -53,17 +77,6 @@ class InvertedIndex {
     this.allFiles[bookName] = this.allIndex;
     this.allIndex = {};
     return this.allFiles[bookName];
-  }
-
-  /**
-   * Get all Indecies
-   * @param {string} bookName name of the individaul book
-   * @returns {Object} allIndicies returns all indexed allFiles
-   */
-  getAllIndecies(bookName) {
-    if (bookName !== undefined) {
-      return this.allFiles[bookName];
-    } return false;
   }
 
   /**
