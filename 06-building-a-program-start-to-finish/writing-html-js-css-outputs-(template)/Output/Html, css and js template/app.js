@@ -1,4 +1,3 @@
-
 // angular
 const myApp = angular.module('InvertedIndexApp', ['oitozero.ngSweetAlert']);
 myApp.controller('InvertedIndexController',
@@ -9,46 +8,50 @@ myApp.controller('InvertedIndexController',
     $scope.uploadFile = () => {
       $scope.validSearch = false;
       $scope.indexExists = false;
-      $scope.theFile = document.getElementById('upload-input').files[0];
-      if (!$scope.theFile) {
-        SweetAlert.swal('Error', 'Please Select a file to Upload!', 'error');
-        return;
-      }
-      const reader = new FileReader();
-      reader.readAsText($scope.theFile);
-
-      reader.onload = (e) => {
-        if ($scope.theFile.type !== 'application/json') {
-          $scope.uploadSuccess = false;
-          SweetAlert.swal('Error', 'This is not a JSON file.', 'error');
-          return;
-        }
-        try {
-          const filed = JSON.parse(e.target.result);
-          if (uploadedFileNames.indexOf($scope.theFile.name) > -1) {
+      Object.keys(document.getElementById('upload-input').files)
+        .forEach((file) => {
+          const theFile = document.getElementById('upload-input').files[file];
+          if (!theFile) {
             SweetAlert
-              .swal('Error', 'This file has already been uploaded', 'error');
-            $scope.$apply();
+            .swal('Error', 'Please Select a file to Upload!', 'error');
             return;
           }
-          if (filed.length === 0 || !filed[0].title || !filed[0].text) {
-            $scope.uploadSuccess = false;
+          const reader = new FileReader();
+          reader.readAsText(theFile);
+
+          reader.onload = (e) => {
+            if (theFile.type !== 'application/json') {
+              $scope.uploadSuccess = false;
+              SweetAlert.swal('Error', 'This is not a JSON file.', 'error');
+              return;
+            }
+            try {
+              const filed = JSON.parse(e.target.result);
+              if (uploadedFileNames.includes(theFile.name)) {
+                SweetAlert
+                .swal('Error', 'This file has already been uploaded', 'error');
+                $scope.$apply();
+                return;
+              }
+              if (filed.length === 0 || !filed[0].title || !filed[0].text) {
+                $scope.uploadSuccess = false;
             // setMessage('This is an Empty JSON File');
-            SweetAlert.swal('Error', 'This is an Empty JSON File', 'error');
-            $scope.$apply();
-          } else {
-            $scope.uploadSuccess = true;
-            SweetAlert.swal('Good Job', 'Upload success!', 'success');
-            $scope.filed = filed;
-            uploadedFileNames.push($scope.theFile.name);
-            uploadedFileContent.push(filed);
-            $scope.uploadedFileNames = uploadedFileNames;
-            $scope.$apply();
-          }
-        } catch (error) {
-          $scope.uploadSuccess = false;
-        }
-      };
+                SweetAlert.swal('Error', 'This is an Empty JSON File', 'error');
+                $scope.$apply();
+              } else {
+                $scope.uploadSuccess = true;
+                SweetAlert.swal('Good Job', 'Upload success!', 'success');
+                $scope.filed = filed;
+                uploadedFileNames.push(theFile.name);
+                uploadedFileContent.push(filed);
+                $scope.uploadedFileNames = uploadedFileNames;
+                $scope.$apply();
+              }
+            } catch (error) {
+              $scope.uploadSuccess = false;
+            }
+          };
+        });
     };
     $scope.createIndex = () => {
       const fileName = document.getElementById('createIndexSelect').value;
