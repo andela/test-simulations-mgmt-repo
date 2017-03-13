@@ -1,4 +1,4 @@
-
+/* eslint-disable no-undef */
 /**
  * InvertedIndex class with constructor
  * @class
@@ -10,82 +10,74 @@ class InvertedIndex {
    * @memberOf InvertedIndex
    */
   constructor() {
-    this.indexedFiles = {};
+    this.indices = {};
     this.searchResults = {};
   }
 
-  /** creates index and update the indexed files
-   * @param {object} uploadedFiles - object containing uploaded books
-   * @param {Sting} file - file name
-   * @return  {object}  - this.indexedFiles
+  /** invokes the 'createIndex' function and updates this.indices
+   * with the index created
+   * @param {object} uploads - object containing all uploaded files
+   * @param {String} fileName - the file name in which it index is desired
+   * @return  {object}  this.indices - the object containing
+   *  all indexed files and their indices
    */
-  updateIndexedFilesRecords(uploadedFiles, file) {
-    this.selectedBook = uploadedFiles[file].content;
-    this.validateContent = helpers.validFileContent(this.selectedBook);
-    if (this.validateContent) {
-      this.filteredContents = helpers.filterBookContents(this.selectedBook);
-      this.tokens = helpers.getToken(this.filteredContents);
-      if (!(this.indexedFiles.hasOwnProperty(file))) {
-        this.indexedFiles[file] = this.createIndex(this.tokens,
-        this.filteredContents);
+  storeIndex(uploads, fileName) {
+    const fileContent = uploads[fileName].content;
+    const isValid = helpers.validFileContent(fileContent);
+    if (isValid) {
+      const filteredContent = helpers.filterFileContent(fileContent);
+      const tokens = helpers.getToken(filteredContent);
+      if (!(fileName in this.indices)) {
+        this.indices[fileName] = InvertedIndex.createIndex(tokens,
+        filteredContent);
       }
-      return this.indexedFiles;
+      return this.indices;
     }
     return null;
   }
 
 /** creates index for selected files
   * @param {Array} tokens - an array of filtered words in book
-  * @param {Array} filteredContents - an array of all contents in selectedBook
-  * @return  {object}  - this.wordMap;- A map of tokens to their indexes
+  * @param {Array} filteredContent - filtered content of the
+  * selected file
+  * @return  {object} wordMap - A map of tokens to their indices
   */
-  createIndex(tokens, filteredContents) {
-    this.wordMap = {};
+  static createIndex(tokens, filteredContent) {
+    const wordMap = {};
     tokens.forEach((token) => {
-      filteredContents.forEach((document) => {
+      filteredContent.forEach((document) => {
         if (document.includes(token)) {
-          if (!this.wordMap[token]) {
-            this.wordMap[token] = [true];
+          if (!wordMap[token]) {
+            wordMap[token] = [true];
           } else {
-            this.wordMap[token].push(true);
+            wordMap[token].push(true);
           }
-        } else if (!this.wordMap[token]) {
-          this.wordMap[token] = [false];
+        } else if (!wordMap[token]) {
+          wordMap[token] = [false];
         } else {
-          this.wordMap[token].push(false);
+          wordMap[token].push(false);
         }
       });
     });
-    return this.wordMap;
+    return wordMap;
   }
 
-  /** updates searches object with search results
-   * @param {String} file - name of file to search from
+  /** search index of queries and updates searchResults object
+   * @param {String} fileName - name of file to search from
    * @param {Array} queries - Array of tokens to search
    * @return  {object}  - tokens and searchResults of searched tokens
    */
-  updateSearchResult(file, queries) {
-    const search = this.searchIndex(queries,
-    this.indexedFiles[file]);
-    this.searchResults[file] = search;
-    return this.searchResults;
-  }
-
- /** search for words in indexFiles and return the result
-  * @param {Array} queries - search words
-  * @param {object} selectedFileIndexMap - indexMap for selected file
-  * @return  {object}  - this.searchMap map of search token to it searchResult
-  */
-  searchIndex(queries, selectedFileIndexMap) {
-    this.searchMap = {};
+  searchIndex(fileName, queries) {
+    const searchMap = {};
     queries.forEach((query) => {
-      if (query in selectedFileIndexMap) {
-        this.searchMap[query] = selectedFileIndexMap[query];
+      if (query in this.indices[fileName]) {
+        searchMap[query] = this.indices[fileName][query];
       } else {
-        this.searchMap[query] = Array(3).fill(false);
+        searchMap[query] = Array(3).fill(false);
       }
     });
-    return this.searchMap;
+    this.searchResults[fileName] = searchMap;
+    return this.searchResults;
   }
 }
 
