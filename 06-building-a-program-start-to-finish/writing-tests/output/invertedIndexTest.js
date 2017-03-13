@@ -20,7 +20,6 @@ describe('Inverted index Suite', () => {
   describe('Tokenize String and uniqueWords', () => {
     it('should be available in class InvertedIndex', () => {
       expect(invertedIndex.tokenize).toBeDefined();
-      expect(invertedIndex.uniqueWords).toBeDefined();
     });
     it('should return an array containing alphabets only', () => {
       expect(invertedIndex.tokenize(sampleSentence)).toMatch(/[A-z]+$/);
@@ -32,15 +31,24 @@ describe('Inverted index Suite', () => {
       expect(invertedIndex.tokenize(sampleSentence)).toEqual(['as',
         'can', 'defined', 'function', 'have', 'here', 'see', 'the',
         'you', 'you']);
+    it('should return correct length of array of words', () => {
+      expect(invertedIndex.tokenize(sampleSentence).length).toBe(10);
+    });
+  });
+
+  describe('uniqueWords', () => {
+    it('should be available in class InvertedIndex', () => {
+      expect(invertedIndex.uniqueWords).toBeDefined();
+    });
+    it('should return an array containing alphabets only', () => {
       expect(invertedIndex.uniqueWords(sampleSentence)).toEqual(['as',
         'can', 'defined', 'function', 'have', 'here', 'see', 'the',
         'you']);        
     });
     it('should return correct length of array of words', () => {
-      expect(invertedIndex.tokenize(sampleSentence).length).toBe(10);
       expect(invertedIndex.uniqueWords(sampleSentence).length).toBe(9);
-    });
-  });
+    })
+  })
 
   describe('Populate Index', () => {
     it('should have an Index created', () => {
@@ -50,7 +58,7 @@ describe('Inverted index Suite', () => {
       expect(newIndex.index.books.heroku).toEqual([0]);
       expect(newIndex.index.books.your).toEqual([0, 1]);
     });
-        it('should map words to the correct document location', () => {
+    it('should map words to the correct document location', () => {
       const indexnew = (newIndex.getIndex('books'));
       expect(indexnew).toEqual({ a: [0, 1],
         address: [0],
@@ -97,6 +105,9 @@ describe('Inverted index Suite', () => {
       const getIndex = newIndex.getIndex('book3');
       expect(getIndex).toBeUndefined();
     });
+    it('should return a created index', () => {
+      expect(newIndex.getIndex('books')).toBeDefined();
+    })
   });
 
   describe('Search index', () => {
