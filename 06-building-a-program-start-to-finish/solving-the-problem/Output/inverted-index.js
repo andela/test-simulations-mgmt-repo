@@ -1,4 +1,4 @@
-/**
+//**
  * Inverted Index class
  */
 class InvertedIndex {
@@ -33,11 +33,10 @@ class InvertedIndex {
    * @returns {Boolean} check - returns true for valid files
    * and false for invalid files.
    */
-  isValidFile(file) {
-    this.file = file;
+  static isValidFile(file) {
     let check = true;
     try {
-      const jsonFile = JSON.parse(JSON.stringify(this.file));
+      const jsonFile = JSON.parse(JSON.stringify(file));
       if (jsonFile.length === 0) {
         check = false;
       }
@@ -60,7 +59,7 @@ class InvertedIndex {
   createIndex(fileName, fileContent) {
     const indexedFile = {};
     const wordsToIndex = [];
-    if (this.isValidFile(fileContent)) {
+    if (InvertedIndex.isValidFile(fileContent)) {
       fileContent.forEach((document) => {
         this.documentCount += 1;
         if (document.text) {

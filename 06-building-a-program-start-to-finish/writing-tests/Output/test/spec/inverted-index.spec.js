@@ -12,9 +12,9 @@ const sampleData = ' Mary had a    little #$%^6 lamb, a little lamb Mary had';
 
 describe('Validate files', () => {
   it('should check that uploaded file is valid JSON', () => {
-    expect(newIndex.isValidFile(books)).to.be.true;
-    expect(newIndex.isValidFile(emptyBook)).to.be.false;
-    expect(newIndex.isValidFile(invalidBook)).to.be.false;
+    expect(InvertedIndex.isValidFile(books)).to.be.true;
+    expect(InvertedIndex.isValidFile(emptyBook)).to.be.false;
+    expect(InvertedIndex.isValidFile(invalidBook)).to.be.false;
   });
 
   it('should check that uploaded file is not empty', () => {
@@ -149,4 +149,3 @@ describe('searchAll', () => {
           scott: [0] } });
   });
 });
-
