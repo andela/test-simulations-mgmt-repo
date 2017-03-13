@@ -17,7 +17,7 @@ describe('Validate files', () => {
     expect(newIndex.isValidFile(invalidBook)).to.be.false;
   });
 
-  it('should not be empty', () => {
+  it('should check that uploaded file is not empty', () => {
     expect(books.length).to.not.equal(0);
     expect(emptyBook.length).to.equal(0);
   });
@@ -28,35 +28,35 @@ describe('Validate files', () => {
   });
 });
 
-describe('Normalized Text', () => {
+describe('Normalize Text', () => {
   it('should return an array containing only alphabets', () => {
-    expect(newIndex.normalizedText(sampleData)).to.not.include(' ');
-    expect(newIndex.normalizedText(sampleData)).to.match(/^[a-zA-Z]/);
+    expect(InvertedIndex.normalizeText(sampleData)).to.not.include(' ');
+    expect(InvertedIndex.normalizeText(sampleData)).to.match(/^[a-zA-Z]/);
   });
 
   it('should return an array containing the correct number of words', () => {
-    expect(newIndex.normalizedText(sampleData).length).to.equal(10);
+    expect(InvertedIndex.normalizeText(sampleData).length).to.equal(10);
   });
 
   it('should return an array containing the correct words', () => {
-    expect(newIndex.normalizedText(sampleData)).to.eql(['mary',
+    expect(InvertedIndex.normalizeText(sampleData)).to.eql(['a',
+      'a',
       'had',
-      'a',
-      'little',
+      'had',
       'lamb',
-      'a',
-      'little',
       'lamb',
+      'little',
+      'little',
       'mary',
-      'had']);
+      'mary']);
   });
 });
 
 describe('Unique words', () => {
   it('should not return any duplicate words', () => {
-    expect(newIndex.uniqueWords(sampleData).length).to.equal(5);
-    expect(newIndex.uniqueWords(sampleData))
-      .to.eql(['mary', 'had', 'a', 'little', 'lamb']);
+    expect(InvertedIndex.uniqueWords(sampleData).length).to.equal(5);
+    expect(InvertedIndex.uniqueWords(sampleData))
+      .to.eql(['a', 'had', 'lamb', 'little', 'mary']);
   });
 });
 
@@ -132,22 +132,21 @@ describe('Search index', () => {
       .to.eql({ a: [0, 1, 2], alice: [0], alliance: [1, 2] });
   });
 });
-describe('Search all uploaded files', () => {
-  it('should search through all uploaded files if no file is chosen', () => {
-    expect(newIndex.searchIndex('alice in pilgrim tri-state playlist')).to.eql(
-      [{ alice: [0] },
-      { alice: ' We are Sorry but alice is not found in our database' },
-      { in: [0, 1, 2] },
-      { in: [0, 1, 2] },
-      { pilgrim: ' We are Sorry but pilgrim is not found in our database' },
-      { pilgrim: [0] },
-      { tri: ' We are Sorry but tri is not found in our database' },
-      { tri: [1] },
-      { state: ' We are Sorry but state is not found in our database' },
-      { state: [1] },
-      { playlist: ' We are Sorry but playlist is not found in our database' },
-      { playlist: [2] }]
-    );
+describe('searchAll', () => {
+  it('should search through all uploaded files', () => {
+    expect(newIndex.searchAll('A alice hobbit scott fox'))
+      .to.eql({ 'books.json':
+      { a: [0, 1, 2],
+        alice: [0],
+        fox: ' We are Sorry but fox is not found in our database',
+        hobbit: [1, 2],
+        scott: ' We are Sorry but scott is not found in our database' },
+        'books2.json':
+        { a: [0, 1, 2],
+          alice: ' We are Sorry but alice is not found in our database',
+          fox: [1],
+          hobbit: ' We are Sorry but hobbit is not found in our database',
+          scott: [0] } });
   });
 });
 

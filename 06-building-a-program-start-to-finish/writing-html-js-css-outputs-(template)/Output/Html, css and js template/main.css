@@ -1,0 +1,277 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    background-color: #fff;
+    background-size: 100% auto;
+} 
+.navbar-header div{
+    display: inline-block;
+    vertical-align: top;
+}
+.navbar-header {
+    height: 40px;
+}
+.navbar-default {
+    background-color: #24292e;
+    border-color: #24292e;
+    border-radius: none;
+    margin: 0;
+}
+.navbar-default .navbar-brand {
+    color: #C8C9CB;
+    font-size: 20px;
+}
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+    color: #fff;
+    font-size: 20px;
+}
+.search-form {
+    margin-top: 10px;
+}
+.form-group .search-input {
+    border-radius: 3px;
+    background-color: #3F4347;
+    color: #fff;
+    padding: 6px 8px;
+    border: 1px solid #3F4347;
+}
+.search-select {
+    background-color: #3F4347;
+    color: #C8C9CB;
+    padding: 6px 8px;
+    height: 34px;
+    border-radius: 3px;
+    border: 1px solid #3F4347;
+}
+.search-icon:hover {
+    color: #fff;
+    border-color: #adadad;
+    background-color: #3F4347;
+}
+.search-icon {
+width: 50px;
+}
+.btn-info {
+    background-color: transparent;
+    color: #C8C9CB;
+    border: none;
+}
+.btn-info:hover, .btn-info:active, .btn-info:focus {
+    background-color: transparent;
+    color: #fff;
+    border: none;
+    outline: 0;
+}
+.fade {
+    opacity: 1;
+}
+#bs-example-navbar-collapse-1 {
+    float: right;
+}
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background-color:#F6F8FA ;
+    cursor: inherit;
+    display: block;
+}
+.create {
+    color: #000;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    height: 35px;
+    outline: none;
+}
+.create:hover, .create:focus {
+    background-color: #ddd;
+    color: #000;
+    border: 1px solid #ccc;
+    outline: none;
+}
+.semi-square {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.blue select {
+    color: #000;
+    height: 35px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    outline: none;
+}
+#createIndexSelect:hover, #createIndexSelect:hover:focus {
+    background-color: #ddd;
+    outline: none;
+}
+
+p {
+    text-align: left;
+    font-size: 15px;
+}
+
+#upload {
+    border-radius: 3px;
+    height: 35px;
+    min-width: 100%;
+    min-height: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding-right:10px;
+    padding-left: 5px;
+    outline: none;
+}
+#upload i {
+    margin: 5px;
+}
+
+#upload:hover {
+    background-color: #ddd;
+    outline: none;
+}
+
+#about {
+    margin-top: 20px;
+}
+
+#text {
+    margin-top: 20px;
+}
+
+ul.a {
+    font-size: 15px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    /*font-weight: bold;*/
+}
+
+#aside {
+    margin-left: 10px;
+}
+
+vr {
+    display: block;
+    width: 1px;
+    background-color: #CCD1D1;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 415px;
+    height: 500px;
+}
+
+.upload {
+    float: left;
+}
+
+#select-file {
+    margin-left: 50px;
+    margin-top: 30px;
+}
+
+.upload-select-create>div,
+.upload-select-create>button {
+    float: left;
+}
+
+.main {
+    margin-left: 30px;
+}
+.about-app h4 {
+    text-align: center !important;
+}
+
+#close-modal button {
+    background-color:#fff ;
+    color: #000;
+    border: 1px solid #ccc;
+    outline: none;
+}
+#close-modal button:hover, #close-modal button:focus {
+    background-color: #ddd;
+    border: 1px solid #ccc;
+    outline: none;
+}
+.modal-content {
+    margin-top: 250px;
+}
+#about-header {
+    background-color: #24292E;
+    color: #C8C9CB;
+    text-align: center;
+    padding: 10px;
+}
+#about-header h4 {
+    font-size: 22px;
+}
+
+#close {
+    color: #C8C9CB;
+    margin-right: 5px;
+}
+table { 
+    border-collapse: collapse;
+    max-height: 530px;
+    overflow-y: scroll;
+    display: block;
+}
+
+
+tr:nth-of-type(odd) { 
+  background: #eee; 
+}
+th { 
+  background: #24292e; 
+  color: #fff; 
+  font-weight: bold;
+  width: 10% ;
+  text-align: center;
+}
+td{ 
+  padding: 6px; 
+  border: 1px solid #ccc; 
+  text-align: left !important; 
+}
+
+td {
+  font-size: 20px;
+}
+
+tr td:not(:first-child) { 
+    text-align: left;
+}
+
+.index-table {
+    background-color: whitesmoke;
+    top: 50%;
+    left: 50%;
+    margin: 20px auto 0 auto;
+    width: 80%;
+    border-radius: 10px;
+    padding: 15px;
+    padding-top: 5px;
+    min-width: 500px;
+    max-height: 550px;
+}

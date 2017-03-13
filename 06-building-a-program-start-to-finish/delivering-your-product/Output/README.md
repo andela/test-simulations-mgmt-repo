@@ -1,6 +1,6 @@
 #### Output 
 - Link to Wiki
-[Inverted Index Wiki](https://github.com/Andela-ddiei/Inverted-Index/wiki)
+[Google Doc](https://docs.google.com/document/d/1BbjGWGJH7yLy1zTLaKrrmIqfJe8WW97wgsNIJSWNkQU/edit#)
 
 ### Author
  **Delores Diei**
