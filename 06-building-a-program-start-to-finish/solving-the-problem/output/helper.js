@@ -117,5 +117,4 @@ const helpers = {
     const sorted = allStr.trim().split(' ').sort();
     return sorted;
   },
-
 };
