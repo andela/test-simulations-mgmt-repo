@@ -7,7 +7,7 @@ const invalidKey = require('../invalid-key.json');
 
 const invertedIndex = new InvertedIndex();
 
-describe('Validate File ', () => {
+describe('validateFile ', () => {
   it(`should verify file have keys named "title" and "text"
     with string for values`, () => {
     expect(invertedIndex.validateFile(invalidContent))
@@ -29,10 +29,10 @@ describe('Validate File ', () => {
   });
 });
 
-describe('Tokenize function ', () => {
+describe('tokenize function ', () => {
   const bookToTokenize = [{ title: 'Alice , / ?', text: 'enters a a.' }];
 
-  it('should return an " array " of words for file content input', () => {
+  it('should return an " array " of words for a file content input', () => {
     expect(Array.isArray(InvertedIndex
       .tokenize(`${bookToTokenize[0].title} ${bookToTokenize[0].text}`)))
       .toBe(true);
@@ -47,40 +47,12 @@ describe('Tokenize function ', () => {
   });
 });
 
-describe('Create index for a JSON file', () => {
-  beforeAll(() => {
-    invertedIndex.createIndex(books, 'books.json');
-    invertedIndex.createIndex(adventureBooks, 'adventure-books.json');
-  });
-  it('should generate the correct index', () => {
-    expect(invertedIndex.getIndex('books.json').and)
-      .toEqual(
-        [0, 1]
-      );
-    expect(invertedIndex.getIndex('adventure-books.json').bringing)
-      .toEqual(
-        [1]
-      );
-  });
-});
-
-describe('Get index of a JSON file', () => {
-  it('should return "undefined" if index does not exist', () => {
-    expect(invertedIndex.getIndex(' '))
-      .toEqual(undefined);
-    expect(invertedIndex.getIndex('books4'))
-      .toEqual(undefined);
-  });
-  it(`should verify that the index of JSON file can be gotten 
-  after file indexed`, () => {
-    expect(invertedIndex.getIndex('books.json'))
-      .toBeDefined();
-  });
+describe('createIndex function', () => {
   it(`should map the string keys to the correct objects in 
   the JSON array`, () => {
-    expect(invertedIndex.getIndex('adventure-books.json'))
-      .toEqual(
-        {
+    expect(invertedIndex.createIndex(adventureBooks, 'adventure-books.json'))
+      .toEqual({
+        'adventure-books.json': {
           king: [0],
           solomons: [0],
           mines: [0],
@@ -112,16 +84,42 @@ describe('Get index of a JSON file', () => {
           sea: [1],
           chest: [1]
         }
+      });
+  });
+});
+
+describe('getIndex function', () => {
+  beforeAll(() => {
+    invertedIndex.createIndex(books, 'books.json');
+  });
+  it('should return "undefined" if index does not exist', () => {
+    expect(invertedIndex.getIndex(' '))
+      .toEqual(undefined);
+    expect(invertedIndex.getIndex('books4'))
+      .toEqual(undefined);
+  });
+  it(`should verify that the index of JSON file can be gotten 
+  after file indexed`, () => {
+    expect(invertedIndex.getIndex('books.json'))
+      .toBeDefined();
+  });
+  it('should get the correct index of a word in a file', () => {
+    expect(invertedIndex.getIndex('books.json').and)
+      .toEqual(
+        [0, 1]
+      );
+    expect(invertedIndex.getIndex('adventure-books.json').bringing)
+      .toEqual(
+        [1]
       );
   });
 });
 
-describe('Search index functionality', () => {
+describe('searchIndex function', () => {
   it(`should return an array of the indices of the correct objects that contain
     the words in the search query`, () => {
     expect(invertedIndex
-      .searchIndex('a rabbit alliance with man', 'books.json'))
-      .toEqual({
+      .searchIndex('a rabbit alliance with man', 'books.json')).toEqual({
         'books.json': {
           a: [0, 1],
           rabbit: [0],
