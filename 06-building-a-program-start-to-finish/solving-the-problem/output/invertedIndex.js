@@ -46,7 +46,6 @@ class InvertedIndex {
         });
         this.indices[fileName] = wordMap;
       }
-      console.log(this.indices);
       return this.indices;
     }
     return null;
