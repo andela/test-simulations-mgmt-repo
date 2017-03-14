@@ -6,7 +6,7 @@ const helpers = {
   /** validates file input types
    *
    * @param  {object} file - file to validate
-   * @return {boolean} - true or false
+   * @return {boolean} - returns true if valid or false if invalid
    */
   fileIsValid(file) {
     if (!file.name.toLowerCase().match(/\.json$/)) {
@@ -18,7 +18,7 @@ const helpers = {
   /** validates content of uploaded file
    *
    * @param  {array} file - file to validate content
-   * @return {boolean} result true or false
+   * @return {boolean} returns true if valid or false if invalid
    */
   validFileContent: (file) => {
     let result = true;
@@ -98,7 +98,7 @@ const helpers = {
       .replace(/[^a-zA-Z ]/g, '')
       .toLowerCase()
       .split(' ');
-    words = words.filter(str => /\S/.test(str));
+    words = words.filter(word => /\S/.test(word));
     return words;
   },
 
@@ -114,8 +114,8 @@ const helpers = {
     filteredContents.forEach((z) => {
       allStr += `${z.join(' ')} `;
     });
-    const sortedArrays = allStr.trim().split(' ').sort();
-    return sortedArrays;
+    const sorted = allStr.trim().split(' ').sort();
+    return sorted;
   },
 
 };

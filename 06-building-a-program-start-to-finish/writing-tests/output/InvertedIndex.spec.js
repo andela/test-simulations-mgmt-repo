@@ -68,7 +68,7 @@ describe('helper.validateFileContents function',
    });
  });
 
-describe('helper.comebineAndSortArray function',
+describe('helper.mergeDocuments function',
  () => {
    let book1;
    beforeEach(() => {
