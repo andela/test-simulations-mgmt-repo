@@ -111,8 +111,8 @@ const helpers = {
    */
   mergeDocuments: (filteredContents) => {
     let allStr = '';
-    filteredContents.forEach((z) => {
-      allStr += `${z.join(' ')} `;
+    filteredContents.forEach((content) => {
+      allStr += `${content.join(' ')} `;
     });
     const sorted = allStr.trim().split(' ').sort();
     return sorted;
