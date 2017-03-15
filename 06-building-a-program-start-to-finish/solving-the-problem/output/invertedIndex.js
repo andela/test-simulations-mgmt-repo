@@ -98,7 +98,8 @@ class InvertedIndex {
    * @memberOf InvertedIndex
    */
   static cleanIndexedWords(uncleanWords) {
-    const cleanWords = uncleanWords.replace(/\.|,/g, '').split(' ');
+    const wordsToLowercase = uncleanWords.toLowerCase();
+    const cleanWords = wordsToLowercase.replace(/\.|,/g, '').split(' ');
     return cleanWords.filter((element, index) => {
       return cleanWords.indexOf(element) === index;
     });
