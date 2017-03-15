@@ -1,0 +1,115 @@
+*{
+  margin: 0;
+  padding: 0;
+  font-family: 'Ubuntu Mono', 'monospace';
+}
+.clear{
+  clear: both;
+}
+
+.wrapper{
+  width: 90%;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  height: auto;
+  padding: 10px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  color: #fff;
+  background: black;
+}
+
+.header{
+  background: grey;
+  color: #fff;
+  padding: 11px;
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 20px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+h1{
+  text-align: center;
+}
+p{
+  text-align: center;
+  margin: 0 auto;
+}
+
+input[type="text"] {
+  width: 50%;
+  height: 23px;
+  margin-bottom: 10px;
+  padding: 5px;
+  outline: none;
+  font-size: 14px;
+  border-radius: 3px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+}
+
+table{
+  padding: 10px;
+  margin:0 auto;
+  width: 90%;
+}
+tbody{
+  text-align: center;
+}
+td, th {
+  border: 1px solid #999;
+  padding: 5px;
+  margin:0 auto;
+  background: lightgrey;
+  font-size: 10px;
+}
+tr:hover{background-color:#f5f5f5}
+
+
+.output{
+  padding: 10px;
+  margin-left: 10px;
+}
+
+
+select{
+  width: 100%;
+  height: 35px;
+  font-size: 14px;
+  margin-bottom: 10px;
+  padding: 5px;
+  outline: none;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-top: 5px;
+}
+
+label{
+  font-size: 20px;
+}
+
+.btn{
+  border: none;
+  padding: 10px;
+  border-radius: 3px;
+  background: grey;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-group {
+  margin-left: 20px;
+}
+#index-table {
+  display: none;
+}
+#mainIndex-table {
+  display: none;
+}
+.warning{
+  color: red;
+}
+
