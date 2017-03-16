@@ -86,8 +86,6 @@ class InvertedIndex {
     });
 
     const cleanIndexedWords = this.cleanIndexedWords(uncleanIndexedWords);
-    // To remove the empty space at the end of the cleanIndexedWords array
-    cleanIndexedWords.pop();
     return cleanIndexedWords;
   }
   /**
