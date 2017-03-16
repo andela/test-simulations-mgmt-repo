@@ -136,7 +136,6 @@ describe('Inverted Index test Suit', () => {
       });
 
       it('should return true', () => {
-        console.log(rightBook);
         expect(rightBook).toBeTruthy();
       }); 
     });
