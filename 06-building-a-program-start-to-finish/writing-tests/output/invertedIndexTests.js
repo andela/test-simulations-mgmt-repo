@@ -41,7 +41,8 @@ describe('Tests the InvertedIndex class: ', () => {
   describe('InvertedIndex: checks if file is empty', () => {
     const returnedObject = InvertedIndexEmpty.getTitlesAndTexts();
     let testValue = false;
-    if ((returnedObject[0].titles[0] === "") || (returnedObject[0].texts[0 ] === "")) {
+    if ((returnedObject[0].titles[0] === "") ||
+    (returnedObject[0].texts[0] === "")) {
       testValue = true;
     }
 
