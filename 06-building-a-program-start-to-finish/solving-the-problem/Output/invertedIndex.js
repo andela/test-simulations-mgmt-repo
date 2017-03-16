@@ -90,6 +90,7 @@ class InvertedIndex {
    * @param{String} searchQuery - Words to search for
    * @param{String} fileName - file to query
    * @return{Object} searchResults - Maps searched words to document locations
+   * or 'no query to search' for invalid query
    */
   searchIndex(searchQuery, fileName) {
     const fileToSearch = this.getIndex(fileName) || Object.keys(this.index);
@@ -113,6 +114,7 @@ class InvertedIndex {
    * to document locations inside their file object
    * @param{String} searchQuery - Words to search for
    * @return{Object} searchResults - Maps searched words to document locations
+   * or 'no query to search' for invalid query 
    */
   searchAllIndex(searchQuery) {
     const searchResult = {};
