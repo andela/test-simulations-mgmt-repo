@@ -1,162 +1,163 @@
 /* eslint-disable no-undef */
 const invertedIndex = new InvertedIndex();
-const file1 = require('../books/adventureBooks.json');
-const file2 = require('../books/emptyBook.json');
-const file3 = require('../books/wrongFormat.json');
+const adventureBooks = require('../books/adventureBooks.json');
+const emptyBook = require('../books/emptyBook.json');
+const wrongFormat = require('../books/wrongFormat.json');
 
 const uploads = {
-  'adventureBooks.json': { content: file1 },
-  'emptyBook.json': { content: file2 },
-  'wrongFormat.json': { content: file3 }
+  'adventureBooks.json': { content: adventureBooks },
+  'emptyBook.json': { content: emptyBook },
+  'wrongFormat.json': { content: wrongFormat }
 };
 
 describe('helpers.fileIsValid function',
  () => {
-   let goodFile1;
-   let badFile1;
-   let badFile2;
-   let goodFile2;
+   let firstValidJson;
+   let cssFile;
+   let unNamedFile;
+   let secondValidJson;
    beforeEach(() => {
-     goodFile1 = { name: 'book.json' };
-     badFile1 = { name: 'book.css' };
-     badFile2 = { name: 'book' };
-     goodFile2 = { name: 'book.JSON' };
+     firstValidJson = { name: 'book.json' };
+     cssFile = { name: 'book.css' };
+     unNamedFile = { name: 'book' };
+     secondValidJson = { name: 'book.JSON' };
    });
 
-   it('should return "true" for a valid json file when its is invoked', () => {
-     expect(helpers.fileIsValid(goodFile1)).toBe(true);
-     expect(helpers.fileIsValid(goodFile2)).toBe(true);
+   it('should return true for a valid json file', () => {
+     expect(helpers.fileIsValid(firstValidJson)).toBe(true);
+     expect(helpers.fileIsValid(secondValidJson)).toBe(true);
    });
 
-   it('should return "false" for an invalid file when it is invoked', () => {
-     expect(helpers.fileIsValid(badFile1)).toBe(false);
-     expect(helpers.fileIsValid(badFile2)).toBe(false);
+   it('should return false for an invalid file', () => {
+     expect(helpers.fileIsValid(cssFile)).toBe(false);
+     expect(helpers.fileIsValid(unNamedFile)).toBe(false);
    });
  });
 
 describe('helper.validateFileContents function',
  () => {
-   let book3;
-   let book4;
+   let invalidKey;
+   let invalidContent;
    beforeEach(() => {
-     book3 = { boy: 'usman', girl: 'dammy' };
-     book4 = 'this is the way we roll around here';
+     invalidKey = { boy: 'usman', girl: 'dammy' };
+     invalidContent = 'this is the way we roll around here';
    });
 
-   it('should return boolean when invoked with' +
-   ' a valid json file input', () => {
+   it(`should return boolean when invoked with
+    a valid json file input`, () => {
      expect(typeof (helpers.validFileContent(
        uploads['adventureBooks.json'].content))).toBe('boolean');
    });
 
-   it('should return true when invoked with' +
-   ' a valid file contents', () => {
+   it(`should return true when invoked with
+   valid file contents`, () => {
      expect(helpers.validFileContent(
        uploads['adventureBooks.json'].content)).toBe(true);
    });
 
-   it('should return false when invoked with' +
-   ' an invalid data format', () => {
+   it(`should return false when invoked with
+    an invalid data format`, () => {
      expect(helpers.validFileContent(
        uploads['wrongFormat.json'].content)).toBe(false);
-     expect(helpers.validFileContent(book3)).toBe(false);
-     expect(helpers.validFileContent(book4)).toBe(false);
+     expect(helpers.validFileContent(invalidKey)).toBe(false);
+     expect(helpers.validFileContent(invalidContent)).toBe(false);
    });
-   it('should return false when invoked with' +
-   ' an empty book', () => {
+   it('should return false for an empty book', () => {
      expect(helpers.validFileContent([{}])).toBe(false);
    });
  });
 
 describe('helper.mergeDocuments function',
  () => {
-   let book1;
+   let book;
    beforeEach(() => {
-     book1 = [['alice', 'enters'], ['fellowship', 'wizard'],
+     book = [['alice', 'enters'], ['fellowship', 'wizard'],
      ['thee', 'usuals']];
    });
 
-   it('should return an array when it is invoked' +
-   ' with a valid json file input', () => {
-     expect((helpers.mergeDocuments(book1))
+   it('should return an array for a valid json file input',
+   () => {
+     expect((helpers.mergeDocuments(book))
     instanceof Array).toBeTruthy();
    });
 
-   it('should return "an array of comebined and sorted contents"' +
-   ' when it is invoked with a valid book', () => {
-     expect(helpers.mergeDocuments(book1)).toEqual(['alice', 'enters',
+   it(`should return an array of combined and sorted contents
+   for a valid book`, () => {
+     expect(helpers.mergeDocuments(book)).toEqual(['alice', 'enters',
        'fellowship', 'thee', 'usuals', 'wizard']);
    });
  });
 describe('helper.filterFileContent function',
  () => {
-   let book1;
-   let book2;
+   let firstBook;
+   let secondBook;
    beforeEach(() => {
-     book2 = [{ title: 'Alice , / ?' },
+     secondBook = [{ title: 'Alice , / ?' },
      { title: 'Fellowship )&* ...' },
      { title: 'Thee + = - ee' }];
-     book1 = [{ title: 'Alice , / ?', text: 'enters a a.' },
+     firstBook = [{ title: 'Alice , / ?', text: 'enters a a.' },
      { title: 'Fellowship )&* ...', text: 'wizard on on' },
      { title: 'Thee + = - ee', text: 'un un usuals' }];
    });
 
-   it('should return " array " for a valid json file input', () => {
-     expect((helpers.filterFileContent(book1)) instanceof Array).toBeTruthy();
+   it('should return array for a valid json file input', () => {
+     expect((helpers.filterFileContent(firstBook))
+     instanceof Array).toBeTruthy();
    });
 
-   it('should return "an array of books with filtered contents"' +
-   ' when it is invoked with a book', () => {
-     expect(helpers.filterFileContent(book1)).toEqual(
+   it(`should return an array of books with filtered contents
+   for a valid book`, () => {
+     expect(helpers.filterFileContent(firstBook)).toEqual(
        [['alice', 'enters', 'a'], ['fellowship', 'wizard', 'on'],
        ['thee', 'ee', 'un', 'usuals']]
        );
    });
 
-   it('should return "an array of books with filtered contents"' +
-    ' when it is invoked with books that contains' +
-    ' only title and no text', () => {
-     expect(helpers.filterFileContent(book2)).toEqual(
+   it(`should return an array of books with filtered contents
+   for books that contains only title and no text`, () => {
+     expect(helpers.filterFileContent(secondBook)).toEqual(
        [
          ['alice'],
-        ['fellowship'],
-       ['thee', 'ee']
-       ]);
+         ['fellowship'],
+         ['thee', 'ee']
+       ]
+     );
    });
  });
 
 describe('helper.getTokens function',
  () => {
-   it('should return "an array" when it is invoked with filterFileContent',
+   it('should return an array when it is invoked with filterFileContent',
    () => {
      expect((helpers.getToken([['alice', 'hello', 'world'],
        ['alice', 'hello', 'world'], ['alice',
          'hello', 'world']])) instanceof Array).toBeTruthy();
    });
 
-   it('should return "an array" of sorted non-repeated/unique tokens present' +
-     ' in the filterFileContent it is invoked with', () => {
+   it(`should return an array of sorted non-repeated/unique tokens present
+     in input document`, () => {
      expect(helpers.getToken([
        ['guy', 'alice', 'hello', 'world'],
        ['alice', 'hello', 'man', 'man', 'world'],
-       ['alice', 'hello', 'world']]))
-       .toEqual(['alice', 'guy', 'hello', 'man', 'world']);
+       ['alice', 'hello', 'world']
+     ])
+     ).toEqual(['alice', 'guy', 'hello', 'man', 'world']);
    });
  });
 
 describe('helper.removeDocDuplicates function',
  () => {
-   it('should return " array " when invoked with' +
-   ' filterFileContent', () => {
+   it('should return an array', () => {
      expect((helpers.removeDocDuplicates([
        ['alice', 'alice', 'world'],
        ['hello', 'hello', 'world'],
-       ['alice', 'world', 'world']])) instanceof Array)
-       .toBeTruthy();
+       ['alice', 'world', 'world']
+     ]))
+      instanceof Array).toBeTruthy();
    });
 
-   it('should return "an array of books with filtered contents" ' +
-   'when it is invoked with a book that contains unfiltered content', () => {
+   it('should return "an array of books with filtered contents',
+   () => {
      expect(helpers.removeDocDuplicates([
        ['alice', 'alice', 'world'],
        ['hello', 'hello', 'world'],
@@ -169,14 +170,14 @@ describe('helper.removeDocDuplicates function',
 
 describe('helper.removeDocDuplicates method',
  () => {
-   it('should return " array " sorted non-repeated/unique tokens present' +
-     ' in the filterFileContent', () => {
+   it('should return array sorted non-repeated/unique tokens present',
+   () => {
      expect(helpers.removeDuplicates(['alice', 'alice',
        'world']) instanceof Array).toBeTruthy();
    });
 
-   it('should return "an array of books with filtered contents"' +
-   ' when it is invoked with an unfiltered book', () => {
+   it(`should return "an array of books with filtered contents
+   when it is invoked with an unfiltered book`, () => {
      expect(helpers.removeDuplicates(
        ['alice', 'alice', 'world'])).toEqual(['alice', 'world']);
    });
@@ -256,12 +257,12 @@ describe('searchIndex method',
      tokens = ['alice', 'imagination', 'enters', 'powerful', 'usman'];
    });
 
-   it('should return "object" when its type is checked', () => {
+   it('should return "object" when it type is checked', () => {
      expect(typeof (invertedIndex.searchIndex('adventureBooks.json', tokens)))
      .toBe('object');
    });
 
-   it('should update the search record when it is invoked', () => {
+   it('should return words and their indices', () => {
      expect(invertedIndex.searchIndex('adventureBooks.json', tokens)).toEqual({
        'adventureBooks.json': {
          alice: [true, false, false],
