@@ -80,7 +80,7 @@ class InvertedIndex {
    */
   getIndex(fileName) {
     const file = this.index[fileName];
-    return file || 'index doest not exist';
+    return file || 'index does not exist';
   }
 
   /** search inverted index
