@@ -115,8 +115,8 @@ describe('Inverted Index test Suit', () => {
     });
 
     describe('the inverted index getIndicies method', () => {
-      const getIndeciesFile = invertedObject.getAllIndecies('correctBook')
-      const getIndeciesFile2 = invertedObject.getAllIndecies()
+      const getIndeciesFile = invertedObject.getIndex('correctBook')
+      const getIndeciesFile2 = invertedObject.getIndex()
       it('should return object as typeof getIndeciesFile', () => {
         expect(getIndeciesFile instanceof Object).toBeTruthy();
       }); 
@@ -128,15 +128,16 @@ describe('Inverted Index test Suit', () => {
 
     describe('the inverted index validate method', () => {
 
-      const emptyJsonFile = invertedObject.validateFileFunc(emptyFile);
-      const rightBook = invertedObject.validateFileFunc(correctBook[0]);
+      const emptyJsonFile = invertedObject.validateFile(emptyFile);
+      const rightBook = invertedObject.validateFile(correctBook[0]);
       
       it('should return false for an empty json file', () => {
         expect(emptyJsonFile).toBeFalsy();
       });
 
-      it('should return Object as type of rightBook', () => {
-        expect(rightBook instanceof Object).toBeTruthy();
+      it('should return true', () => {
+        console.log(rightBook);
+        expect(rightBook).toBeTruthy();
       }); 
     });
   });

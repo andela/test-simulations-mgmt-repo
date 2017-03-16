@@ -20,45 +20,46 @@ class InvertedIndex {
    * @param {Object} validateFile an object to be validated
    * @returns {Object} file that has been validated
    */
-  validateFileFunc(validateFile) {
-    this.validatedFile = validateFile;
+  validateFile(validateFile) {
     if (validateFile.title !== undefined && validateFile.text !== undefined) {
-      return validateFile;
-    } return false;
+      return true;
+    }
+    return false;
   }
 
   /**
-   * Sanitizer
-   * @param {Object} BookObject recieves json object
-   * @return {Object} returns an Object of names
+   * sanitizing objects
+   * @param {Object} BookObject receives json object
+   * @return {Array} returns an array of names
    */
-  sanitizer(BookObject) {
+  sanitizingObj(BookObject) {
     Object.keys(BookObject).forEach((titles) => {
       this.allFilesTitle.push(BookObject[titles].title);
     });
   }
 
   /**
-   * Get all Indecies
-   * @param {string} bookName name of the individaul book
-   * @returns {Object} allIndicies returns all indexed file
+   * Gets Index for a particular book
+   * @param {string} bookName name of the individual book
+   * @returns {Object} object containing all Indices
    */
-  getAllIndecies(bookName) {
+  getIndex(bookName) {
     if (bookName !== undefined) {
       return this.allFiles[bookName];
-    } return false;
+    }
+    return undefined;
   }
 
   /**
    * Gets Indexes
-   * @param {Object} BookObject receives json object
+   * @param {Object} bookObject receives json object
    * @param {string} bookName of the books
    * @return {object} returns an object of Indexes
    */
-  createIndex(BookObject, bookName) {
-    this.sanitizer(BookObject);
-    this.allLength[bookName] = BookObject.length;
-    BookObject.forEach((document, position) => {
+  createIndex(bookObject, bookName) {
+    this.sanitizingObj(bookObject);
+    this.allLength[bookName] = bookObject.length;
+    bookObject.forEach((document, position) => {
       const words = document.text
       .toLowerCase()
       .match(/\w+/g);
@@ -82,37 +83,37 @@ class InvertedIndex {
   /**
    * Search function
    * @param {string} queryString word to Search
-   * @param {string} filterName book name to search
+   * @param {string} fileName book name to search
    * @return {Object} searchResult
    */
-  searchFiles(queryString, filterName) {
+  searchFiles(queryString, fileName) {
     const searchResult = {};
-    const allSearchQuery = queryString;
     let searchResultKey = {};
-    if (filterName === 'All') {
+    if (fileName === 'All') {
       Object.keys(this.allFiles).forEach((keys) => {
         searchResultKey = {};
-        Object.keys(allSearchQuery).forEach((query) => {
-          searchResultKey[allSearchQuery[query]] = { 0: false };
+        Object.keys(queryString).forEach((query) => {
+          searchResultKey[queryString[query]] = { 0: false };
           Object.keys(this.allFiles[keys]).forEach((key) => {
-            if (allSearchQuery[query] === key) {
-              searchResultKey[allSearchQuery[query]] = this.allFiles[keys][key];
+            if (queryString[query] === key) {
+              searchResultKey[queryString[query]] = this.allFiles[keys][key];
             }
           });
         });
         searchResult[keys] = searchResultKey;
       });
       return searchResult;
-    }
-    Object.keys(allSearchQuery).forEach((query) => {
-      searchResultKey[allSearchQuery[query]] = { 0: false };
-      Object.keys(this.allFiles[filterName]).forEach((key) => {
-        if (allSearchQuery[query] === key) {
-          searchResultKey[allSearchQuery[query]] = this.allFiles[filterName][key];
-        }
+    } else {
+      Object.keys(queryString).forEach((query) => {
+        searchResultKey[queryString[query]] = { 0: false };
+        Object.keys(this.allFiles[fileName]).forEach((key) => {
+          if (queryString[query] === key) {
+            searchResultKey[queryString[query]] = this.allFiles[fileName][key];
+          }
+        });
       });
-    });
-    searchResult[filterName] = searchResultKey;
-    return searchResult;
+      searchResult[fileName] = searchResultKey;
+      return searchResult;
+    }
   }
 }
