@@ -1,0 +1,52 @@
+{
+  "goodOne.json": {
+    "alice": [1],
+    "falls": [1],
+    "and": [1],
+    "enters": [1],
+    "a": [1,3],
+    "world": [1],
+    "an": [2],
+    "unusual": [2],
+    "alliance": [2],
+    "of": [2],
+    "man": [2],
+    "rabbit": [3],
+    "with": [3],
+    "wizarding": [3],
+    "powers": [3]
+  },
+  "goodThree.json": {
+    "full": [1],
+    "of": [1],
+    "imagination": [1],
+    "a": [2,3],
+    "powerful": [2],
+    "ring": [2],
+    "rabbit": [3],
+    "with": [3],
+    "an": [3],
+    "usual": [3],
+    "spoon": [3]
+  },
+  "goodTwo.json": {
+    "a": [1,3],
+    "rabbit": [1],
+    "hole": [1],
+    "man": [2],
+    "elf": [2],
+    "dwarf": [2],
+    "wizard": [2],
+    "and": [2,3],
+    "hobbit": [2],
+    "alice": [3],
+    "falls": [3],
+    "enters": [3],
+    "world": [3],
+    "imagination": [4],
+    "of": [4],
+    "an": [4],
+    "usual": [4],
+    "spoon": [4]
+  }
+}
