@@ -3,11 +3,13 @@ const invertedIndex = new InvertedIndex();
 const adventureBooks = require('../books/adventureBooks.json');
 const emptyBook = require('../books/emptyBook.json');
 const wrongFormat = require('../books/wrongFormat.json');
+const bookWithOnlyTitles = require('../books/onlyTitles.json');
 
 const uploads = {
   'adventureBooks.json': { content: adventureBooks },
   'emptyBook.json': { content: emptyBook },
   'wrongFormat.json': { content: wrongFormat },
+  'onlyTitles.json': { content: bookWithOnlyTitles }
 };
 
 describe('helpers.fileIsValid function',
@@ -89,33 +91,36 @@ describe('helper.mergeDocuments function',
  });
 describe('helper.filterFileContent function',
  () => {
-   let firstBook;
-   let secondBook;
-   beforeEach(() => {
-     secondBook = [{ title: 'Alice , / ?' },
-     { title: 'Fellowship )&* ...' },
-     { title: 'Thee + = - ee' }];
-     firstBook = [{ title: 'Alice , / ?', text: 'enters a a.' },
-     { title: 'Fellowship )&* ...', text: 'wizard on on' },
-     { title: 'Thee + = - ee', text: 'un un usuals' }];
-   });
-
    it('should return array for a valid json file input', () => {
-     expect((helpers.filterFileContent(firstBook))
+     expect((helpers.filterFileContent(uploads['adventureBooks.json'].content))
      instanceof Array).toBeTruthy();
    });
 
    it(`should return an array of books with filtered contents
    for a valid book`, () => {
-     expect(helpers.filterFileContent(firstBook)).toEqual(
-       [['alice', 'enters', 'a'], ['fellowship', 'wizard', 'on'],
-       ['thee', 'ee', 'un', 'usuals']]
-       );
+     expect(helpers.filterFileContent(uploads['adventureBooks.json'].content))
+     .toEqual(
+       [
+         ['alice', 'in', 'wonderland', 'falls', 'into', 'a', 'rabbit',
+           'hole', 'and', 'enters', 'world', 'full', 'of', 'imagination'
+         ],
+
+         ['the', 'lord', 'of', 'rings', 'fellowship', 'ring', 'an', 'unusual',
+           'alliance', 'man', 'elf', 'dwarf', 'wizard', 'and', 'hobbit', 'seek',
+           'to', 'destroy', 'a', 'powerful'
+         ],
+
+         ['harry', 'potter', 'and', 'the', 'goblet', 'of', 'fire', 'prince',
+           'persia', 'came', 'in', 'contact', 'with', 'during', 'his', 'battles'
+         ]
+       ]
+     );
    });
 
    it(`should return an array of books with filtered contents
    for books that contains only title and no text`, () => {
-     expect(helpers.filterFileContent(secondBook)).toEqual(
+     expect(helpers.filterFileContent(uploads['onlyTitles.json'].content))
+     .toEqual(
        [
          ['alice'],
          ['fellowship'],
