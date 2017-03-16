@@ -25,28 +25,32 @@ class InvertedIndex {
     const fileContent = uploads[fileName].content;
     const isValid = helpers.validFileContent(fileContent);
     if (isValid) {
-      const filteredContent = helpers.filterFileContent(fileContent);
-      const tokens = helpers.getToken(filteredContent);
-      if (!(fileName in this.indices)) {
-        const wordMap = {};
-        tokens.forEach((token) => {
-          filteredContent.forEach((document) => {
-            if (document.includes(token)) {
-              if (!wordMap[token]) {
-                wordMap[token] = [true];
+      try {
+        const filteredContent = helpers.filterFileContent(fileContent);
+        const tokens = helpers.getToken(filteredContent);
+        if (!(fileName in this.indices)) {
+          const wordMap = {};
+          tokens.forEach((token) => {
+            filteredContent.forEach((document) => {
+              if (document.includes(token)) {
+                if (!wordMap[token]) {
+                  wordMap[token] = [true];
+                } else {
+                  wordMap[token].push(true);
+                }
+              } else if (!wordMap[token]) {
+                wordMap[token] = [false];
               } else {
-                wordMap[token].push(true);
+                wordMap[token].push(false);
               }
-            } else if (!wordMap[token]) {
-              wordMap[token] = [false];
-            } else {
-              wordMap[token].push(false);
-            }
+            });
           });
-        });
-        this.indices[fileName] = wordMap;
+          this.indices[fileName] = wordMap;
+        }
+        return this.indices;
+      } catch (error) {
+        return null;
       }
-      return this.indices;
     }
     return null;
   }

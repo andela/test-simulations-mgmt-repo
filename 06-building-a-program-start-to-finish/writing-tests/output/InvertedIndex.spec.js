@@ -7,7 +7,8 @@ const wrongFormat = require('../books/wrongFormat.json');
 const uploads = {
   'adventureBooks.json': { content: adventureBooks },
   'emptyBook.json': { content: emptyBook },
-  'wrongFormat.json': { content: wrongFormat }
+  'wrongFormat.json': { content: wrongFormat },
+  'badfile.json': { content: badfile }
 };
 
 describe('helpers.fileIsValid function',
