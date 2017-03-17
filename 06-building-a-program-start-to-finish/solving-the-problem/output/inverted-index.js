@@ -12,7 +12,6 @@ class InvertedIndex {
     this.allFiles = {};
     this.allLength = {};
     this.allFilesTitle = [];
-    this.validatedFile = {};
   }
 
   /**
