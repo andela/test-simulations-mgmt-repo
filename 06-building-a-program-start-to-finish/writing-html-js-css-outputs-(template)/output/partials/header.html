@@ -1,0 +1,29 @@
+<div class="navbar navbar-toggleable-md navbar-dark btn-danger">
+    <div class="container">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav1" aria-controls="navbarNav1" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-nav h5" href="#">
+            <strong>IndexIt</strong>
+        </a>
+        <div class=" input-group">
+            <div class="collapse navbar-collapse" id="navbarNav1">
+                <ul class="navbar-nav mr-auto">
+                </ul>
+                <form class="form-inline waves-effect waves-light">
+                    <input class="form-control" type="text" placeholder="Search" ng-model="$parent.query" ng-keyup="searchIndex()">
+                </form>
+                <div class="dropdown">
+                      <button class="btn dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenu3" ng-click="selectFileToSearch()" multiple>
+                        {{selectedFileToSearch}}
+                      </button>
+                      <div class="dropdown-menu btn-danger" aria-labelledby="dropdownMenu3" id="filelist">
+                        <a class="dropdown-item btn-danger" href="#" ng-repeat="name in selectFileToSearch()" ng-click="getSelectedFileToSearch(name)">{{name}}</a>
+                      </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
