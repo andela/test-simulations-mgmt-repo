@@ -5,3 +5,4 @@
 
 #### Link to Pull Request
 - <https://github.com/andela-mugorji/Inverted-Index/pull/9>
+- InvertedIndex class also included in Output
