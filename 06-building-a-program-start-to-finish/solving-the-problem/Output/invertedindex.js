@@ -17,13 +17,13 @@ class InvertedIndex {
 /**
  *
  *
- * @param {array} indexes
- * @returns {array}
+ * @param {array} words
+ * @returns {array} Array of sorted words only
  *
  * @memberOf InvertedIndex
  */
-  tokenize(indexes) {
-    return indexes.map(word => word.toLowerCase()
+  static tokenize(words) {
+    return words.map(word => word.toLowerCase()
       .replace(/[^A-Za-z]/g, '')).sort();
   }
 
@@ -31,20 +31,20 @@ class InvertedIndex {
  *
  *
  * @param {string} fileName
- * @param {any} fileContent
- * @returns
+ * @param {object} fileContent
+ * @returns {storeIndex} storeIndex creates the index
  *
  * @memberOf InvertedIndex
  */
   createIndex(fileName, fileContent) {
     const completeIndex = [];
     if (this.validateFile(fileContent)) {
-      for (const value of fileContent) {
+      fileContent.forEach((value) => {
         const title = value.title;
         const text = value.text;
         const mergeWords = `${title} ${text}`;
-        completeIndex.push(this.tokenize(mergeWords.split(' ')));
-      }
+        completeIndex.push(InvertedIndex.tokenize(mergeWords.split(' ')));
+      });
     }
     return this.storeIndex(fileName, completeIndex);
   }
@@ -52,9 +52,9 @@ class InvertedIndex {
 /**
  *
  *
- * @param {any} fileName
+ * @param {string} fileName
  * @param {any} completeIndex
- * @returns
+ * @returns {this.index} The stored index of a file
  *
  * @memberOf InvertedIndex
  */
@@ -80,7 +80,7 @@ class InvertedIndex {
  *
  *
  * @param {any} fileName
- * @returns
+ * @returns {this.index} stored index of the file
  *
  * @memberOf InvertedIndex
  */
@@ -93,7 +93,7 @@ class InvertedIndex {
  *
  * @param {any} fileName
  * @param {any} term
- * @returns
+ * @returns {object} Filename and searchResult
  *
  * @memberOf InvertedIndex
  */
@@ -131,7 +131,7 @@ class InvertedIndex {
    *
    *
    * @param {any} file
-   * @returns
+   * @returns {boolean} true or false depending on validity of file
    *
    * @memberOf InvertedIndex
    */
