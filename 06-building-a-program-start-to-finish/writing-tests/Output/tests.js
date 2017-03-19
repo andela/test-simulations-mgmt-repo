@@ -1,29 +1,31 @@
+/* eslint-disable no-undef */
 const books = require('../books.json');
-const gotBooks = require('../got_books.json');
-const emptyArray = require('../empty_book.json');
-const invalidContent = require('../invalid_content.json');
-const invalidKey = require('../invalid_book.json');
+const gotBooks = require('../gotBooks.json');
+const emptyBook = require('../emptyBook.json');
+const invalidContent = require('../invalidContent.json');
+const invalidBook = require('../invalidBook.json');
 
 const index = new InvertedIndex();
+const property = Object.prototype.hasOwnProperty;
 
 describe('Validate File', () => {
-  it('checks to ensure validity of JSON file', () => {
-    expect(index.validateFile(invalidContent)).toBe(false);
-    expect(index.validateFile(invalidKey)).toBe(false);
-    expect(index.validateFile(emptyArray)).toBe(false);
-    expect(index.validateFile(books)).toBe(true);
-    expect(index.validateFile(gotBooks)).toBe(true);
+  it('checks to see if uploaded JSON file is the correct format', () => {
+    expect(InvertedIndex.validateFile(invalidContent)).toBe(false);
+    expect(InvertedIndex.validateFile(invalidBook)).toBe(false);
+    expect(InvertedIndex.validateFile(emptyBook)).toBe(false);
+    expect(InvertedIndex.validateFile(books)).toBe(true);
+    expect(InvertedIndex.validateFile(gotBooks)).toBe(true);
   });
 });
 
 describe('Tokenize', () => {
-  it('should return "an array of words all lowercase and sorted"', () => {
-    expect(index.tokenize(['Alice', 'In', 'Wonderland', 'What', 'is', 'she', 'Looking', 'for', 'There'])).toEqual(
+  it('should be able to transform all words to lowercase and sort the words', () => {
+    expect(InvertedIndex.tokenize(['Alice', 'In', 'Wonderland', 'What', 'is', 'she', 'Looking', 'for', 'There'])).toEqual(
             ['alice', 'for', 'in', 'is', 'looking', 'she', 'there', 'what', 'wonderland']
         );
   });
-  it('should return "an array of words only and sorted"', () => {
-    expect(index.tokenize(['Ali2ce', 'In', 'Won%de#rland', 'Wh%at', 'i@s', 'she', 'Lo%oking', 'for', 'The$re'])).toEqual(
+  it('should be able to remove every symbol and special character', () => {
+    expect(InvertedIndex.tokenize(['Ali2ce', 'In', 'Won%de#rland', 'Wh%at', 'i@s', 'she', 'Lo%oking', 'for', 'The$re'])).toEqual(
             ['alice', 'for', 'in', 'is', 'looking', 'she', 'there', 'what', 'wonderland']
         );
   });
@@ -31,29 +33,29 @@ describe('Tokenize', () => {
 
 describe('createIndex ', () => {
   const createIndexObject = index.createIndex('books.json', books);
-  it('should return "object" for type of createIndex', () => {
+  it('should return an Object', () => {
     expect(typeof createIndexObject).toBe('object');
   });
-  it('should not be an array', () => {
+  it('should not return an array', () => {
     expect(typeof createIndexObject).not.toBe('array');
   });
-  it('should return true for hasOwnProperty "alice and wonderland"', () => {
-    expect(createIndexObject.hasOwnProperty('alice')).toBe(true);
-    expect(createIndexObject.hasOwnProperty('wonderland')).toBe(true);
+  it('should have properties "alice" and "wonderland"', () => {
+    expect(property.call(createIndexObject, 'alice')).toBe(true);
+    expect(property.call(createIndexObject, 'wonderland')).toBe(true);
   });
-  it('should return false for hasOwnProperty "elie and justapose"', () => {
-    expect(createIndexObject.hasOwnProperty('eiie')).toBe(false);
-    expect(createIndexObject.hasOwnProperty('justapose')).toBe(false);
+  it('should not have properties "elie" and "justapose"', () => {
+    expect(property.call(createIndexObject, 'eiie')).toBe(false);
+    expect(property.call(createIndexObject, 'justapose')).toBe(false);
   });
-  it('should return 0 for createIndexObject.(alice and rabbit)', () => {
+  it('should return 0 for properties "alice" and "rabbit"', () => {
     expect(createIndexObject.alice).toBe[0];
     expect(createIndexObject.rabbit).toBe[0];
   });
-  it('should return 1 for createIndexObject.(alliance and hobbit)', () => {
+  it('should return 1 for properties "alliance" and "hobbit"', () => {
     expect(createIndexObject.alliance).toBe[1];
     expect(createIndexObject.hobbit).toBe[1];
   });
-  it('should return undefined for createIndexObject.(alanta and Honda)', () => {
+  it('should return undefined for properties "alanta" and "Honda"', () => {
     expect(createIndexObject.alanta).toBe(undefined);
     expect(createIndexObject.Honda).toBe(undefined);
   });
@@ -103,29 +105,29 @@ describe('storeIndex', () => {
     'unusual',
     'wizard']];
   const search = index.storeIndex(books, bookArray);
-  it('should return "object" for type of storeIndex', () => {
+  it('should return an Object', () => {
     expect(typeof search).toBe('object');
   });
-  it('should not return true for object string', () => {
+  it('should not return a string', () => {
     expect(typeof search).not.toBe('string');
   });
-  it('should return true for hasOwnProperty "falls and hole"', () => {
-    expect(search.hasOwnProperty('falls')).toBe(true);
-    expect(search.hasOwnProperty('hole')).toBe(true);
+  it('should have properties "falls" and "hole"', () => {
+    expect(property.call(search, 'falls')).toBe(true);
+    expect(property.call(search, 'hole')).toBe(true);
   });
-  it('should return false for hasOwnProperty "minimal and sucks"', () => {
-    expect(search.hasOwnProperty('minimal')).toBe(false);
-    expect(search.hasOwnProperty('sucks')).toBe(false);
+  it('should not have properties "minimal" and "sucks"', () => {
+    expect(property.call(search, 'minimal')).toBe(false);
+    expect(property.call(search, 'sucks')).toBe(false);
   });
-  it('should return 0 for createIndexObject.(into and of)', () => {
+  it('should return 0 for properties "into" and "of"', () => {
     expect(search.into).toBe[0];
     expect(search.of).toBe[0];
   });
-  it('should return 1 for createIndexObject.(lord and powerful)', () => {
+  it('should return 1 for properties "lord" and "powerful"', () => {
     expect(search.lord).toBe[1];
     expect(search.powerful).toBe[1];
   });
-  it('should return undefined for createIndexObject.(darklord and nothing)', () => {
+  it('should return undefined for properties "darklord" and "nothing"', () => {
     expect(search.darklord).toBe(undefined);
     expect(search.nothing).toBe(undefined);
   });
@@ -133,29 +135,29 @@ describe('storeIndex', () => {
 
 describe('getIndex', () => {
   const get = index.getIndex(books);
-  it('should return true for object type ', () => {
+  it('should return an Object ', () => {
     expect(typeof get).toBe('object');
   });
-  it('should not return true for integer type ', () => {
+  it('should not return an integer', () => {
     expect(typeof get).not.toBe('integer');
   });
-  it('should return true for hasOwnProperty "alice and wonderland"', () => {
-    expect(get.hasOwnProperty('alice')).toBe(true);
-    expect(get.hasOwnProperty('wonderland')).toBe(true);
+  it('should have properties "alice" and "wonderland"', () => {
+    expect(property.call(get, 'alice')).toBe(true);
+    expect(property.call(get, 'wonderland')).toBe(true);
   });
-  it('should return false for hasOwnProperty "eiie and justapose"', () => {
-    expect(get.hasOwnProperty('eiie')).toBe(false);
-    expect(get.hasOwnProperty('justapose')).toBe(false);
+  it('should not have properties "eiie" and "justapose"', () => {
+    expect(property.call(get, 'eiie')).toBe(false);
+    expect(property.call(get, 'justapose')).toBe(false);
   });
-  it('should return 0 for createIndexObject.(alice and rabbit)', () => {
+  it('should return 0 for properties "alice" and "rabbit"', () => {
     expect(get.alice).toBe[0];
     expect(get.rabbit).toBe[0];
   });
-  it('should return 1 for createIndexObject.(alliance and hobbit)', () => {
+  it('should return 1 for properties "alliance" and "hobbit"', () => {
     expect(get.alliance).toBe[1];
     expect(get.hobbit).toBe[1];
   });
-  it('should return undefined for createIndexObject.(alanta and honda)', () => {
+  it('should return undefined for properties "alanta" and "honda"', () => {
     expect(get.alanta).toBe(undefined);
     expect(get.Honda).toBe(undefined);
   });
@@ -168,23 +170,20 @@ describe('searchIndex', () => {
   const search2 = index.searchIndex(books, 'anja');
   const search3 = index.searchIndex('all', 'hole');
   const search4 = index.searchIndex('all', 'debby');
-  it('should expect typeof to be array', () => {
+  it('should return an array', () => {
     expect(Array.isArray(search)).toBe(true);
-  });
-  it('should expect typeof to be array', () => {
     expect(Array.isArray(search3)).toBe(true);
   });
-  it('should expect "alice" to be in books', () => {
+  it('should return 1 for search for "alice" in books', () => {
     expect(search[0].alice).toBe[1];
   });
-  it('should expect "anja" not to be in books ', () => {
+  it('should return undefined for search for "anja" in books ', () => {
     expect(search2[0].anja).toBe(undefined);
   });
-  it('should expect "search for hole in all" to return [0]', () => {
-    console.log('here', search3[0]['books.json']);
+  it('should expect "hole" to be found when searching in "all"', () => {
     expect(search3[0]['books.json']).toBe[{ hole: [0] }];
   });
-  it('should expect "search for debby in all" to return undefined', () => {
+  it('should expect "debby" not to be found when searching in "all"', () => {
     expect(search4.debby).toBe(undefined);
   });
 });

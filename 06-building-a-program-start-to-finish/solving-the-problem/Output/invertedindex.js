@@ -15,54 +15,58 @@ class InvertedIndex {
   }
 
 /**
+ * Tokenizes an array of strings.
  *
- *
- * @param {array} words
- * @returns {array} Array of sorted words only
+ * @param {array} words - An array of string to tokenize
+ * @returns {array} Array of words without special character, whitespaces or symbols.
  *
  * @memberOf InvertedIndex
  */
   static tokenize(words) {
-    return words.map(word => word.toLowerCase()
-      .replace(/[^A-Za-z]/g, '')).sort();
+    words = words.map(word => word.toLowerCase()
+      .replace(/[^A-Za-z]/g, ''))
+      .filter(String)
+      .sort();
+    return words.filter((item, index) => words.indexOf(item) === index);
   }
 
 /**
+ * Creates File Index
  *
- *
- * @param {string} fileName
- * @param {object} fileContent
- * @returns {storeIndex} storeIndex creates the index
+ * @param {string} fileName - Name of uploaded Json file.
+ * @param {object} fileContent - Content of uploaded Json file.
+ * @returns {object} Calling storeIndex function an Array of values from uploaded file.
  *
  * @memberOf InvertedIndex
  */
   createIndex(fileName, fileContent) {
     const completeIndex = [];
-    if (this.validateFile(fileContent)) {
+    if (InvertedIndex.validateFile(fileContent)) {
       fileContent.forEach((value) => {
         const title = value.title;
         const text = value.text;
         const mergeWords = `${title} ${text}`;
-        completeIndex.push(InvertedIndex.tokenize(mergeWords.split(' ')));
+        return completeIndex.push(InvertedIndex.tokenize(mergeWords.split(' ')));
       });
     }
     return this.storeIndex(fileName, completeIndex);
   }
 
 /**
+ * Stores the File Index
  *
- *
- * @param {string} fileName
- * @param {any} completeIndex
- * @returns {this.index} The stored index of a file
+ * @param {string} fileName - Name of uploaded Json file
+ * @param {array} completeIndex - An Array containing content of uploaded Json file
+ * @returns {object} The stored index of the file
  *
  * @memberOf InvertedIndex
  */
   storeIndex(fileName, completeIndex) {
     const wordIndex = {};
-    for (const index in completeIndex) {
-      const indexToInt = parseInt(index, 10);
-      completeIndex[index].forEach((word) => {
+
+    completeIndex.forEach((index) => {
+      index.forEach((word) => {
+        const indexToInt = completeIndex.indexOf(index);
         if (wordIndex[word]) {
           if (wordIndex[word].indexOf(indexToInt) === -1) {
             wordIndex[word].push(indexToInt);
@@ -71,16 +75,16 @@ class InvertedIndex {
           wordIndex[word] = [indexToInt];
         }
       });
-    }
+    });
     this.index[fileName] = wordIndex;
     return this.index[fileName];
   }
 
 /**
+ * Get file Index
  *
- *
- * @param {any} fileName
- * @returns {this.index} stored index of the file
+ * @param {String} fileName - name of uploaded Json file
+ * @returns {object} stored index of the uploaded Json file
  *
  * @memberOf InvertedIndex
  */
@@ -89,11 +93,11 @@ class InvertedIndex {
   }
 
 /**
+ * Searches through one or multiple files for a word
  *
- *
- * @param {any} fileName
- * @param {any} term
- * @returns {object} Filename and searchResult
+ * @param {String} fileName
+ * @param {String} term
+ * @returns {Array} Returns search result
  *
  * @memberOf InvertedIndex
  */
@@ -128,18 +132,17 @@ class InvertedIndex {
   }
 
   /**
+   * Checks for file Validity
    *
-   *
-   * @param {any} file
-   * @returns {boolean} true or false depending on validity of file
+   * @param {JSON} file
+   * @returns {boolean} Validity of uploaded file
    *
    * @memberOf InvertedIndex
    */
-  validateFile(file) {
-    this.file = file;
+  static validateFile(file) {
     let check = true;
     try {
-      const jsonFile = JSON.parse(JSON.stringify(this.file));
+      const jsonFile = JSON.parse(JSON.stringify(file));
       if (jsonFile.length === 0) {
         check = false;
       }
