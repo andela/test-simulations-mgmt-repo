@@ -16,16 +16,18 @@ class InvertedIndex {
 
   /**
    * Validate Method
-   * @param {Object} validateFile an object to be validated
+   * @param {Object} fileContent an object to be validated
    * @returns {Boolean} returns true and false
    */
-  isValid(validateFile) {
-    return (validateFile.title !== undefined && validateFile.text !== undefined) ? true: false;
+  isValid(fileContent) {
+    this.title = fileContent.title;
+    this.text = fileContent.text;
+    return (this.title !== undefined && this.text !== undefined);
   }
 
   /**
-   * sanitizing objects
-   * @param {Object} BookObject receives json object
+   * Gets book title
+   * @param {Object} book receives json object
    * @return {Array} returns an array of names
    */
   getTitle(book) {
@@ -75,38 +77,37 @@ class InvertedIndex {
 
   /**
    * Search function
-   * @param {string} queryString word to Search
+   * @param {string} searchTerm words to Search
    * @param {string} fileName book name to search
    * @return {Object} searchResult
    */
-  searchFiles(queryString, fileName) {
+  searchFiles(searchTerm, fileName) {
     const searchResult = {};
     let searchResultKey = {};
     if (fileName === 'All') {
       Object.keys(this.allFiles).forEach((keys) => {
         searchResultKey = {};
-        Object.keys(queryString).forEach((query) => {
-          searchResultKey[queryString[query]] = { 0: false };
+        Object.keys(searchTerm).forEach((word) => {
+          searchResultKey[searchTerm[word]] = { 0: false };
           Object.keys(this.allFiles[keys]).forEach((key) => {
-            if (queryString[query] === key) {
-              searchResultKey[queryString[query]] = this.allFiles[keys][key];
+            if (searchTerm[word] === key) {
+              searchResultKey[searchTerm[word]] = this.allFiles[keys][key];
             }
           });
         });
         searchResult[keys] = searchResultKey;
       });
-      return searchResult;
     } else {
-      Object.keys(queryString).forEach((query) => {
-        searchResultKey[queryString[query]] = { 0: false };
+      Object.keys(searchTerm).forEach((word) => {
+        searchResultKey[searchTerm[word]] = { 0: false };
         Object.keys(this.allFiles[fileName]).forEach((key) => {
-          if (queryString[query] === key) {
-            searchResultKey[queryString[query]] = this.allFiles[fileName][key];
+          if (searchTerm[word] === key) {
+            searchResultKey[searchTerm[word]] = this.allFiles[fileName][key];
           }
         });
       });
       searchResult[fileName] = searchResultKey;
-      return searchResult;
     }
+    return searchResult;
   }
 }
