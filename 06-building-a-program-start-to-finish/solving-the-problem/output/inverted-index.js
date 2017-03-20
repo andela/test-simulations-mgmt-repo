@@ -17,13 +17,10 @@ class InvertedIndex {
   /**
    * Validate Method
    * @param {Object} validateFile an object to be validated
-   * @returns {Object} file that has been validated
+   * @returns {Boolean} returns true and false
    */
-  validateFile(validateFile) {
-    if (validateFile.title !== undefined && validateFile.text !== undefined) {
-      return true;
-    }
-    return false;
+  isValid(validateFile) {
+    return (validateFile.title !== undefined && validateFile.text !== undefined) ? true: false;
   }
 
   /**
@@ -31,9 +28,9 @@ class InvertedIndex {
    * @param {Object} BookObject receives json object
    * @return {Array} returns an array of names
    */
-  sanitizingObj(BookObject) {
-    Object.keys(BookObject).forEach((titles) => {
-      this.allFilesTitle.push(BookObject[titles].title);
+  getTitle(book) {
+    Object.keys(book).forEach((titles) => {
+      this.allFilesTitle.push(book[titles].title);
     });
   }
 
@@ -43,10 +40,7 @@ class InvertedIndex {
    * @returns {Object} object containing all Indices
    */
   getIndex(bookName) {
-    if (bookName !== undefined) {
-      return this.allFiles[bookName];
-    }
-    return undefined;
+    return (bookName !== undefined) ? this.allFiles[bookName] : undefined;
   }
 
   /**
@@ -56,7 +50,7 @@ class InvertedIndex {
    * @return {object} returns an object of Indexes
    */
   createIndex(bookObject, bookName) {
-    this.sanitizingObj(bookObject);
+    this.getTitle(bookObject);
     this.allLength[bookName] = bookObject.length;
     bookObject.forEach((document, position) => {
       const words = document.text

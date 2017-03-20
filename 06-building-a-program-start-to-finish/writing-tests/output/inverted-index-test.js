@@ -128,8 +128,8 @@ describe('Inverted Index test Suit', () => {
 
     describe('the inverted index validate method', () => {
 
-      const emptyJsonFile = invertedObject.validateFile(emptyFile);
-      const rightBook = invertedObject.validateFile(correctBook[0]);
+      const emptyJsonFile = invertedObject.isValid(emptyFile);
+      const rightBook = invertedObject.isValid(correctBook[0]);
       
       it('should return false for an empty json file', () => {
         expect(emptyJsonFile).toBeFalsy();
