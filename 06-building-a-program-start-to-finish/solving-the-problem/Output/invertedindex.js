@@ -18,7 +18,8 @@ class InvertedIndex {
  * Tokenizes an array of strings.
  *
  * @param {array} words - An array of string to tokenize
- * @returns {array} Array of words without special character, whitespaces or symbols.
+ * @returns {array} Array of words without special character,
+ * whitespaces or symbols.
  *
  * @memberOf InvertedIndex
  */
@@ -35,7 +36,8 @@ class InvertedIndex {
  *
  * @param {string} fileName - Name of uploaded Json file.
  * @param {object} fileContent - Content of uploaded Json file.
- * @returns {object} Calling storeIndex function an Array of values from uploaded file.
+ * @returns {object} Calling storeIndex function
+ * an Array of values from uploaded file.
  *
  * @memberOf InvertedIndex
  */
@@ -46,7 +48,8 @@ class InvertedIndex {
         const title = value.title;
         const text = value.text;
         const mergeWords = `${title} ${text}`;
-        return completeIndex.push(InvertedIndex.tokenize(mergeWords.split(' ')));
+        return completeIndex.push(InvertedIndex
+          .tokenize(mergeWords.split(' ')));
       });
     }
     return this.storeIndex(fileName, completeIndex);
@@ -56,7 +59,8 @@ class InvertedIndex {
  * Stores the File Index
  *
  * @param {string} fileName - Name of uploaded Json file
- * @param {array} completeIndex - An Array containing content of uploaded Json file
+ * @param {array} completeIndex - An Array containing
+ * content of uploaded Json file
  * @returns {object} The stored index of the file
  *
  * @memberOf InvertedIndex
