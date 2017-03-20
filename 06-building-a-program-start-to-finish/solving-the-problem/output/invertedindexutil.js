@@ -51,7 +51,7 @@ class InvertedIndexUtility {
 
   /**
    * This method remove all the duplicate words in an Array
-   * @param {*} words - an array of words
+   * @param {Array} words - an array of words
    * @returns {Array} - a new array with no duplicate words
    */
   static removeDuplicateWords(words) {
@@ -123,7 +123,7 @@ class InvertedIndexUtility {
     for (let i = 0; i < file.length; i += 1) {
       words += `${file[i].text} `;
     }
-    words = this.Tokenize(words).slice(0, words.length - 1);
+    words = this.tokenize(words).slice(0, words.length - 1);
     words = this.removeDuplicateWords(words);
 
     return words.slice(0, words.length);
@@ -143,7 +143,7 @@ class InvertedIndexUtility {
     let bookContent;
     for (let i = 0; i < file.length; i += 1) {
       bookContent = `${file[i].text} `;
-      bookContent = this.Tokenize(bookContent);
+      bookContent = this.tokenize(bookContent);
       bookContent = this.removeDuplicateWords(bookContent);
       doc.push(bookContent.slice(0, bookContent.length));
     }
@@ -240,7 +240,7 @@ class InvertedIndexUtility {
 
   /**
    * This method checks if the file is valid JSON
-   * @param {any} file
+   * @param {JSON} file
    * @returns {boolean} - return true or false depending
    * on whether the file is valid JSON
    * @memberOf Validations
@@ -256,7 +256,7 @@ class InvertedIndexUtility {
 
   /**
    * This method checks if the content of a JSON file is valid
-   * @param {any} file - The content of the JSON file
+   * @param {JSON} file - The content of the JSON file
    * @returns {boolean} - returns true or false depending
    * on whether the content of the JSON file is valid
    * @memberOf InvertedIndex
