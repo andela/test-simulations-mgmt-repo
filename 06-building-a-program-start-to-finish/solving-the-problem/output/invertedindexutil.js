@@ -69,7 +69,7 @@ class InvertedIndexUtility {
    * @param {String} text - A text of words
    * @returns {Array} - An array consisting of all the tokens in the text
    */
-  static Tokenize(text) {
+  static tokenize(text) {
     return text.trim().replace(/-/g, ' ')
     .replace(/[^A-z\s]/g, '')
     .toLowerCase()
