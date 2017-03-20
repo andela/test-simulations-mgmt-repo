@@ -19,70 +19,58 @@ class InvertedIndex {
   }
 
   /**
-   * To validate the content of JSON files
+   * To validate the content of the uploaded JSON files
    * @static
-   * @param {Object} file - Parsed JSON file
+   * @param {Object} jsonFile - Parsed JSON file
    * @returns {Boolean} True or False
    * @memberOf InvertedIndex
    */
-  static validateContent(file) {
-    let tempBoolean = true;
-    file.forEach((book) => {
-      if (typeof (book.title) === 'undefined' || typeof (book.text) === 'undefined') {
-        tempBoolean = false;
+  static validateContent(jsonFile) {
+    let isValid = true;
+    jsonFile.forEach((book) => {
+      if (typeof book.title === 'undefined'
+      || typeof book.text === 'undefined') {
+        isValid = false;
       }
     });
-    if (tempBoolean) {
-      return true;
-    }
-    return false;
+    return isValid; // use flag instead
   }
 
   /**
    * Indexes JSON file
-   * @param {Object} file - JSON file uploaded into app to be indexed
+   * @param {Object} fileContent - JSON file uploaded into app to be indexed
    * @param {String} fileName - Name of JSON file
-   * @returns {Object} - Words as keys and a value of a array with their repective books
+   * @returns {Object} - Words as keys and a value of a array with
+   * their repective books
    * @memberOf InvertedIndex
    */
-  createIndex(file, fileName) {
+  createIndex(fileContent, fileName) {
     const titleObj = {};
     const textObj = {};
     let count = 1;
-    file.forEach((book) => {
+    fileContent.forEach((book) => {
       titleObj[count] = book.title;
       textObj[count] = book.text;
       count += 1;
     });
-    InvertedIndex.transformToSingles(textObj);
-    this.documentWholeText[fileName] = this.tokenize(textObj);
+    Object.keys(textObj).forEach((words) => {
+      textObj[words] = textObj[words].replace(/'\w+\s/g, ' ')
+      .replace(/[.,/#!+$%^&@*?;:'{}=\-_`~()]/g, '').trim().toLowerCase()
+      .split(' ');
+    });
+    this.documentWholeText[fileName] = this.populateIndex(textObj);
     this.documentWholeTitle[fileName] = titleObj;
 
     return this.documentWholeText[fileName];
   }
 
   /**
-   * To separate words and fix into array
-   * @static
-   * @param {Object} textObj - Object with all the words together as string
-   * @returns {Object} - Object with all the words separated and in array
-   * @memberOf InvertedIndex
-   */
-  static transformToSingles(textObj) {
-    Object.keys(textObj).forEach((words) => {
-      textObj[words] = textObj[words].replace(/'\w+\s/g, ' ').replace(/[.,/#!+$%^&@*?;:'{}=\-_`~()]/g, '').trim().toLowerCase()
-      .split(' ');
-    });
-    return textObj;
-  }
-
-  /**
-   * To join words together into array
+   * To join all words together into array
    * @param {Object} textObj - Object with all the words to be tokenized
    * @returns {Object} - All words together in an array
    * @memberOf InvertedIndex
    */
-  transformToArray(textObj) {
+  normalizeAllText(textObj) {
     this.textArray = [];
     Object.keys(textObj).forEach((key) => {
       this.textArray = this.textArray.concat(textObj[key]);
@@ -91,13 +79,14 @@ class InvertedIndex {
   }
 
   /**
-   * To tokenize all words
+   * To populate the index object
    * @param {Object} textObj - Object with all the words to be tokenized
-   * @returns {Object} - Words as keys and a value of a array with their repective books
+   * @returns {Object} - Words as keys and a value of a array with their
+   * repective books
    * @memberOf InvertedIndex
    */
-  tokenize(textObj) {
-    const wordArray = this.transformToArray(textObj);
+  populateIndex(textObj) {
+    const wordArray = this.normalizeAllText(textObj);
     this.wordSet = new Set(wordArray);
     this.wordSet = Array.from(this.wordSet).sort();
 
@@ -109,7 +98,7 @@ class InvertedIndex {
             this.index[word] = [];
             this.index[word].push(parseInt(key, 10));
           } else if (this.index[word].includes(parseInt(key, 10))) {
-            return;
+            return undefined;
           } else {
             this.index[word].push(parseInt(key, 10));
           }
@@ -122,24 +111,23 @@ class InvertedIndex {
   /**
    * To search through up
    * @param {String} words - Word(s) to be searched through
-   * @param {String} indexedFile - JSON file of interest
+   * @param {String} indexedFileName - JSON file of interest
    * @param {Object} allText - Object containing all text
    * @returns {Object} - Object containin searched words and their locations
    * @memberOf InvertedIndex
    */
-  searchIndex(words, indexedFile, allText) {
+  searchIndex(words, indexedFileName, allText) {
     this.searchAll = {};
     this.searchText = {};
+    this.get = false;
     words = words.split(/[\s,]+/);
-    if (indexedFile === 'All') {
+    if (indexedFileName === 'All') {
       this.all = true;
-      this.get = false;
       this.search = false;
       Object.keys(allText).forEach((key) => {
         const tempObj = {};
         const tempArray = [];
-        words.forEach((i) => {
-          const word = i;
+        words.forEach((word) => {
           tempObj[word] = allText[key][word];
         });
         tempArray.push(tempObj);
@@ -147,12 +135,10 @@ class InvertedIndex {
       });
       return this.searchAll;
     }
-    this.get = false;
     this.search = true;
     this.all = false;
-    words.forEach((i) => {
-      const word = i;
-      this.searchText[word] = allText[indexedFile][word];
+    words.forEach((word) => {
+      this.searchText[word] = allText[indexedFileName][word];
     });
     return this.searchText;
   }
