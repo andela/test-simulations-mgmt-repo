@@ -1,8 +1,10 @@
 const invertedIndex = new InvertedIndex();
 
-const book = require('./book.json');
+const book = require('./book');
 const News = require('./News');
 const empty = require('./empty');
+const likePackage = require('./likePackage');
+const many = require('./many');
 
 describe('Inverted index create method', () => {
   const result = invertedIndex.createIndex(book, 'book');
@@ -131,6 +133,8 @@ describe('Inverted index create method', () => {
   describe('the inverted index validate method', () => {
     const emptyFileContent = invertedIndex.isValid(empty);
     const correctFileContent = invertedIndex.isValid(book[0]);
+    const packageJsonBook = invertedIndex.isValid(likePackage);
+    const manyBookContent = invertedIndex.isValid(many);
 
     it('should return false for an empty json file', () => {
       expect(emptyFileContent).toBeFalsy();
@@ -138,6 +142,15 @@ describe('Inverted index create method', () => {
 
     it('should return true for correctFileContent', () => {
       expect(correctFileContent).toBeTruthy();
+    });
+
+    it('should return false for pakage.json as book', () => {
+      console.log(packageJsonBook);
+      expect(packageJsonBook).toEqual(false);
+    });
+
+    it('should return false wrong file content', () => {
+      expect(manyBookContent).toBeFalsy();
     });
   });
 });

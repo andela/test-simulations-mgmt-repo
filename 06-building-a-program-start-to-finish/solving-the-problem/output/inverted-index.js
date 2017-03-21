@@ -20,9 +20,13 @@ class InvertedIndex {
    * @returns {Boolean} returns true and false
    */
   isValid(fileContent) {
-    this.title = fileContent.title;
-    this.text = fileContent.text;
-    return (this.title !== undefined && this.text !== undefined);
+    if (fileContent !== undefined) {
+      this.title = fileContent.title;
+      this.text = fileContent.text;
+      return (this.title !== undefined && this.text !== undefined);
+    } else if (fileContent === undefined) {
+      return false;
+    }
   }
 
   /**
@@ -45,6 +49,18 @@ class InvertedIndex {
     return (bookName !== undefined) ? this.allFiles[bookName] : undefined;
   }
 
+   /**
+   * To separate words and fix into array, strip off special characters
+   * and remove the possesive ('s)
+   * @param {String} words - words to be filtered
+   * @returns {Object} - Object with all the words separated and in array
+   * @memberOf InvertedIndex
+   */
+  static normalizeText(words) {
+    return words.toLowerCase()
+    .match(/\w+/g);
+  }
+
   /**
    * Gets Indexes
    * @param {Object} bookObject receives json object
@@ -55,10 +71,9 @@ class InvertedIndex {
     this.getTitle(bookObject);
     this.allLength[bookName] = bookObject.length;
     bookObject.forEach((document, position) => {
-      const words = document.text
-      .toLowerCase()
-      .match(/\w+/g);
-      words.forEach((word) => {
+      const words = document.text;
+      const filteredWords = InvertedIndex.normalizeText(words);
+      filteredWords.forEach((word) => {
         if (this.allIndex[word]) {
           if (!this.allIndex[word][position]) {
             this.allIndex[word][position] = true;
