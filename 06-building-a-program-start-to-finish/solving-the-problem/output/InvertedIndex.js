@@ -53,15 +53,28 @@ class InvertedIndex {
       textObj[count] = book.text;
       count += 1;
     });
-    Object.keys(textObj).forEach((words) => {
-      textObj[words] = textObj[words].replace(/'\w+\s/g, ' ')
-      .replace(/[.,/#!+$%^&@*?;:'{}=\-_`~()]/g, '').trim().toLowerCase()
-      .split(' ');
-    });
+    InvertedIndex.normalizeText(textObj);
     this.documentWholeText[fileName] = this.populateIndex(textObj);
     this.documentWholeTitle[fileName] = titleObj;
 
     return this.documentWholeText[fileName];
+  }
+
+  /**
+   * To separate words and fix into array, strip off special characters
+   * and remove the possesive ('s)
+   * @static
+   * @param {Object} textObj - Object with all the words together as string
+   * @returns {Object} - Object with all the words separated and in array
+   * @memberOf InvertedIndex
+   */
+  static normalizeText(textObj) {
+    Object.keys(textObj).forEach((words) => {
+      textObj[words] = textObj[words].replace(/'\w+\s/g, ' ')
+      .replace(/[.,/#!+$%^&@*?;:'{}=\-_`~()]/g, '').trim().toLowerCase()
+        .split(' ');
+    });
+    return textObj;
   }
 
   /**
