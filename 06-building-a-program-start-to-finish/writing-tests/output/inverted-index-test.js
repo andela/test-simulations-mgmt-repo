@@ -144,11 +144,11 @@ describe('Inverted index create method', () => {
       expect(correctFileContent).toBeTruthy();
     });
 
-    it('should return false for pakage.json as book', () => {
+    it('should return false for an invalid json file content', () => {
       expect(packageJsonBook).toEqual(false);
     });
 
-    it('should return false wrong file content', () => {
+    it('should return false for an invalid json file content', () => {
       expect(manyBookContent).toBeFalsy();
     });
   });
