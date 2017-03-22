@@ -145,12 +145,30 @@ describe('Inverted index create method', () => {
     });
 
     it('should return false for pakage.json as book', () => {
-      console.log(packageJsonBook);
       expect(packageJsonBook).toEqual(false);
     });
 
     it('should return false wrong file content', () => {
       expect(manyBookContent).toBeFalsy();
+    });
+  });
+
+  describe('the inverted index normalizeText method', () => {
+    const sampleSentence = 'Alice falls into a rabbit hole..';
+    const normalizeTextTest = InvertedIndex.normalizeText(sampleSentence);
+
+    it('should return true for normalizeTextTest', () => {
+      expect(normalizeTextTest instanceof Array).toBeTruthy();
+    });
+
+
+    it('should return an array containing alphabets only', () => {
+      expect(normalizeTextTest).toEqual(['alice',
+        'falls', 'into', 'a', 'rabbit', 'hole']);
+    });
+
+    it('should return correct length of array of words', () => {
+      expect(normalizeTextTest.length).toBe(6);
     });
   });
 });
