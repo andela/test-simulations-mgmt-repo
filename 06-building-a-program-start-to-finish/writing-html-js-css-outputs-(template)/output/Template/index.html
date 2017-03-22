@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inverted Index</title>
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js'></script>
+    <script src="js/InvertedIndexUtil.js"></script>
+    <script src="js/eventManager.js"></script>
+    <script src="js/invertedIndex.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="container-fluid" id="container">
+		<!-- Beginning of row1 -->
+		<div class="row">
+			<h1 class="qBox text-center">Inverted Index</h1>		
+		</div>
+		<!-- End of row1 -->
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<!-- Beginning of row2 -->
+		<div class="row">
+			<!--Side Bar -->
+			<div class="col-md-4 well bars">
+				<div class="row">
+					<!-- Upload bar-->
+					<strong><p id="list"> Upload a JSON file to create an index.</p></strong>
+					<p id="user-message"></p>
+					<input id="file" class="btn-default btn" accept=".JSON" type="file">
+					<button id="upload-btn" class="btn-default btn">Upload</button>
+					<p class="text-primary" id="user-message1"></p>
+					<br>
+					<!-- End of Upload Bar-->
+				</div>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<div class="row">
+					<!-- Search Bar-->
+					<select id="sFile">
+						<option>All</option>
+						<!--<option>Select file</option>-->
+					</select>
+					<input type="text" class="SearchBar" name="" id="search" placeholder="search...">
+					<button id="btn-search" class="btn-default btn-sm btn btn-search">Enter</button>
+					<button id="btn-create" class="btn-default btn">Create Index</button>
+					<!-- End of Search Bar-->
+				</div>
+			</div>
+			<!--Side Bar -->
+			<!--Hidden Bar -->
+			<div class="col-md-1">
+			</div>
+			<!--Hidden Bar -->
+			<!-- Search Bar -->
+			<div class="col-md-7 well bars">
+			<strong><p id="list"> Understanding inverted Index.</p>
+				<iframe width="650" height="" src="https://www.youtube.com/embed/zG43udqng1M" frameborder="0" allowfullscreen>
+				</iframe>
+			</div>
+			<!--Search Bar -->
+		</div>
+		<!-- End of row2 -->
+
+		<!-- Beginning of row3 -->
+		<div class=" row figure" id="figure">
+			<figure>
+				<div class="display table well" id="table-holder"></div>
+			</figure>
+		</div>
+		<!-- Beginning of row4 -->
+	</div>
+</body>
+</html>
