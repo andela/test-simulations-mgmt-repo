@@ -1,0 +1,235 @@
+<div ng-hide="upload" ng-controller="UploadFile">
+  <header>
+  <ul id="topBar">
+		<li id="head"> <a style="text-decoration:none; color:  black" href="/">Inverted Index</a> </li>
+
+	</ul>
+  </header>
+  <div id="banner" ng-hide="showHelp || document">
+    <div id="mainUpload">
+      
+      <ul>
+        <li>
+      <!--HELP(HOW TO PLAY)-->
+          <span class="btn"> <span class="toolTipText"> Help </span>
+          <ng-md-icon class="icon" ng-click="showHelp = ! showHelp" icon="info" style="fill: #1352A2; cursor:pointer" size="104"></ng-md-icon>
+          </span>
+          <!---->
+
+          <!--UPLOAD BUTTON-->
+          <label for="uploadBtn" class="btn">
+            <ng-md-icon class="icon" icon="folder" style="fill: #1352A2; cursor:pointer" size="104"></ng-md-icon>
+            <span class="toolTipText"> Choose JSON </span>
+            <input id="uploadBtn" type="file"  hidden multiple accept=".json" ng-model="myValue" onchange="angular.element(this).scope().getFiles()" />
+          </label>
+        </li>
+        <!---->
+        <li>
+          <!--CREATE INDEX BTN-->
+          <div id="createError"> </div>
+          <div id="createNoError"> </div>
+          
+          <button ng-show="filesPicked" ng-click="readFile()">UPLOAD</button>
+          
+          <div class="btn" ng-show="filesUploaded">  
+            <label for="sort"> Book: </label>
+            <select id="createIndex" ng-model="index" name="sort">
+              <option ng-repeat="(key, value) in documentWholeText" >{{key}}</option>
+            </select>
+            <button ng-click="getIndex()">GET INDEX</button>
+          </div>
+        </li>
+      </ul>
+        <!---->
+    </div>
+  </div>
+  <!---->
+
+  <!--Table-->
+    <div id="table" ng-show="!showHelp && document">
+      <div id="tableInner">
+        <ul>
+          <li>
+        <!--UPLOAD-->
+            <label for="uploadBtn" id="uploadBtnTable" class="btn" >
+                <ng-md-icon class="icon" icon="folder" style="fill: black; cursor:pointer" size="20"></ng-md-icon>
+                <input id="uploadBtn" type="file"  hidden multiple accept=".json" ng-model="myValue" onchange="angular.element(this).scope().getFiles(event)" />
+                <div id="createError"> </div>
+            </label>
+            <button ng-click="readFile()">UPLOAD</button>
+        <!---->
+        <!--CREATE INDEX-->
+            <label for="sort"> Book: </label>
+            <select ng-model="index" name="sort">
+              <option ng-repeat="(key, value) in documentWholeText">{{key}}</option>
+            </select>
+            <button ng-click="getIndex()">GET INDEX</button>
+        <!---->
+          </li>
+
+        <!--SEARCH-->
+          <li>
+            <label> Search through: </label>
+            <select id="searchIndex"  name="sort">
+              <option>All</option>
+              <option ng-repeat="(key, value) in documentWholeText">{{key}}</option>
+            </select>
+            <label> For: </label>
+            <input list="word" name="wordlist" id="wordInput">
+            <datalist id="word">
+              <option ng-repeat="word in wordSet" value="{{word}}">
+            </datalist>
+            <button ng-click="searchIndex()">Search Index</button>
+          </li>
+        <!---->
+        <div id="searchError" > </div>
+        </ul>
+    <!---->
+
+    <!--GET TABLE CONTENT-->      
+        <table ng-show="get">
+          <caption > {{indexedFile}}</caption>
+          <thead>
+            <tr>
+              <th> Words </th>
+              <th ng-repeat="key in titles"> {{key}}</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr ng-repeat="(key, value) in text">
+              <!--WORD-->
+              <td>{{key}}</td>
+              <!---->
+
+              <!--ICON BLOCK-->
+              <td ng-repeat="x in fileRange">
+                <span ng-if="value.includes(x)">
+                  <ng-md-icon icon="check" style="fill: green" size="25"></ng-md-icon>
+                </span>
+                <span ng-if="!value.includes(x)">
+                  <ng-md-icon icon="cancel" style="fill: red" size="25"></ng-md-icon>
+                </span>
+              </td>
+              <!---->
+            </tr>
+            
+          </tbody>
+        </table>
+    <!---->
+    <!--SEARCH TABLE CONTENT-->
+        <table ng-show="search">
+          <caption> {{indexedFile}}</caption>
+          <thead>
+            <tr>
+              <th> Words </th>
+              <th ng-repeat="key in searchTitle"> {{key}}</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr ng-repeat="(key, value) in searchText">
+              <!--WORD-->
+              <td>{{key}}</td>
+              <!---->
+
+              <!--ICON BLOCK-->
+              <td ng-repeat="x in documentRange[indexedFile]">
+                <span ng-if="value.includes(x)">
+                  <ng-md-icon icon="check" style="fill: green" size="25"></ng-md-icon>
+                </span>
+                <span ng-if="!value.includes(x)">
+                  <ng-md-icon icon="cancel" style="fill: red" size="25"></ng-md-icon>
+                </span>
+              </td>
+              <!---->
+            </tr>
+            
+          </tbody>
+        </table>
+    <!---->
+    <!--SEARCH ALL TABLE CONTENT-->
+      <div ng-show="all" id="allTable">
+        <table ng-repeat="(book,array) in searchAll">
+          <caption> {{book}}</caption>
+          <thead>
+            <tr>
+              <th> Words </th>
+              <th ng-repeat="(key,title) in documentWholeTitle[book]"> {{title}}</th>
+            </tr>
+          </thead>
+
+          <tbody ng-repeat="(key, object) in array">
+
+            <tr ng-repeat="(word, value) in object">
+              <!--WORD-->
+              <td>{{word}}</td>
+              <!---->
+
+              <!--ICON BLOCK-->
+              <td ng-repeat="x in documentRange[book]">
+                <span ng-if="value.includes(x)">
+                  <ng-md-icon icon="check" style="fill: green" size="25"></ng-md-icon>
+                </span>
+                <span ng-if="!value.includes(x)">
+                  <ng-md-icon icon="cancel" style="fill: red" size="25"></ng-md-icon>
+                </span>
+              </td>
+              <!---->
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    <!---->
+      </div>
+    </div>
+  <!---->
+
+
+  <!--HOW TO USE-->
+  <div ng-show="showHelp" id="help">
+    <div>
+      <h1>Inverted Index <ng-md-icon icon="cancel" style="fill: black; float: right; cursor: pointer" size="20" ng-click="showHelp = ! showHelp"></ng-md-icon></h1>
+
+      <p>
+        Inverted Indexed Elasticsearch uses a structure called an inverted index, which is designed to allow very fast full-text
+        searches. An inverted index consists of a list of all the unique words that appear in any document, and for each
+        word, a list of the documents in which it appears. For example, let’s say we have two documents, each with a content
+        field containing the following: The quick brown fox jumped over the lazy dog Quick brown foxes leap over lazy dogs
+        in summer To create an inverted index, we first split the content field of each document into separate words (which
+        we call terms, or tokens), create a sorted list of all the unique terms, and then list in which document each term
+        appears. The result looks something like this:
+      </p>
+      <pre>
+          Term      Doc_1  Doc_2
+          -------------------------  HOW TO FORMAT JSON FILE
+          quick   |       |  X       [{
+          The     |   X   |     
+          brown   |   X   |  X        "title": " The quick brown fox jumped over the lazy dog",
+          dogs    |       |  X        "text": "Quick brown foxes leap over lazy dogs in summer"
+          fox     |   X   |          }]
+          jumped  |   X   |                
+          lazy    |   X   |  X                                                
+          leap    |       |  X                                               
+          in      |       |  X                                                  
+          over    |   X   |  X                                                  
+          summer  |       |  X                                              
+    </pre>
+    </div>
+  </div>
+  <!---->
+
+
+  <!--BOTTOM BAR-->
+  <footer>
+  <ul id="bottomBar">
+    <li> &copy; Copyright 2017 Inverted Index PK </li>
+    <li style="float: right"> 
+      <ng-md-icon id="smallHelpBtn" ng-click="showHelp = ! showHelp" icon="help" style="fill: #1352A2; cursor:pointer" size="20"></ng-md-icon>
+    </li>
+  </ul>
+  </footer>
+</div>
