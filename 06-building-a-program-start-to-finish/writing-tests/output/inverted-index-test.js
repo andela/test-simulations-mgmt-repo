@@ -4,10 +4,7 @@ const invalidKeys = require('./invalidKeys.json'); // bad content
 const validBook = require('./validBook.json'); // good content
 const fileTextString = require('./fileTextString.json'); // text objects
 const fileTextArray = require('./fileTextArray.json'); // text Arrays
-// search objects
-const allText = require('./allText.json');
-const allTitles = require('./allTitles.json');
-
+const allText = require('./allText.json'); // search object
 
 const invertedIndex = new InvertedIndex();
 describe('INVERTED INDEX CLASS TESTS', () => {
@@ -22,6 +19,10 @@ describe('INVERTED INDEX CLASS TESTS', () => {
 
     it('should check that it has a normalizeAllText method', () => {
       expect(typeof InvertedIndex.prototype.normalizeAllText).toBe('function');
+    });
+
+    it('should check that it has a normalizeAllText method', () => {
+      expect(typeof InvertedIndex.normalizeText).toBe('function');
     });
 
     it('should check that it has a populateIndex method', () => {
@@ -111,7 +112,21 @@ describe('INVERTED INDEX CLASS TESTS', () => {
     });
   });
 
-  describe('Transform To Array Function', () => {
+  describe('Normalize Text Function', () => {
+    it("should separate words, remove special characters and possesive ('s)",
+    () => {
+      expect(InvertedIndex.normalizeText(fileTextString))
+        .toEqual(
+        {
+          1: ['a', 'rabbit', 'with', 'an', 'usual', 'spoon'],
+          2: ['full', 'of', 'imagination'],
+          3: ['an', 'unusual', 'alliance', 'of', 'man']
+        }
+        );
+    });
+  });
+
+  describe('Normalize All Text Function', () => {
     it('should return an array with all words from all books', () => {
       expect(invertedIndex.normalizeAllText(fileTextArray))
         .toEqual(
