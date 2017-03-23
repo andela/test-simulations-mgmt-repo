@@ -49,17 +49,16 @@ class InvertedIndex {
 
   /**
    * searchIndex Method searches an already created index for matches.
-   * @param {String} query - The terms to search for the index
+   * @param {String} searchTerms - The terms to search for the index
    * @param {String} fileName - The name of the file to create index
    * @return {Object} - The queried indexed array is returned if a match
    * is found.-1 is returned if index has not been created
    * @memberOf InvertedIndex
    */
-  searchIndex(query, fileName) {
+  searchIndex(searchTerms, fileName) {
     let searchResult = false;
-
-    query = InvertedIndexUtility.sanitizeQuery(query);
-
+    searchTerms = InvertedIndexUtility.tokenize(searchTerms);
+    searchTerms = InvertedIndexUtility.removeDuplicateWords(searchTerms);
     if (fileName === 'All') {
       const result = [];
       const bookNames = [];
@@ -68,7 +67,7 @@ class InvertedIndex {
         const fileIndexed = this.getIndex(name);
         bookNames.push(fileIndexed.title);
         result.push(InvertedIndexUtility
-        .filterIndexed(query, fileIndexed.index));
+        .filterIndexed(searchTerms, fileIndexed.index));
       });
       searchResult = (fileNames.length !== 0) ?
                      { title: bookNames, index: result }
@@ -77,7 +76,7 @@ class InvertedIndex {
       const fileIndexed = this.getIndex(fileName);
       const bookNames = fileIndexed.title;
       const result = InvertedIndexUtility
-      .filterIndexed(query, fileIndexed.index);
+      .filterIndexed(searchTerms, fileIndexed.index);
       searchResult = fileIndexed ?
                     { title: bookNames, index: result }
                     : false;
