@@ -8,15 +8,15 @@ class InvertedIndexUtility {
 /**
    * filterIndexed method takes an already indexed array
    * and filters it to match the query
-   * @param {Array} query - An array of the words
+   * @param {Array} searchTerms - An array of the words
    * gotten from the sanitized query
    * @param {Array} indexedFile - An already indexed file
    * @return {Array} - The queried indexed array
    * @memberOf InvertedIndexUtility
    */
-  static filterIndexed(query, indexedFile) {
+  static filterIndexed(searchTerms, indexedFile) {
     const result = [];
-    query.forEach((term) => {
+    searchTerms.forEach((term) => {
       indexedFile.forEach((index) => {
         if (term === index[0]) {
           result.push(index);
@@ -27,40 +27,19 @@ class InvertedIndexUtility {
   }
 
   /**
-   * sanitizeQuery method removes unwanted terms in the query string
-   * and also converts the query string into an array of each unique term
-   * @static
-   * @param {String} query - The terms to search for the index
-   * @returns {Array} - The already formatted query
-   * @memberOf InvertedIndexUtility
-   */
-  static sanitizeQuery(query) {
-    query = query.toLowerCase()
-    .replace(/-/g, ' ')
-    .replace(/[^A-z\s]/g, '')
-    .split(' ');
-    let result = [];
-    query.forEach((word) => {
-      if (word.trim() !== '') {
-        result.push(word);
-      }
-    });
-    result = this.removeDuplicateWords(result);
-    return result;
-  }
-
-  /**
    * This method remove all the duplicate words in an Array
    * @param {Array} words - an array of words
    * @returns {Array} - a new array with no duplicate words
    */
   static removeDuplicateWords(words) {
     const uniqueWords = [];
-    for (let i = 0; i < words.length; i += 1) {
-      if (words.lastIndexOf(words[i]) === i) {
-        uniqueWords.push(words[i]);
+    let index = 0;
+    words.forEach((word) => {
+      if (words.lastIndexOf(word) === index) {
+        uniqueWords.push(word);
       }
-    }
+      index += 1;
+    });
     return uniqueWords;
   }
 
@@ -87,13 +66,10 @@ class InvertedIndexUtility {
    * @memberOf InvertedIndexUtility
    */
   static constructIndex(words, wordsInEachBook, bookTitles) {
-    const checked = this
-    .checkOccurenceOfWords(words, wordsInEachBook);
+    const checked = this.checkOccurence(words, wordsInEachBook);
     const booksLength = bookTitles.length;
-    const booksChecked = this
-    .getWordOccurenceForEachBook(checked, booksLength);
-    const indexConstructed = this
-    .mapWordsWithOccurence(words, booksChecked);
+    const booksChecked = this.getEachBookOccurence(checked, booksLength);
+    const indexConstructed = this.mapWordsWithOccurence(words, booksChecked);
     return indexConstructed;
   }
 
@@ -106,9 +82,7 @@ class InvertedIndexUtility {
    */
   static getTitlesOfEachBook(file) {
     const titleList = [];
-    for (let i = 0; i < file.length; i += 1) {
-      titleList.push(file[i].title);
-    }
+    file.forEach(book => titleList.push(book.title));
     return titleList;
   }
 
@@ -120,9 +94,8 @@ class InvertedIndexUtility {
    */
   static getAllWords(file) {
     let words = '';
-    for (let i = 0; i < file.length; i += 1) {
-      words += `${file[i].text} `;
-    }
+
+    file.map(book => (words += `${book.text} `));
     words = this.tokenize(words).slice(0, words.length - 1);
     words = this.removeDuplicateWords(words);
 
@@ -141,12 +114,12 @@ class InvertedIndexUtility {
   static getAllWordsInEachBook(file) {
     const doc = [];
     let bookContent;
-    for (let i = 0; i < file.length; i += 1) {
-      bookContent = `${file[i].text} `;
+    file.forEach((book) => {
+      bookContent = `${book.text} `;
       bookContent = this.tokenize(bookContent);
       bookContent = this.removeDuplicateWords(bookContent);
       doc.push(bookContent.slice(0, bookContent.length));
-    }
+    });
     return doc;
   }
 
@@ -163,17 +136,17 @@ class InvertedIndexUtility {
    * e.g [true, false, false, false, false, true . . .]
    * @memberOf InvertedIndexUtility
    */
-  static checkOccurenceOfWords(words, wordsInEachBook) {
+  static checkOccurence(words, wordsInEachBook) {
     const checked = [];
 
     words.forEach((word) => {
-      for (let i = 0; i < wordsInEachBook.length; i += 1) {
-        if (wordsInEachBook[i].indexOf(word) === -1) {
+      wordsInEachBook.forEach((eachWord) => {
+        if (eachWord.indexOf(word) === -1) {
           checked.push(false);
         } else {
           checked.push(true);
         }
-      }
+      });
     });
     return checked;
   }
@@ -192,18 +165,21 @@ class InvertedIndexUtility {
    * and a boolean to indicate their presence in each book
    * @memberOf InvertedIndexUtility
    */
-  static getWordOccurenceForEachBook(checked, bookCount) {
+  static getEachBookOccurence(checked, bookCount) {
     const result = [];
-    const stopIndex = Math.ceil(checked.length / bookCount);
-
-    for (let i = 0; i <= stopIndex; i += 1) {
-      const startRange = i * bookCount;
-      const endRange = (i + 1) * bookCount;
-
-      if (endRange <= checked.length) {
-        result.push(checked.slice(startRange, endRange));
+    let subResult = [];
+    let index = 0;
+    checked.forEach((check) => {
+      if (index < bookCount) {
+        subResult.push(check);
       }
-    }
+      index += 1;
+      if (index === bookCount) {
+        result.push(subResult);
+        index = 0;
+        subResult = [];
+      }
+    });
     return result;
   }
 
@@ -219,9 +195,11 @@ class InvertedIndexUtility {
    * @memberOf InvertedIndexUtility
    */
   static mapWordsWithOccurence(words, wordsOccurrence) {
-    for (let i = 0; i < words.length; i += 1) {
-      wordsOccurrence[i].unshift(words[i]);
-    }
+    let index = 0;
+    words.forEach((word) => {
+      wordsOccurrence[index].unshift(word);
+      index += 1;
+    });
     return wordsOccurrence;
   }
 
@@ -262,15 +240,15 @@ class InvertedIndexUtility {
    * @memberOf InvertedIndex
    */
   static isValidContent(file) {
+    let isValid = true;
     if (file.length === 0) {
       return false;
     }
-
-    for (let i = 0; i < file.length; i += 1) {
-      if ((!file[i].title) || (!file[i].text)) {
-        return false;
+    file.forEach((book) => {
+      if ((!book.title) || (!book.text)) {
+        isValid = false;
       }
-    }
-    return true;
+    });
+    return isValid;
   }
 }
