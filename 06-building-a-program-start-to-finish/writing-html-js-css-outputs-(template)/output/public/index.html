@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base href="/" />
+    <!-- Stylesheets -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="css/main.css" />
+
+    <!-- Angular CDNs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8"/>
+    <title>Fouille</title> 
+  </head>
+
+  <body ng-app="FouilleApp" class="full-height">
+
+    <div ng-view class="height-90"></div>
+
+    <footer class="page-footer light-footer">
+      <div class="container width-90">
+        <span class="grey-text text-darken-3">
+          © 2017 Princess-Jewel Essien
+          <a class="grey-text text-darken-2" href="http://github.com/andela-pessien/inverted-index">(Find on Github)</a>
+        </span>
+        <span><a class="help-button btn waves-effect grey darken-3 grey-text text-lighten-2 right" href="#help">Help?</a></span>
+      </div>
+    </footer>
+
+    <div id="help" class="modal grey lighten-2 height-40 width-35">
+      <div class="modal-content full-height">
+        <div class="carousel carousel-slider help-carousel center" data-indicators="true">
+          <div class="carousel-item center full-height" href="#one!">
+            <div class="container full-height full-width">
+              <div class="card grey lighten-2 z-depth-0 full-height">
+                <div class="card-content grey-text text-darken-3 center">
+                  <span class="card-title"><h5>Upload your file(s)</h5></span>
+                  <p>You can upload one or more JSON files that contain your books' data. Make sure your files are properly 
+                    structured! They should contain an array of object literals each with a title and a text field.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item center full-height" href="#two!">
+            <div class="container full-height full-width">
+              <div class="card grey lighten-2 z-depth-0 full-height">
+                <div class="card-content grey-text text-darken-3 center">
+                  <span class="card-title"><h5>Index your file(s)</h5></span>
+                  <p>When you've uploaded your files, click on the "Create Index" button. Fouille will index your files and 
+                    add them to the file list. You can click on the "View Index" button to view the index for each file</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item center full-height" href="#three!">
+            <div class="container full-height full-width">
+              <div class="card grey lighten-2 z-depth-0 full-height">
+                <div class="card-content grey-text text-darken-3 center">
+                  <span class="card-title"><h5>Search your file(s)</h5></span>
+                  <p>Check the box beside each file to include them in the search.</p>
+                  <br />
+                  <p>That's it! Thank you for using Fouille. :)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="modal-close btn-floating grey darken-3">X</button>
+      </div>
+    </div>
+
+    <div id="alert" class="modal grey lighten-2 width-35">
+      <div class="modal-content grey-text text-darken-3">
+        <div id="alertMessage"></div>
+      </div>
+    </div>
+
+    <!-- jQuery and Materialize -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+
+    <!-- Modules -->
+    <script type="text/javascript" src="js/inverted-index.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+
+    <!-- Controllers -->
+    <script type="text/javascript" src="js/controllers/HomeController.js"></script>
+    <script type="text/javascript" src="js/controllers/ProfileController.js"></script>
+  </body>
+</html>

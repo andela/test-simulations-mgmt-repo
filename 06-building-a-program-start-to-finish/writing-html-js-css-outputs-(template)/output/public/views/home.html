@@ -1,0 +1,86 @@
+<header>
+  <div class="navbar-fixed">
+    <nav>
+      <div class="nav-wrapper grey lighten-2">
+        <img class="logo-icon" src="img/icons/logo-dark.ico" />
+        <a class="brand-logo grey-text text-darken-3">Fouille</a>
+        <ul id="nav-mobile" class="right">
+          <li><a class="btn waves-effect grey darken-3 grey-text text-lighten-2" href="#signup">Sign Up</a></li>
+          <li><a class="btn waves-effect grey darken-3 grey-text text-lighten-2" href="#signin">Sign In</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main class="full-height">
+  <div class="grey darken-3 full-height">
+    <div class="container width-90 full-height valign-wrapper">
+      <div class="valign grey-text text-darken-3 light-outline">
+        <h1><b>An Inverted Index Book Search</b></h1>
+        <h5><b>Upload books. Index them. Search.</b></h5>
+      </div>
+    </div>
+  </div>
+
+  <div id="signup" class="modal grey lighten-2 grey-text text-darken-3 width-35">
+    <div class="modal-content center">
+      <form>
+        <div class="input-field left-align">
+          <input id="name" type="text" ng-model="user.name">
+          <label for="name">Name (optional)</label>
+        </div>
+        <div class="input-field left-align">
+          <input id="username" type="text" ng-model="user.username">
+          <label for="username">Username</label>
+        </div>
+        <div class="input-field left-align">
+          <input id="password" type="password" class="validate" ng-model="user.password">
+          <label for="password">Password</label>
+        </div>
+        <a class="waves-effect btn grey darken-3 grey-text text-lighten-2" ng-click="signup(user)">Sign Up</a>
+        <span id="signup-preloader" class="preloader-wrapper small right">
+          <div class="spinner-layer spinner-green-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div><div class="gap-patch">
+              <div class="circle"></div>
+            </div><div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </span>
+      </form>
+    </div>
+  </div>
+
+  <div id="signin" class="modal grey lighten-2 grey-text text-darken-3 width-35">
+    <div class="modal-content center">
+      <form>
+        <div class="input-field left-align">
+          <input id="username" type="text" ng-model="user.username">
+          <label for="username">Username</label>
+        </div>
+        <div class="input-field left-align">
+          <input id="password" type="password" class="validate" ng-model="user.password">
+          <label for="password">Password</label>
+        </div>
+        <a class="waves-effect btn grey darken-3 grey-text text-lighten-2" ng-click="signin(user)">Sign In</a>
+        <span id="signin-preloader" class="preloader-wrapper small right">
+          <div class="spinner-layer spinner-green-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div><div class="gap-patch">
+              <div class="circle"></div>
+            </div><div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </span>
+      </form>
+      <div ng-show="incorrectLogin">
+        The username or password is incorrect.
+      </div>
+    </div>
+  </div>
+</main>
