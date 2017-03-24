@@ -112,15 +112,15 @@ class InvertedIndexUtility {
    * @memberOf InvertedIndexUtility
    */
   static getAllWordsInEachBook(file) {
-    const doc = [];
+    const words = [];
     let bookContent;
     file.forEach((book) => {
       bookContent = `${book.text} `;
       bookContent = this.tokenize(bookContent);
       bookContent = this.removeDuplicateWords(bookContent);
-      doc.push(bookContent.slice(0, bookContent.length));
+      words.push(bookContent.slice(0, bookContent.length));
     });
-    return doc;
+    return words;
   }
 
   /**
@@ -172,8 +172,9 @@ class InvertedIndexUtility {
     checked.forEach((check) => {
       if (index < bookCount) {
         subResult.push(check);
+        index += 1;
       }
-      index += 1;
+
       if (index === bookCount) {
         result.push(subResult);
         index = 0;
