@@ -32,8 +32,14 @@
                   </div>
                 </form>
               </div>
-              <div class="row center" ng-hide="!uploadedFiles">
+              <div class="row center">
                 <a id="create" class="btn waves-effect grey darken-3 grey-text text-lighten-2" ng-click="indexFiles()">Create Index</a>
+                <div ng-show="filesAreUploaded()" class="padding-10 scroll">
+                  <strong>Clicking will create index for:</strong>
+                  <ul>
+                    <li ng-repeat="file in uploadedFiles">{{ file.name }}</li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -44,7 +50,7 @@
               <div class="card-title">
                 <h5>Uploaded Books</h5>
               </div>
-              <div ng-hide="invertedIndex" style="padding-top:10%;">
+              <div ng-hide="invertedIndex" class="padding-10">
                 <p class="center">You have no uploaded files.</p>
               </div>
               <div ng-hide="!invertedIndex" class="height-90 scroll">

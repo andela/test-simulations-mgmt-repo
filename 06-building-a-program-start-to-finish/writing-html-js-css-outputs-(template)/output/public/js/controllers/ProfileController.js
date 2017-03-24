@@ -1,5 +1,5 @@
 app.controller('ProfileController',
-function profileCtrl($scope, $http, $rootScope, $location) {
+function profileCtrl($scope, $http, $rootScope, $location, $timeout) {
   $scope.uploadedFiles = [];
   $('#jsonfileinput').on('change', function uploadJSON() {
     const files = $(this).get(0).files;
@@ -24,10 +24,12 @@ function profileCtrl($scope, $http, $rootScope, $location) {
                   `<b>${files[i].name}</b>&nbsp;is not a valid JSON file.`
                 );
               }
-              $scope.uploadedFiles.push({
-                name: files[i].name,
-                data: fileData
-              });
+              $timeout(() => {
+                $scope.uploadedFiles.push({
+                  name: files[i].name,
+                  data: fileData
+                });
+              }, 200);
               Materialize.toast(
                 `Successfully uploaded&nbsp;<b>${files[i].name}</b>`,
                 3000,
@@ -47,7 +49,7 @@ function profileCtrl($scope, $http, $rootScope, $location) {
     if (localStorage.getItem(`${$rootScope.currentUser._id}-index`)) {
       const indexData = JSON.parse(localStorage.getItem(
         `${$rootScope.currentUser._id}-index`));
-      $scope.invertedIndex = InvertedIndex.unserialize(indexData);
+      $scope.invertedIndex = $scope.unserialize(indexData);
       $scope.uploadedFilenames = {};
       $scope.invertedIndex.filenames.forEach((filename) => {
         $scope.uploadedFilenames[filename] = false;
@@ -63,7 +65,7 @@ function profileCtrl($scope, $http, $rootScope, $location) {
     }
   });
   $scope.indexFiles = () => {
-    if ($scope.uploadedFiles.length === 0) {
+    if (!$scope.filesAreUploaded()) {
       $scope.alert('There are no uploaded files to be indexed.');
     } else {
       $scope.uploadedFiles.forEach((file) => {
@@ -80,7 +82,7 @@ function profileCtrl($scope, $http, $rootScope, $location) {
       });
       $scope.uploadedFiles = [];
       localStorage.setItem(`${$rootScope.currentUser._id}-index`,
-        $scope.invertedIndex.toJSONString());
+        $scope.serialize());
     }
   };
   $scope.showIndex = (filename) => {
@@ -132,7 +134,7 @@ function profileCtrl($scope, $http, $rootScope, $location) {
       username: $rootScope.currentUser.username,
     }).then((res) => {
       if (res.data) {
-        $scope.invertedIndex = InvertedIndex.unserialize(res.data);
+        $scope.invertedIndex = $scope.unserialize(res.data);
       }
     }, (err) => {
       Materialize.toast(err.message, 5000, 'red rounded');
@@ -144,6 +146,26 @@ function profileCtrl($scope, $http, $rootScope, $location) {
   };
   $scope.getValidID = (str) => {
     return str.replace(/[. ]/g, '_');
+  };
+  $scope.serialize = () => (
+    JSON.stringify({
+      filenames: $scope.invertedIndex.filenames,
+      titles: $scope.invertedIndex.titles,
+      indices: $scope.invertedIndex.indices
+    })
+  );
+  $scope.unserialize = (data) => {
+    const invertedIndex = new InvertedIndex();
+    invertedIndex.filenames = data.filenames;
+    invertedIndex.titles = data.titles;
+    invertedIndex.indices = data.indices;
+    return invertedIndex;
+  };
+  $scope.filesAreUploaded = () => {
+    if ($scope.uploadedFiles.length > 0) {
+      return true;
+    }
+    return false;
   };
   $scope.signout = () => {
     $http.post('/signout')
