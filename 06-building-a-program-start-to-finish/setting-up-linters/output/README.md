@@ -4,6 +4,6 @@
 - **With**: *independently*
 
 #### Screenshots of Eslint Airbnb style violations and HoundCI comments
-- [ESlint error](http://imgur.com/dK1eHr0)
-- [Eslint Error](http://imgur.com/Xyybacy)
-- [Hound CI comment](http://imgur.com/sjzae9S)
+![ESlint error](http://imgur.com/dK1eHr0)
+![Eslint Error](http://imgur.com/Xyybacy)
+![Hound CI comment](http://imgur.com/sjzae9S)
