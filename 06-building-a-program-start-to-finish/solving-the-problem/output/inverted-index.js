@@ -90,18 +90,6 @@ class InvertedIndex {
   }
 
   /**
-   * Returns a JSON string containing the fields of an InvertedIndex instance.
-   * @returns {String} - JSON-stringified object.
-   */
-  toJSONString() {
-    return JSON.stringify({
-      filenames: this.filenames,
-      titles: this.titles,
-      indices: this.indices
-    });
-  }
-
-  /**
    * Reads the data from an uploaded file.
    * @param {File} file - The file to be read
    * @param {Function} callback - The callback function on file read
@@ -145,19 +133,6 @@ class InvertedIndex {
     return [...new Set(str.toLowerCase()
       .replace(/[^\s\w]|_/g, '')
       .split(/\s+/))];
-  }
-
-  /**
-   * Converts an object literal back to an InvertedIndex instance.
-   * @param {Object} data - The object literal to be converted
-   * @returns {Object} invertedIndex - An InvertedIndex with fields from data
-   */
-  static unserialize(data) {
-    const invertedIndex = new InvertedIndex();
-    invertedIndex.filenames = data.filenames;
-    invertedIndex.titles = data.titles;
-    invertedIndex.indices = data.indices;
-    return invertedIndex;
   }
 }
 
