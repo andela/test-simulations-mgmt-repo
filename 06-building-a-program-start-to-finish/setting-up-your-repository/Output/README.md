@@ -1,7 +1,7 @@
 OUTPUT
 
 Link to Github repo
-andela-fomokaro/Inverted-Index-Project
+https://github.com/andela-fomokaro/Inverted-Index-Project
 
 AUTHOR
 
