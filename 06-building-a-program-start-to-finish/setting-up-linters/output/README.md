@@ -6,4 +6,4 @@
 #### Screenshots of Eslint Airbnb style violations and HoundCI comments
 ![ESlint error](http://imgur.com/rzFEjXw)
 ![Eslint Error](http://imgur.com/zRozCsq)
-![Hound CI comment](http://imgur.com/9G8StI3
+![Hound CI comment](http://imgur.com/9G8StI3)
