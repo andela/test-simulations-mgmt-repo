@@ -4,6 +4,8 @@
 - **With**: *independently*
 
 #### Screenshots of Eslint Airbnb style violations and HoundCI comments
-![ESlint error](http://imgur.com/rzFEjXw)
-![Eslint Error](http://imgur.com/zRozCsq)
-![Hound CI comment](http://imgur.com/9G8StI3)
+![ESlint error](https://github.com/andela/test-simulations-mgmt-repo/blob/bayo-kakashi-judensi/06-building-a-program-start-to-finish/setting-up-linters/output/eslint%20error%202.png)
+
+![Eslint Error](https://github.com/andela/test-simulations-mgmt-repo/blob/bayo-kakashi-judensi/06-building-a-program-start-to-finish/setting-up-linters/output/eslint%20error.png)
+
+![Hound CI comment](https://github.com/andela/test-simulations-mgmt-repo/blob/bayo-kakashi-judensi/06-building-a-program-start-to-finish/setting-up-linters/output/hound%20comment.png)
