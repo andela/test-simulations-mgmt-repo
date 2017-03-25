@@ -29,7 +29,7 @@ class InvertedIndex { //  eslint-disable-line
    * @return {Boolean} True if a json file is valid and False otherwise
   **/
   validateFile(file) { // eslint-disable-line
-    if (typeof file !== 'object' || file.length === 0) {
+    if (typeof file !== 'object' || file.length === 0 || !Array.isArray(file)) {
       return false;
     }
     for (let i = 0; i < file.length; i += 1) {
@@ -47,7 +47,7 @@ class InvertedIndex { //  eslint-disable-line
    * @return {Array} An array of refined splitted texts
   **/
   tokenize(text) {  //eslint-disable-line
-    const remove = /[^\w\s]/g;
+    const remove = /[^'^\w\s]/g;
     return text.replace(remove, ' ').toLowerCase().split(' ')
     .sort()
     .filter(item => Boolean(item));
@@ -97,9 +97,6 @@ class InvertedIndex { //  eslint-disable-line
   searchIndex(searchTerm, filename) {
     let searchResult = {};
     this.searchIndices = {};
-    if (typeof searchTerm !== 'string' || typeof searchTerm === 'undefined') {
-      return false;
-    }
     searchTerm = this.tokenize(searchTerm);
     let index;
 
