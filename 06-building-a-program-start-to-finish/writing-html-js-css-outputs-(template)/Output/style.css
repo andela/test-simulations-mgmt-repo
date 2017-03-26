@@ -1,0 +1,109 @@
+
+.button_left{
+	position: relative;
+	left: 200px;
+}
+.body{
+	background-color: ghostwhite;
+}
+
+.form_direction{
+	margin-top: 50px;
+}
+#index_check{
+	position: relative;
+	left:50px;
+
+}
+.table_style{
+	 margin-top: 50px;
+    float: left;
+    width: 100%;
+}
+
+.button{
+	background-color: silver !important;
+	color: maroon !important;
+}
+
+#create-index-button{
+	margin-left: 5px;
+}
+.upload_file{
+	background-color: silver!important;
+	color: maroon  !important;
+	position: absolute;
+	margin-top: 70px;
+	margin-left: 360px;
+}
+
+.create_index{
+	background-color: silver !important;
+	color: maroon  !important;
+	margin-top: 37px;
+	margin-left: 220px;
+}
+.select{
+	margin-top: 30px;
+	width: 500px !important;
+	background-color: silver;
+	position: relative;
+	left: -25px;
+	color: maroon  !important;
+}
+.drop{
+	width: 800px !important;
+	margin-left: 200px;
+	background-color: silver;
+	height: 50px;
+	display: inline-block !important;
+	color:maroon ;
+	padding: 12px 0px 0px 10px;
+	font-size: 18px;
+	margin-top: 20px;
+	border-radius: 5px 5px 5px 5px;
+}
+.menu{
+	min-width: 800px !important;
+	margin-left:200px;
+	text-align: center;
+	position: relative;
+ 	margin-top: -5px;
+	 color: maroon;
+	 background-color: silver;
+	 border-radius: 5px 5px 5px 5px;
+
+}
+.glyphicon-info-sign{
+	font-size: 16px !important;
+}
+.glyphicon-fullscreen{
+	margin-right: 5px;
+	font-size: 14px !important;
+}
+.left{
+	font-size: 16px !important;
+	margin-right: 10px;
+}
+
+.move{
+	margin-top: 350px;
+	background-color:maroon !important;
+	border-radius: 5px 5px 5px 5px;
+	
+}
+.name{
+    text-align: center;
+	color: mintcream;
+	margin-top: 8px;
+}
+.style{
+	color: maroon;
+}
+.table-bordered{
+	width: 70% !important;
+}
+.searchSelect{
+	width: 100px;
+	height: 34px;
+}
