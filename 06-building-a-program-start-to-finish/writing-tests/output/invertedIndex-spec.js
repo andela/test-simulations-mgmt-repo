@@ -79,6 +79,13 @@ describe('invertedIndex Index', () => {
      });
   });
 
+  describe('Create Index', () => {
+    it('should return a msg if index is not created', () => {
+      let msg = 'Index not created';
+      expect(invertedIndex.createIndex(notValid)).toEqual(msg);
+    });
+  });
+
   describe('Tokenize words', () => {
     it('should check that tokens are splitted and in sorted order', () => {
       let words = 'Hello Dear how are YOU';
