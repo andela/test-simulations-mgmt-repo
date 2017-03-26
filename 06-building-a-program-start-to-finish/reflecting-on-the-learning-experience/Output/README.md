@@ -1,7 +1,12 @@
-Output
+#### Output
+- **Using**: Medium
+- **Deliver**: a post reflecting on your learning experience while producing these outputs
+- **With**: *independently*
 
-Link to Wiki Medium Post https://medium.com/@faith.omokaro/checkpoints-and-simulations-my-road-to-learning-38c3ccf07c09#.e27qrpifq
+#### Targeted Learning Outcomes
+#### Output
 
-Author
+Link to Medium Post https://medium.com/@faith.omokaro/checkpoints-and-simulations-my-road-to-learning-38c3ccf07c09#.e27qrpifq
 
-Omokaro Faith
+## Author
+### Omokaro Faith
