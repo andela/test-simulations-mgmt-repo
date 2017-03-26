@@ -14,7 +14,7 @@
   <link rel="icon" href="public/images/favicon.ico" type="image/x-icon">
   <title>Inverted Index</title>
 </head>
-<body ng-app="Indexed">
+<body link="blue" ng-app="Indexed">
   <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
       <div class="navbar-header">
@@ -34,12 +34,14 @@
         <ul>
           <li>How to create an Index</li>
           <ol>
-            <li>Upload one or more JSON file(s)</li>
+            <li>Upload one or more JSON file(s)
+              <p>JSON files should be in this <a href="https://gist.github.com/q-ode/72019451b98f079a8d737eb7a412bf14">format</a></p>
+            </li>
             <li>Select a file to create it's index</li>
             <li>Click 'Create Index' button</li>
           </ol>
           <li>How to search through file(s)</li>
-          <ol>
+          <ol> 
             <li>Select a file to search</li>
             <li>Enter your search word(s)</li>
             <li>Click on the 'Search' button</li>
@@ -81,14 +83,14 @@
     </div>
     <!--inverted-index table -->
     <div ng-repeat="(name, index) in indexed">
-      <table class="table table-striped" ng-show="showTable">
+      <table class="table table-striped table-responsive table-hover" ng-show="showTable">
         <div class="row" ng-show="tableTitle">
           <div class="col-md-12">
             <h2><span class="glyphicon glyphicon-th-large"></span>&nbsp;Inverted Index Table for {{ name }}</h2><br>
           </div>
         </div>
         <thead>
-          <tr>
+          <tr class="success">
             <th>Tokens</th>
             <th ng-repeat="fileTitle in fileTitles[name]">{{ fileTitle }}</th>
           </tr>
@@ -104,14 +106,14 @@
     </div>
     <!--search result table-->
     <div class="row" ng-show="showResultTable" ng-repeat="(name, index) in mySearch">
-      <table class="table table-striped">
+      <table class="table table-striped table-responsive table-hover">
         <div class="row">
           <div class="col-md-12">
             <h2><span class="glyphicon glyphicon-th-large"></span>&nbsp;Search result for "{{ query }}" in {{ name }}</h2><br>
           </div>
         </div>
         <thead>
-          <tr>
+          <tr class="success">
             <th>Tokens</th>
             <th ng-repeat="fileTitle in fileTitles[name]">{{ fileTitle }}</th>
           </tr>
@@ -137,7 +139,8 @@
   <script type="text/javascript" src="inverted-index.js"></script>
   <script type="text/javascript" src="public/js/app.js"></script>
   <footer>
-    <p>(c) 2017 <a href="#"> &nbsp;&nbsp; Home &nbsp;&nbsp;</a>&nbsp;&nbsp;&nbsp;All Rights Reserved</p>
+    <p>(c) 2017 <a href="#"> &nbsp;&nbsp; Home &nbsp;&nbsp;</a>&nbsp;&nbsp;&nbsp;All Rights Reserved &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;follow me on
+    &nbsp;&nbsp;&nbsp;<a href="https://twitter.com/mehrceey04">twitter</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://github.com/andela-moseni">github</a></p>
   </footer>
 </body>
 </html>
