@@ -7,3 +7,4 @@
 
 ### Screenshot
 - Readme screenshot 
+![Coverage Badge](https://github.com/andela/test-simulations-mgmt-repo/blob/bayo-mightguy-moseni/06-building-a-program-start-to-finish/checking-repository-health/output/badge-screenshot.png)
