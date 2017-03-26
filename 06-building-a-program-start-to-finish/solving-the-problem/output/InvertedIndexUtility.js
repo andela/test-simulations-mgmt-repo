@@ -5,20 +5,20 @@
  * @class InvertedIndexUtility
  */
 class InvertedIndexUtility {
-/**
+  /**
    * filterIndexed method takes an already indexed array
-   * and filters it to match the query
-   * @param {Array} searchTerms - An array of the words
-   * gotten from the sanitized query
-   * @param {Array} indexedFile - An already indexed file
-   * @return {Array} - The queried indexed array
+   * and filters it to match the search terms
+   * @param {Array} tokens - An array of the words
+   * gotten from the tokenize function
+   * @param {Array} indices - An already indexed file
+   * @return {Array} - The filtered indexed array
    * @memberOf InvertedIndexUtility
    */
-  static filterIndexed(searchTerms, indexedFile) {
+  static filterIndexed(tokens, indices) {
     const result = [];
-    searchTerms.forEach((term) => {
-      indexedFile.forEach((index) => {
-        if (term === index[0]) {
+    tokens.forEach((token) => {
+      indices.forEach((index) => {
+        if (token === index[0]) {
           result.push(index);
         }
       });
@@ -31,7 +31,7 @@ class InvertedIndexUtility {
    * @param {Array} words - an array of words
    * @returns {Array} - a new array with no duplicate words
    */
-  static removeDuplicateWords(words) {
+  static removeDuplicates(words) {
     const uniqueWords = [];
     let index = 0;
     words.forEach((word) => {
@@ -58,18 +58,18 @@ class InvertedIndexUtility {
   /**
    * @static
    * @param {Array} words - An array of all the words in the text of the book
-   * @param {Array} wordsInEachBook - An Array of all the words in each book
-   * @param {Array} bookTitles - An array that consist of a sub array
-   * of all the words in each book
+   * @param {Array} books - An Array of all the words in each book
+   * @param {Array} titles - An array that consist of all the titles of each
+   * book in a file
    * @returns {Array} - An array consisiting of a sub array with each word
    * and booleans to indicate their occurence in each book
    * @memberOf InvertedIndexUtility
    */
-  static constructIndex(words, wordsInEachBook, bookTitles) {
-    const checked = this.checkOccurence(words, wordsInEachBook);
-    const booksLength = bookTitles.length;
-    const booksChecked = this.getEachBookOccurence(checked, booksLength);
-    const indexConstructed = this.mapWordsWithOccurence(words, booksChecked);
+  static constructIndex(words, books, titles) {
+    const checked = this.checkOccurrence(words, books);
+    const booksLength = titles.length;
+    const booksChecked = this.getBookOccurrence(checked, booksLength);
+    const indexConstructed = this.mapWords(words, booksChecked);
     return indexConstructed;
   }
 
@@ -80,7 +80,7 @@ class InvertedIndexUtility {
    * @returns {Array} - The Title of each book in the file
    * @memberOf InvertedIndexUtility
    */
-  static getTitlesOfEachBook(file) {
+  static getBookTitles(file) {
     const titleList = [];
     file.forEach(book => titleList.push(book.title));
     return titleList;
@@ -97,27 +97,26 @@ class InvertedIndexUtility {
 
     file.map(book => (words += `${book.text} `));
     words = this.tokenize(words).slice(0, words.length - 1);
-    words = this.removeDuplicateWords(words);
+    words = this.removeDuplicates(words);
 
     return words.slice(0, words.length);
   }
 
   /**
    * This function returns an array that consists of all the words in each book
-   * [[], [], ]
    * @static
    * @param {Array} file - contains an array of objects that
    * contain each book with their title and text.
    * @returns {Array} - an array that consist of all the words in each book
    * @memberOf InvertedIndexUtility
    */
-  static getAllWordsInEachBook(file) {
+  static getBookWords(file) {
     const words = [];
     let bookContent;
     file.forEach((book) => {
       bookContent = `${book.text} `;
       bookContent = this.tokenize(bookContent);
-      bookContent = this.removeDuplicateWords(bookContent);
+      bookContent = this.removeDuplicates(bookContent);
       words.push(bookContent.slice(0, bookContent.length));
     });
     return words;
@@ -129,19 +128,19 @@ class InvertedIndexUtility {
    * @static
    * @param {Array} words - contains all the words
    * in the book without duplication
-   * @param {Array} wordsInEachBook - contains all the  words
-   * in a given document
+   * @param {Array} books - contains all the  words
+   * in each book in a given document
    * @returns {Array} - An array that consist of
    * booleans to indicate if the words are present in each book
    * e.g [true, false, false, false, false, true . . .]
-   * @memberOf InvertedIndexUtility
+   * @memberOf InvertedIndexUtility occurrence
    */
-  static checkOccurence(words, wordsInEachBook) {
+  static checkOccurrence(words, books) {
     const checked = [];
 
     words.forEach((word) => {
-      wordsInEachBook.forEach((eachWord) => {
-        if (eachWord.indexOf(word) === -1) {
+      books.forEach((bookWord) => {
+        if (bookWord.indexOf(word) === -1) {
           checked.push(false);
         } else {
           checked.push(true);
@@ -157,25 +156,25 @@ class InvertedIndexUtility {
    *  if the word is present in the book
    * e.g [[true, false, false], [false, false, true], [true, true, true]]
    * @static
-   * @param {Array} checked - This array consist of
+   * @param {Array} list - This array consist of
    * booleans to indicate if the words are present in each book
    * e.g [true, false, false, false, false, true . . .]
-   * @param {Integer} bookCount - The number of the book present in the file
+   * @param {Integer} count - The number of the book present in the file
    * @returns {Array} - An Array that consist of sub arrays of each word
    * and a boolean to indicate their presence in each book
    * @memberOf InvertedIndexUtility
    */
-  static getEachBookOccurence(checked, bookCount) {
+  static getBookOccurrence(list, count) {
     const result = [];
     let subResult = [];
     let index = 0;
-    checked.forEach((check) => {
-      if (index < bookCount) {
-        subResult.push(check);
+    list.forEach((item) => {
+      if (index < count) {
+        subResult.push(item);
         index += 1;
       }
 
-      if (index === bookCount) {
+      if (index === count) {
         result.push(subResult);
         index = 0;
         subResult = [];
@@ -185,23 +184,24 @@ class InvertedIndexUtility {
   }
 
   /**
-   * This method returns an array that consists of sub array that consist of a
-   *  word and a boolean that indicates it's presence in each book
+   * This method map words with occurrence.
+   * It returns an array that consists of sub array that consist of a
+   * word and a boolean that indicates it's presence in each book
    * e.g [['Alice', true, false, false], ['in', false, false, true], ... ]
    * @param {Array} words - An array of all words in a given book text
-   * @param {Array} wordsOccurrence  An Array that consist of sub arrays of
+   * @param {Array} list -  An Array that consist of sub arrays of
    * each word and a boolean to indicate their presence in each book
    * @returns {Array} - The array consist of a sub array of each word present
    * in each book and a boolean to indicate their presence in each boom
    * @memberOf InvertedIndexUtility
    */
-  static mapWordsWithOccurence(words, wordsOccurrence) {
+  static mapWords(words, list) {
     let index = 0;
     words.forEach((word) => {
-      wordsOccurrence[index].unshift(word);
+      list[index].unshift(word);
       index += 1;
     });
-    return wordsOccurrence;
+    return list;
   }
 
   /**
