@@ -4,7 +4,7 @@
 - **With**: *independently*
 
 #### Targeted Learning Outcomes
-link to screencast showing gulp watching HTML, CSS & JS files https://www.youtube.com/watch?v=QxiJnVfEKkQ
+[link to screencast showing gulp watching HTML, CSS & JS files !](https://www.youtube.com/watch?v=QxiJnVfEKkQ)
 
 ### Author
 ### Omokaro Faith
