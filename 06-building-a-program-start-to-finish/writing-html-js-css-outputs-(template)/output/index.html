@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="invertedIndexApp">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>IndexIt</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="css/mdb.min.css" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="css/styles.css" rel="stylesheet">
+
+    <script src="js/lib/angular.min.js"></script>
+    <script src="js/validations.js"></script>
+    <script src="js/invertedindexutil.js"></script>
+    <script src="js/inverted-index.js"></script>
+    <script src="js/app.js"></script>
+</head>
+
+<body ng-controller="TestController">
+
+<!--Navbar-->
+<header ng-include="'partials/header.html'">
+</header>
+
+
+<div class="container">
+
+    <div class="body row">
+       <aside ng-include="'partials/aside.html'" class="col-md-4">
+       </aside>
+
+       <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="btn btn-danger">
+                        <span><i class="fa fa-upload" aria-hidden="true" ></i> Upload File</span>
+                        <input type="file" style="display: none;" id="files" ng-change="getUploadedCount()" ng-model="uploadCount" multiple>
+                    </label>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="dropdown input-group">
+                      <button class="btn dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-click="selectFile()" multiple>
+                        {{selectedFile}}
+                      </button>
+                      <div class="dropdown-menu btn-danger" aria-labelledby="dropdownMenu3"  id="filelist">
+                        <a class="dropdown-item btn-danger" href="#" ng-repeat="name in selectFile()" ng-click="getSelectedFile(name)" >{{name}}</a>
+                      </div>
+                      <span class="input-group-btn">
+                        <button class="btn btn-danger" type="button" tabindex="-1" ng-click="createIndex()">Create Index <span class="glyphicon glyphicon-list-alt"></span></button>
+                      </span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="card" id="emptyIndexTable" ng-show="!showIndexTable && !showIndexTableQueried && !showIndexTableQueriedAll">
+                <h5 class="card-header btn-danger white-text"><i class="fa fa-file" aria-hidden="true"></i></h5>
+                <div class="card-block text-center">
+                    <i class="fa fa-folder-open-o big-icon" aria-hidden="true" ng-if="getUploadedCount() == 1"></i>
+                    <i class="fa fa-folder-o big-icon" aria-hidden="true" ng-if="getUploadedCount() > 1"></i>
+                    <p ng-if="getUploadedCount() == 1">No file uploaded. Click the upload file button to upload book files. </p>
+                    <p ng-if="getUploadedCount() > 1">{{getUploadedCount() - 1}} file(s) uploaded. Select a file and then click the create create index button</p>
+                </div>
+            </div>
+
+            <div id="SearchAllIndexTable" ng-show="!showIndexTableQueried && !showIndexTable && showIndexTableQueriedAll" ng-repeat="name in displayFileNames track by $index">
+
+                <table class="table">
+                    <tr class="btn-danger">
+                        <th >{{name}}</th>
+                        <th ng-repeat= "titles in titlesArrayForSearch[$index] track by $index">{{titles}}</th>
+                    </tr>
+                    <tr ng-repeat= "(key, value) in invertedIndexTableQueried[$index] track by $index" class="table-striped">
+                        <td ng-repeat="i in value track by $index">
+                            <span ng-if="i && i!==true">{{i}}</span>
+                            <span ng-if="i===true"><img src="img/check.png" class="img-responsive" id="check"></span>
+
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <div id="SearchIndexTable" ng-show="showIndexTableQueried && !showIndexTable && !showIndexTableQueriedAll">
+                <table class="table">
+                    <tr class="btn-danger">
+                        <th><i class="fa fa-file" aria-hidden="true"></i></th>
+                        <th ng-repeat= "titles in titlesArrayForSearch track by $index">{{titles}}</th>
+                    </tr>
+                    <tr ng-repeat= "(key, value) in invertedIndexTableQueried" class="table-striped" ng-show="!showNoResultFound">
+                        <td ng-repeat="i in value track by $index">
+                            <span ng-if="i && i!==true">{{i}}</span>
+                            <span ng-if="i===true"><img src="img/check.png" class="img-responsive" id="check"></span>
+
+                        </td>
+                    </tr>
+
+                    <tr ng-show="showNoResultFound">
+                        <td class="text-center" id="noResultFound" colspan="5">No result(s) found</td>
+                     </tr>
+
+                </table>
+            </div>
+
+            <div id="indexTable" ng-show="showIndexTable && !showIndexTableQueried && !showIndexTableQueriedAll">
+                <table class="table">
+                    <tr class="btn-danger">
+                        <th><i class="fa fa-file" aria-hidden="true"></i></th>
+                        <th ng-repeat= "titles in invertedIndexTable.title track by $index">{{titles}}</th>
+                    </tr>
+                    <tr ng-repeat= "(key, value) in invertedIndexTable.index" class="table-striped">
+                        <td ng-repeat="i in value track by $index">
+                            <span ng-if="i && i!==true">{{i}}</span>
+                            <span ng-if="i===true"><img src="img/check.png" class="img-responsive" id="check"></span>
+
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!--Footer-->
+<footer ng-include="'partials/footer.html'">
+</footer>
+<!--/.Footer-->
+
+
+
+
+
+<!-- /Start your project here-->
+<!-- SCRIPTS -->
+<!-- JQuery -->
+<script type="text/javascript" src="js/lib/jquery-3.1.1.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="js/lib/tether.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="js/lib/bootbox.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="js/lib/mdb.min.js"></script>
+</body>
+
+</html>

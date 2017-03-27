@@ -1,0 +1,66 @@
+body{
+	background: url(../img/book.jpg) no-repeat center center fixed;
+   -webkit-background-size: cover;
+   -moz-background-size: cover;
+   -o-background-size: cover;
+   background-size: cover;
+}
+
+header{
+	margin-bottom: 15px;
+}
+
+#about{
+	margin-bottom: 20px;
+}
+
+.card-block{
+	background-color: #ddd;
+}
+
+.dropdown-toggle{
+	background-color: #ddd;
+}
+
+table {
+	background-color: #ddd;
+	color: white;
+}
+
+tr {
+	color: black;
+}
+
+#filelist > a{
+	color: white;
+}
+
+#check{
+	width: 5%;
+	height: 5%;
+}
+#indexTable, #SearchIndexTable, #SearchAllIndexTable{
+	margin-top: 20px;
+}
+
+#SearchAllIndexTable{
+	margin-top: 40px;
+	margin-bottom: 40px;
+}
+#emptyIndexTable{
+	margin-top: 10px;
+
+}
+
+#noResultFound {
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+
+.big-icon {
+    font-size: 100px;
+}
+
+footer{
+	margin-top: 20px;
+}
