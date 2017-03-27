@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" ng-app='inverted_index'>
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width initial-scale=1" name="viewport">
+  <title>Inverted Index</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" rel="stylesheet">
+  <link href="./public/css/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body ng-controller='myController' class="body">
+  <nav class="navbar navbar-default">
+    <div class="container-fluid" style="background-color:maroon; border-radius: 5px 5px 5px 5px;">
+      <div class="navbar-header">
+        <a class="navbar-brand brand" style="color:ghostwhite ; font-size: 30px; font-family: corbel">INVERTED INDEX</a>
+      </div>
+      <form class="navbar-form pull-right">
+        <select class="searchSelect" id="selectSearchFile">
+            <option selected disabled>Select file</option>
+            <option ng-repeat="file in filesToSearch track by $index"> {{file}} </option>
+          </select>
+        <div class="input-group">
+          <input class="form-control" id="searchBox" placeholder="Search through book" type="text" ng-model='searchString'>
+          <div class="input-group-btn">
+            <button class="btn button" type="submit" id="searchTerms" ng-click="searchIndex()"><i class="glyphicon glyphicon-search"></i></button>
+            <button class="btn button" ng-click="clearSearch()"><i class="glyphicon glyphicon-search"></i></button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </nav>
+
+  <div class="dropdown">
+          <span class="dropdown-toggle drop" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+          <div class="pull-left"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Instruction</div><div class="pull-right left"><span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span> Click to collapse or expand</span> </div></span>
+          <ol class="dropdown-menu menu">
+            <li>1.  Upload a valid JSON file</li>
+            <li role="separator" class="divider"></li>
+            <li>2. Click the 'Upload' button</li>
+            <li role="separator" class="divider"></li>
+            <li>3. To Create Index select a file from the dropdown</li>
+            <li role="separator" class="divider"></li>
+            <li>4. Click the 'Create Index' button</li>
+            <li role="separator" class="divider"></li>
+            <li>5. Then Search by entering your search term(s) in the search text field.</li>
+            <li role="separator" class="divider"></li>
+            <li>6. Check the box of the file you want to search from.</li>
+            <li role="separator" class="divider"></li>
+            <li>7. If you want to search all files you do not need to check any box</li>
+            <li role="separator" class="divider"></li>
+            <li>8. Click the 'Search' button</li>               
+          </ol>            
+        </div>
+
+    <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <form class="form">
+          <div class="col-md-3">
+        <label class="btn upload_file" type="submit" name="submit"><span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>Upload file
+            <input type="file" id="files" multiple style="display: none">
+        </label>
+        </div>
+         <select class="form-control select" id="selectFile">
+           <option disabled>Select file to create index from</option>
+           <option ng-repeat="(fileName, Content) in fileContent" value='{{fileName}}' ng-model="selectFile">{{fileName}}</option>
+            </select>
+            <div class="col-md-2">
+              <button class="btn create_index" ng-click="createIndex()" id="index">CreateIndex</button>
+            </div>
+         </form>
+        </div>
+      </div>
+ <div class="row">
+   <div class="col-md-6">
+     <div ng-show="showTable">
+  <h3 class="style"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>Table Of Indices</h3>
+      <div class="table_style" ng-repeat="(filename, index) in indices">
+        <h3> Display Index for {{filename}} </h3>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th >Terms</th>
+              <th ng-repeat="document in fileContent[filename] track by $index">{{document.title}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="(key, value) in index">
+              <td>{{key}}</td>
+              <td ng-repeat="number in numberOfDocuments[filename]">
+                <span ng-class="value.includes(number) ? 'glyphicon-ok' : 'glyphicon-remove'" class="glyphicon glyphicon-ok"></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <hr />
+      </div>
+    </div>
+    </div>
+    <div class="col-md-6">
+      <div ng-show="showSearch">
+        <h3> Table Of Search </h3>
+        <div class="table_style">
+        <h3>Display Search for {{searchFileName}}</h3>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Words</th>
+              <th ng-repeat="document in fileContent[searchFileName] track by $index">{{document.title}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="(key, value) in searchResult">
+              <td>{{key}}</td>
+              <td ng-repeat="number in numberOfDocuments[searchFileName] track by $index">
+                <span ng-class="value.includes(number) ? 'glyphicon-ok' : 'glyphicon-remove'" class="glyphicon glyphicon-ok"></span>
+              </td>
+            </tr>
+          </tbody>
+          </table>
+          </div>
+      </div>
+      <div ng-show="showSearchAllFiles">
+        <h3> Table Of Search </h3>
+        <div ng-repeat="(searchFileName, searchResult) in searchResultAllFiles ">
+          <div class="table_style">
+          <h3>Display Search for {{searchFileName}}</h3>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Words</th>
+                <th ng-repeat="document in fileContent[searchFileName] track by $index">{{document.title}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="(key, value) in searchResult">
+                <td>{{key}}</td>
+                <td ng-repeat="number in numberOfDocuments[searchFileName] track by $index">
+                  <span ng-class="value.includes(number) ? 'glyphicon-ok' : 'glyphicon-remove'" class="glyphicon glyphicon-ok"></span>
+                </td>
+              </tr>
+            </tbody>
+            </table>
+            </div>
+          </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <footer class="move">
+    <nav class="navbar">
+    <div class="container-fluid name"> <p> @Omokaro Faith </p></div>
+    </nav>
+    </footer>
+    </body>
+ <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.js">
+  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">
+  </script>
+   <script src="./Model/inverted-index.js"></script>
+  <script src="./Model/app.js"></script>
+</html>
