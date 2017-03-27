@@ -52,7 +52,7 @@ class InvertedIndex {
    * @memberOf InvertedIndex
    */
   searchIndex(searchTerms, fileName) {
-    let searchResult = false;
+    let searchResult;
     searchTerms = InvertedIndexUtility.tokenize(searchTerms);
     searchTerms = InvertedIndexUtility.removeDuplicates(searchTerms);
     if (fileName === 'All') {
@@ -65,19 +65,16 @@ class InvertedIndex {
         result.push(InvertedIndexUtility
         .filterIndexed(searchTerms, fileIndexed.index));
       });
-      searchResult = (fileNames.length !== 0) ?
-                     { title: bookNames, index: result }
-                     : false;
+      searchResult = { title: bookNames, index: result };
     } else {
       const fileIndexed = this.getIndex(fileName);
       const bookNames = fileIndexed.title;
       const result = InvertedIndexUtility
       .filterIndexed(searchTerms, fileIndexed.index);
-      searchResult = fileIndexed ?
-                    { title: bookNames, index: result }
-                    : false;
+      searchResult = { title: bookNames, index: result };
     }
     return searchResult;
   }
 
 }
+
