@@ -48,7 +48,7 @@ class InvertedIndex {
    * @param {String} searchTerms - The terms to search for the index
    * @param {String} fileName - The name of the file to create index
    * @return {Object} - The queried indexed array is returned if a match
-   * is found.False is returned if index has not been created
+   * is found.
    * @memberOf InvertedIndex
    */
   searchIndex(searchTerms, fileName) {
