@@ -19,13 +19,24 @@ class Index {
      * @param {string} words
      * @return {String}
      */
-  static tokenize(words) {
+  tokenize(words) {
     const token = words.replace(/,+/g, ' ')
     .replace(/[^a-zA-Z 0-9\s]+/g, '')
     .replace(/\s\s/g, ' ')
     .toLowerCase()
     .trim();
     return token;
+  }
+  /**
+   * Reads the data from an uploaded file.
+   * @param {File} file - The file to be read
+   * @param {Function} callback - The callback function on file read
+   * @returns {void}
+   */
+  readFile(file, callback) {
+    const reader = new FileReader();
+    reader.onload = callback;
+    reader.readAsText(file);
   }
 /**
    * It validates the file passed and returns the error message if an error occurs
@@ -103,9 +114,9 @@ class Index {
    *
    *
    * @method flattenSearch
-   * @param {}
+   * @param {void}
    *
-   * @return
+   * @return {void}
    */
   flattenSearch() {
     this.temp_search = [];
