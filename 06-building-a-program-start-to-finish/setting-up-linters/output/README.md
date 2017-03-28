@@ -4,4 +4,5 @@
 - **With**: *independently*
 
 #### Result
-- Screenshot of ESLint violations.
+- Screenshot of ESLint violations within the output folder.
+- Screenshot of HoundCI comments within the output folder.
