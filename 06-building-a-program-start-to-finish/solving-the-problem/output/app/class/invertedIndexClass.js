@@ -22,6 +22,7 @@ class InvertedIndex {
   readFile(file) {
     const fileReader = new FileReader();
     fileReader.readAsText(file);
+
     return new Promise((resolve, reject) => {
       fileReader.onload = () => {
         try {
@@ -42,11 +43,14 @@ class InvertedIndex {
   */
   createIndex(fileName, file) {
     if (!file) { return false; }
+
     const words = [];
     const indexedWords = {};
+
     file.forEach((book) => {
       words.push(this.tokenize(book));
     });
+
     words.forEach((book, index) => {
       for (let i = 0; i < book.length; i += 1) {
         if (!indexedWords.hasOwnProperty(book[i])) {
@@ -55,9 +59,11 @@ class InvertedIndex {
         indexedWords[book[i]].push(index);
       }
     });
+
     if (!this.indices.hasOwnProperty(fileName)) {
       this.indices[fileName] = indexedWords;
     }
+
     this.indexedFiles[fileName] = file.length;
     return true;
   }
@@ -87,11 +93,13 @@ class InvertedIndex {
     const searchResults = [];
     const result = {};
     let indices = {};
+
     if (this.getIndices(fileName)) {
       indices[fileName] = this.getIndices(fileName);
     } else {
       indices = this.indices;
     }
+
     Object.keys(indices).forEach((book) => {
       query.split(' ').forEach((word) => {
         if (Object.prototype.hasOwnProperty.call(indices[book], word)) {
@@ -104,11 +112,14 @@ class InvertedIndex {
           result[book].terms[word] = indices[book][word];
         }
       });
+
       searchResults.push(result[book]);
     });
+
     if (typeof searchResults[0] === 'undefined') {
       return false;
     }
+
     return searchResults;
   }
 
@@ -121,6 +132,7 @@ class InvertedIndex {
   */
   validateFile(file) {
     let isValid = file;
+
     if (file.length > 0) {
       for (let i = 0; i < file.length; i += 1) {
         if (file[i] === undefined
@@ -131,6 +143,7 @@ class InvertedIndex {
         }
       }
     } else isValid = false;
+
     return isValid;
   }
 
@@ -156,11 +169,13 @@ class InvertedIndex {
     let text;
     let title;
     let newDoc = [];
+
     for (let item in file) {
       title = file.title;
       text = file.text;
       newDoc.push(`${title} ${text}`);
     }
+
     newDoc = newDoc.join(' ');
     return newDoc;
   }
@@ -174,11 +189,13 @@ class InvertedIndex {
   */
   tokenize(text) {
     let tokens = [];
+
     tokens = this.formatJSON(text)
       .trim()
       .toLowerCase()
       .match(/\w+/g)
       .sort();
+      
     tokens = this.getUnique(tokens);
     return tokens;
   }
