@@ -3,8 +3,8 @@
 - **Deliver**: the repository for your proposed project and at least one `Pull Request`
 - **With**: *independently*
 
-#### Targeted Learning Outcomes
-  - Text Editors
-  - Command Line (Unix)
-  - Git
-  - Version Control
+#### Link to GitHub repo
+  https://github.com/andela-iakande/invertedindex/tree/development
+
+#### Author
+ andela-iakande/invertedindex
