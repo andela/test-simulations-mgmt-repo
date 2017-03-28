@@ -10,55 +10,76 @@ A design pattern is a general repeatable solution to a commonly occurring proble
 Design patterns can speed up the development process by providing tested, proven development paradigms.
 Reusing design patterns helps to prevent subtle issues that can cause major problems and improves code readability.
 
-## Module Design Pattern
-'''
-/**
- * Inverted Index class
- */
+## Design Pattern Used
+
+## Constructor Pattern
+
+A constructor is a special method used to initialize a newly created object once memory has been allocated for it.
+
+The InvertedIndex Class makes explicit use of the constructor design pattern in that, to create an instance of the class, a constructor function must be called which initializes the indexes object that holds a hashmap of all the indexes create from the uploaded files.
+
 class Index {
-/**
- * class constructor
- */
+  
   constructor() {
     this.index = {};
     this.temp_search = [];
     this.searchResult = {};
     this.allIndex = {};
   }
-}
-'''
 
-Javascript classes are module design patterns. They provide loose coupling which allows for well structured code.
-
-## Observer Design Pattern
-
-'''
-$scope.uploadFile = (file) => {
-    file = file.files;
-    for (let i = 0; i < file.length; i += 1) {
-      const fileExtension = file[i].name.split('.').pop();
-      if (fileExtension !== 'json') {
-        return toastr.error('This is not a json file');
+  validateFile(file) {
+    const jsonFile = file;
+    let check = {
+      status: true,
+      msg: 'Valid File',
+    };
+    try {
+      if (typeof file !== 'object' || file.length < 1) {
+        check = {
+          status: false,
+          msg: 'File is empty please upload a new file',
+        };
       }
-      if ($scope.fileNames.includes(file[i].name)) {
-        return toastr.error(`${file[i].name} has already been uploaded`, 'Error');
-      }
-      $scope.documents = $scope.fileNames.push(file[i].name);
-      $scope.showUploaded = true;
-      // $scope.$apply($scope.documents);
-      $scope.$apply();
-      toastr.success(`${file[i].name} uploaded successfully`, 'Success');
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        $scope.fileContent[file[i].name] = reader.result;
-        $scope.$apply();
-      };
-      reader.readAsText(file[i]);
+      jsonFile.forEach((key) => {
+        if (key.title === undefined || key.text === undefined) {
+          check = {
+            status: false,
+            msg: 'Invalid file content',
+          };
+        }
+      });
+    } catch (error) {
+      return error.msg;
     }
-  };
-'''
-Scope is part of the MVC or MVVM architecture. Once the model is change, the view is updated.
+  }
+
+  getIndex(fileName) {
+
+  }
+
+  createIndex(fileName) {
+
+  }
+
+  searchIndex(sTerms) {
+
+  }
+We can create a new instance of InvertedIndex by calling the constructor thus:
+
+const invertedIndex = new Index();
+
+invertedIndex.validateFile('test.json');
+
+invertedIndex.displayInTableFormat();
+MVC
+
+MVC is an achitectural pattern that is used to separate an application's concerns. That is, application code is broken into three layers:
+
+Model - represents an object carrying data. e.g. InvertedIndex Class
+View - represents the front end view of the data that model contains. e.g. index.html
+Controller - acts on both model and view. It controls the data flow into model object and updates the view whenever data changes. e.g. app.js
+Hence as explained above, in the case of the Inverted Index App, the model is the InvertedIndex Class, the view is the front end HTML and CSS, while the controller is the angular app.
+
 
 ## Author
 ### Omokaro Faith
