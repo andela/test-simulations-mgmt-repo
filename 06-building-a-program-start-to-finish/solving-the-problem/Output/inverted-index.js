@@ -24,7 +24,7 @@ class InvertedIndexClass {
       const docTitle = currentFileDoc.title;
       const docText = currentFileDoc.text;
       const normalize = InvertedIndexClass
-.tokenization(`${docText} ${docTitle}`).sort();
+.tokenize(`${docText} ${docTitle}`).sort();
       normalize.forEach((word) => {
         if (word in this.indexTable[fileName]) {
           if (this.indexTable[fileName][word].indexOf(docIndex) === -1) {
@@ -48,12 +48,12 @@ class InvertedIndexClass {
   }
 
   /**
-   * tokenization
+   * getTokens
    * Obtain an array of terms from a string
    * @param {String} string get token from string
    * @return {Object} An array of the generated token
    */
-  static tokenization(string) {
+  static tokenize(string) {
     this.invalidCharacters = /[^a-z0-9\s]/gi;
     return string.replace(this.invalidCharacters, ' ')
       .toLowerCase()
@@ -73,7 +73,7 @@ class InvertedIndexClass {
     const fileTitle = fileNames || Object.keys(this.files);
     this.result = {};
     const allSearchTerms =
-      InvertedIndexClass.tokenization(searchTerms);
+      InvertedIndexClass.tokenize(searchTerms);
     fileTitle.forEach((currentFile) => {
       allSearchTerms.forEach((term) => {
         if (Object.hasOwnProperty.call(this.indexTable[currentFile], term)) {
@@ -87,6 +87,18 @@ class InvertedIndexClass {
       });
     });
     return Object.keys(this.result).length > 0 ? this.result : false;
+  }
+  /**
+   *validateJsonContent.
+   *@param {Object} inputFile
+   *@return {Boolean} true or false
+  */
+  static validateFile(inputFile) {
+    try {
+      return inputFile[0].title && inputFile[0].text;
+    } catch (e) {
+      return false;
+    }
   }
   /**
    * readFile
