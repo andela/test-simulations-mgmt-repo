@@ -8,10 +8,6 @@ const wrongData = require('./books/wrongData.json');
 const index = new InvertedIndex();
 
 describe('InvertedIndex', () => {
-  beforeAll(() => {
-    this.index = new InvertedIndex();
-  });
-
   describe('Constructor', () => {
     it('can create an instance of InvertedIndex', () => {
       expect(typeof index).toEqual('object');
@@ -35,11 +31,16 @@ describe('InvertedIndex', () => {
     it('should return the file content if a valid file was uploaded', () => {
       expect(InvertedIndex.validateFile(validFile)).not.toBeFalsy();
       expect(InvertedIndex.validateFile(simpleValidFile)).not.toBeFalsy();
+      expect(typeof InvertedIndex.validateFile(validFile)).toEqual('object');
+    });
+    it('should return exact file content if the file is valid', () => {
+      expect(InvertedIndex.validateFile(validFile)).toEqual(validFile);
+      expect(InvertedIndex.validateFile(simpleValidFile)).toEqual(simpleValidFile);
     });
   });
 
   describe('Tokenize', () => {
-    it('return an array of unique words', () => {
+    it('should return an array of unique words', () => {
       expect(InvertedIndex.tokenize('tony is humble tony'))
       .toEqual(['tony', 'is', 'humble']);
     });
@@ -47,7 +48,7 @@ describe('InvertedIndex', () => {
       expect(InvertedIndex.tokenize('$A%^n*del)a %i=s @a$w&es$om#e%'))
       .toEqual(['andela', 'is', 'awesome']);
     });
-    it('should return case-insensitive result', () => {
+    it('should return words in lowercase', () => {
       expect(InvertedIndex.tokenize('HI')).toEqual(['hi']);
     });
   });
@@ -58,7 +59,7 @@ describe('InvertedIndex', () => {
       this.check = index.createIndex(simpleValidFile, this.filename);
     });
 
-    it('creates an index object', () => {
+    it('creates an index object from the file content', () => {
       expect(this.check).toBeTruthy();
       expect(typeof index.getIndex(this.filename)).toEqual('object');
     });
@@ -71,7 +72,7 @@ describe('InvertedIndex', () => {
       );
       expect(index.getIndex(this.filename).bookTitles.length).toBe(3);
     });
-    it('creates the correct index', () => {
+    it('creates the correct index object', () => {
       expect(index.getIndex(this.filename).words.alice).toEqual([true, false, false]);
       expect(index.getIndex(this.filename).words.falls).toEqual([true, true, false]);
       expect(index.getIndex(this.filename).words.alliance).toEqual([false, true, true]);
@@ -103,6 +104,9 @@ describe('InvertedIndex', () => {
     });
     it('should return false if file index was not found', () => {
       expect(index.getIndex('notIndex.json')).toBeFalsy();
+    });
+    it('sets the current indexed file to the result', () => {
+      expect(index.getIndex(this.filename)).toEqual(index.indexed);
     });
   });
 
@@ -163,7 +167,7 @@ describe('InvertedIndex', () => {
   describe('DeleteFile', () => {
     it('can successfully delete a file from the index', () => {
       expect(index.deleteFile(this.filename)).toBeTruthy();
-      expect(index[this.filename]).toEqual(undefined);
+      expect(index.getIndex(this.filename)).toBeFalsy();
       expect(index.files.indexOf(this.filename)).toBe(-1);
     });
     it('returns false if filename does not exist in the index', () => {

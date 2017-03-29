@@ -16,19 +16,22 @@ class InvertedIndex {
   }
 
   /**
-   * Validate file content
+   * Validates file content
    * @function
    * @param {Array} fileContent content of uploaded file
    * @return {Array} valid fileContent or false if invalid file
    */
   static validateFile(fileContent) {
     if (fileContent.constructor !== Array || fileContent.length < 1) return false;
-    for (let i = 0; i < fileContent.length; i += 1) {
-      const title = fileContent[i].title;
-      const text = fileContent[i].text;
-      if (title === undefined || text === undefined) return false;
-      if (text.length < 1) return false;
-    }
+    let invalid = false;
+    fileContent.forEach((book) => {
+      if (book.title === undefined || book.text === undefined) {
+        invalid = true;
+        return;
+      }
+      if (book.text.length < 1) invalid = true;
+    });
+    if (invalid) return false;
     return fileContent;
   }
 
@@ -55,19 +58,17 @@ class InvertedIndex {
     if (this.files.indexOf(filename) !== -1) return false;
     const result = { bookTitles: [], words: {}, allWords: [] };
     const fileLength = fileContent.length;
-    for (let i = 0; i < fileLength; i += 1) {
-      result.bookTitles.push(fileContent[i].title);
-      const words = InvertedIndex.tokenize(fileContent[i].text);
-
-      for (let j = 0; j < words.length; j += 1) {
-        const word = words[j];
+    fileContent.forEach((book, bookNumber) => {
+      result.bookTitles.push(book.title);
+      const words = InvertedIndex.tokenize(book.text);
+      words.forEach((word) => {
         if (result.words[word] === undefined) {
           result.allWords.push(word);
           result.words[word] = new Array(fileLength).fill(false);
         }
-        result.words[word][i] = true;
-      }
-    }
+        result.words[word][bookNumber] = true;
+      });
+    });
     this.showAllFiles = false;
     this.files.push(filename);
     this.indexed = result;
@@ -76,10 +77,10 @@ class InvertedIndex {
   }
 
   /**
-   * Returns stored index given a filename
+   * Returns stored index for a file given a filename
    * @function
-   * @param {Object} filename filen
-   * @return {Array} Current indexed object (used by angular to display the content
+   * @param {Object} filename name of the file
+   * @return {Array} indexed object or false if file was not found
    */
   getIndex(filename) {
     if (this[filename] === undefined) return false;
