@@ -1,9 +1,8 @@
-const books = require('../jasmine/assets/correct.json');
-const wrongdata = require('../jasmine/assets/wrongFormat.json');
-const emptyfile = require('../jasmine/assets/emptyfile.json');
-const smallfile = require('../jasmine/assets/smallcorrectfile.json');
-const uniqueTermsBook = require('../jasmine/assets/uniqueTermsBook.json');
-
+const uniqueTermsBook = ['alice', 'falls', 'into', 'a', 'rabbit'];
+const books = require('../assets/books.json');
+const wrongdata = require('../assets/wrongdata.json');
+const emptyfile = require('../assets/emptyfile.json');
+const smallfile = require('../assets/smallfile.json');
 describe('InvertedIndex Class', () => {
   beforeAll(() => {
     this.invertedIndex = new InvertedIndex();
@@ -24,7 +23,7 @@ describe('InvertedIndex Class', () => {
   });
 
   describe('tokenize', () => {
-    it('checks the tokenize function', () => {
+    it('should return an array of words', () => {
       const input = 'jed is a boy'
       const output = ['jed', 'is', 'a', 'boy'];
       expect(this.invertedIndex.tokenize(input))
@@ -52,7 +51,7 @@ describe('InvertedIndex Class', () => {
   });
 
   describe('uniqueWords', () => {
-    it('checks the uniqueWords function', () => {
+    it('should return an array of unique words', () => {
       const input = ['aa', 'aa', 'aa'];
       const output = ['aa'];
       expect(this.invertedIndex.uniqueWords(input))
@@ -61,13 +60,15 @@ describe('InvertedIndex Class', () => {
   });
 
   describe('Validate Files ', () => {
-    it('verifies that the JSON file is valid or invalid', () => {
+    it('should return true if a valid file was uploaded', () => {
       expect(this.invertedIndex.validateFile(books)
           .valid)
         .toBe(true);
       expect(this.invertedIndex.validateFile(smallfile)
           .valid)
         .toBe(true);
+    });
+    it('should return false if an invalid file was uploaded', () => {
       expect(this.invertedIndex.validateFile(emptyfile)
           .valid)
         .toBe(false);
@@ -78,23 +79,21 @@ describe('InvertedIndex Class', () => {
   });
 
   describe('CreateIndex', () => {
-    beforeAll(() => {
-      this.invertedIndex.createIndex(smallfile, ['alice', 'falls'], 'smallcorrectfile.json');
-      this.invertedIndex.createIndex(books, uniqueTermsBook, 'correct.json');
-    });
     it('creates an index', () => {
-      expect(this.invertedIndex.getIndex('correct.json'))
+      expect(this.invertedIndex.createIndex(books, uniqueTermsBook, 'correct.json'))
         .toBeTruthy();
-      expect(this.invertedIndex.getIndex('smallcorrectfile.json'))
+      expect(this.invertedIndex.createIndex(smallfile, uniqueTermsBook, 'smallcorrectfile.json'))
         .toBeTruthy();
     });
     it('creates the correct index', () => {
-      expect(this.invertedIndex.getIndex('correct.json')
-          .a)
-        .toEqual([true, true, true, true]);
-      expect(this.invertedIndex.getIndex('smallcorrectfile.json')
-          .falls)
-        .toEqual([true]);
+      expect(this.invertedIndex.createIndex(smallfile, uniqueTermsBook, 'smallcorrectfile.json'))
+        .toEqual({
+          "alice": [true],
+          "falls": [true],
+          "into": [true],
+          "a": [true],
+          "rabbit": [true]
+        });
     });
   });
 
@@ -119,31 +118,23 @@ describe('InvertedIndex Class', () => {
   });
 
   describe('searchIndex', () => {
+    beforeAll(() => {
+      this.invertedIndex.createIndex(smallfile, ['alice', 'falls'], 'smallcorrectfile.json');
+    });
     it('returns empty if element being searched for does not exist', () => {
-      const keyword = 'alice';
-      const indexedData = {
-        dan: [false, false],
-        brown: [false, false],
-        john: [false, false],
-        grisham: [false, false]
-      };
+      const keyword = 'unqwerty';
+      const fileName = 'smallcorrectfile.json';
       const output = {};
-      expect(this.invertedIndex.searchIndex(keyword, indexedData))
+      expect(this.invertedIndex.searchIndex(keyword, fileName))
         .toEqual(output);
     });
-
     it('returns the element being searched for', () => {
-      const keyword = 'brown';
-      const indexedData = {
-        dan: [false, false],
-        brown: [false, false],
-        john: [false, false],
-        grisham: [false, false]
-      };
+      const keyword = 'alice';
+      const fileName = 'smallcorrectfile.json';
       const output = {
-        brown: [false, false]
+        alice: [true]
       };
-      expect(this.invertedIndex.searchIndex(keyword, indexedData))
+      expect(this.invertedIndex.searchIndex(keyword, fileName))
         .toEqual(output);
     });
   });
