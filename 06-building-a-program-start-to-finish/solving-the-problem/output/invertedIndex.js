@@ -22,7 +22,9 @@ class InvertedIndex {
    * @return {Array} valid fileContent or false if invalid file
    */
   static validateFile(fileContent) {
-    if (fileContent.constructor !== Array || fileContent.length < 1) return false;
+    if (fileContent.constructor !== Array || fileContent.length < 1) {
+      return false;
+    }
     let invalid = false;
     fileContent.forEach((book) => {
       if (book.title === undefined || book.text === undefined) {
@@ -56,7 +58,7 @@ class InvertedIndex {
    */
   createIndex(fileContent, filename) {
     if (this.files.indexOf(filename) !== -1) return false;
-    const result = { bookTitles: [], words: {}, allWords: [] };
+    const result = { bookTitles: [], words: {}, allWords: [], filename };
     const fileLength = fileContent.length;
     fileContent.forEach((book, bookNumber) => {
       result.bookTitles.push(book.title);
@@ -93,11 +95,13 @@ class InvertedIndex {
    * Search index
    * @function
    * @param {String} searchKey string containing word(s) to be searched for
-   * @param {Object} filename name of indexed file where the search will be performed
+   * @param {Object} filename name of indexed file where
+   * the search will be performed
    * @return {Object} search result or false if nothing was found
    */
   searchIndex(searchKey, filename) {
-    if (searchKey === undefined || searchKey.length < 1 || this[filename] === undefined) {
+    if (searchKey === undefined || searchKey.length < 1
+      || this[filename] === undefined) {
       return false;
     }
     const searchTerms = InvertedIndex.tokenize(searchKey);

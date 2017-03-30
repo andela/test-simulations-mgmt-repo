@@ -28,14 +28,15 @@ describe('InvertedIndex', () => {
       expect(InvertedIndex.validateFile(notArray)).toBeFalsy();
       expect(InvertedIndex.validateFile(wrongData)).toBeFalsy();
     });
-    it('should return the file content if a valid file was uploaded', () => {
+    it('should not return false if a valid file was uploaded', () => {
       expect(InvertedIndex.validateFile(validFile)).not.toBeFalsy();
       expect(InvertedIndex.validateFile(simpleValidFile)).not.toBeFalsy();
       expect(typeof InvertedIndex.validateFile(validFile)).toEqual('object');
     });
-    it('should return exact file content if the file is valid', () => {
+    it('should return the file content if the file is valid', () => {
       expect(InvertedIndex.validateFile(validFile)).toEqual(validFile);
-      expect(InvertedIndex.validateFile(simpleValidFile)).toEqual(simpleValidFile);
+      expect(InvertedIndex.validateFile(simpleValidFile))
+      .toEqual(simpleValidFile);
     });
   });
 
@@ -48,19 +49,18 @@ describe('InvertedIndex', () => {
       expect(InvertedIndex.tokenize('$A%^n*del)a %i=s @a$w&es$om#e%'))
       .toEqual(['andela', 'is', 'awesome']);
     });
-    it('should return words in lowercase', () => {
-      expect(InvertedIndex.tokenize('HI')).toEqual(['hi']);
+    it('should return lowercase words', () => {
+      expect(InvertedIndex.tokenize('HEllO WORLD')).toEqual(['hello', 'world']);
     });
   });
 
   describe('CreateIndex', () => {
     beforeAll(() => {
       this.filename = 'simpleValidFile.json';
-      this.check = index.createIndex(simpleValidFile, this.filename);
     });
 
     it('creates an index object from the file content', () => {
-      expect(this.check).toBeTruthy();
+      expect(index.createIndex(simpleValidFile, this.filename)).toBeTruthy();
       expect(typeof index.getIndex(this.filename)).toEqual('object');
     });
     it('returns false if file already exists', () => {
@@ -73,9 +73,12 @@ describe('InvertedIndex', () => {
       expect(index.getIndex(this.filename).bookTitles.length).toBe(3);
     });
     it('creates the correct index object', () => {
-      expect(index.getIndex(this.filename).words.alice).toEqual([true, false, false]);
-      expect(index.getIndex(this.filename).words.falls).toEqual([true, true, false]);
-      expect(index.getIndex(this.filename).words.alliance).toEqual([false, true, true]);
+      expect(index.getIndex(this.filename).words.alice)
+      .toEqual([true, false, false]);
+      expect(index.getIndex(this.filename).words.falls)
+      .toEqual([true, true, false]);
+      expect(index.getIndex(this.filename).words.alliance)
+      .toEqual([false, true, true]);
     });
     it('correctly stores all words in the file', () => {
       expect(index.getIndex(this.filename).allWords).toEqual(
@@ -85,7 +88,7 @@ describe('InvertedIndex', () => {
   });
 
   describe('GetIndex', () => {
-    it('should return correct index', () => {
+    it('should return the correct index', () => {
       expect(typeof index.getIndex('simpleValidFile.json')).toEqual('object');
       expect(index.getIndex(this.filename)).toEqual(
         {
@@ -98,7 +101,8 @@ describe('InvertedIndex', () => {
             an: [false, true, true],
             unusual: [false, true, true],
             alliance: [false, true, true],
-          }
+          },
+          filename: 'simpleValidFile.json'
         }
       );
     });
@@ -115,7 +119,8 @@ describe('InvertedIndex', () => {
       expect(index.searchIndex('alice', 'wrongData.json')).toBeFalsy();
     });
     it('should return return the correct search result', () => {
-      expect(typeof index.searchIndex('alice', this.filename)).toEqual('object');
+      expect(typeof index.searchIndex('alice', this.filename))
+      .toEqual('object');
       expect(index.searchIndex('alice hahaha unusual', this.filename)).toEqual(
         {
           bookTitles: ['Alice', 'Lord of the Rings', 'Rings'],
@@ -141,9 +146,10 @@ describe('InvertedIndex', () => {
     });
 
     it('should return an object containing the search results', () => {
-      expect(typeof index.searchAll('alice').files).toEqual('object');
+      expect(typeof index.searchAll('alice')).toEqual('object');
     });
-    it('object should contain an array of files that contains the search key', () => {
+    it('result should contain an array of files where the search key was found',
+    () => {
       expect(index.searchAll('alice').files).toEqual(
         ['simpleValidFile.json', 'validFile.json']
         );
