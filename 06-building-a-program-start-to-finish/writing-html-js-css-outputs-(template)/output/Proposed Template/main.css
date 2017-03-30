@@ -1,0 +1,30 @@
+#uploadedFilesSelect{
+	display: none;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none;
+}
+
+.verticalLine {
+  border-left: solid #006699;
+  min-height: 690px;
+	height: 100%;
+}
+.faq {
+ color: #428bca;
+}
+
+.navbarImg {
+	max-width: 100px; 
+	margin-top: -7px; 
+	margin-right: 100px;
+}
+
+.red {
+	color: red;
+}
+
+.green {
+	color: green;
+}
