@@ -4,4 +4,4 @@
 - **With**: *independently*
 
 #### Link to sucessful TravisCI build of my development branch
-[Link](https://github.com/andela-jomadoye/Inverted-index-repo)
+[Link](https://travis-ci.org/andela-jomadoye/Inverted-index-repo)
