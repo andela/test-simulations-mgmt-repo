@@ -1,23 +1,23 @@
 /* Test Setup */
 const myInvertedIndex = new InvertedIndexClass();
-const book = require('./../books.json');
-const emptyBook = require('./../bookempty.json');
-const wrongBook = require('./../bookwrongformat.json');
+const book = require('./../book.json');
+const bookempty = require('./../bookempty.json');
+const bookwrongformat = require('./../bookwrongformat.json');
 const notBook = require('./../notBook.json');
-const books = require('./../books3.json');
+const books3 = require('./../books3.json');
 
 myInvertedIndex.files['book.json'] = book;
-myInvertedIndex.files['books3.json'] = books;
+myInvertedIndex.files['books3.json'] = books3;
 
 /* Test Suites */
 describe('Inverted Index Test', () => {
   describe('ReadFile', () => {
     it('should return false when checking an empty JSON array', () => {
-      expect(myInvertedIndex.readFile(emptyBook))
+      expect(myInvertedIndex.readFile(bookempty))
         .toBeFalsy();
     });
     it('should return false when checking an wrongformatted JSON array', () => {
-      expect(myInvertedIndex.readFile(wrongBook))
+      expect(myInvertedIndex.readFile(bookwrongformat))
         .toBeFalsy();
     });
     it('should return false when book is not an array', () => {
@@ -39,8 +39,17 @@ describe('Inverted Index Test', () => {
         .toEqual(book);
     });
   });
-
-  describe('Show Index Table', () => {
+  describe('Validate File', () => {
+    it('should return false when file does not contain "title" & "text" format'
+    , () => {
+      expect(InvertedIndexClass.validateFile(bookwrongformat))
+      .toBeFalsy();
+    });
+  });
+  it('verifies that the JSON file is valid', () => {
+    expect(InvertedIndexClass.validateFile(book).length).toEqual(2);
+  });
+  describe('Create Index Table', () => {
     it('should ensure that index is created', () => {
       expect(myInvertedIndex.createIndex('book.json'))
         .toBeTruthy();
@@ -49,10 +58,18 @@ describe('Inverted Index Test', () => {
       expect(myInvertedIndex.createIndex('books3.json'))
         .toBeTruthy();
     });
-
+  });
+  describe('Get Index', () => {
     it('should ensure that index of a file is returned accurrately', () => {
       expect(myInvertedIndex.getIndex('book.json').alice)
       .toEqual([0]);
+    });
+  });
+  describe('Tokenize', () => {
+    it('should return correct terms in form of string in an array', () => {
+      expect(InvertedIndexClass.tokenize(books3[0].text))
+      .toEqual(['alice', 'falls', 'into', 'a', 'rabbit', 'hole', 'and',
+        'enters', 'a', 'world', 'full', 'of', 'imagination']);
     });
   });
 
