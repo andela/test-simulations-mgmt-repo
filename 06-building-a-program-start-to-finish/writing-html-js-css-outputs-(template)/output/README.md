@@ -5,8 +5,11 @@
 
 ##### A folder containing HTML, CSS< and JS files
 builds/  - all es6 javascript code
+
 lib/ - all es5 minified javascript code 
+
 css/ - stylesheet
+
 index.html - index page
 
 
