@@ -46,16 +46,15 @@ class InvertedIndexClass {
   getIndex(fileName) {
     return this.indexTable[fileName];
   }
-
   /**
-   * getTokens
+   * tokenization
    * Obtain an array of terms from a string
-   * @param {String} string get token from string
+   * @param {inputData} inputData get token from the string
    * @return {Object} An array of the generated token
    */
-  static tokenize(string) {
+  static tokenize(inputData) {
     this.invalidCharacters = /[^a-z0-9\s]/gi;
-    return string.replace(this.invalidCharacters, ' ')
+    return inputData.replace(this.invalidCharacters, ' ')
       .toLowerCase()
       .split(' ')
       .filter(word => (
@@ -76,7 +75,7 @@ class InvertedIndexClass {
       InvertedIndexClass.tokenize(searchTerms);
     fileTitle.forEach((currentFile) => {
       allSearchTerms.forEach((term) => {
-        if (Object.hasOwnProperty.call(this.indexTable[currentFile], term)) {
+        if (Object.prototype.hasOwnProperty.call(this.indexTable[currentFile], term)) {
           if (currentFile in this.result) {
             this.result[currentFile][term] = this.indexTable[currentFile][term];
           } else {
@@ -88,17 +87,17 @@ class InvertedIndexClass {
     });
     return Object.keys(this.result).length > 0 ? this.result : false;
   }
+
   /**
    *validateJsonContent.
    *@param {Object} inputFile
    *@return {Boolean} true or false
   */
   static validateFile(inputFile) {
-    try {
-      return inputFile[0].title && inputFile[0].text;
-    } catch (e) {
-      return false;
+    if (inputFile[0].text && inputFile[0].title) {
+      return inputFile;
     }
+    return false;
   }
   /**
    * readFile
@@ -114,8 +113,9 @@ class InvertedIndexClass {
 
     try {
       inputFile.forEach((thisBook) => {
-        const hasTitle = Object.hasOwnProperty.call(thisBook, 'title');
-        const hasText = Object.hasOwnProperty.call(thisBook, 'text');
+        const hasTitle = Object.prototype.hasOwnProperty.call(thisBook,
+        'title');
+        const hasText = Object.prototype.hasOwnProperty.call(thisBook, 'text');
         if (!(hasTitle && hasText)) {
           this.inputFile = null;
         }
