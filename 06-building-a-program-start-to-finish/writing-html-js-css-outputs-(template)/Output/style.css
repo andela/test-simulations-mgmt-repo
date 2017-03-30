@@ -1,0 +1,49 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url("../images/valley-landscape.jpg");
+}
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+      display: none;
+}
+
+.navbar {
+  border-radius: 0 !important;
+  background: #283e4a;
+  border: none;
+  /*padding-top: 15px;*/
+}
+
+.navbar-brand {
+  color: #FFF !important;
+  text-shadow: 2px 3px 6px #000 !important;
+  font-size: 30px
+}
+.row {
+  padding: 1em;
+  margin: 1em auto;
+}
+.nav-block {
+  width: 100% auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.search-box, .select-search, .button-search {
+  margin-top: 10px;
+  /*border: none;*/
+  /*border-bottom: 3px solid #ccc;*/
+  /*border-radius: 0 !important;*/
+  outline: none;
+  height: 40px;
+}
+
+.search-box:hover, .search-box:focus {
+  border-bottom: 3px solid orange;
+  outline:none;
+}
+
+.wellup{
+  background-color: #f5f5f5;
+}
