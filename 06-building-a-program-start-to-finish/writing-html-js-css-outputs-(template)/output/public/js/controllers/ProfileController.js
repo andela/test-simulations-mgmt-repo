@@ -46,21 +46,17 @@ function profileCtrl($scope, $http, $rootScope, $location, $timeout) {
   $scope.$on('$routeChangeSuccess', () => {
     $('.modal').modal();
     $('.modal-overlay').css('display', 'none');
-    if (localStorage.getItem(`${$rootScope.currentUser._id}-index`)) {
-      const indexData = JSON.parse(localStorage.getItem(
-        `${$rootScope.currentUser._id}-index`));
-      $scope.invertedIndex = $scope.unserialize(indexData);
-      $scope.uploadedFilenames = {};
-      $scope.invertedIndex.filenames.forEach((filename) => {
-        $scope.uploadedFilenames[filename] = false;
-      });
-    } else {
-      $scope.readFromDatabase();
-      if ($scope.invertedIndex) {
+    if ($rootScope.currentUser) {
+      if (localStorage.getItem(`${$rootScope.currentUser._id}-index`)) {
+        const indexData = JSON.parse(localStorage.getItem(
+          `${$rootScope.currentUser._id}-index`));
+        $scope.invertedIndex = $scope.unserialize(indexData);
         $scope.uploadedFilenames = {};
         $scope.invertedIndex.filenames.forEach((filename) => {
           $scope.uploadedFilenames[filename] = false;
         });
+      } else {
+        $scope.readFromDatabase();
       }
     }
   });
@@ -81,8 +77,10 @@ function profileCtrl($scope, $http, $rootScope, $location, $timeout) {
         });
       });
       $scope.uploadedFiles = [];
-      localStorage.setItem(`${$rootScope.currentUser._id}-index`,
+      if ($rootScope.currentUser) {
+        localStorage.setItem(`${$rootScope.currentUser._id}-index`,
         $scope.serialize());
+      }
     }
   };
   $scope.showIndex = (filename) => {
@@ -92,21 +90,26 @@ function profileCtrl($scope, $http, $rootScope, $location, $timeout) {
     $('#viewindex').modal('open');
   };
   $scope.search = () => {
-    $scope.filesToSearch = [];
-    Object.keys($scope.uploadedFilenames).forEach((filename) => {
-      if ($scope.uploadedFilenames[filename]) {
-        $scope.filesToSearch.push(filename);
-      }
-    });
-    if ($scope.filesToSearch.length === 0) {
-      $scope.alert('Please select at least one file to be searched');
+    if (!$scope.keywords ||
+    InvertedIndex.tokenize($scope.keywords).length === 0) {
+      $scope.alert('Please enter a keyword(s) to search for.');
     } else {
-      $scope.searchResults = $scope.invertedIndex
-        .searchIndex($scope.keywords, $scope.filesToSearch);
-      if ($.isEmptyObject($scope.searchResults.results)) {
-        $scope.alert(`"${$scope.keywords}" not found in any selected files.`);
+      $scope.filesToSearch = [];
+      Object.keys($scope.uploadedFilenames).forEach((filename) => {
+        if ($scope.uploadedFilenames[filename]) {
+          $scope.filesToSearch.push(filename);
+        }
+      });
+      if ($scope.filesToSearch.length === 0) {
+        $scope.alert('Please select at least one file to be searched');
       } else {
-        $('#viewsearchresults').modal('open');
+        $scope.searchResults = $scope.invertedIndex
+          .searchIndex($scope.keywords, $scope.filesToSearch);
+        if ($.isEmptyObject($scope.searchResults.results)) {
+          $scope.alert(`"${$scope.keywords}" not found in any selected files.`);
+        } else {
+          $('#viewsearchresults').modal('open');
+        }
       }
     }
   };
@@ -121,11 +124,13 @@ function profileCtrl($scope, $http, $rootScope, $location, $timeout) {
       $(`#checkbox-${$scope.getValidID(filename)}-preloader`)
         .removeClass('active');
       if (res.status === 201) {
-        $scope.alert(`${filename} saved successfully!`);
+        $scope.alert(`${filename} saved to cloud successfully!`);
       } else if (res.status === 204) {
-        $scope.alert(`${filename} has already been saved!`);
+        $scope.alert(`${filename} has already been saved to cloud!`);
       }
     }, (err) => {
+      $(`#checkbox-${$scope.getValidID(filename)}-preloader`)
+        .removeClass('active');
       Materialize.toast(err.message, 5000, 'red rounded');
     });
   };
@@ -135,18 +140,49 @@ function profileCtrl($scope, $http, $rootScope, $location, $timeout) {
     }).then((res) => {
       if (res.data) {
         $scope.invertedIndex = $scope.unserialize(res.data);
+        $scope.uploadedFilenames = {};
+        $scope.invertedIndex.filenames.forEach((filename) => {
+          $scope.uploadedFilenames[filename] = false;
+        });
       }
     }, (err) => {
       Materialize.toast(err.message, 5000, 'red rounded');
     });
   };
+  $scope.deleteFromDatabase = (filename) => {
+    $(`#checkbox-${$scope.getValidID(filename)}-preloader`).addClass('active');
+    $http.post('/deleteIndex', {
+      username: $rootScope.currentUser.username,
+      filename
+    }).then((res) => {
+      $(`#checkbox-${$scope.getValidID(filename)}-preloader`)
+        .removeClass('active');
+      if (res.status === 201) {
+        $scope.alert(`${filename} deleted from cloud successfully!`);
+      } else if (res.status === 200) {
+        $scope.alert(`${filename} has already been deleted from cloud!`);
+      }
+    }, (err) => {
+      $(`#checkbox-${$scope.getValidID(filename)}-preloader`)
+        .removeClass('active');
+      Materialize.toast(err.message, 5000, 'red rounded');
+    });
+    $('.tooltipped').tooltip('remove');
+  };
+  $scope.deleteFromAll = (filename) => {
+    $scope.invertedIndex.removeIndex(filename);
+    if ($rootScope.currentUser) {
+      localStorage.setItem(`${$rootScope.currentUser._id}-index`,
+        $scope.serialize());
+      $scope.deleteFromDatabase(filename);
+    }
+    $('.tooltipped').tooltip('remove');
+  };
   $scope.alert = (message) => {
     document.getElementById('alertMessage').innerHTML = message;
     $('#alert').modal('open');
   };
-  $scope.getValidID = (str) => {
-    return str.replace(/[. ]/g, '_');
-  };
+  $scope.getValidID = str => (str.replace(/[. ]/g, '_'));
   $scope.serialize = () => (
     JSON.stringify({
       filenames: $scope.invertedIndex.filenames,

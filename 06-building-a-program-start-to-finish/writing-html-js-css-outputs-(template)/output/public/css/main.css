@@ -4,12 +4,6 @@ body {
   flex-direction: column;
 }
 
-.btn-floating {
-  position:absolute;
-  top:-10px;
-  right:-10px;
-}
-
 .carousel .indicators .indicator-item {
   background-color: #424242;
 }
@@ -146,6 +140,12 @@ main {
 
 .modal .modal-content {
   padding: 10px;
+}
+
+.modal-close {
+  position:absolute;
+  top:-10px;
+  right:-10px;
 }
 
 .padding-10 {

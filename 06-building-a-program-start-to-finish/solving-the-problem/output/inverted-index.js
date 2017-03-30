@@ -1,3 +1,6 @@
+const FileAPI = require('file-api');
+
+const FileReader = FileAPI.FileReader;
 /**
  * An implementation of the inverted index data structure.
  * @author Princess-Jewel Essien <princess-jewel.essien@andela.com>
@@ -40,13 +43,30 @@ class InvertedIndex {
   }
 
   /**
+   * Removes the index for the books in a specified file.
+   * @param {String} filename - The name of the file to be removed
+   * @return {void}
+   */
+  removeIndex(filename) {
+    const fileIndex = this.filenames.indexOf(filename);
+    if (fileIndex > -1) {
+      this.filenames.splice(fileIndex, 1);
+      this.titles.splice(fileIndex, 1);
+      this.indices.splice(fileIndex, 1);
+    }
+  }
+
+  /**
    * Gets the index for a particular file.
    * @param {String} filename - Name of the file to be retrieved
    * @returns {Object} - Index for a file
    */
   getIndex(filename) {
     const fileIndex = this.filenames.indexOf(filename);
-    return this.indices[fileIndex];
+    if (fileIndex > -1) {
+      return this.indices[fileIndex];
+    }
+    return null;
   }
 
   /**

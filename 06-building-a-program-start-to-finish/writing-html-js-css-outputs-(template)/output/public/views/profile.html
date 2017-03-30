@@ -3,8 +3,8 @@
     <nav>
       <div class="nav-wrapper grey lighten-2">
         <img class="logo-icon" src="img/icons/logo-dark.ico" />
-        <a class="brand-logo grey-text text-darken-3">Welcome, {{ currentUser.name || currentUser.username }}</a>
-        <ul id="nav-mobile" class="right">
+        <a class="brand-logo grey-text text-darken-3">Welcome, {{ currentUser.name || currentUser.username || 'Guest' }}</a>
+        <ul id="nav-mobile" class="right" ng-show="currentUser">
           <li><a class="btn waves-effect grey darken-3 grey-text text-lighten-2" ng-click="signout()">Sign Out</a></li>
         </ul>
       </div>
@@ -56,24 +56,33 @@
               <div ng-hide="!invertedIndex" class="height-90 scroll">
                 <form>
                   <div class="row input-field">
-                    <div class="col s8">
-                      <input id="search" type="search" class="transparent" ng-model="keywords" required/>
-                      <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                    <div class="col s9 offset-s1">
+                      <input id="search" type="search" placeholder="Search" class="transparent" ng-model="keywords" required/>
                     </div>
-                    <div class="col s4">
-                      <a class="btn waves-effect grey darken-3 grey-text text-lighten-2" ng-click="search()">Search</a>
+                    <div class="col s1">
+                      <a class="btn-floating waves-effect grey darken-3 grey-text text-lighten-2" ng-click="search()">
+                        <i class="material-icons">search</i>
+                      </a>
                     </div>
                   </div>
                 </form>
-                <table class="responsive-table">
-                  <tr ng-repeat="filename in invertedIndex.filenames">
+                <table>
+                  <tr ng-repeat="filename in invertedIndex.filenames" show-tooltips>
                     <td>
                       <input id="{{ 'checkbox-' + filename }}" type="checkbox" class="filled-in checkbox-dark" ng-model="uploadedFilenames[filename]" />
                       <label for="{{ 'checkbox-' + filename }}">&nbsp</label>
                     </td>
                     <td>{{ filename }}</td>
                     <td>
-                      <i class="material-icons clickable grey-text text-darken-3" ng-click="saveToDatabase(filename)">save</i>
+                      <i class="tooltipped material-icons clickable grey-text text-darken-3" ng-click="saveToDatabase(filename)" ng-show="currentUser"
+                      data-position="top" data-delay="50" data-tooltip="Save this file to the cloud">backup</i>
+                      &nbsp
+                      <i class="tooltipped material-icons clickable grey-text text-darken-3" ng-click="deleteFromDatabase(filename)" ng-show="currentUser"
+                      data-position="top" data-delay="50" data-tooltip="Delete this file from the cloud">delete</i>
+                      &nbsp
+                      <i class="tooltipped material-icons clickable grey-text text-darken-3" ng-click="deleteFromAll(filename)" data-position="top"
+                      data-delay="50" data-tooltip="Completely delete this file">delete_forever</i>
+                      &nbsp
                       <span id="{{ 'checkbox-' + getValidID(filename) + '-preloader' }}" class="preloader-wrapper small right">
                         <div class="spinner-layer spinner-green-only">
                           <div class="circle-clipper left">
@@ -86,7 +95,8 @@
                         </div>
                       </span>
                     </td>
-                    <td class="right"><a class="btn waves-effect grey darken-3 grey-text text-lighten-2" ng-click="showIndex(filename)">View Index</a></td>
+                    <td><a class="btn-floating btn-small tooltipped waves-effect grey darken-3 grey-text text-lighten-2" ng-click="showIndex(filename)"
+                    data-position="top" data-delay="50" data-tooltip="View index for this file"><i class="material-icons">visibility</i></a></td>
                   </tr>
                 </table>
               </div>

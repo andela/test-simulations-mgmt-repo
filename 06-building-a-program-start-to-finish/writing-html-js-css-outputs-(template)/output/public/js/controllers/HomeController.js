@@ -1,12 +1,5 @@
 app.controller('HomeController',
 function homeCtrl($scope, $http, $rootScope, $location) {
-  $(document).keydown((e) => {
-    if (e.keyCode === 37) {
-      $('.carousel.carousel-slider').carousel('prev');
-    } else if (e.keyCode === 39) {
-      $('.carousel.carousel-slider').carousel('next');
-    }
-  });
   $scope.$on('$routeChangeSuccess', () => {
     $('.modal').modal();
     $('.carousel.carousel-slider').carousel({
