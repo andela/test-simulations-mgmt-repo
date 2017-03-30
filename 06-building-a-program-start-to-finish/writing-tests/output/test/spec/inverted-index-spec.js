@@ -1,8 +1,20 @@
-
-const InvertedIndex = require('../../public/js/inverted-index.js');
+const InvertedIndex = require('../../src/inverted-index.js');
 const samples = require('../samples');
+const FileAPI = require('file-api');
+
+const File = FileAPI.File;
 
 describe('Inverted Index Test Suite: ', () => {
+  describe('Reading file data: ', () => {
+    it('should read and return the contents of a file via callback', (done) => {
+      const file = new File('./validBooks.json');
+      InvertedIndex.readFile(file, (event) => {
+        expect(JSON.parse(event.target.result)).toEqual(samples.validBooks);
+        done();
+      })
+    });
+  });
+
   describe('Validation of file data: ', () => {
     it('should return false if book data is not an array of object literals', () => {
       expect(InvertedIndex.validateFile('andela')).toBe(false);
@@ -29,7 +41,7 @@ describe('Inverted Index Test Suite: ', () => {
     });
   });
 
-  describe('Index creation: ', () => {
+  describe('Index creation/removal: ', () => {
     beforeEach(() => {
       this.invertedIndex = new InvertedIndex();
       this.invertedIndex.createIndex(samples.validBooks, 'validBooks.json');
@@ -47,6 +59,13 @@ describe('Inverted Index Test Suite: ', () => {
     it('should add books from newly uploaded files to the existing inverted index', () => {
       expect(this.invertedIndex.getTitles('extraBooks.json')).toEqual(samples.extraTitles);
       expect(this.invertedIndex.getIndex('extraBooks.json')).toEqual(samples.extraIndex);
+    });
+
+    it('should be able to remove added books from the existing inverted index', () => {
+      this.invertedIndex.removeIndex('validBooks.json');
+      expect(this.invertedIndex.indices.length).toEqual(1);
+      expect(this.invertedIndex.indices[0]).toEqual(samples.extraIndex);
+      expect(this.invertedIndex.getIndex('validBooks.json')).toEqual(null);
     });
   });
 
