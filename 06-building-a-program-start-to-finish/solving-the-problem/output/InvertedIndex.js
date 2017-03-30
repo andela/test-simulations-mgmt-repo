@@ -11,7 +11,7 @@ class InvertedIndex {
    * @constructor
    */
   constructor() {
-    this.filenames = [];
+    this.fileNames = [];
     this.titles = [];
     this.indices = [];
   }
@@ -19,38 +19,49 @@ class InvertedIndex {
   /**
    * Creates an index for an array of books.
    * @param {Array} books - The books to be indexed
-   * @param {String} filename - The name of the file the books come from
+   * @param {String} fileName - The name of the file the books come from
    * @return {void}
    */
-  createIndex(books, filename) {
-    this.filenames.push(filename);
+  createIndex(books, fileName) {
+    this.fileNames.push(fileName);
     const titles = [];
     const index = {};
-    for (let i = 0; i < books.length; i += 1) {
-      titles.push(books[i].title);
-      const bookTokens =
-        InvertedIndex.tokenize(`${books[i].title} ${books[i].text}`);
-      for (let j = 0; j < bookTokens.length; j += 1) {
-        if (bookTokens[j] in index) {
-          index[bookTokens[j]].push(books[i].title);
+    // for (let i = 0; i < books.length; i += 1) {
+    //   titles.push(books[i].title);
+    //   const bookTokens =
+    //     InvertedIndex.tokenize(`${books[i].title} ${books[i].text}`);
+    //   for (let j = 0; j < bookTokens.length; j += 1) {
+    //     if (bookTokens[j] in index) {
+    //       index[bookTokens[j]].push(books[i].title);
+    //     } else {
+    //       index[bookTokens[j]] = [books[i].title];
+    //     }
+    //   }
+    // }
+    books.forEach((book) => {
+      titles.push(book.title);
+      const tokens = InvertedIndex.tokenize(`${book.title} ${book.text}`);
+      tokens.forEach((token) => {
+        if (token in index) {
+          index[token].push(book.title);
         } else {
-          index[bookTokens[j]] = [books[i].title];
+          index[token] = [book.title];
         }
-      }
-    }
+      });
+    });
     this.titles.push(titles);
     this.indices.push(index);
   }
 
   /**
    * Removes the index for the books in a specified file.
-   * @param {String} filename - The name of the file to be removed
+   * @param {String} fileName - The name of the file to be removed
    * @return {void}
    */
-  removeIndex(filename) {
-    const fileIndex = this.filenames.indexOf(filename);
+  removeIndex(fileName) {
+    const fileIndex = this.fileNames.indexOf(fileName);
     if (fileIndex > -1) {
-      this.filenames.splice(fileIndex, 1);
+      this.fileNames.splice(fileIndex, 1);
       this.titles.splice(fileIndex, 1);
       this.indices.splice(fileIndex, 1);
     }
@@ -58,11 +69,11 @@ class InvertedIndex {
 
   /**
    * Gets the index for a particular file.
-   * @param {String} filename - Name of the file to be retrieved
+   * @param {String} fileName - Name of the file to be retrieved
    * @returns {Object} - Index for a file
    */
-  getIndex(filename) {
-    const fileIndex = this.filenames.indexOf(filename);
+  getIndex(fileName) {
+    const fileIndex = this.fileNames.indexOf(fileName);
     if (fileIndex > -1) {
       return this.indices[fileIndex];
     }
@@ -71,29 +82,29 @@ class InvertedIndex {
 
   /**
    * Gets the titles for a particular file.
-   * @param {String} filename - Name of the file to be retrieved
+   * @param {String} fileName - Name of the file to be retrieved
    * @returns {Array} - Titles in a file
    */
-  getTitles(filename) {
-    const fileIndex = this.filenames.indexOf(filename);
+  getTitles(fileName) {
+    const fileIndex = this.fileNames.indexOf(fileName);
     return this.titles[fileIndex];
   }
 
   /**
    * Searches the inverted index for (a) given keyword(s).
    * @param {String} keywords - String of keyword(s) to search for
-   * @param {Array} filenames - Names of files to be searched
+   * @param {Array} fileNames - Names of files to be searched
    * @returns {Object} resultIndex - Object literal containing matching books
    */
-  searchIndex(keywords, filenames) {
+  searchIndex(keywords, fileNames) {
     const keyTokens = InvertedIndex.tokenize(keywords).sort();
     const resultIndex = {
       results: {},
       titles: []
     };
     keyTokens.forEach((token) => {
-      filenames.forEach((filename) => {
-        const fileIndex = this.filenames.indexOf(filename);
+      fileNames.forEach((fileName) => {
+        const fileIndex = this.fileNames.indexOf(fileName);
         if (this.indices[fileIndex][token]) {
           resultIndex.titles = [...new Set([...resultIndex.titles,
             ...this.indices[fileIndex][token]])];
@@ -130,27 +141,27 @@ class InvertedIndex {
    * @static
    */
   static validateFile(fileData) {
+    let isValid = true;
     if (Array.isArray(fileData) && fileData.length > 0) {
-      for (let i = 0; i < fileData.length; i += 1) {
-        if (typeof fileData[i] !== 'object' || !fileData[i].title ||
-        !fileData[i].text) {
-          return false;
+      fileData.forEach((data) => {
+        if (typeof data !== 'object' || !data.title || !data.text) {
+          isValid = false;
         }
-      }
-
-      return true;
+      });
+    } else {
+      isValid = false;
     }
-    return false;
+    return isValid;
   }
 
   /**
    * Parses a passed string into unique tokens (individual words).
-   * @param {String} str - Sttring to be tokenized
+   * @param {String} text - String to be tokenized
    * @returns {Array} - An array of unique tokens
    * @static
    */
-  static tokenize(str) {
-    return [...new Set(str.toLowerCase()
+  static tokenize(text) {
+    return [...new Set(text.toLowerCase()
       .replace(/[^\s\w]|_/g, '')
       .split(/\s+/))];
   }

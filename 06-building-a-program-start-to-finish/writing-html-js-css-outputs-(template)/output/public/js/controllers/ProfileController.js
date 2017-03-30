@@ -51,9 +51,9 @@ function profileCtrl($scope, $http, $rootScope, $location, $timeout) {
         const indexData = JSON.parse(localStorage.getItem(
           `${$rootScope.currentUser._id}-index`));
         $scope.invertedIndex = $scope.unserialize(indexData);
-        $scope.uploadedFilenames = {};
-        $scope.invertedIndex.filenames.forEach((filename) => {
-          $scope.uploadedFilenames[filename] = false;
+        $scope.uploadedFileNames = {};
+        $scope.invertedIndex.fileNames.forEach((fileName) => {
+          $scope.uploadedFileNames[fileName] = false;
         });
       } else {
         $scope.readFromDatabase();
@@ -69,11 +69,11 @@ function profileCtrl($scope, $http, $rootScope, $location, $timeout) {
           $scope.invertedIndex = new InvertedIndex();
         }
         $scope.invertedIndex.createIndex(file.data, file.name);
-        if (!$scope.uploadedFilenames) {
-          $scope.uploadedFilenames = {};
+        if (!$scope.uploadedFileNames) {
+          $scope.uploadedFileNames = {};
         }
-        $scope.invertedIndex.filenames.forEach((filename) => {
-          $scope.uploadedFilenames[filename] = false;
+        $scope.invertedIndex.fileNames.forEach((fileName) => {
+          $scope.uploadedFileNames[fileName] = false;
         });
       });
       $scope.uploadedFiles = [];
@@ -83,10 +83,10 @@ function profileCtrl($scope, $http, $rootScope, $location, $timeout) {
       }
     }
   };
-  $scope.showIndex = (filename) => {
-    $scope.currentFilename = filename;
-    $scope.currentTitles = $scope.invertedIndex.getTitles(filename);
-    $scope.currentIndex = $scope.invertedIndex.getIndex(filename);
+  $scope.showIndex = (fileName) => {
+    $scope.currentFileName = fileName;
+    $scope.currentTitles = $scope.invertedIndex.getTitles(fileName);
+    $scope.currentIndex = $scope.invertedIndex.getIndex(fileName);
     $('#viewindex').modal('open');
   };
   $scope.search = () => {
@@ -95,9 +95,9 @@ function profileCtrl($scope, $http, $rootScope, $location, $timeout) {
       $scope.alert('Please enter a keyword(s) to search for.');
     } else {
       $scope.filesToSearch = [];
-      Object.keys($scope.uploadedFilenames).forEach((filename) => {
-        if ($scope.uploadedFilenames[filename]) {
-          $scope.filesToSearch.push(filename);
+      Object.keys($scope.uploadedFileNames).forEach((fileName) => {
+        if ($scope.uploadedFileNames[fileName]) {
+          $scope.filesToSearch.push(fileName);
         }
       });
       if ($scope.filesToSearch.length === 0) {
@@ -113,23 +113,23 @@ function profileCtrl($scope, $http, $rootScope, $location, $timeout) {
       }
     }
   };
-  $scope.saveToDatabase = (filename) => {
-    $(`#checkbox-${$scope.getValidID(filename)}-preloader`).addClass('active');
+  $scope.saveToDatabase = (fileName) => {
+    $(`#checkbox-${$scope.getValidID(fileName)}-preloader`).addClass('active');
     $http.post('/saveIndex', {
       username: $rootScope.currentUser.username,
-      filename,
-      titles: $scope.invertedIndex.getTitles(filename),
-      index: $scope.invertedIndex.getIndex(filename),
+      fileName,
+      titles: $scope.invertedIndex.getTitles(fileName),
+      index: $scope.invertedIndex.getIndex(fileName),
     }).then((res) => {
-      $(`#checkbox-${$scope.getValidID(filename)}-preloader`)
+      $(`#checkbox-${$scope.getValidID(fileName)}-preloader`)
         .removeClass('active');
       if (res.status === 201) {
-        $scope.alert(`${filename} saved to cloud successfully!`);
+        $scope.alert(`${fileName} saved to cloud successfully!`);
       } else if (res.status === 204) {
-        $scope.alert(`${filename} has already been saved to cloud!`);
+        $scope.alert(`${fileName} has already been saved to cloud!`);
       }
     }, (err) => {
-      $(`#checkbox-${$scope.getValidID(filename)}-preloader`)
+      $(`#checkbox-${$scope.getValidID(fileName)}-preloader`)
         .removeClass('active');
       Materialize.toast(err.message, 5000, 'red rounded');
     });
@@ -140,41 +140,41 @@ function profileCtrl($scope, $http, $rootScope, $location, $timeout) {
     }).then((res) => {
       if (res.data) {
         $scope.invertedIndex = $scope.unserialize(res.data);
-        $scope.uploadedFilenames = {};
-        $scope.invertedIndex.filenames.forEach((filename) => {
-          $scope.uploadedFilenames[filename] = false;
+        $scope.uploadedFileNames = {};
+        $scope.invertedIndex.fileNames.forEach((fileName) => {
+          $scope.uploadedFileNames[fileName] = false;
         });
       }
     }, (err) => {
       Materialize.toast(err.message, 5000, 'red rounded');
     });
   };
-  $scope.deleteFromDatabase = (filename) => {
-    $(`#checkbox-${$scope.getValidID(filename)}-preloader`).addClass('active');
+  $scope.deleteFromDatabase = (fileName) => {
+    $(`#checkbox-${$scope.getValidID(fileName)}-preloader`).addClass('active');
     $http.post('/deleteIndex', {
       username: $rootScope.currentUser.username,
-      filename
+      fileName
     }).then((res) => {
-      $(`#checkbox-${$scope.getValidID(filename)}-preloader`)
+      $(`#checkbox-${$scope.getValidID(fileName)}-preloader`)
         .removeClass('active');
       if (res.status === 201) {
-        $scope.alert(`${filename} deleted from cloud successfully!`);
+        $scope.alert(`${fileName} deleted from cloud successfully!`);
       } else if (res.status === 200) {
-        $scope.alert(`${filename} has already been deleted from cloud!`);
+        $scope.alert(`${fileName} has already been deleted from cloud!`);
       }
     }, (err) => {
-      $(`#checkbox-${$scope.getValidID(filename)}-preloader`)
+      $(`#checkbox-${$scope.getValidID(fileName)}-preloader`)
         .removeClass('active');
       Materialize.toast(err.message, 5000, 'red rounded');
     });
     $('.tooltipped').tooltip('remove');
   };
-  $scope.deleteFromAll = (filename) => {
-    $scope.invertedIndex.removeIndex(filename);
+  $scope.deleteFromAll = (fileName) => {
+    $scope.invertedIndex.removeIndex(fileName);
     if ($rootScope.currentUser) {
       localStorage.setItem(`${$rootScope.currentUser._id}-index`,
         $scope.serialize());
-      $scope.deleteFromDatabase(filename);
+      $scope.deleteFromDatabase(fileName);
     }
     $('.tooltipped').tooltip('remove');
   };
@@ -185,14 +185,14 @@ function profileCtrl($scope, $http, $rootScope, $location, $timeout) {
   $scope.getValidID = str => (str.replace(/[. ]/g, '_'));
   $scope.serialize = () => (
     JSON.stringify({
-      filenames: $scope.invertedIndex.filenames,
+      fileNames: $scope.invertedIndex.fileNames,
       titles: $scope.invertedIndex.titles,
       indices: $scope.invertedIndex.indices
     })
   );
   $scope.unserialize = (data) => {
     const invertedIndex = new InvertedIndex();
-    invertedIndex.filenames = data.filenames;
+    invertedIndex.fileNames = data.fileNames;
     invertedIndex.titles = data.titles;
     invertedIndex.indices = data.indices;
     return invertedIndex;

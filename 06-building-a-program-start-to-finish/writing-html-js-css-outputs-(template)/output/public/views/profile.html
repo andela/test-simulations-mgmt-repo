@@ -67,23 +67,23 @@
                   </div>
                 </form>
                 <table>
-                  <tr ng-repeat="filename in invertedIndex.filenames" show-tooltips>
+                  <tr ng-repeat="fileName in invertedIndex.fileNames" show-tooltips>
                     <td>
-                      <input id="{{ 'checkbox-' + filename }}" type="checkbox" class="filled-in checkbox-dark" ng-model="uploadedFilenames[filename]" />
-                      <label for="{{ 'checkbox-' + filename }}">&nbsp</label>
+                      <input id="{{ 'checkbox-' + fileName }}" type="checkbox" class="filled-in checkbox-dark" ng-model="uploadedFilenames[fileName]" />
+                      <label for="{{ 'checkbox-' + fileName }}">&nbsp</label>
                     </td>
-                    <td>{{ filename }}</td>
+                    <td>{{ fileName }}</td>
                     <td>
-                      <i class="tooltipped material-icons clickable grey-text text-darken-3" ng-click="saveToDatabase(filename)" ng-show="currentUser"
+                      <i class="tooltipped material-icons clickable grey-text text-darken-3" ng-click="saveToDatabase(fileName)" ng-show="currentUser"
                       data-position="top" data-delay="50" data-tooltip="Save this file to the cloud">backup</i>
                       &nbsp
-                      <i class="tooltipped material-icons clickable grey-text text-darken-3" ng-click="deleteFromDatabase(filename)" ng-show="currentUser"
+                      <i class="tooltipped material-icons clickable grey-text text-darken-3" ng-click="deleteFromDatabase(fileName)" ng-show="currentUser"
                       data-position="top" data-delay="50" data-tooltip="Delete this file from the cloud">delete</i>
                       &nbsp
-                      <i class="tooltipped material-icons clickable grey-text text-darken-3" ng-click="deleteFromAll(filename)" data-position="top"
+                      <i class="tooltipped material-icons clickable grey-text text-darken-3" ng-click="deleteFromAll(fileName)" data-position="top"
                       data-delay="50" data-tooltip="Completely delete this file">delete_forever</i>
                       &nbsp
-                      <span id="{{ 'checkbox-' + getValidID(filename) + '-preloader' }}" class="preloader-wrapper small right">
+                      <span id="{{ 'checkbox-' + getValidID(fileName) + '-preloader' }}" class="preloader-wrapper small right">
                         <div class="spinner-layer spinner-green-only">
                           <div class="circle-clipper left">
                             <div class="circle"></div>
@@ -95,7 +95,7 @@
                         </div>
                       </span>
                     </td>
-                    <td><a class="btn-floating btn-small tooltipped waves-effect grey darken-3 grey-text text-lighten-2" ng-click="showIndex(filename)"
+                    <td><a class="btn-floating btn-small tooltipped waves-effect grey darken-3 grey-text text-lighten-2" ng-click="showIndex(fileName)"
                     data-position="top" data-delay="50" data-tooltip="View index for this file"><i class="material-icons">visibility</i></a></td>
                   </tr>
                 </table>

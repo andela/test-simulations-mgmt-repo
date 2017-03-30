@@ -1,4 +1,4 @@
-const InvertedIndex = require('../../src/inverted-index.js');
+const InvertedIndex = require('../../src/InvertedIndex.js');
 const samples = require('../samples');
 const FileAPI = require('file-api');
 
@@ -38,6 +38,11 @@ describe('Inverted Index Test Suite: ', () => {
   describe('Tokenization: ', () => {
     it('should return the correct tokens for a given string', () => {
       expect(InvertedIndex.tokenize(samples.validBooks[0].text)).toEqual(samples.tokens);
+    });
+
+    it('should remove special characters and extra whitespaces from a string', () => {
+      expect(InvertedIndex.tokenize('I was giv%en $100 today!   (@ the *ma^ll)'))
+        .toEqual(['i', 'was', 'given', '100', 'today', 'the', 'mall']);
     });
   });
 
