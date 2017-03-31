@@ -47,7 +47,7 @@ class InvertedIndexClass {
   /**
    * tokenization
    * Obtain an array of terms from a string
-   * @param {inputData} inputData get token from the string
+   * @param {inputData} inputData The filecontent to be tokenized
    * @return {Object} An array of the generated token
    */
   static tokenize(inputData) {
