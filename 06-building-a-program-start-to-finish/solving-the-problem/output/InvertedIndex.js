@@ -15,34 +15,31 @@ class InvertedIndex {
    * Validates file content
    * @function
    * @param {Array} fileContent content of uploaded file
-   * @return {Array|Boolean} valid fileContent or false if invalid file
+   * @return {Boolean} true if a valid file was uploaded, false otherwise
    */
   static validateFile(fileContent) {
-    if (!(fileContent instanceof Array) || fileContent.length < 1) {
-      return false;
+    if ((fileContent instanceof Array) && fileContent.length > 0) {
+      let valid = true;
+      fileContent.forEach((book) => {
+        if (!(book.title && book.text)) {
+          valid = false;
+          return;
+        }
+        if (book.text.length < 1) valid = false;
+      });
+      return valid;
     }
-
-    let invalid = false;
-    fileContent.forEach((book) => {
-      if (!(book.title && book.text)) {
-        invalid = true;
-        return;
-      }
-      if (book.text.length < 1) invalid = true;
-    });
-
-    if (invalid) return false;
-    return fileContent;
+    return false;
   }
 
   /**
-   * Strips out special characters and removes duplicate words
+   * Strips out special characters and numbers, also removes duplicate words
    * @function
    * @param {String} text text from the book
    * @return {Array} An array of unique words in the text
    */
   static tokenize(text) {
-    return text.replace(/[^\w\s-]/g, '')
+    return text.replace(/[^A-Za-z\s-]/g, '')
       .toLowerCase().split(/\s+/)
       .filter((word, index, collection) => collection.indexOf(word) === index);
   }
@@ -52,7 +49,7 @@ class InvertedIndex {
    * @function
    * @param {Array} fileContent content of uploaded file
    * @param {String} filename name of uploaded file
-   * @return {boolean} true if file index was successfully created, else false
+   * @return {Boolean} true if file index was successfully created, else false
    */
   createIndex(fileContent, filename) {
     if (this.files.indexOf(filename) !== -1) return false;
@@ -61,6 +58,7 @@ class InvertedIndex {
     fileContent.forEach((book, bookIndex) => {
       result.bookTitles.push(book.title);
       const words = InvertedIndex.tokenize(book.text);
+
       words.forEach((word) => {
         if (!result.words[word]) {
           result.allWords.push(word);
@@ -78,8 +76,8 @@ class InvertedIndex {
   /**
    * Returns stored index for a file given the filename
    * @function
-   * @param {Object} filename name of the file
-   * @return {Array|Boolean} indexed object or false if file was not found
+   * @param {String} filename name of the file
+   * @return {Object|Boolean} indexed object or false if file was not found
    */
   getIndex(filename) {
     if (!this[filename]) return false;
@@ -121,7 +119,7 @@ class InvertedIndex {
    * Deletes the index of a file
    * @function
    * @param {String} filename name of file to be deleted
-   * @return {boolean} true if file was successfully deleted, else false
+   * @return {Boolean} true if file was successfully deleted, else false
    */
   deleteFileIndex(filename) {
     if (!this[filename]) return false;

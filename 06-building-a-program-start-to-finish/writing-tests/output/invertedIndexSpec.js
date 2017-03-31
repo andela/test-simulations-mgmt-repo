@@ -1,14 +1,14 @@
-const books = require('./books/validFile.json');
-const shortStories = require('./books/simpleValidFile.json');
+const books = require('./books/books.json');
+const shortStories = require('./books/shortStories.json');
 const empty = require('./books/empty.json');
-const emptyText = require('./books/emptyText.json');
+const missingText = require('./books/missingText.json');
 const notArray = require('./books/notArray.json');
 const wrongData = require('./books/wrongData.json');
 
 const index = new InvertedIndex();
 const filename = 'shortStories.json';
 
-describe('InvertedIndex', () => {
+describe('InvertedIndex:', () => {
   describe('Constructor', () => {
     it('can create an instance of InvertedIndex', () => {
       expect(typeof index).toEqual('object');
@@ -21,22 +21,15 @@ describe('InvertedIndex', () => {
 
   describe('ValidateFile', () => {
     it('should return false if an invalid file was uploaded', () => {
-      expect(InvertedIndex.validateFile(empty)).toBeFalsy();
-      expect(InvertedIndex.validateFile(emptyText)).toBeFalsy();
-      expect(InvertedIndex.validateFile(notArray)).toBeFalsy();
-      expect(InvertedIndex.validateFile(wrongData)).toBeFalsy();
+      expect(InvertedIndex.validateFile(empty)).toBe(false);
+      expect(InvertedIndex.validateFile(missingText)).toBe(false);
+      expect(InvertedIndex.validateFile(notArray)).toBe(false);
+      expect(InvertedIndex.validateFile(wrongData)).toBe(false);
     });
 
-    it('should not return false if a valid file was uploaded', () => {
-      expect(InvertedIndex.validateFile(books)).not.toBeFalsy();
-      expect(InvertedIndex.validateFile(shortStories)).not.toBeFalsy();
-      expect(typeof InvertedIndex.validateFile(books)).toEqual('object');
-    });
-
-    it('should return the file content if the file is valid', () => {
-      expect(InvertedIndex.validateFile(books)).toEqual(books);
-      expect(InvertedIndex.validateFile(shortStories))
-      .toEqual(shortStories);
+    it('should return true if a valid file was uploaded', () => {
+      expect(InvertedIndex.validateFile(books)).toBe(true);
+      expect(InvertedIndex.validateFile(shortStories)).toBe(true);
     });
   });
 
@@ -54,16 +47,24 @@ describe('InvertedIndex', () => {
     it('should return lowercase words', () => {
       expect(InvertedIndex.tokenize('HEllO WORLD')).toEqual(['hello', 'world']);
     });
+
+    it('should remove numbers', () => {
+      expect(InvertedIndex.tokenize('tru3e s7tor8y'))
+      .toEqual(['true', 'story']);
+    });
   });
 
   describe('CreateIndex', () => {
-    it('creates an index object from the file content', () => {
-      expect(index.createIndex(shortStories, filename)).toBeTruthy();
+    it('returns true if file index was created successfully', () => {
+      expect(index.createIndex(shortStories, filename)).toBe(true);
+    });
+
+    it('creates an index object', () => {
       expect(typeof index[filename]).toEqual('object');
     });
 
     it('returns false if file already exists', () => {
-      expect(index.createIndex(shortStories, filename)).toBeFalsy();
+      expect(index.createIndex(shortStories, filename)).toBe(false);
     });
 
     it('correctly stores the total number of books and their titles', () => {
@@ -99,8 +100,11 @@ describe('InvertedIndex', () => {
   });
 
   describe('GetIndex', () => {
-    it('should return the correct index', () => {
+    it('should return an object', () => {
       expect(typeof index.getIndex('shortStories.json')).toEqual('object');
+    });
+
+    it('should return the correct index object', () => {
       expect(index.getIndex(filename)).toEqual(
         {
           bookTitles: ['Alice', 'Lord of the Rings', 'Rings'],
@@ -119,7 +123,7 @@ describe('InvertedIndex', () => {
     });
 
     it('should return false if file index was not found', () => {
-      expect(index.getIndex('notIndex.json')).toBeFalsy();
+      expect(index.getIndex('notIndex.json')).toBe(false);
     });
   });
 
@@ -128,7 +132,7 @@ describe('InvertedIndex', () => {
       index.createIndex(books, 'books.json');
     });
 
-    it('should return an object containing the search results', () => {
+    it('should return an object containing the search result(s)', () => {
       expect(typeof index.searchIndex('alice')).toEqual('object');
     });
 
@@ -161,11 +165,11 @@ describe('InvertedIndex', () => {
     });
 
     it('should return false if nothing was found', () => {
-      expect(index.searchIndex('abcdefgh#')).toBeFalsy();
+      expect(index.searchIndex('abcdefgh#')).toBe(false);
     });
 
     it('should return false if searchKey is an empty string', () => {
-      expect(index.searchIndex('', filename)).toBeFalsy();
+      expect(index.searchIndex('', filename)).toBe(false);
     });
 
     it('can search correctly when filename is passed in', () => {
@@ -186,13 +190,13 @@ describe('InvertedIndex', () => {
 
   describe('DeleteFileIndex', () => {
     it('can successfully delete a file from the index', () => {
-      expect(index.deleteFileIndex(filename)).toBeTruthy();
-      expect(index.getIndex(filename)).toBeFalsy();
+      expect(index.deleteFileIndex(filename)).toBe(true);
+      expect(index.getIndex(filename)).toBe(false);
       expect(index.files.indexOf(filename)).toBe(-1);
     });
 
     it('returns false if filename does not exist in the index', () => {
-      expect(index.deleteFileIndex('abcdef.json')).toBeFalsy();
+      expect(index.deleteFileIndex('abcdef.json')).toBe(false);
     });
   });
 });
