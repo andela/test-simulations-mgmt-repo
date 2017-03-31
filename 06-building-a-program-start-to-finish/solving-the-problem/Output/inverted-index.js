@@ -18,23 +18,21 @@ class InvertedIndexClass {
   createIndex(fileName) {
     const currentFileContent = this.files[fileName];
     this.indexTable[fileName] = this.indexTable[fileName] || {};
-    const fileLength = this.files[fileName].length;
-    for (let docIndex = 0; docIndex < fileLength; docIndex += 1) {
-      const currentFileDoc = currentFileContent[docIndex];
-      const docTitle = currentFileDoc.title;
-      const docText = currentFileDoc.text;
+    currentFileContent.forEach((document, index) => {
+      const documentTitle = document.title;
+      const documentText = document.text;
       const normalize = InvertedIndexClass
-.tokenize(`${docText} ${docTitle}`).sort();
+.tokenize(`${documentText} ${documentTitle}`).sort();
       normalize.forEach((word) => {
         if (word in this.indexTable[fileName]) {
-          if (this.indexTable[fileName][word].indexOf(docIndex) === -1) {
-            this.indexTable[fileName][word].push(docIndex);
+          if (this.indexTable[fileName][word].indexOf(index) === -1) {
+            this.indexTable[fileName][word].push(index);
           }
         } else {
-          this.indexTable[fileName][word] = [docIndex];
+          this.indexTable[fileName][word] = [index];
         }
       });
-    }
+    });
     return true;
   }
   /**
@@ -71,11 +69,11 @@ class InvertedIndexClass {
   searchIndex(searchTerms, fileNames) {
     const fileTitle = fileNames || Object.keys(this.files);
     this.result = {};
-    const allSearchTerms =
-      InvertedIndexClass.tokenize(searchTerms);
+    const allSearchTerms = InvertedIndexClass.tokenize(searchTerms);
     fileTitle.forEach((currentFile) => {
       allSearchTerms.forEach((term) => {
-        if (Object.prototype.hasOwnProperty.call(this.indexTable[currentFile], term)) {
+        if (Object.prototype.hasOwnProperty
+        .call(this.indexTable[currentFile], term)) {
           if (currentFile in this.result) {
             this.result[currentFile][term] = this.indexTable[currentFile][term];
           } else {
@@ -90,8 +88,8 @@ class InvertedIndexClass {
 
   /**
    *validateJsonContent.
-   *@param {Object} inputFile
-   *@return {Boolean} true or false
+   *@param {Object} inputFile The file to be checked
+   *@return {Boolean} validity status of the file to be checked
   */
   static validateFile(inputFile) {
     if (inputFile[0].text && inputFile[0].title) {
@@ -102,8 +100,8 @@ class InvertedIndexClass {
   /**
    * readFile
    * Reads content of JSON and checks for validity
-   * @param {Object} inputFile checks the validity of JSONcontent
-   * @return {Boolean} validity status of the JSON content.
+   * @param {Object} inputFile The file to be checked
+   * @return {Boolean} validity status of the file checked.
    */
   readFile(inputFile) {
     this.inputFile = inputFile;
