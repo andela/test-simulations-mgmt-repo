@@ -1,0 +1,212 @@
+body {
+  font-family: 'Lato', sans-serif;
+  font-size: 18px;
+  padding-top: 50px;
+  color: #fff;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+a:link,
+a:visited {
+  transition: all 0.3s;
+  color: #fff;
+  text-decoration: none;
+}
+
+a:hover,
+a:active {
+  color: #acacac;
+}
+
+.btn-blue {
+  display: inline-block;
+  cursor: pointer;
+  padding: 15px 25px;
+  border-radius: 8px;
+  color: #fff !important;
+  background-color: #0A2C40;
+  outline: none !important;
+  transition: all 0.3s;
+}
+
+.btn-blue:hover {
+  color: #fff;
+  background-color: #030e14;
+}
+
+.btn-blue i {
+  font-size: 20px;
+  padding-right: 10px;
+}
+
+.container {
+  position: relative;
+}
+
+.alert {
+  position: fixed;
+  top: 60px;
+  display: inline-block;
+  border: 1px solid #0A2C40;
+  padding: 5px 30px;
+  text-align: center;
+  display: none;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+}
+
+#about, #help {
+  display: none;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  padding: 90px 0 60px 0;
+  background-color: #40290A;
+  z-index: 999;
+}
+
+.navbar {
+  background-color: #0A2C40;
+  border: none;
+  margin-bottom: 0px;
+}
+
+.navbar .navbar-brand {
+  color: #fff;
+  font-family: 'Courgette', cursive;
+  font-size: 24px;
+  transition: all 0.3s;
+}
+
+.navbar .navbar-brand:hover {
+  color: #acacac;
+}
+
+.navbar .navbar-nav a:visited,
+.navbar .navbar-nav a:link {
+  color: #fff !important;
+  transition: all 0.3s;
+}
+
+.navbar .navbar-nav a:hover,
+.navbar .navbar-nav a:active {
+  color: #acacac !important;
+}
+
+.cover {
+  padding: 40px 0;
+  background-image: url("../img/fishing.jpg");
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  background-attachment: fixed;
+}
+
+.cover h2 {
+  padding: 0;
+  margin: 0;
+  padding-bottom: 30px;
+  color: #fff;
+  font-family: "Courgette", cursive;
+}
+
+.cover .btn-blue {
+  display: inline-block;
+}
+
+.search {
+  margin-bottom: 30px;
+}
+
+.search .input-group-btn i {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.control .fileInput {
+  display: inline-block;
+  cursor: pointer;
+  padding: 15px 25px;
+  border-radius: 8px;
+  color: #fff !important;
+  background-color: #0A2C40;
+  outline: none !important;
+  transition: all 0.3s;
+}
+
+.control .fileInput:hover {
+  color: #fff;
+  background-color: #030e14;
+}
+
+.control .fileInput i {
+  font-size: 20px;
+  padding-right: 10px;
+}
+
+.control #fileInput {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.control .show-all {
+  padding: 8px 15px;
+  margin-bottom: 10px;
+}
+
+.control ul {
+  padding: 0;
+}
+
+.control li {
+  position: relative;
+  list-style: none;
+  margin-bottom: 6px;
+}
+
+.control li .fa-close {
+  opacity: 0;
+  position: relative;
+  left: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.control li:hover .fa-close {
+  opacity: 1;
+}
+
+.index-table th, .index-table td {
+  padding: 0 5px;
+}
+
+.index-table h3 {
+  font-family: "Courgette", cursive;
+  text-align: center;
+}
+
+.index-table .table-div {
+  overflow-y: auto;
+}
+
+footer {
+  padding: 30px 0;
+  color: #fff;
+  background-color: #0A2C40;
+}
+
+footer .github-foot {
+  margin-top: 25px;
+}
+
+footer .github-foot img {
+  margin-right: 20px;
+}

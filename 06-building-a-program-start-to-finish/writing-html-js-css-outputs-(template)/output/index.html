@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Index Master</title>
+
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Courgette|Lato" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/InvertedIndex.js"></script>
+  <script src="js/app.js"></script>
+</head>
+
+<body ng-controller="mainController" ng-cloak>
+  <!--  Navigation  -->
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        <a class="navbar-brand" href="#">Index Master</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#" class="show-about">About <i class="fa fa-angle-down"></i></a></li>
+          <li><a href="#" class="show-help">Help <i class="fa fa-angle-down"></i></a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!--  About  -->
+  <section id="about">
+    <div class="container">
+      <h3>Inverted Index </h3>
+      <p>
+        An Inverted Index is an Index Data Structure storing a mapping from content to location (i.e. a mapping of words or numbers to it's location in a database file). This Data Structure is widely used in several scenarios e.g. Cell Phone Lookup.
+      </p>
+      <p>
+        Elasticsearch uses a structure called an inverted index, which is designed to allow very fast full-text searches. An inverted index consists of a list of all the unique words that appear in any document, and for each word, a list of the documents in which it appears.
+      </p>
+      <h3>Valid file structure</h3>
+      <div class="file-structure">
+        <pre>
+         [
+            {
+              "title": "Alice in Wonderland",
+              "text": "Alice falls into a rabbit hole and enters a world full of imagination."
+            },
+
+            {
+              "title": "The Lord of the Rings: The Fellowship of the Ring.",
+              "text": "An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring."
+            },
+            {
+              "title": "The Lord of the Rings: The Fellowship of the Ring.",
+              "text": "An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring."
+            }
+          ]
+        </pre>
+      </div>
+      <div class="text-right">
+        <a href="#" class="btn-blue show-about">Close</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!--  Help  -->
+  <section id="help">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          <h3>Uploading a File</h3>
+          <ul>
+            <li>Click the 'Choose a file' button and select a <span class="underline" data-toggle="tooltip" data-title="Click About to see the correct format">valid</span> json file</li>
+            <li>Click 'Create Index' to display the index(s)</li>
+            <li>You can upload more files, click the file's name to view its index</li>
+            <li>Hover over the book heading to view its full title</li>
+          </ul>
+        </div>
+        <div class="col-sm-6">
+          <h3>Searching</h3>
+          <ul>
+            <li>If there is an indexed file available, the search bar appears</li>
+            <li>Enter the word(s) you wish to search for in the input field separated by spaces</li>
+            <li>By default, the app searches all indexed files but you can select a specific file to search in</li>
+            <li>Click the search icon or hit enter</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="text-right">
+        <a href="#" class="btn-blue show-help">Close</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wrapper div -->
+  <div class="cover" id="home-section">
+    <div class="container">
+      <!--   Alerts  -->
+      <div class="alert alert-success">File added, Deleted</div>
+      <div class="alert alert-danger">Invalid File, Nothing found</div>
+
+      <!--   Search  -->
+      <div class="search" ng-show="index.filenames.length > 0">
+        <div class="row">
+          <div class="col-md-4">
+            <select name="files" id="searchFilename" class="form-control">
+             <option value="all" selected>Search All Files</option>
+              <option ng-repeat="file in index.filenames" value="{{file}}">{{file}}</option>
+           </select>
+          </div>
+          <div class="col-md-8">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for..." ng-model="searchKey" ng-keypress="searchOnEnter($event, searchKey)">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" ng-click="search(searchKey)">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <!--    Upload File   -->
+        <div class="col-md-4 control text-center">
+          <h2>Inverted Index</h2>
+          <p>
+            Upload a valid JSON file to get started
+          </p>
+          <input type="file" id="fileInput">
+          <label for="fileInput" class="fileInput"><i class="fa fa-upload"></i> Choose a file</label>
+          <br><br>
+          <a href="#" class="btn-blue show-help" ng-show="index.filenames.length < 1">
+            <i class="fa fa-life-bouy"></i> View Help
+          </a>
+
+          <!--    List of Files     -->
+          <div ng-show="index.filenames.length > 0">
+            <h3>Click Create Index or a filename below.</h3>
+            <button class="btn-blue btn show-all" ng-click="show('all')" ng-show="index.filenames.length > 0">
+              Create Index 
+            </button>
+            <ul>
+              <li ng-repeat="file in index.filenames">
+                <a href="javascript:void(0)" ng-click="getIndex(file)">{{file}}</a>
+                <span><i data-toggle="tooltip" title="Delete" class="fa fa-close" ng-click="deleteFileIndex(file)"></i></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!--    Tables    -->
+        <div class="col-md-8 index-table" ng-show="index.filenames.length > 0">
+          
+          <!--Single File-->
+          <div class="table-div" ng-show="!showAllFiles && showSingle">
+            <h3>{{indexed.filename}}</h3>
+            <table class="table">
+              <thead>
+                <th>Word</th>
+                <th ng-repeat="book in indexed.bookTitles track by $index">
+                  <span data-toggle="tooltip" data-title="{{book}}" data-placement="left">
+                    Book{{$index + 1}}
+                  </span>
+                </th>
+              </thead>
+              <tbody>
+                <tr ng-repeat="word in indexed.allWords">
+                  <td>{{word}}</td>
+                  <td ng-repeat="boolean in indexed.words[word] track by $index"><i class="fa fa-{{verifyWord(boolean)}}"></i></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!--Show All Files-->
+          <div class="table-div" ng-show="showAllFiles && !showSearch" ng-repeat="filename in index.filenames">
+            <h3>{{filename}}</h3>
+            <table class="table">
+              <thead>
+                <th>Word</th>
+                <th ng-repeat="book in index.files[filename].bookTitles track by $index">
+                  <span data-toggle="tooltip" data-title="{{book}}" data-placement="left">
+                   Book{{$index + 1}}
+                 </span>
+                </th>
+              </thead>
+              <tbody>
+                <tr ng-repeat="word in index.files[filename].allWords">
+                  <td>{{word}}</td>
+                  <td ng-repeat="boolean in index.files[filename].words[word] track by $index"><i class="fa fa-{{verifyWord(boolean)}}"></i></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!--Search All Files-->
+          <div class="table-div" ng-show="showAllFiles && showSearch" ng-repeat="filename in searchResult.filenames">
+            <h3>{{filename}}</h3>
+            <table class="table">
+              <thead>
+                <th>Word</th>
+                <th ng-repeat="book in index.files[filename].bookTitles track by $index">
+                  <span data-toggle="tooltip" data-title="{{book}}" data-placement="left">
+                    Book{{$index + 1}}
+                  </span>
+                </th>
+              </thead>
+              <tbody>
+                <tr ng-repeat="word in searchResult[filename].allWords">
+                  <td>{{word}}</td>
+                  <td ng-repeat="boolean in searchResult[filename].words[word] track by $index"><i class="fa fa-{{verifyWord(boolean)}}"></i></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!--  Footer  -->
+  <footer>
+    <div class="container text-center">
+      <p>
+        &copy; Andela, design by Anthony Ngene.
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
