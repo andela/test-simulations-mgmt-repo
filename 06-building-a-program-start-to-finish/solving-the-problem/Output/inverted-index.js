@@ -2,7 +2,7 @@
  * Implementation of the inverted index data structure.
  * @author Omokaro Faith <faith.omokaro@andela.com>
 */
-class Index {
+class InvertedIndex {
   /**
    * Creates an instance of InvertedIndex.
    * @constructor
@@ -12,20 +12,21 @@ class Index {
     this.temp_search = [];
     this.searchResult = {};
     this.allIndex = {};
+    this.token = '';
   }
 /**
      * It returns the words passed in small letters and spaces removed
      * @method tokenize
      * @param {string} words
-     * @return {String}
+     * @return {String} this.token
      */
   tokenize(words) {
-    const token = words.replace(/,+/g, ' ')
+    this.token = words.replace(/,+/g, ' ')
     .replace(/[^a-zA-Z 0-9\s]+/g, '')
     .replace(/\s\s/g, ' ')
     .toLowerCase()
     .trim();
-    return token;
+    return this.token;
   }
   /**
    * Reads the data from an uploaded file.
@@ -33,32 +34,32 @@ class Index {
    * @param {Function} callback - The callback function on file read
    * @returns {void}
    */
-  readFile(file, callback) {
+  static readFile(file, callback) {
     const reader = new FileReader();
     reader.onload = callback;
     reader.readAsText(file);
   }
 /**
-   * It validates the file passed and returns the error message if an error occurs
+   * It validates the file passed and returns the error message
    *
    * @method validateFile
    * @param {String} file
    *
    * @return {object} validates the file passed
    */
-  validateFile(file) {
+  static validateFile(file) {
     const jsonFile = file;
     let check = {
       status: true,
-      msg: 'Valid File',
+      msg: 'This is a valid File',
     };
-    try {
-      if (typeof file !== 'object' || file.length < 1) {
-        check = {
-          status: false,
-          msg: 'File is empty please upload a new file',
-        };
-      }
+    // try {
+    if (!Array.isArray(file) || file.length < 1) {
+      check = {
+        status: false,
+        msg: 'File is empty please upload a new file',
+      };
+    } else {
       jsonFile.forEach((key) => {
         if (key.title === undefined || key.text === undefined) {
           check = {
@@ -67,26 +68,31 @@ class Index {
           };
         }
       });
-    } catch (error) {
-      return error.msg;
     }
+    return check;
+    // } catch (error) {
+    //   return error.msg;
+    // }
   }
 /**
      * It returns the index of the file passed
+     *
      * @method createIndex
-     * @param {Object, Object} fileName jsonObject
-     * @return {number}
+     * @param {Object} fileName
+     * @param {Object} jsonObject
+     *
+     * @return {number} returns the position on the file
      */
   createIndex(fileName, jsonObject) {
     const newIndex = {};
-    this.validateFile(jsonObject);
+    // this.validateFile(jsonObject);
 
     jsonObject.forEach((object, position) => {
       const longSentence = `${object.title} ${object.text}`;
       const tokenized = this.tokenize(longSentence);
       const wordArray = tokenized.split(' ');
 
-      wordArray.forEach((word, pos) => {
+      wordArray.forEach((word) => {
         if (newIndex[word] === undefined) {
           newIndex[word] = [position];
         } else if (newIndex[word].indexOf(position) < 0) {
@@ -104,43 +110,28 @@ class Index {
      * @return {object} gets the index
      */
   getIndex(fileName) {
-    if (Object.keys(arguments).length < 1) {
+    if (Object.keys(fileName).length < 1) {
       return this.index;
     }
 
     return this.index[fileName];
   }
   /**
-   *
-   *
    * @method flattenSearch
-   * @param {void}
-   *
-   * @return {void}
+   * @param {void} arguments of terms
+   * @return {Array} array of terms
    */
-  flattenSearch() {
-    this.temp_search = [];
-    for (const arg of arguments) {
-      if (arg instanceof Object && typeof arg !== 'string') {
-        for (const item in arg) {
-          if (arg.hasOwnProperty(item)) {
-            this.flattenSearch(arg[item]);
-          }
-        }
-      } else {
-        const args = arg.split(' ');
-        args.forEach((word) => {
-          this.temp_search.push(word);
-        });
-      }
-    }
+  flattenSearch(...args) {
+    return args.reduce((acc, val) =>
+      acc.concat(Array.isArray(val) ?
+      this.flattenSearch(val) : val.split(' ')), []);
   }
 /**
-     * it return the word searched for in the object it was found
+     * it returns the word searched for in the object it was found
      *
-     * @method readFile
+     * @method searchIndex
      * @param {String} sTerms
-     * @param {String} allIndex
+     * @param {String} fileName
      *
      * @returns {Object} search result
      */
@@ -150,8 +141,7 @@ class Index {
     if (fileName !== 'Select file') {
       const selectedIndex = this.index[fileName];
       let terms = this.tokenize(sTerms);
-      this.flattenSearch(terms);
-      terms = this.temp_search;
+      terms = this.flattenSearch(terms);
       terms.forEach((term) => {
         if (selectedIndex) {
           Object.keys(selectedIndex).forEach((savedWord) => {
@@ -166,8 +156,8 @@ class Index {
     Object.keys(this.index).forEach((filename) => {
       const selectedIndex = this.index[filename];
       let terms = this.tokenize(sTerms);
-      this.flattenSearch(terms);
-      terms = this.temp_search;
+      // this.flattenSearch(terms);
+      terms = this.flattenSearch(terms);
       terms.forEach((term) => {
         if (selectedIndex) {
           Object.keys(selectedIndex).forEach((savedWord) => {
@@ -183,4 +173,4 @@ class Index {
   }
 }
 
-module.exports = Index;
+module.exports = InvertedIndex;
