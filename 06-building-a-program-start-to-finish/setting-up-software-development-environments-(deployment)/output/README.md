@@ -4,6 +4,6 @@
 - **With**: *independently*
 
 #### Links to apps
-- [Review App](https://meek-inverted-index-stagi-pr-1.herokuapp.com/)
+- [Review App](https://meek-inverted-index-stagi-pr-4.herokuapp.com/)
 - [Staging App](https://meek-inverted-index-staging.herokuapp.com/)
 - [Production](https://meek-inverted-index.herokuapp.com/)
