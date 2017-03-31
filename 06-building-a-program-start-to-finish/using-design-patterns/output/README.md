@@ -17,34 +17,34 @@ The View component epresents the visualization of the data that model contains, 
 #### Controller
 Controllers acts on both the model and view. It controls the data flow into the model object and updates the view whenever it's data changes. It keeps the view and model separate. The controller will handle all the interactions and inputs from the view `index.html` and update the `index object`. The same controller will be used to view the generated indexes. In this case the controller is the `app.js` written in AngularJS, and the associated invertedController.
 
-#### Goals of MVC
-- Code reuse
-- Simultaneous development
-- Supports seperation of concerns
-- Improves code readability and maintainability
+#### Benefits of MVC
+- It supports Code reuse
+- It supports Simultaneous development
+- It Supports seperation of concerns
+- It Improves code readability and maintainability
 
 
 #### Constructor Pattern
-A constructor is a special method used to initialize a newly created object once memory has been allocated for it. In JavaScript, as almost everything is an object, we're most often interested in object constructors. Object constructors are used to create specific types of objects - both preparing the object for use and accepting arguments which a constructor can use to set the values of member properties and methods when the object is first created.
+A constructor in a class is a special type of subroutine called to create an object. It prepares the new object for use, often accepting arguments that the constructor uses to set required member variables. Constructors often have the same name as the declaring class. They have the task of initializing the object's data members and of establishing the invariant of the class, failing if the invariant is invalid. Immutable objects must be initialized in a constructor.
 
 For this application, the `InvertedIndex Class` makes use of the constructor design pattern. To create an instance of the class, we must first call a constructor function.
 ```
     class InvertedIndex {
 
       constructor() {
-        this.indices = {};
-        this.indexedFiles = {};
+        this.unique = [];
+        this.tableObj = {};
       }
 
-      createIndex(fileName, file) {
-
-      }
-
-      getIndices(fileName) {
+      createIndex(fileJsonObject, uniqueTerms, fileName) {
 
       }
 
-      searchIndices(fileName, query) {
+      getIndex(fileName) {
+
+      }
+
+      searchIndex(keywords, fileName) {
 
       }
     }
@@ -54,9 +54,9 @@ A new instance of this class can be created by calling the constructor:
 ```
 const invertedIndex = new InvertedIndex();
 
-invertedIndex.createIndex('books.json', fileContent);
+invertedIndex.createIndex(fileObject,['ali','in','lagos'] ,'books.json');
 
-invertedIndex.getIndices('books.json');
+invertedIndex.getIndex('books.json');
 
-invertedIndex.searchIndices('books.json', query);
+invertedIndex.searchIndex(query, 'books.json');
 ```
