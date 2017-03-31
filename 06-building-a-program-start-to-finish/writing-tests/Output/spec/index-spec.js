@@ -1,6 +1,7 @@
 const Index = require('../Model/inverted-index.js');
 const invalidBook = require('../files/test.json');
 const workBook = require('../files/work.json');
+const empty = require('../files/empty.json');
 
 const invertedIndex = new Index();
 
@@ -108,7 +109,7 @@ describe('Search Index', () => {
 
 describe('Tokenize words', () => {
   it('should return tokenized words for terms', () => {
-    let words = 'It CAN only BE+ GOD';
+    let words = 'It CAN only BE++   GOD';
     const termsExpected = 'it can only be god';
     words = invertedIndex.tokenize(words);
     expect(termsExpected).toEqual(words);
@@ -122,16 +123,26 @@ describe('Tokenize words', () => {
 });
 
 describe('Validate File', () => {
-  it('should check that the contents of the file to be uploaded is valid',
+  it('should return truthy if book data is valid',
     () => {
       expect(Index.validateFile(work).status).toBeTruthy();
     });
-  it('should return falsy if book data is an empty array', () => {
+  it('should return truthy if book data is valid', () => {
     expect(Index.validateFile(workBook).status).toBeTruthy();
+  });
+  it('should return validate.msg if file uploaded is valid', () => {
+    expect(Index.validateFile(workBook).msg).toBe('This is a valid File');
   });
   it('should return falsy if book is not an array of object literals', () => {
     expect(Index.validateFile('theDojo').status).toBeFalsy();
     expect(Index.validateFile(100).status).toBeFalsy();
+  });
+  it('should return validate.msg if file uploaded is empty', () => {
+    expect(Index.validateFile('Dojo').msg).toBe('File is empty upload a file');
+    expect(Index.validateFile(100).msg).toBe('File is empty upload a file');
+  });
+  it('should return validate.msg if file dosent contain title or text', () => {
+    expect(Index.validateFile(empty).msg).toBe('Invalid file content');
   });
 });
 
