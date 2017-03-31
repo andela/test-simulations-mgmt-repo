@@ -50,7 +50,6 @@ app.controller('myController', ['$scope', ($scope) => {
       return toastr.error('Upload a file before you create index', 'Error');
     }
     try {
-      // fileContent = JSON.parse(fileContent);
       invertedIndex.createIndex(fileName, fileContent);
     } catch (err) {
       toastr.error(err.message);

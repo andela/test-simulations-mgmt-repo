@@ -53,7 +53,6 @@ class InvertedIndex {
       status: true,
       msg: 'This is a valid File',
     };
-    // try {
     if (!Array.isArray(file) || file.length < 1) {
       check = {
         status: false,
@@ -70,24 +69,19 @@ class InvertedIndex {
       });
     }
     return check;
-    // } catch (error) {
-    //   return error.msg;
-    // }
   }
 /**
      * It returns the index of the file passed
      *
      * @method createIndex
      * @param {Object} fileName
-     * @param {Object} jsonObject
+     * @param {Object} obj
      *
-     * @return {number} returns the position on the file
+     * @return {void}
      */
-  createIndex(fileName, jsonObject) {
+  createIndex(fileName, obj) {
     const newIndex = {};
-    // this.validateFile(jsonObject);
-
-    jsonObject.forEach((object, position) => {
+    obj.forEach((object, position) => {
       const longSentence = `${object.title} ${object.text}`;
       const tokenized = this.tokenize(longSentence);
       const wordArray = tokenized.split(' ');
@@ -130,18 +124,18 @@ class InvertedIndex {
      * it returns the word searched for in the object it was found
      *
      * @method searchIndex
-     * @param {String} sTerms
+     * @param {String} searchTerms
      * @param {String} fileName
      *
      * @returns {Object} search result
      */
-  searchIndex(sTerms, fileName) {
-    const searchResult = {};
+  searchIndex(searchTerms, fileName) {
+    let searchResult = {};
     const allIndex = {};
-    if (fileName !== 'Select file') {
+    if (fileName !== 'All files') {
       const selectedIndex = this.index[fileName];
-      let terms = this.tokenize(sTerms);
-      terms = this.flattenSearch(terms);
+      let terms = this.tokenize(searchTerms);
+      terms = this.flattenSearch(searchTerms);
       terms.forEach((term) => {
         if (selectedIndex) {
           Object.keys(selectedIndex).forEach((savedWord) => {
@@ -154,9 +148,9 @@ class InvertedIndex {
       return searchResult;
     }
     Object.keys(this.index).forEach((filename) => {
+      searchResult = {};
       const selectedIndex = this.index[filename];
-      let terms = this.tokenize(sTerms);
-      // this.flattenSearch(terms);
+      let terms = this.tokenize(searchTerms);
       terms = this.flattenSearch(terms);
       terms.forEach((term) => {
         if (selectedIndex) {

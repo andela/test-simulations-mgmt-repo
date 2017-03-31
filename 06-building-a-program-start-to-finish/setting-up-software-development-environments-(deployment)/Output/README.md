@@ -4,4 +4,5 @@
 - **With**: *independently*
 
 #### Targeted Learning Outcomes
-[Live URL to deployment on production application](https://fomokaro-inverted-production.herokuapp.com/) and [link to heroku application deployment on staging](https://fomokaro-invertedindex-staging.herokuapp.com/) and [link to review application](https://fomokaro-invertedindex-st-pr-2.herokuapp.com/)
+live URLs to
+[production](https://fomokaro-inverted-production.herokuapp.com/) [staging](https://fomokaro-invertedindex-staging.herokuapp.com/) and [review](https://fomokaro-invertedindex-st-pr-2.herokuapp.com/) applications.
