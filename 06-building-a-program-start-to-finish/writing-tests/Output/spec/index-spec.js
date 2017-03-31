@@ -1,4 +1,4 @@
-const Index = require('../Model/inverted-index');
+const Index = require('../Model/inverted-index.js');
 const invalidBook = require('../files/test.json');
 const workBook = require('../files/work.json');
 
@@ -27,14 +27,14 @@ describe('Define methods for Index class', () => {
     expect(invertedIndex.tokenize).toBeDefined();
   });
   it('Should ensure that invertedIndex methods are defined', () => {
-    expect(invertedIndex.validateFile).toBeDefined();
+    expect(Index.validateFile).toBeDefined();
   });
   it('Should ensure that invertedIndex methods are defined', () => {
     expect(invertedIndex.searchIndex).toBeDefined();
   });
 });
 
-describe('Should return an object that is an accurate index of the work.json file', () => {
+describe('Should return an object that is an index of the file', () => {
   invertedIndex.createIndex('work.json', work);
   it('should verify that index has been created', () => {
     expect(Object.keys(invertedIndex.getIndex('work.json', work)).length)
@@ -55,7 +55,7 @@ describe('Should return an object that is an accurate index of the work.json fil
       });
     });
 });
-describe('Should create an object that is an accurate index of test.json file', () => {
+describe('Should create an object that is an accurate index of file', () => {
   invertedIndex.createIndex('test.json', invalidBook);
   it('should verify that index has been created', () => {
     expect(Object.keys(invertedIndex.getIndex('test.json', invalidBook)).length)
@@ -96,12 +96,11 @@ describe('Search Index', () => {
   });
   it('should return true if search term is a string', () => {
     const words = 'Alice in Wonderland';
-    expect(Object.keys(invertedIndex.searchIndex('words', 'book.json'))).toBeTruthy();
+    expect(Object.keys(invertedIndex.searchIndex('words'))).toBeTruthy();
   });
   it('Should return correct index of the search term in test.json', () => {
-    expect(invertedIndex.searchIndex('Honey, birds, humans', 'test.json')).toEqual({
+    expect(invertedIndex.searchIndex('Honey, humans', 'test.json')).toEqual({
       honey: [0],
-      birds: [0],
       humans: [1],
     });
   });
@@ -125,14 +124,14 @@ describe('Tokenize words', () => {
 describe('Validate File', () => {
   it('should check that the contents of the file to be uploaded is valid',
     () => {
-      expect(invertedIndex.validateFile(work)).toBeFalsy();
+      expect(Index.validateFile(work).status).toBeTruthy();
     });
   it('should return falsy if book data is an empty array', () => {
-    expect(invertedIndex.validateFile([])).toBeFalsy();
+    expect(Index.validateFile(workBook).status).toBeTruthy();
   });
-  it('should return falsy if book data is not an array of object literals', () => {
-    expect(invertedIndex.validateFile('theDojo')).toBeFalsy();
-    expect(invertedIndex.validateFile(100)).toBeFalsy();
+  it('should return falsy if book is not an array of object literals', () => {
+    expect(Index.validateFile('theDojo').status).toBeFalsy();
+    expect(Index.validateFile(100).status).toBeFalsy();
   });
 });
 
@@ -142,7 +141,7 @@ describe('InvertedIndex class, check all methods', () => {
   });
 
   it('should check that the class has a validateFile method', () => {
-    expect(typeof invertedIndex.validateFile).toBe('function');
+    expect(typeof Index.validateFile).toBe('function');
   });
 
   it('should check that the class has a tokenize method', () => {
@@ -161,3 +160,4 @@ describe('InvertedIndex class, check all methods', () => {
     expect(typeof invertedIndex.flattenSearch).toBe('function');
   });
 });
+
