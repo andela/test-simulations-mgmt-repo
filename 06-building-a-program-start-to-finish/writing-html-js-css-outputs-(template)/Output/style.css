@@ -1,0 +1,133 @@
+.button_left {
+    position: relative;
+    left: 200px;
+}
+.body {
+    background-color: ghostwhite;
+}
+.form_direction {
+    margin-top: 50px;
+}
+#index_check {
+    position: relative;
+    left: 50px;
+}
+.h3 {
+    color: maroon;
+}
+.button {
+    background-color: teal !important;
+    color: #fff !important;
+    width: 100px;
+}
+.buttonDelete {
+    background-color: maroon !important;
+    color: silver !important;
+    width: 100px;
+    margin-left: 10px !important;
+}
+#create-index-button {
+    margin-left: 5px;
+}
+.upload_file {
+    background-color: teal!important;
+    color: #fff !important;
+    font-size: 15px;
+    width: 100px !important;
+    margin-left: 15px;
+}
+.create_index {
+    background-color: teal !important;
+    color: #fff !important;
+}
+.select {
+    margin-top: 10px;
+    margin-left: 39px;
+    width: 208px !important;
+    background-color: #fff;
+    position: relative;
+    left: -25px;
+    color: teal !important;
+}
+.drop {
+    width: 700px !important;
+    background-color: #fff;
+    height: 50px;
+    display: inline-block !important;
+    color: teal;
+    padding: 12px 0px 0px 10px;
+    font-size: 18px;
+    border-radius: 5px 5px 5px 5px;
+}
+#searchBox {
+    margin-bottom: 10px;
+    width: 215px;
+    border-radius: 5px 5px 5px 5px;
+    font-size: 17px;
+}
+.menu {
+    min-width: 700px !important;
+    text-align: center;
+    position: relative;
+    margin-top: -5px;
+    color: teal;
+    background-color: #fff;
+    border-radius: 5px 5px 5px 5px;
+}
+.glyphicon-info-sign {
+    font-size: 16px !important;
+}
+.glyphicon-fullscreen {
+    margin-right: 5px;
+    font-size: 14px !important;
+}
+.left {
+    font-size: 16px !important;
+    margin-right: 10px;
+}
+.move {
+    background-color: teal !important;
+    border-radius: 5px 5px 5px 5px;
+    margin-top: 400px;
+}
+.name {
+    text-align: center;
+    color: mintcream;
+    margin-top: 8px;
+}
+.style {
+    color: teal;
+}
+.searchSelect {
+    width: 217px;
+    height: 34px;
+    font-size: 18px;
+    color: #fff;
+    background-color: teal;
+    margin-bottom: 10px;
+}
+.table-fixed thead {
+    width: 100%;
+    color: #fff;
+}
+.table-fixed tbody {
+    height: 230px;
+    overflow-y: auto;
+    width: 100%;
+    color: teal;
+}
+.table-fixed thead,
+.table-fixed tbody,
+.table-fixed tr,
+.table-fixed td,
+.table-fixed th {
+    display: block;
+}
+.table-fixed tbody td,
+.table-fixed thead > tr> th {
+    float: left;
+    border-bottom-width: 0;
+}
+.th {
+    background-color: teal !important;
+}
