@@ -22,16 +22,20 @@ class InvertedIndex {
    */
   static validateFile(fileContent) {
     if ((fileContent instanceof Array) && fileContent.length > 0) {
-      const BreakException = {};
+      const BreakError = {
+        name: 'Validate File Error',
+        message: 'File is invalid'
+      };
       try {
         fileContent.forEach((book) => {
           if (!(book.title && book.text) || book.text.length < 1) {
-            throw BreakException;
+            throw BreakError;
           }
-          if (book.text.length < 1) throw BreakException;
+          if (book.text.length < 1) throw BreakError;
         });
       } catch (error) {
-        return false;
+        if (error.name === 'Validate File Error') return false;
+        throw error;
       }
       return true;
     }
