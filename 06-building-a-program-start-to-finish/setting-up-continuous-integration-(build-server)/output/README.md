@@ -4,4 +4,4 @@
 - **With**: *independently*
 
 #### Link to a successful TravisCI build of your development branch
-- [Travis on Development](https://travis-ci.org/andela-moseni/inverted-index/builds/214929866)
+- [Travis on Development](https://travis-ci.org/andela-moseni/inverted-index/builds/217220930)
