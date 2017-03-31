@@ -127,11 +127,11 @@ class InvertedIndex {
      * @param {String} searchTerms
      * @param {String} fileName
      *
-     * @returns {Object} search result
+     * @returns {Object} searchResult
      */
   searchIndex(searchTerms, fileName) {
-    let searchResult = {};
-    const allIndex = {};
+    const searchResult = {};
+    let temp = {};
     if (fileName !== 'All files') {
       const selectedIndex = this.index[fileName];
       let terms = this.tokenize(searchTerms);
@@ -148,7 +148,7 @@ class InvertedIndex {
       return searchResult;
     }
     Object.keys(this.index).forEach((filename) => {
-      searchResult = {};
+      temp = {};
       const selectedIndex = this.index[filename];
       let terms = this.tokenize(searchTerms);
       terms = this.flattenSearch(terms);
@@ -156,14 +156,14 @@ class InvertedIndex {
         if (selectedIndex) {
           Object.keys(selectedIndex).forEach((savedWord) => {
             if (savedWord === term) {
-              searchResult[savedWord] = selectedIndex[savedWord];
+              temp[savedWord] = selectedIndex[savedWord];
             }
           });
         }
       });
-      allIndex[filename] = searchResult;
+      searchResult[filename] = temp;
     });
-    return allIndex;
+    return searchResult;
   }
 }
 
