@@ -1,8 +1,8 @@
 const InvertedIndex = require('../../src/InvertedIndex.js');
 const samples = require('../samples');
-const FileAPI = require('file-api');
+const fileAPI = require('file-api');
 
-const File = FileAPI.File;
+const File = fileAPI.File;
 
 describe('Inverted Index Test Suite: ', () => {
   describe('Reading file data: ', () => {
@@ -82,7 +82,7 @@ describe('Inverted Index Test Suite: ', () => {
     });
 
     it('should return books containing the specified keywords', () => {
-      expect(this.invertedIndex.searchIndex('the death he comes', ['extraBooks.json', 'validBooks.json']).results)
+      expect(this.invertedIndex.searchIndex('the death he comes extravaganza', ['extraBooks.json', 'validBooks.json']).results)
         .toEqual(samples.searchResults);
     });
   });

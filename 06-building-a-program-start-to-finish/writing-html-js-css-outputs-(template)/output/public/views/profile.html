@@ -69,7 +69,7 @@
                 <table>
                   <tr ng-repeat="fileName in invertedIndex.fileNames" show-tooltips>
                     <td>
-                      <input id="{{ 'checkbox-' + fileName }}" type="checkbox" class="filled-in checkbox-dark" ng-model="uploadedFilenames[fileName]" />
+                      <input id="{{ 'checkbox-' + fileName }}" type="checkbox" class="filled-in checkbox-dark" ng-model="uploadedFileNames[fileName]" />
                       <label for="{{ 'checkbox-' + fileName }}">&nbsp</label>
                     </td>
                     <td>{{ fileName }}</td>
@@ -105,7 +105,7 @@
         </div>
       </div>
       <div id="viewindex" class="modal grey lighten-2 grey-text text-darken-3">
-        <h5 class="center">Index of {{ currentFilename }}</h5>
+        <h5 class="center">Index of {{ currentFileName }}</h5>
         <table class="centered">
           <thead>
             <tr>

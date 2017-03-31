@@ -105,10 +105,16 @@ function profileCtrl($scope, $http, $rootScope, $location, $timeout) {
       } else {
         $scope.searchResults = $scope.invertedIndex
           .searchIndex($scope.keywords, $scope.filesToSearch);
-        if ($.isEmptyObject($scope.searchResults.results)) {
-          $scope.alert(`"${$scope.keywords}" not found in any selected files.`);
-        } else {
+        let isFound = false;
+        Object.keys($scope.searchResults.results).forEach((token) => {
+          if ($scope.searchResults.results[token].length > 0) {
+            isFound = true;
+          }
+        });
+        if (isFound) {
           $('#viewsearchresults').modal('open');
+        } else {
+          $scope.alert(`"${$scope.keywords}" not found in any selected files.`);
         }
       }
     }

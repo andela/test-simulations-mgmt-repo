@@ -1,6 +1,6 @@
-const FileAPI = require('file-api');
+const fileAPI = require('file-api');
 
-const FileReader = FileAPI.FileReader;
+const FileReader = fileAPI.FileReader;
 /**
  * An implementation of the inverted index data structure.
  * @author Princess-Jewel Essien <princess-jewel.essien@andela.com>
@@ -26,18 +26,6 @@ class InvertedIndex {
     this.fileNames.push(fileName);
     const titles = [];
     const index = {};
-    // for (let i = 0; i < books.length; i += 1) {
-    //   titles.push(books[i].title);
-    //   const bookTokens =
-    //     InvertedIndex.tokenize(`${books[i].title} ${books[i].text}`);
-    //   for (let j = 0; j < bookTokens.length; j += 1) {
-    //     if (bookTokens[j] in index) {
-    //       index[bookTokens[j]].push(books[i].title);
-    //     } else {
-    //       index[bookTokens[j]] = [books[i].title];
-    //     }
-    //   }
-    // }
     books.forEach((book) => {
       titles.push(book.title);
       const tokens = InvertedIndex.tokenize(`${book.title} ${book.text}`);
@@ -102,18 +90,15 @@ class InvertedIndex {
       results: {},
       titles: []
     };
+    fileNames.forEach((fileName) => {
+      resultIndex.titles = resultIndex.titles.concat(this.getTitles(fileName));
+    });
     keyTokens.forEach((token) => {
+      resultIndex.results[token] = [];
       fileNames.forEach((fileName) => {
-        const fileIndex = this.fileNames.indexOf(fileName);
-        if (this.indices[fileIndex][token]) {
-          resultIndex.titles = [...new Set([...resultIndex.titles,
-            ...this.indices[fileIndex][token]])];
-          if (resultIndex.results[token]) {
-            resultIndex.results[token] = resultIndex.results[token]
-              .concat(this.indices[fileIndex][token]);
-          } else {
-            resultIndex.results[token] = this.indices[fileIndex][token];
-          }
+        if (this.getIndex(fileName)[token]) {
+          resultIndex.results[token] = resultIndex.results[token]
+            .concat(this.getIndex(fileName)[token]);
         }
       });
     });

@@ -126,6 +126,7 @@ module.exports = {
     the: ['Alphabet', 'More Alphabet', 'Reaper Man', 'Soul Music', 'Hogfather'],
     death: ['Mort', 'Reaper Man', 'Soul Music'],
     he: ['Mort'],
-    comes: ['Mort']
+    comes: ['Mort'],
+    extravaganza: []
   }
 };

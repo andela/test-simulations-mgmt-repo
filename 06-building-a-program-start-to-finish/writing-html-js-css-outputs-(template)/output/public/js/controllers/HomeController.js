@@ -7,6 +7,12 @@ function homeCtrl($scope, $http, $rootScope, $location) {
     });
   });
   $scope.incorrectLogin = false;
+  $scope.openSignup = () => {
+    $('#signup').modal('open');
+  };
+  $scope.openSignin = () => {
+    $('#signin').modal('open');
+  };
   $scope.signup = (user) => {
     $('#signup-preloader').addClass('active');
     $http.post('/signup', user)
