@@ -6,9 +6,12 @@ class InvertedIndex {
   /**
    * class constructor
    * @constructor
+   * @param {Array} filenames names of files to initialize the index with
+   * @param {Object} files file index(es) to be stored initially
    */
-  constructor() {
-    this.files = [];
+  constructor(filenames = [], files = {}) {
+    this.filenames = filenames;
+    this.files = files;
   }
 
   /**
@@ -19,15 +22,18 @@ class InvertedIndex {
    */
   static validateFile(fileContent) {
     if ((fileContent instanceof Array) && fileContent.length > 0) {
-      let valid = true;
-      fileContent.forEach((book) => {
-        if (!(book.title && book.text)) {
-          valid = false;
-          return;
-        }
-        if (book.text.length < 1) valid = false;
-      });
-      return valid;
+      const BreakException = {};
+      try {
+        fileContent.forEach((book) => {
+          if (!(book.title && book.text) || book.text.length < 1) {
+            throw BreakException;
+          }
+          if (book.text.length < 1) throw BreakException;
+        });
+      } catch (error) {
+        return false;
+      }
+      return true;
     }
     return false;
   }
@@ -52,7 +58,7 @@ class InvertedIndex {
    * @return {Boolean} true if file index was successfully created, else false
    */
   createIndex(fileContent, filename) {
-    if (this.files.indexOf(filename) !== -1) return false;
+    if (this.filenames.indexOf(filename) !== -1) return false;
 
     const result = { bookTitles: [], words: {}, allWords: [], filename };
     fileContent.forEach((book, bookIndex) => {
@@ -68,8 +74,8 @@ class InvertedIndex {
       });
     });
 
-    this.files.push(filename);
-    this[filename] = result;
+    this.filenames.push(filename);
+    this.files[filename] = result;
     return true;
   }
 
@@ -80,8 +86,8 @@ class InvertedIndex {
    * @return {Object|Boolean} indexed object or false if file was not found
    */
   getIndex(filename) {
-    if (!this[filename]) return false;
-    return this[filename];
+    if (!this.files[filename]) return false;
+    return this.files[filename];
   }
 
   /**
@@ -95,24 +101,25 @@ class InvertedIndex {
   searchIndex(searchKey, filename = false) {
     if (typeof searchKey !== 'string' || searchKey === '') return false;
     const searchTerms = InvertedIndex.tokenize(searchKey);
-    const searchAllResult = { files: [] };
+    const searchResult = { filenames: [] };
 
-    const collection = (filename) ? [filename] : this.files;
+    const collection = (filename) ? [filename] : this.filenames;
     collection.forEach((file) => {
       const result = { words: {}, allWords: [] };
       searchTerms.forEach((word) => {
-        if (this[file].words[word]) {
+        if (this.files[file].words[word]) {
           result.allWords.push(word);
-          result.words[word] = this[file].words[word];
+          result.words[word] = this.files[file].words[word];
         }
       });
-      if (result.allWords.length < 1) return;
-      searchAllResult.files.push(file);
-      searchAllResult[file] = result;
+      if (result.allWords.length > 0) {
+        searchResult.filenames.push(file);
+        searchResult[file] = result;
+      }
     });
 
-    if (searchAllResult.files.length < 1) return false;
-    return searchAllResult;
+    if (searchResult.filenames.length < 1) return false;
+    return searchResult;
   }
 
   /**
@@ -122,10 +129,10 @@ class InvertedIndex {
    * @return {Boolean} true if file was successfully deleted, else false
    */
   deleteFileIndex(filename) {
-    if (!this[filename]) return false;
+    if (!this.files[filename]) return false;
 
-    this[filename] = undefined;
-    this.files.splice(this.files.indexOf(filename), 1);
+    this.files[filename] = undefined;
+    this.filenames.splice(this.filenames.indexOf(filename), 1);
     return true;
   }
 }
