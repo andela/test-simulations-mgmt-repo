@@ -44,6 +44,15 @@ describe('InvertedIndex Test Suite', () => {
      });
     });
 
+    it('should call validateFile', () => {
+      var reader = new FileReader();
+      reader.addEventListener('load', function(e) {
+        const fileRead = reader.result
+        expect(this.invertedIndex.validateFile(fileRead)).toHaveBeenCalled;
+        done();
+     });
+    });
+
     it('should return the json file if it is valid', () => {
       expect(this.invertedIndex.readFile(alice)).toBeTruthy();
     });
