@@ -40,20 +40,20 @@ angular.module("InvertedIndexApp", [])
   };
 
   $scope.displaySearch = () => {
+    $scope.searchResults = {};
     if ($scope.phrase.length < 1) {
       $scope.errorHandler = "Please enter a word to search";
     } else {
       if ($scope.searchOption === "All") {
-        $scope.searchResults = invertedIndex.searchAllIndexes($scope.phrase);
+        $scope.searchResults = invertedIndex.searchIndex($scope.phrase);
         $scope.displaySearchResult = true;
         $scope.displayIndexes = false;
       } else {
         const filename  = $scope.searchOption.split('.')[0];
-      //  $scope.indexedFiles = invertedIndex.getIndex(filename);
-        $scope.searchResults[filename] = invertedIndex.searchIndex(filename, $scope.phrase);
+        $scope.searchResults[filename] = invertedIndex.searchIndex($scope.phrase)[filename];
         $scope.displaySearchResult = true;
         $scope.displayIndexes = false;
-      };  
+      };
     }console.log($scope.searchResults);
   }
 }])
@@ -65,9 +65,7 @@ angular.module("InvertedIndexApp", [])
   return input;
 });
 
-// Document ready.
 document.addEventListener('DOMContentLoaded', () => {
-  // Attach file upload listener
   document.getElementById('upload')
     .addEventListener('change', function createFile(file) {
       if (this.files[0]) {

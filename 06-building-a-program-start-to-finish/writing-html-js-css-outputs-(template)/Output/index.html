@@ -13,9 +13,9 @@
 
 </head>
 <body ng-controller="IndexController">
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="col-md-3 nav-block">
+  <nav class="navbar navbar-default ">
+    <div class="container-fluid collapse navbar-collapse">
+      <div class="col-md-3 nav-block form-inline">
         <div class="navbar-header">
           <a class="navbar-brand" href="#">Inverted Index App</a>
         </div>
@@ -111,14 +111,15 @@
                  <th> Showing Index for {{filename}}</th>
                  <tr>
                    <th> Keywords</th>
-                   <th ng-repeat="doc_num in [] | range:searchResults.numOfDocs"> Document {{doc_num + 1}}</th>
+                   <th ng-repeat="doc_num in [] | range:searchResults[filename].numOfDocs"> Document {{doc_num + 1}}</th>
                  </tr>
                </thead>
                <tbody>
-                 <tr ng-repeat="(eachWord, documents) in searchResults.eachWord">
+                 <tr ng-repeat="(eachWord, documents) in searchResults[filename].eachWord">
                    <td class="divider">{{eachWord}}</td>
-                   <td ng-repeat="doc_num in [] | range:searchResults.numOfDocs">
+                   <td ng-repeat="doc_num in [] | range:searchResults[filename].numOfDocs">
                      <span ng-if="documents.indexOf(doc_num) !== -1" class="text-center">x</span>
+                     <span ng-if="documents.indexOf(doc_num) === -1" class="text-center">~</span>
                    </td>
                   </tr>
                </tbody>
