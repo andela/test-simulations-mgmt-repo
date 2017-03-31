@@ -1,6 +1,6 @@
 #### Output
 - **Using**: Mocha/Jasmine with any assertion library of choice (Chai.JS, Should.JS, Expect.JS...)
-- **Deliver**: a Pull Request showing all tests required for your project
+- **Deliver**: Your test files for the Inverted Index class and all associated dependencies.
 - **With**: *independently*
 
 #### Targeted Learning Outcomes
