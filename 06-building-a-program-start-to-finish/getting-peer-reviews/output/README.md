@@ -4,4 +4,4 @@
 - **With**: *independently*
 
 #### Targeted Learning Outcomes
-- [Reviewed PR](https://github.com/andela-moseni/inverted-index/pull/1)
+- [Reviewed PR](https://github.com/andela-moseni/inverted-index/pull/4)
