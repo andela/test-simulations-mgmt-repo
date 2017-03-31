@@ -3,6 +3,7 @@ const books = require('../assets/books.json');
 const wrongdata = require('../assets/wrongdata.json');
 const emptyfile = require('../assets/emptyfile.json');
 const smallfile = require('../assets/smallfile.json');
+
 describe('InvertedIndex Class', () => {
   beforeAll(() => {
     this.invertedIndex = new InvertedIndex();
