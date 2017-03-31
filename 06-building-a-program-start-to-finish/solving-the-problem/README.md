@@ -1,6 +1,6 @@
 #### Output
 - **Using**: GitHub
-- **Deliver**: a Pull Request showing your implementation of the solution (e.g. InvertedIndex class)
+- **Deliver**: The file containing the implementation including all relevant dependencies. (e.g. InvertedIndex class)
 - **With**: *independently*
 
 #### Targeted Learning Outcomes
