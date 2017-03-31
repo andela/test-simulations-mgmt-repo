@@ -1,109 +1,132 @@
-
-.button_left{
-	position: relative;
-	left: 200px;
+.button_left {
+    position: relative;
+    left: 200px;
 }
-.body{
-	background-color: ghostwhite;
+.body {
+    background-color: ghostwhite;
 }
-
-.form_direction{
-	margin-top: 50px;
+.form_direction {
+    margin-top: 50px;
 }
-#index_check{
-	position: relative;
-	left:50px;
-
+#index_check {
+    position: relative;
+    left: 50px;
 }
-.table_style{
-	 margin-top: 50px;
-    float: left;
-    width: 100%;
+.h3 {
+    color: maroon;
 }
-
-.button{
-	background-color: silver !important;
-	color: maroon !important;
+.button {
+    background-color: teal !important;
+    color: #fff !important;
+    width: 100px;
 }
-
-#create-index-button{
-	margin-left: 5px;
+.buttonDelete {
+    background-color: maroon !important;
+    color: silver !important;
+    width: 100px;
+    margin-left: 10px !important;
 }
-.upload_file{
-	background-color: silver!important;
-	color: maroon  !important;
-	position: absolute;
-	margin-top: 70px;
-	margin-left: 360px;
+#create-index-button {
+    margin-left: 5px;
 }
-
-.create_index{
-	background-color: silver !important;
-	color: maroon  !important;
-	margin-top: 37px;
-	margin-left: 220px;
+.upload_file {
+    background-color: teal!important;
+    color: #fff !important;
+    font-size: 15px;
+    width: 100px !important;
+    margin-left: 15px;
 }
-.select{
-	margin-top: 30px;
-	width: 500px !important;
-	background-color: silver;
-	position: relative;
-	left: -25px;
-	color: maroon  !important;
+.create_index {
+    background-color: teal !important;
+    color: #fff !important;
 }
-.drop{
-	width: 800px !important;
-	margin-left: 200px;
-	background-color: silver;
-	height: 50px;
-	display: inline-block !important;
-	color:maroon ;
-	padding: 12px 0px 0px 10px;
-	font-size: 18px;
-	margin-top: 20px;
-	border-radius: 5px 5px 5px 5px;
+.select {
+    margin-top: 10px;
+    margin-left: 39px;
+    width: 208px !important;
+    background-color: #fff;
+    position: relative;
+    left: -25px;
+    color: teal !important;
 }
-.menu{
-	min-width: 800px !important;
-	margin-left:200px;
-	text-align: center;
-	position: relative;
- 	margin-top: -5px;
-	 color: maroon;
-	 background-color: silver;
-	 border-radius: 5px 5px 5px 5px;
-
+.drop {
+    width: 700px !important;
+    background-color: #fff;
+    height: 50px;
+    display: inline-block !important;
+    color: teal;
+    padding: 12px 0px 0px 10px;
+    font-size: 18px;
+    border-radius: 5px 5px 5px 5px;
 }
-.glyphicon-info-sign{
-	font-size: 16px !important;
+#searchBox {
+    margin-bottom: 10px;
+    width: 215px;
+    border-radius: 5px 5px 5px 5px;
+    font-size: 17px;
 }
-.glyphicon-fullscreen{
-	margin-right: 5px;
-	font-size: 14px !important;
-}
-.left{
-	font-size: 16px !important;
-	margin-right: 10px;
-}
-
-.move{
-	margin-top: 350px;
-	background-color:maroon !important;
-	border-radius: 5px 5px 5px 5px;
-	
-}
-.name{
+.menu {
+    min-width: 700px !important;
     text-align: center;
-	color: mintcream;
-	margin-top: 8px;
+    position: relative;
+    margin-top: -5px;
+    color: teal;
+    background-color: #fff;
+    border-radius: 5px 5px 5px 5px;
 }
-.style{
-	color: maroon;
+.glyphicon-info-sign {
+    font-size: 16px !important;
 }
-.table-bordered{
-	width: 70% !important;
+.glyphicon-fullscreen {
+    margin-right: 5px;
+    font-size: 14px !important;
 }
-.searchSelect{
-	width: 100px;
-	height: 34px;
+.left {
+    font-size: 16px !important;
+    margin-right: 10px;
+}
+.move {
+    background-color: teal !important;
+    border-radius: 5px 5px 5px 5px;
+}
+.name {
+    text-align: center;
+    color: mintcream;
+    margin-top: 8px;
+}
+.style {
+    color: teal;
+}
+.searchSelect {
+    width: 217px;
+    height: 34px;
+    font-size: 18px;
+    color: #fff;
+    background-color: teal;
+    margin-bottom: 10px;
+}
+.table-fixed thead {
+    width: 100%;
+    color: #fff;
+}
+.table-fixed tbody {
+    height: 230px;
+    overflow-y: auto;
+    width: 100%;
+    color: teal;
+}
+.table-fixed thead,
+.table-fixed tbody,
+.table-fixed tr,
+.table-fixed td,
+.table-fixed th {
+    display: block;
+}
+.table-fixed tbody td,
+.table-fixed thead > tr> th {
+    float: left;
+    border-bottom-width: 0;
+}
+.th {
+    background-color: teal !important;
 }
