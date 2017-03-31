@@ -5,4 +5,4 @@
 - **With**: *independently*
 
 ### Link to Screencast
-- [Automatic browser reload with Gulp & browser-sync](https://youtu.be/ufYHOAtv1UM)
+- [Automatic browser reload with Gulp & browser-sync](https://youtu.be/4I8TOid2d3Q)
