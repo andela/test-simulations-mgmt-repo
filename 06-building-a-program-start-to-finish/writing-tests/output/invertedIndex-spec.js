@@ -1,19 +1,33 @@
 const values = require('object.values');  //  shim Object.values
-const book = require('./allBooks/books.json');  //  book with valid contents
+//  book with valid contents
+const book = require('./allBooks/books.json');
 //  book with invalid content
-const invalidTitleAndText = require('./allBooks/invalid.json');
+const invalidFile = require('./allBooks/invalid.json');
 //  book with valid content
 const secondBook = require('./allBooks/newBook.json');
 //  empty book
-const emptyJSON = require('./allBooks/empty.json');
+const empty = require('./allBooks/empty.json');
 // an array
-const anArray = require('./allBooks/in-valid.json');
+const invalid = require('./allBooks/in-valid.json');
 // empty array
-const emptyArray = require('./allBooks/emptyArray.json');
+const emptyFile = require('./allBooks/emptyArray.json');
 // an invalid JSON file
 const notValid = require('./allBooks/notArrayOfArray.json');
 
 describe('invertedIndex Index', () => {
+   beforeAll(() => {
+    this.invertedIndex = new InvertedIndex();
+  });
+  
+  describe('Constructor', () => {
+    it('can create instances of inverted index class', () => {
+      expect(typeof this.invertedIndex)
+        .toEqual('object');
+      expect(this.invertedIndex instanceof InvertedIndex)
+        .toBe(true);
+    });
+  });
+
   const invertedIndex = new InvertedIndex();
   invertedIndex.createIndex('book.json', book);
   invertedIndex.createIndex('secondBook.json', secondBook);
@@ -51,7 +65,7 @@ describe('invertedIndex Index', () => {
     });
 
     it('should return false for empty json files', () => {
-      expect(InvertedIndex.validateFile(emptyJSON)).toBeFalsy();
+      expect(InvertedIndex.validateFile(empty)).toBeFalsy();
     });
 
     it('should return true if file has property "title" and "text" ', () => {
@@ -60,20 +74,21 @@ describe('invertedIndex Index', () => {
 
     it('should return false if file does not have property "title" and "text"',
      () => {
-       expect(InvertedIndex.validateFile(invalidTitleAndText)).toBeFalsy();
+       expect(InvertedIndex.validateFile(invalidFile)).toBeFalsy();
      });
 
-     it('should return false if file is not an array of JSON object',
+    it('should return false if file is not an array of JSON object',
      () => {
-       expect(InvertedIndex.validateFile(anArray)).toBeFalsy();
+       expect(InvertedIndex.validateFile(invalid)).toBeFalsy();
      });
 
     it('should return false if file is an empty array',
      () => {
-       expect(InvertedIndex.validateFile(emptyArray)).toBeFalsy();
+       expect(InvertedIndex.validateFile(emptyFile)).toBeFalsy();
      });
 
-     it('should return false if file is a JSON file but not an array of an array',
+    it('should return false if file is a JSON file but not' +
+    'an array of an array',
      () => {
        expect(InvertedIndex.validateFile(notValid)).toBeFalsy();
      });
@@ -81,7 +96,7 @@ describe('invertedIndex Index', () => {
 
   describe('Create Index', () => {
     it('should return a msg if index is not created', () => {
-      let msg = 'Index not created';
+      const msg = 'Index not created';
       expect(invertedIndex.createIndex(notValid)).toEqual(msg);
     });
   });
@@ -95,7 +110,7 @@ describe('invertedIndex Index', () => {
     });
   });
 
-describe('Generate Index', () => {
+  describe('Generate Index', () => {
     it('should verify that index has been created', () => {
       expect(Object.keys(invertedIndex.getIndex('book.json')).length)
       .toBeGreaterThan(0);
@@ -126,18 +141,22 @@ describe('Generate Index', () => {
 
   describe('Search index', () => {
     it('should return true if search term is a string', () => {
-      const words = 'I love Barbie and Alice'
-      expect(Object.keys(invertedIndex.searchIndex('words', 'book.json'))).toBeTruthy();
+      const words = 'I love Barbie and Alice';
+      expect(Object.keys(invertedIndex.searchIndex(words, 'book.json')))
+      .toBeTruthy();
     });
 
     it('should return true if search term is a string', () => {
-      const newWords = ['I love Barbie and Alice'];
-      expect(Object.keys(invertedIndex.searchIndex('newWords', 'secondBook.json'))).toBeTruthy();
+      const texts = 'I love Barbie and Alice';
+      expect(Object.keys(invertedIndex.searchIndex(texts, 'secondBook.json')))
+      .toBeTruthy();
     });
 
     it('should return true if search term is a number', () => {
-      const number = 1234;
-      expect(Object.keys(invertedIndex.searchIndex('number', 'secondBook.json'))).toBeTruthy();
+      let number = 1234;
+      number = number.toString();
+      expect(Object.keys(invertedIndex.searchIndex(number, 'secondBook.json')))
+      .toBeTruthy();
     });
 
     it('should search through single files that are indexed', () => {
@@ -158,25 +177,26 @@ describe('Generate Index', () => {
     });
 
     it('should search through all files', () => {
-      const allFiles = 
-      {
-        'book.json':
-        { 
-          alice: [0],
-          an: [1],
-          barbie: [2],
-          cartoons: [2],
-          of: [0, 1],
-          unusual: [1],
-          wizard: [1] 
-        },
-        'secondBook.json': 
-        { 
-          barbie: [ 1 ] 
-        }
-      }
+      const allFiles =
+        {
+          'book.json':
+          {
+            alice: [0],
+            an: [1],
+            barbie: [2],
+            cartoons: [2],
+            of: [0, 1],
+            unusual: [1],
+            wizard: [1]
+          },
+          'secondBook.json':
+          {
+            barbie: [1]
+          }
+        };
       let search = {};
-      search = invertedIndex.searchIndex('Barbie loves cartoons but she\'s scared of an unusual wizard, alice fall\'s',
+      search = invertedIndex.searchIndex('Barbie loves cartoons but she\'s' +
+      'scared of an unusual wizard, alice fall\'s',
       'All files');
       expect(Object.keys(search)).toEqual(Object.keys(allFiles));
       expect(values(allFiles)).toEqual(values(allFiles));
