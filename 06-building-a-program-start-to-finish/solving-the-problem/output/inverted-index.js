@@ -220,9 +220,9 @@ class InvertedIndex {
   indexInLocalStorage() {
     if (Object.keys(JSON.parse(localStorage.indexedDocs)).length === 0) {
       return false;
-    } else {
-      return true;
     }
+
+    return true;
   }
 
   /**
@@ -237,20 +237,13 @@ class InvertedIndex {
     const searchWords = this.tokenize(searchString.toLowerCase());
     const searchResults = {};
     const indexOfFile = JSON.parse(localStorage.indexedDocs)[this.fileName][0];
-    let count = 0;
 
     searchWords.forEach((searchItem) => {
       Object.keys(indexOfFile).forEach((word) => {
         if (word.indexOf(searchItem) > -1) {
-          count += 1;
           searchResults[word] = indexOfFile[word];
         }
       });
-
-      if (count === 0) {
-        searchResults[searchItem] = undefined;
-      }
-
     });
 
     return searchResults;
@@ -288,12 +281,18 @@ class InvertedIndex {
    * @return {string}
    */
 
-  // deleteIndex(fileName) {
-  //   this.fileName = fileName;
-  //   const fileIndices = JSON.parse(localStorage.indexedDocs);
-  //   delete fileIndices[this.fileName];
-  //   localStorage.indexedDocs = JSON.stringify(fileIndices);
-  //   return 'File index deleted';
-  // }
+  deleteIndex(fileName) {
+    this.fileName = fileName;
+
+    if (fileName === 'Delete All') {
+      localStorage.indexedDocs = JSON.stringify({});
+    } else {
+      const fileIndices = JSON.parse(localStorage.indexedDocs);
+      delete fileIndices[this.fileName];
+      localStorage.indexedDocs = JSON.stringify(fileIndices);
+    }
+
+    return 'File index deleted';
+  }
 
 }
