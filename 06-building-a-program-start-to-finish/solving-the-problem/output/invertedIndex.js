@@ -14,14 +14,6 @@ class InvertedIndex {
   }
 
   /**
-   * returns the object containing all the uploadef files
-   * @return {Object} Index of all the files 
-   */
-  searchAllFiles() {
-    return this.tableObj;
-  }
-
-  /**
    * A method that tokenizes the string that is passed through it
    * @param  {string} data the string that is gotten from the "text" key in the JSON object
    * @return {Array} containing String.
@@ -44,14 +36,14 @@ class InvertedIndex {
 
   /**
    * A method that tokenizes an object value and gets the unique terms in the object values
-   * @param  {Object} fileJsonObject the uploaded JSON file object
-   * @return {Array}  of the unique terms in the fileJsonObject
+   * @param  {Object} fileJson the uploaded JSON file object
+   * @return {Array}  of the unique terms in the fileJson
    */
-  getTextFromJsonObj(fileJsonObject) {
+  getTextFromJsonObj(fileJson) {
     let newText = ' ';
-    Object.keys(fileJsonObject)
+    Object.keys(fileJson)
       .forEach((key) => {
-        const obj = fileJsonObject[key];
+        const obj = fileJson[key];
         newText += ' ';
         newText += obj.text;
       });
@@ -62,8 +54,8 @@ class InvertedIndex {
 
   /**
    * A method to validate a JSON file.
-   * it check if the format of the .json file contains 
-   *  strictly keys of ["title","text"]
+   * it check if the format of the .json file contains
+   * strictly keys of ["title","text"]
    * @param {Object} parsedFile object
    * @returns {Object} containing boolean and a String.
    */
@@ -74,12 +66,12 @@ class InvertedIndex {
     };
     Object.keys(parsedFile)
       .forEach((key) => {
-        const obj = parsedFile[key];
+        const uploadedFile = parsedFile[key];
         const validFormat = ['title', 'text'];
-        const parsedFileFormat = Object.keys(obj);
-        const arr = Object.keys(parsedFileFormat)
+        const parsedFileFormat = Object.keys(uploadedFile);
+        const fileTextKey = Object.keys(parsedFileFormat)
           .map(objKeys => parsedFileFormat[objKeys]);
-        if (validFormat.toString() === arr.toString()) {
+        if (validFormat.toString() === fileTextKey.toString()) {
           this.isValid = {
             valid: true,
             message: 'This JSON Format is correct',
@@ -96,23 +88,22 @@ class InvertedIndex {
 
   /**
    * A method that create the index of the selected-file
-   * @param  {Object} fileJsonObject the uploaded file object
+   * @param  {Object} fileJson the uploaded file object
    * @param  {Array} uniqueTerms    the unique terms in the JSON file
    * @param  {String} fileName    The file name
-   * @return {Object}  containing the index of the selected-file 
+   * @return {Object} containing the index of the selected-file
    */
-  createIndex(fileJsonObject, uniqueTerms, fileName) {
+  createIndex(fileJson, uniqueTerms, fileName) {
     const indexedDB = {};
     uniqueTerms.forEach((uniqueKeys) => {
       const arr = [];
-      fileJsonObject.forEach((jsonObjText) => {
+      fileJson.forEach((jsonObjText) => {
         arr.push((jsonObjText.text.toLowerCase())
           .includes(uniqueKeys));
       });
       indexedDB[uniqueKeys] = arr;
     });
     this.tableObj[fileName] = indexedDB;
-    console.log(JSON.stringify(indexedDB));
     return indexedDB;
   }
 
@@ -134,22 +125,42 @@ class InvertedIndex {
    *                  searching, based on the string you are typing.
    */
   searchIndex(keywords, fileName) {
-    let indexedData = this.getIndex(fileName);
-    if (keywords !== undefined && keywords.length > 0) {
-      const keyword = keywords.replace(/[^\w\s]/gi, ' ')
-        .match(/\w+/g);
-      this.searchData = {};
-      keyword.forEach((KEY) => {
-        const key = KEY.toLowerCase();
-        if (key in indexedData) {
-          this.searchData[key] = indexedData[key];
-        }
-      });
-      return this.searchData;
+    if (fileName !== 'all') {
+      const indexedData = this.getIndex(fileName);
+      if (keywords !== undefined && keywords.length > 0) {
+        const keyword = keywords.replace(/[^\w\s]/gi, ' ')
+          .match(/\w+/g);
+        this.searchData = {};
+        keyword.forEach((KEY) => {
+          const key = KEY.toLowerCase();
+          if (key in indexedData) {
+            this.searchData[key] = indexedData[key];
+          }
+        });
+        return this.searchData;
+      }
+      return indexedData;
+    } else {
+      if (keywords !== undefined && keywords.length > 0) {
+        const keyword = keywords.replace(/[^\w\s]/gi, ' ')
+          .match(/\w+/g);
+        const fileNames = Object.keys(this.tableObj);
+        this.searchDataAll = {};
+        fileNames.forEach((fileName) => {
+          this.searchDataAll[fileName] = {};
+          keyword.forEach((word) => {
+            const key = word.toLowerCase();
+            const filekey = Object.keys(this.tableObj[fileName]);
+            if (filekey.indexOf(key) > -1) {
+              this.searchDataAll[fileName][key] = this.tableObj[fileName][key];
+          }
+          });
+        });
+        return this.searchDataAll;
+      }
+      return this.tableObj;
     }
-    return indexedData;
   }
-
 }
 if (typeof window === 'undefined') {
   module.exports.InvertedIndex = InvertedIndex;
