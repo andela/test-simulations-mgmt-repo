@@ -1,10 +1,8 @@
-/* eslint-disable no-undef */
-
 /**
  * inverted index class
  * @class
 **/
-class InvertedIndex { //  eslint-disable-line
+class InvertedIndex {
   /**
   * class constructor
   * @constructor
@@ -28,13 +26,14 @@ class InvertedIndex { //  eslint-disable-line
    * @param {Object} file is an array of json objects
    * @return {Boolean} True if a json file is valid and False otherwise
   **/
-  validateFile(file) { // eslint-disable-line
+  static validateFile(file) {
     if (typeof file !== 'object' || file.length === 0 || !Array.isArray(file)) {
       return false;
     }
     for (let i = 0; i < file.length; i += 1) {
       const item = file[i];
-      if (!(item.hasOwnProperty('title') && item.hasOwnProperty('text'))) { // eslint-disable-line
+      if (!(Object.prototype.hasOwnProperty.call(item, 'title') &&
+      (Object.prototype.hasOwnProperty.call(item, 'text')))) {
         return false;
       }
     }
@@ -44,21 +43,27 @@ class InvertedIndex { //  eslint-disable-line
    * Tokenize
    * It splits sentence into an array of refined words
    * @param {String} text - string of texts
-   * @return {Array} An array of refined splitted texts
+   * @return {Array} An array of refined split texts
   **/
-  tokenize(text) {  //eslint-disable-line
+  static tokenize(text) {
     const remove = /[^'^\w\s]/g;
-    return text.replace(remove, ' ').toLowerCase().split(' ')
-    .sort()
-    .filter(item => Boolean(item));
+    const lowerCase = text.replace(remove, ' ').toLowerCase().split(' ');
+    return lowerCase.sort().filter(item => Boolean(item));
   }
-  createIndex(fileName, fileContent) {  //eslint-disable-line
+  /**
+   * Create Index
+   * It creates the index of a file
+   * @param {String} fileName - Filename of the file to be indexed
+   * @param {String} fileContent - Content of the uploaded file
+   * @return {Object} An object of each word and their indices in a sorted way
+  **/
+  createIndex(fileName, fileContent) {
     const indices = {};
-    if (this.validateFile(fileContent)) {
+    if (InvertedIndex.validateFile(fileContent)) {
       fileContent.forEach((doc, docIndex) => {
-        const newString = `${doc.title} ${doc.text}`;
-        const tokenArray = this.tokenize(newString);
-        tokenArray.forEach((token) => {
+        const word = `${doc.title} ${doc.text}`;
+        const tokenized = InvertedIndex.tokenize(word);
+        tokenized.forEach((token) => {
           if (token in indices) {
             if (indices[token].indexOf(docIndex) === -1) {
               indices[token].push(docIndex);
@@ -80,12 +85,12 @@ class InvertedIndex { //  eslint-disable-line
    * @return {Object} An object of each word and their indices in a sorted way
   **/
   getIndex(filename) {
-    const newObj = {};
+    const result = {};
     const tokens = Object.keys(this.fileIndices[filename]).sort();
     tokens.forEach((token) => {
-      newObj[token] = this.fileIndices[filename][token];
+      result[token] = this.fileIndices[filename][token];
     });
-    return newObj;
+    return result;
   }
    /**
    * Search Index
@@ -97,13 +102,12 @@ class InvertedIndex { //  eslint-disable-line
   searchIndex(searchTerm, filename) {
     let searchResult = {};
     this.searchIndices = {};
-    searchTerm = this.tokenize(searchTerm);
+    const tokenizedTerms = InvertedIndex.tokenize(searchTerm);
     let index;
-
     if (filename !== 'All files') {
       // Search single file with filename
       index = this.fileIndices[filename];
-      searchTerm.forEach((term) => {
+      tokenizedTerms.forEach((term) => {
         if (index[term]) {
           searchResult[term] = index[term];
         }
@@ -115,7 +119,7 @@ class InvertedIndex { //  eslint-disable-line
     Object.keys(this.fileIndices).forEach((file) => {
       searchResult = {};
       index = this.fileIndices[file];
-      searchTerm.forEach((term) => {
+      tokenizedTerms.forEach((term) => {
         if (index[term]) {
           searchResult[term] = index[term];
         }
@@ -125,3 +129,6 @@ class InvertedIndex { //  eslint-disable-line
     return this.searchIndices;
   }
 }
+
+const findIndex = new InvertedIndex();
+findIndex.createIndex();

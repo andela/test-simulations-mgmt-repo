@@ -24,11 +24,11 @@ describe('invertedIndex Index', () => {
     });
 
     it('should check that the class has a validateFile method', () => {
-      expect(typeof invertedIndex.validateFile).toBe('function');
+      expect(typeof InvertedIndex.validateFile).toBe('function');
     });
 
     it('should check that the class has a tokenize method', () => {
-      expect(typeof invertedIndex.tokenize).toBe('function');
+      expect(typeof InvertedIndex.tokenize).toBe('function');
     });
 
     it('should check that the class has a getIndex method', () => {
@@ -47,35 +47,35 @@ describe('invertedIndex Index', () => {
   describe('validateFile should check files', () => {
     it('should check that the contents of the file to be uploaded is valid',
     () => {
-      expect(invertedIndex.validateFile(book)).toBeTruthy();
+      expect(InvertedIndex.validateFile(book)).toBeTruthy();
     });
 
     it('should return false for empty json files', () => {
-      expect(invertedIndex.validateFile(emptyJSON)).toBeFalsy();
+      expect(InvertedIndex.validateFile(emptyJSON)).toBeFalsy();
     });
 
     it('should return true if file has property "title" and "text" ', () => {
-      expect(invertedIndex.validateFile(book)).toBeTruthy();
+      expect(InvertedIndex.validateFile(book)).toBeTruthy();
     });
 
     it('should return false if file does not have property "title" and "text"',
      () => {
-       expect(invertedIndex.validateFile(invalidTitleAndText)).toBeFalsy();
+       expect(InvertedIndex.validateFile(invalidTitleAndText)).toBeFalsy();
      });
 
      it('should return false if file is not an array of JSON object',
      () => {
-       expect(invertedIndex.validateFile(anArray)).toBeFalsy();
+       expect(InvertedIndex.validateFile(anArray)).toBeFalsy();
      });
 
     it('should return false if file is an empty array',
      () => {
-       expect(invertedIndex.validateFile(emptyArray)).toBeFalsy();
+       expect(InvertedIndex.validateFile(emptyArray)).toBeFalsy();
      });
 
      it('should return false if file is a JSON file but not an array of an array',
      () => {
-       expect(invertedIndex.validateFile(notValid)).toBeFalsy();
+       expect(InvertedIndex.validateFile(notValid)).toBeFalsy();
      });
   });
 
@@ -87,10 +87,10 @@ describe('invertedIndex Index', () => {
   });
 
   describe('Tokenize words', () => {
-    it('should check that tokens are splitted and in sorted order', () => {
+    it('should check that tokens are split and in sorted order', () => {
       let words = 'Hello Dear how are YOU';
       const expectedTokens = ['are', 'dear', 'hello', 'how', 'you'];
-      words = invertedIndex.tokenize(words);
+      words = InvertedIndex.tokenize(words);
       expect(expectedTokens).toEqual(words);
     });
   });
@@ -175,7 +175,6 @@ describe('Generate Index', () => {
           barbie: [ 1 ] 
         }
       }
-
       let search = {};
       search = invertedIndex.searchIndex('Barbie loves cartoons but she\'s scared of an unusual wizard, alice fall\'s',
       'All files');
