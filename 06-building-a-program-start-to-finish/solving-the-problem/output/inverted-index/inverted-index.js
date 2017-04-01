@@ -1,5 +1,4 @@
 'use strict';
-
 /**
  * Class representing InvertedIndex
  */
@@ -21,7 +20,7 @@ const InvertedIndex = class {
    * @return {Object} if true
    * @return {Boolean.<false>} if false
    */
-  readFile(book) {
+  static readFile(book) {
     try {
       return JSON.parse(book);
     } catch (error) {
@@ -35,7 +34,7 @@ const InvertedIndex = class {
    * @param {string} bookname - Name of the book to validate
    * @return {Promise.<bookHolder>} An Object containing validated book
    */
-  validateFile(allBooks, bookname) {
+  static validateFile(allBooks, bookname) {
     return new Promise((resolve, reject) => {
       if (Object.keys(allBooks).length < 1) {
         reject('Cannot index an empty object');
@@ -46,14 +45,16 @@ const InvertedIndex = class {
           if (Object.prototype.hasOwnProperty.call(eachBook, 'title')
             && Object.prototype.hasOwnProperty.call(eachBook, 'text')) {
             if ((eachBook.title).length < 1 || (eachBook.text).length < 1) {
-              reject(`Document ${parseInt(eachIndex, 10) + 1} have an empty title or text.`);
+              const index = parseInt(eachIndex, 10) + 1;
+              reject(`Document ${index} have an empty title or text.`);
             }
             bookHolder[bookname][eachIndex] = {
               title: eachBook.title.toLowerCase(),
               text: eachBook.text.toLowerCase(),
             };
           } else {
-            reject(`Document ${parseInt(eachIndex, 10) + 1} in ${bookname}.json book do not have a "title" or "text" fields`);
+            const index = parseInt(eachIndex, 10) + 1;
+            reject(`Document ${index} in ${bookname}.json book do not have a "title" or "text" fields`);
           }
         });
         resolve(bookHolder);
@@ -66,7 +67,7 @@ const InvertedIndex = class {
    * @param {String} text - contents of each document
    * @return {String} sanitizedText - sanitized contents of each document
    */
-  tokenize(text) {
+  static tokenize(text) {
     let sanitizedText = text.replace(/[^\w\s]+/gi, '');
     sanitizedText = sanitizedText.replace(/\s\s+/g, ' ');
     sanitizedText = sanitizedText.replace(/^[.\s]+|[.\s]+$/g, '');
@@ -78,10 +79,11 @@ const InvertedIndex = class {
    * @param {Object} book - documents in a book
    * @return {Array.<Object>} bookContents - words in each document
    */
-  createsArray(book) {
+  static createsArray(book) {
     const bookContents = [];
     Object.keys(book).map((documentPosition) => {
-      const mergedTitleAndText = `${book[documentPosition].title} ${book[documentPosition].text}`;
+      const mergedTitleAndText = `${book[documentPosition].title} 
+      ${book[documentPosition].text}`;
       bookContents.push(this.tokenize(mergedTitleAndText).split(' '));
     });
     return bookContents;
@@ -96,7 +98,7 @@ const InvertedIndex = class {
   createIndex(bookname, book) {
     const tokenIndex = {};
     this.numberOfDocuments[bookname] = [];
-    const bookContents = this.createsArray(book);
+    const bookContents = InvertedIndex.createsArray(book);
     return new Promise((resolve) => {
       bookContents.map((eachdocument, documentPosition) => {
         const documentPositionToInt = parseInt(documentPosition, 10);
