@@ -4,4 +4,6 @@
 - **With**: *independently*
 
 #### Targeted Learning Outcomes
-- [Software Development Environments](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/35%20-%20Software%20Development%20Environments)
+- [review app](https://inverted-index-repo-jed--pr-23.herokuapp.com/)
+- [staging app](https://inverted-index-jed-staging.herokuapp.com/)
+- [production app](https://inverted-index-jed-production.herokuapp.com/)
