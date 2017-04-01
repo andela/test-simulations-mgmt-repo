@@ -139,15 +139,4 @@ describe('InvertedIndex Class', () => {
         .toEqual(output);
     });
   });
-
-  describe('searchAllFiles', () => {
-    beforeAll(() => {
-      this.invertedIndex.createIndex(smallfile, ['alice', 'falls'], 'smallcorrectfile.json');
-      this.invertedIndex.createIndex(books, uniqueTermsBook, 'correct.json');
-    });
-    it('returns an object containing all the indexed files', () => {
-      expect(typeof this.invertedIndex.searchAllFiles())
-        .toEqual('object');
-    });
-  });
 });
