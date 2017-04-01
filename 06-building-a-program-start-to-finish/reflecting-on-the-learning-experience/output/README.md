@@ -4,4 +4,4 @@
 - **With**: *independently*
 
 #### Link to medium post
-- [Link](https://medium.com/@ngeneanthony/the-simulations-c021fd035a10)
+- [Link](https://medium.com/@Slim_Jed/a-month-later-cb944f1ce18b)
