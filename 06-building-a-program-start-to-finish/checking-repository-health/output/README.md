@@ -4,4 +4,4 @@
 - **With**: *independently*
 
 #### Result
-- 
+- Screenshot of badges attached to this folder.
