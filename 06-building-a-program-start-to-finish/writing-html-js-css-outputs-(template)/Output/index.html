@@ -15,17 +15,25 @@
 <body ng-controller="IndexController">
   <nav class="navbar navbar-default ">
     <div class="container-fluid collapse navbar-collapse">
-      <div class="col-md-3 nav-block form-inline">
+      <div class="col-md-3 col-xs-3 nav-block form-inline">
         <div class="navbar-header">
           <a class="navbar-brand" href="#">Inverted Index App</a>
         </div>
       </div>
-      <div class="col-md-5 nav-block">
+    </div>
+  </nav>
+
+<div class="container-fluid wellup">
+  <div class="container-fluid collapse navbar-collapse">
+      <div class="col-md-3 col-xs-3 nav-block form-inline">
+        <h3 class="text-center"> About the app</h3>
+      </div>
+      <div class="col-xs-5 col-md-5 nav-block">
         <div class="form-group">
           <input type="text" class="form-control search-box" ng-model="phrase">
         </div>
       </div>
-      <div class="col-md-2 nav-block">
+      <div class="col-xs-2 col-md-2 nav-block">
         <div class="form-group">
           <select ng-model="searchOption" class="select-search form-control">
             <option>All</option>
@@ -33,17 +41,15 @@
           </select>
         </div>
       </div>
-      <div class="col-md-2 nav-block">
+      <div class="col-xs-2 col-md-2 nav-block">
         <div class="form-group">
           <button type="submit" class="btn btn-primary btn-block button-search" ng-click="displaySearch()">Search</button>
         </div>
       </div>
     </div>
-  </nav>
-<div class="container-fluid wellup">
+
   <div class="row">
-    <div class="col-md-3">
-      <h3> About the app </h3>
+    <div class="col-xs-3 col-md-3">
       <p> Inverted Index is designed to allow very fast full-text searches. It consists of a list of all the unique words
         that appear in the document, and for each word, a list of documents in which it appears.</p>
       <p>Inverted Index takes in a json file and creates an index of each in the file.
@@ -62,22 +68,18 @@
         </ul>
     </div>
 
-
-
-    <div class="col-md-7">
+    <div class="col-xs-7 col-md-7">
       <p ng-show="showError" class="alert alert-danger text-center text-danger errMsg">{{ errorHandler }}</p>
-      <p class="text-info text-center"> Please select a valid json file </p>
-
-      <div class="col-md-4">
+      <div class="col-md-4 col-xs-4">
         <label for="upload" class="btn btn-primary form-control">Upload</label>
         <input style="display:none" type='file' id ='upload'>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4 col-xs-4">
         <select ng-model="getFile" ng-show="fileNames.length > 0" class="form-control">
           <option ng-repeat="filename in fileNames | orderBy:filename">{{filename}}</option>
         </select>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4 col-xs-4">
         <button type="submit" class="btn btn-primary btn-block form-control" ng-click="displayIndex()">Create Index</button>
       </div>
 
@@ -103,7 +105,7 @@
         </div>
     </div>
 
-    <div ng-if="displaySearchResult">
+    <div ng-if="displaySearchResult" class="col-md-12">
        <div ng-repeat="(filename, result) in searchResults">
            <div class='tableArea'>
              <table class="table table-striped">
@@ -129,7 +131,7 @@
     </div>
   </div>
 
-    <div class="col-md-2 text-center">
+    <div class="col-xs-2 col-md-2 text-center">
       <div ng-show="fileNames.length > 0">
         <br>
         <p> Click a file to create Index </p>
@@ -143,7 +145,7 @@
   </div>
 </div>
 
-<div class="container" style="color: #000;">
+<div class="container" style="color: #fff;">
   <footer>
     <!-- <div class="container-fluid"> -->
       <div>

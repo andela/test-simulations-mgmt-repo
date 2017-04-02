@@ -18,8 +18,13 @@ body {
 .navbar-brand {
   color: #FFF !important;
   text-shadow: 2px 3px 6px #000 !important;
-  font-size: 30px
+  font-size: 20px
 }
+
+.wellup{
+  background-color: #f5f5f5;
+}
+
 .row {
   padding: 1em;
   margin: 1em auto;
@@ -42,8 +47,4 @@ body {
 .search-box:hover, .search-box:focus {
   border-bottom: 3px solid orange;
   outline:none;
-}
-
-.wellup{
-  background-color: #f5f5f5;
 }
