@@ -1,3 +1,6 @@
+const fileApi = require('file-api');
+
+const FileReader = fileApi.FileReader;
 /**
  * Implementation of the inverted index data structure.
  * @author Omokaro Faith <faith.omokaro@andela.com>
@@ -75,13 +78,13 @@ class InvertedIndex {
      *
      * @method createIndex
      * @param {Object} fileName
-     * @param {Object} obj
+     * @param {Object} indexObject
      *
      * @return {void}
      */
-  createIndex(fileName, obj) {
+  createIndex(fileName, indexObject) {
     const newIndex = {};
-    obj.forEach((object, position) => {
+    indexObject.forEach((object, position) => {
       const longSentence = `${object.title} ${object.text}`;
       const tokenized = this.tokenize(longSentence);
       const wordArray = tokenized.split(' ');
@@ -131,7 +134,7 @@ class InvertedIndex {
      */
   searchIndex(searchTerms, fileName) {
     const searchResult = {};
-    let temp = {};
+    let tempObject = {};
     if (fileName !== 'All files') {
       const selectedIndex = this.index[fileName];
       let terms = this.tokenize(searchTerms);
@@ -148,7 +151,7 @@ class InvertedIndex {
       return searchResult;
     }
     Object.keys(this.index).forEach((filename) => {
-      temp = {};
+      tempObject = {};
       const selectedIndex = this.index[filename];
       let terms = this.tokenize(searchTerms);
       terms = this.flattenSearch(terms);
@@ -156,12 +159,12 @@ class InvertedIndex {
         if (selectedIndex) {
           Object.keys(selectedIndex).forEach((savedWord) => {
             if (savedWord === term) {
-              temp[savedWord] = selectedIndex[savedWord];
+              tempObject[savedWord] = selectedIndex[savedWord];
             }
           });
         }
       });
-      searchResult[filename] = temp;
+      searchResult[filename] = tempObject;
     });
     return searchResult;
   }
