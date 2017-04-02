@@ -20,17 +20,6 @@ const workBook = [{
   text: 'Coming soon',
 },
 ];
-describe('InvertedIndex : define methods', () => {
-  invertedIndex.createIndex('work.json', workBook);
-  it('Should ensure that invertedIndex methods are defined', () => {
-    expect(invertedIndex.getIndex).toBeDefined();
-    expect(invertedIndex.createIndex).toBeDefined();
-    expect(invertedIndex.tokenize).toBeDefined();
-    expect(Index.validateFile).toBeDefined();
-    expect(invertedIndex.searchIndex).toBeDefined();
-    expect(invertedIndex.flattenSearch).toBeDefined();
-  });
-});
 
 describe('InvertedIndex : createIndex', () => {
   invertedIndex.createIndex('work.json', workBook);
@@ -51,11 +40,6 @@ describe('InvertedIndex : createIndex', () => {
         soon: [1],
       });
     });
-  it('should verify that index has been created', () => {
-    invertedIndex.createIndex('test.json', test);
-    expect(Object.keys(invertedIndex.getIndex('test.json', test)).length)
-      .toBeGreaterThan(0);
-  });
 });
 
 describe('InvertedIndex : searchIndex', () => {
@@ -68,16 +52,9 @@ describe('InvertedIndex : searchIndex', () => {
     const words = 'Alice in Wonderland';
     expect(Object.keys(invertedIndex.searchIndex(words))).toBeTruthy();
   });
-  it('Should return correct index of the search term', () => {
-    expect(invertedIndex.searchIndex('humans', 'test.json')).toEqual({
-      humans: [1],
-    });
-  });
-  it('should return tokenized words for string in variable words', () => {
-    let words = 'It CAN only BE++ $$$$$   GOD';
-    const termsExpected = 'it can only be god';
-    words = invertedIndex.tokenize(words);
-    expect(termsExpected).toEqual(words);
+  it('Should return search for all files', () => {
+    expect(Object.keys(invertedIndex.searchIndex('soon', 'work.json')))
+       .toEqual(['soon']);
   });
 });
 
@@ -138,4 +115,13 @@ describe('InvertedIndex : Read file data ', () => {
        read();
      });
    });
+});
+
+describe('InvertedIndex : Tokenize words', () => {
+  it('should return tokenized words for string in variable words', () => {
+    let words = 'It CAN only BE++ $$$$$   GOD';
+    const termsExpected = 'it can only be god';
+    words = invertedIndex.tokenize(words);
+    expect(termsExpected).toEqual(words);
+  });
 });
