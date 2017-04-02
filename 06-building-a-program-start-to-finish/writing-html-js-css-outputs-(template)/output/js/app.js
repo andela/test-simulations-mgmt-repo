@@ -16,21 +16,19 @@ myApp.controller('mainController', ['$scope', ($scope) => {
   // Displays an appropriate table
   $scope.show = (text) => {
     if (text === 'all') {
-      $scope.showSearch = false;
-      $scope.showAllFiles = true;
+      $scope.indexed = $scope.index;
+      $scope.show('index');
     }
-    if (text === 'single') {
-      $scope.showAllFiles = false;
-      $scope.showSingle = true;
+    if (text === 'index') {
+      $scope.showIndex = true;
     }
     if (text === 'search') {
+      $scope.showIndex = false;
       $scope.showSearch = true;
-      $scope.showAllFiles = true;
     }
     if (text === 'none') {
       $scope.showSearch = false;
-      $scope.showAllFiles = false;
-      $scope.showSingle = false;
+      $scope.showIndex = false;
     }
 
     // Adds tooltips to book headings
@@ -39,11 +37,14 @@ myApp.controller('mainController', ['$scope', ($scope) => {
     }, 300);
   };
 
+  // display a file's index
   $scope.getIndex = (filename) => {
-    const result = $scope.index.getIndex(filename);
-    if (result) {
+    const result = { files: {} };
+    result.files[filename] = $scope.index.getIndex(filename);
+    if (result.files[filename]) {
+      result.filenames = [filename];
       $scope.indexed = result;
-      $scope.show('single');
+      $scope.show('index');
     }
   };
 

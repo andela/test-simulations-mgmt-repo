@@ -48,10 +48,16 @@
     <div class="container">
       <h3>Inverted Index </h3>
       <p>
-        An Inverted Index is an Index Data Structure storing a mapping from content to location (i.e. a mapping of words or numbers to it's location in a database file). This Data Structure is widely used in several scenarios e.g. Cell Phone Lookup.
+        An Inverted Index is an Index Data Structure storing a mapping from 
+        content to location (i.e. a mapping of words or numbers to it's 
+        location in a database file). This Data Structure is widely used in 
+        several scenarios e.g. Cell Phone Lookup.
       </p>
       <p>
-        Elasticsearch uses a structure called an inverted index, which is designed to allow very fast full-text searches. An inverted index consists of a list of all the unique words that appear in any document, and for each word, a list of the documents in which it appears.
+        Elasticsearch uses a structure called an inverted index, which is designed 
+        to allow very fast full-text searches. An inverted index consists of a list 
+        of all the unique words that appear in any document, and for each word, a 
+        list of the documents in which it appears.
       </p>
       <h3>Valid file structure</h3>
       <div class="file-structure">
@@ -87,7 +93,9 @@
         <div class="col-sm-6">
           <h3>Uploading a File</h3>
           <ul>
-            <li>Click the 'Choose a file' button and select a <span class="underline" data-toggle="tooltip" data-title="Click About to see the correct format">valid</span> json file</li>
+            <li>Click the 'Choose a file' button and select a 
+              <span class="underline" data-toggle="tooltip" data-title="Click About to see the correct format">valid</span>
+              json file</li>
             <li>Click 'Create Index' to display the index(s)</li>
             <li>You can upload more files, click the file's name to view its index</li>
             <li>Hover over the book heading to view its full title</li>
@@ -170,51 +178,32 @@
 
         <!--    Tables    -->
         <div class="col-md-8 index-table" ng-show="index.filenames.length > 0">
-          
-          <!--Single File-->
-          <div class="table-div" ng-show="!showAllFiles && showSingle">
-            <h3>{{indexed.filename}}</h3>
+
+          <!--Show Index(es)-->
+          <div class="table-div" ng-show="showIndex" ng-repeat="filename in indexed.filenames">
+            <h3>{{filename}}</h3>
             <table class="table">
               <thead>
                 <th>Word</th>
-                <th ng-repeat="book in indexed.bookTitles track by $index">
+                <th ng-repeat="book in indexed.files[filename].bookTitles track by $index">
                   <span data-toggle="tooltip" data-title="{{book}}" data-placement="left">
                     Book{{$index + 1}}
                   </span>
                 </th>
               </thead>
               <tbody>
-                <tr ng-repeat="word in indexed.allWords">
+                <tr ng-repeat="word in indexed.files[filename].allWords">
                   <td>{{word}}</td>
-                  <td ng-repeat="boolean in indexed.words[word] track by $index"><i class="fa fa-{{verifyWord(boolean)}}"></i></td>
+                  <td ng-repeat="boolean in indexed.files[filename].words[word] track by $index">
+                    <i class="fa fa-{{verifyWord(boolean)}}"></i>
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
 
-          <!--Show All Files-->
-          <div class="table-div" ng-show="showAllFiles && !showSearch" ng-repeat="filename in index.filenames">
-            <h3>{{filename}}</h3>
-            <table class="table">
-              <thead>
-                <th>Word</th>
-                <th ng-repeat="book in index.files[filename].bookTitles track by $index">
-                  <span data-toggle="tooltip" data-title="{{book}}" data-placement="left">
-                   Book{{$index + 1}}
-                 </span>
-                </th>
-              </thead>
-              <tbody>
-                <tr ng-repeat="word in index.files[filename].allWords">
-                  <td>{{word}}</td>
-                  <td ng-repeat="boolean in index.files[filename].words[word] track by $index"><i class="fa fa-{{verifyWord(boolean)}}"></i></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!--Search All Files-->
-          <div class="table-div" ng-show="showAllFiles && showSearch" ng-repeat="filename in searchResult.filenames">
+          <!--Search Result -->
+          <div class="table-div" ng-show="!showIndex && showSearch" ng-repeat="filename in searchResult.filenames">
             <h3>{{filename}}</h3>
             <table class="table">
               <thead>
@@ -228,7 +217,9 @@
               <tbody>
                 <tr ng-repeat="word in searchResult[filename].allWords">
                   <td>{{word}}</td>
-                  <td ng-repeat="boolean in searchResult[filename].words[word] track by $index"><i class="fa fa-{{verifyWord(boolean)}}"></i></td>
+                  <td ng-repeat="boolean in searchResult[filename].words[word] track by $index">
+                    <i class="fa fa-{{verifyWord(boolean)}}"></i>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -249,4 +240,5 @@
     </div>
   </footer>
 </body>
+
 </html>
