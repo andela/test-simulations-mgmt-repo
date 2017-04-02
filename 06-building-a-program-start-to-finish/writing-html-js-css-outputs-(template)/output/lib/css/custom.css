@@ -1,0 +1,347 @@
+ .image-container {
+    min-height: 100vh;
+    background-position: center center;
+    background-size: cover;
+    position: relative;
+    }
+
+    body {
+    color: #66615b;
+    font-size: 14px;
+    font-family: 'Muli', Arial, sans-serif;
+    }
+    ::-webkit-scrollbar {
+      width: 12px;
+    }
+    ::-webkit-scrollbar-track {
+      background-color: #eaeaea;
+      border-left: 1px solid #ccc;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #ccc;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: #aaa;
+    }
+
+    .card {
+    border-radius: 4px;
+    box-shadow: 0 2px 2px rgba(204, 197, 185, 0.5);
+    background-color: #f3f3f3;
+    color: #252422;
+    padding: 10px 0;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    min-height: 550px;
+    margin-top: 10px;
+    height: 500px;
+    overflow-y: scroll;
+    }
+
+    .bar-box {
+    border-radius: 4px;
+    box-shadow: 0 2px 2px rgba(204, 197, 185, 0.5);
+    background-color: rgba(255,255,255, 0.9);;
+    color: #252422;
+    padding: 10px;
+    margin-bottom: 0px;
+    position: relative;
+    z-index: 1;
+    min-height: 100px;
+    margin-top: 0px;
+    margin-left: 0px;
+    }
+    .search-container {
+    border-radius: 16px;
+    box-shadow: 0 2px 2px rgba(204, 197, 185, 0.5);
+    background-color: rgba(255,255,255, 0.9);;
+    color: #252422;
+    padding: 5px 0;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+    min-height: 30px;
+    margin-top: 10px;
+    }
+
+    .features-table
+{
+  width: 100%;
+  margin: 0 auto;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-shadow: 0 1px 0 #fff;
+  color: #2a2a2a;
+  background: #fafafa;  
+  background-image: -moz-linear-gradient(top, #fff, #eaeaea, #fff); /* Firefox 3.6 */
+  background-image: -webkit-gradient(linear,center bottom,center top,from(#fff),color-stop(0.5, #eaeaea),to(#fff)); 
+  position: relative;
+  padding: 5px;
+}
+
+.features-table td
+{
+  height: 40px;
+  line-height: 50px;
+  padding: 0 10px;
+  border-bottom: 1px solid #cdcdcd;
+  box-shadow: 0 1px 0 white;
+  -moz-box-shadow: 0 1px 0 white;
+  -webkit-box-shadow: 0 1px 0 white;
+  white-space: nowrap;
+  text-align: center;
+}
+
+/*Body*/
+.features-table tbody td
+{
+  text-align: center;
+  font: normal 12px Verdana, Arial, Helvetica;
+  width: 20px;
+  padding: 5px;
+  height: 500px;
+  overflow-y: scroll;
+}
+
+.features-table tbody td:first-child
+{
+  width: 50px;
+  text-align: center;
+  background: #efefef;
+  background: rgba(184,243,85,0.3);
+  border-right: 1px solid white;
+}
+
+.features-table td:nth-child(2), .features-table td:nth-child(3)
+{
+  background: #efefef;
+  background: rgba(144,144,144,0.15);
+  border-right: 1px solid white;
+}
+
+
+.features-table td:nth-child(4)
+{
+  background: #e7f3d4;  
+  background: rgba(144,144,144,0.15);
+}
+
+/*Header*/
+
+
+.features-table thead td
+{
+  font: bold 1.3em 'trebuchet MS', 'Lucida Sans', Arial;  
+  -moz-border-radius-topright: 10px;
+  -moz-border-radius-topleft: 10px; 
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  border-top: 1px solid #eaeaea; 
+}
+
+.features-table thead td:first-child
+{
+  border-top: none;
+}
+
+/*Search and Upload Panel*/
+h4.side {
+    background-color: rgba(2, 69, 128, 0.84);;
+    padding: 0.8em 1em;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 1.0em;
+    margin-top: 0px;
+}
+
+
+h4.main-title {
+    background-color: #1aaad0;
+    padding: 0.8em 1em;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 1.0em;
+    margin-top: 0px;
+    text-align: center;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+h4.upload-title {
+    background-color: #1aaad0;
+    padding: 0.8em 1em;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 1.0em;
+    margin-top: 0px;
+}
+.search-btn {
+    background-color: #286092 !important;
+    color: #fff;
+}
+
+.btn:hover {
+    color: #fff !important;
+}
+
+.upload-btn {
+    background-color: #1aaad0 !important;
+    color: #fff;
+}
+
+.create-btn {
+    background-color: #009f9f !important;
+    color: #fff;
+}
+
+h4.index-title {
+    background-color: #009f9f;
+    padding: 0.8em 1em;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 1.0em;
+    margin-top: 0px;
+}
+
+h4.download-title {
+    background-color: #c75c5c;
+    padding: 0.8em 1em;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 1.0em;
+    margin-top: 0px;
+}
+
+h3.title {
+    background-color: #ccc;
+    padding: 0.8em 1em;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 0.8em;
+    margin-top: 0px;
+}
+.checkbox {
+    padding: 5px;
+    position: relative;
+    display: block;
+    margin-left: 20px;
+}
+/*.btn {
+    width: 200px !important;
+    margin-right: 40px;
+}*/
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: center;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+    float: none;
+}
+ul#menu li {
+    display: inline;
+    float: right;
+    margin-right: 5px;
+}
+.form-control {
+    width: 50% !important;
+    display: inline;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.stn {
+    width: 80%;
+    padding: 5px !important;
+    border-radius: 8px !important;
+    box-shadow: 1px 2px 2px 2px #27496d;
+
+}
+.navbar-nav {
+  margin-left: 900px;
+}
+.navbar-nav>li>a {
+    padding-top: 18px;
+    padding-bottom: 15px;
+}
+.navbar-default .navbar-nav>li>a {
+    color: #282828;
+    font-size: 0.95em;
+    font-weight: bold;
+    font-family: 'Roboto-Regular';
+}
+.welcome-text {
+  color: #282828;
+  font-size: 1.7em;
+  font-weight: bold;
+  font-family: 'Roboto-Bold';
+  background-color: #f5f5f5;
+  padding: 20px;
+  text-align: ;
+  position: relative;
+  border-radius: 5px;
+  margin-bottom: 40px;
+}
+
+.numberCircle {
+    border-radius: 50%;
+    behavior: url(PIE.htc); /* remove if you don't care about IE8 */
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+    border: 2px solid #fff;
+    color: #fff;
+    text-align: center;
+    font-family: 'Roboto-Regular';
+    font-size: 1.0em;
+    margin: 5px;
+}
+.viewPanel {
+    margin-left: 1px;
+}
+.img-right {
+  margin-top: 40px;
+  margin-left: 10px;
+}
+@media (max-width:1000px){
+  
+  ul#menu li {
+    display: inline;
+    float: right;
+    margin-right: 5px;
+    width: auto
+}
+@media (max-width:800px){
+
+  .navbar-default .navbar-nav>li>a {
+    color: #282828;
+    font-size: 0.8em;
+}
+.nav>li>a {
+    position: relative;
+    display: block;
+    padding: 12px 6px;
+}
+
+}
+@media (max-width:767px) {
+		
+	}
+	@media (max-width:640px) {
+	
+}
+	@media (max-width: 480px) {
+		
+	}

@@ -1,0 +1,270 @@
+<!DOCTYPE HTML>
+<html ng-app="invertedIndex">
+<head>
+<title>Inverted Index | By MAximuf</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Inverted Index App" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<link href="lib/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="lib/css/style.css" rel='stylesheet' type='text/css' />
+<!-- Custom Css files -->
+<link href="lib/css/custom.css" rel='stylesheet' type='text/css' />
+
+</head>
+<body ng-controller="IndexCtrl">
+    <div class="image-container set-full-height" style="background-image: url('lib/images/banner.jpg')">
+    <div class="content white">
+		<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="index.html"><h2>Inverted<span> Index</span></h2> </a>
+			</div>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+				    <li>
+					  </li>
+					<li ng-click="home()"><a href="">About Software</a></li>
+				</ul>
+			</div>
+			<!--/.navbar-header-->
+	 <!--/.navbar-->
+     </div>
+     </nav>
+    </div>
+    <!-- modal popup -->
+    <div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title text-warning">Error!!!</h4>
+            </div>
+            <div class="modal-body">
+                <p> {{error}} </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal popup for replacing files -->
+    <div id="replaceModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <p>{{selectedFile}} already exist. Do you want to replace?</p>
+                <p class="text-warning"><small></small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- container fluid -->
+    <div class="container-fluid">
+    <div class="col-sm-4">
+    <div class="card">
+        <h4 class="upload-title">Upload a File</h4>
+        </br>
+        <center><div class="input-group">
+                <label class="input-group-btn">
+                    <span class="stn btn btn-primary upload-btn">
+                        Click Here to Upload &hellip; 
+                    </span>
+                    <input type="file" id="fileselect" style="display:none" multiple="multiple" />
+                </label>
+</div></center>
+            <h4 class="index-title">Create Index</h3>
+                </br>
+           <center><div class="form-group">
+                <label class="sr-only" for="keywords">Select</label>
+                    <select ng-model="selectedFile" class="form-control" >
+                        <option value=''>Select File</option>
+                        <option ng-model="selectedFile" ng-repeat="(fileName, fileContent) in uploadedFiles" value="{{fileName}}">{{fileName}}</option>
+                    </select>
+                    <button type="submit" class="btn btn-default create-btn" ng-click="createIndex(selectedFile)">Create Index</button>
+			</div></center>
+        <h4 class="side">Search</h4>
+        </br>
+        <div class="form-group">
+            <center><label class="sr-only" for="keywords">keyword</label>
+            <input type="text" ng-model="keyword" id="system-search" placeholder="Type Keyword">
+            <button type="submit" class="btn btn-default search-btn" ng-click="searchIndex()">Search</button></center>
+            <div class="search-container">
+            <ul>
+            <center><h3 style="color: #cc0000; font-size: 14px; text-decoration: underline;">Select Files</h3>
+                <li class="checkbox" ng-repeat="eachBooks in numOfIndexed">
+                    <input class="check" type="checkbox" ng-checked="true" ng-model="selection[eachBooks]"> {{eachBooks}}
+                    
+                </li>
+                </center>
+            </ul>
+            </div>
+        </div>
+        <div class="alert alert-{{msgType}}" ng-show="showError">
+        <button type="button" class="close" data-ng-click="switchBool('showError')" >×</button>
+        <strong>{{note}}</strong> {{displayMsg}}
+    </div>
+    </div>
+    </div>
+    <div class="col-sm-8 col-sm-offset-0">
+    <div class="card" ng-show="welcome">
+      <h4 class="main-title">Welcome, Let's Get Started</h4>
+        <center><div class="welcome-text">Inverted Index is designed to allow very fast full-text searches. An Inverted Index consists of a list of all the unique words that appear in any document which is also know as token, and for each word, a list of the documents in which it appears.</div></center>
+        <center><a href="http://www.animatedimages.org/cat-arrows-111.htm"><img src="http://www.animatedimages.org/data/media/111/animated-arrow-image-0044.gif" border="0" alt="animated-arrow-image-0044"/></a></center>
+
+        <br>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+        <h4 class="upload-title"><center><span class="numberCircle">1</span>Upload a File</center></h4>
+        <div class="bar-box">
+        <center><img src="/lib/images/upload.png" class="img-responsive" width="100px" height="100px"></center>
+        </div>
+        </div>
+
+        <div class="col-md-4 col-sm-4 col-xs-12">
+        <h4 class="index-title"><center><span class="numberCircle">2</span>Create Index</center></h4>
+        <div class="bar-box">
+        <center><img src="/lib/images/index.png" class="img-responsive" width="100px" height="100px"></center>
+        </div>
+        </div>
+
+        <div class="col-md-4 col-sm-4 col-xs-12">
+        <h4 class="side"><center><span class="numberCircle">3</span>Search Index</center></h4>
+        <div class="bar-box">
+        <center><img src="/lib/images/search.png" class="img-responsive" width="100px" height="100px"></center>
+        </div>
+        </div>
+        </br>
+        
+
+
+
+        
+
+<!-- 
+        <div class="col-md-4 col-sm-4 col-xs-12">
+        <div class="bar-box">
+        <img src="/src/images/download.png" class="img-responsive" width="300px" height="300px">
+        </div>
+        <h4 class="download-title"><center><span class="numberCircle">3</span>Save to Local Storage</center></h4>
+        </div> -->
+        
+    </div>
+    </div>
+    <div class="col-sm-8 col-sm-offset-0">
+    <div class="card" ng-show="showIndex">
+    
+		<table class="table table-list-search" >
+                    <thead>
+                        <tr>
+                            <th>Index</th>
+							<th ng-repeat="values in numOfBooks">Book {{values+1}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="value in allToken">
+                            <td style="text-transform: capitalize;">{{value}}</td>
+							 <td ng-repeat="val in numOfBooks">
+                                 <img ng-src="/lib/images/{{ val | rowFunc : indicies[value]}}.png" width="20px" height="20px">
+                                 </td>
+                        </tr>
+                    </tbody>
+					         
+                    <div class="col-md-8 viewPanel" ng-show="showView"><label class="sr-only" for="keywords">Select</label>
+                            <select ng-model="viewFile" class="form-control">
+                                <option value="">Select File to View index</option>
+                                <option ng-model="viewFile" ng-repeat="(fileName, fileContent) in indexed" value="{{fileName}}">{{fileName}}</option>
+                            </select>
+                        <button type="submit" class="btn btn-default btn-primary" ng-click="viewIndex()">View Index</button></div>
+        </table>
+	</div>
+    </div>
+    <div class="col-sm-8 col-sm-offset-0">
+    <div class="card" ng-show="!showIndex && showSearch">
+    
+    <table class="table table-list-search" ng-repeat="(fileName, fileValue) in searchResult">
+                    <thead>
+                        <tr>
+                            <th>Showing result from {{fileName}} </th>
+              <th ng-repeat="values in fileValue.countBook">Book {{values+1}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="(keyword, searchValue) in fileValue.result">
+                            <td style="text-transform: capitalize;">{{keyword}}</td>
+               <td ng-repeat="val in fileValue.countBook">
+                                 <img ng-src="/lib/images/{{ val | rowFunc : searchValue}}.png" width="20px" height="20px">
+                                 </td>
+                        </tr>
+                        
+                    </tbody>
+        </table>
+  </div>
+    </div>
+    </div>
+    </div>
+</body>
+<script language="JavaScript">
+
+$("#selectall").change(function(){
+    var status = this.checked;
+    $('.check').each(function(){
+        this.checked = status;
+    });
+});
+
+/*$('.check').change(function(){ 
+    if(this.checked == false){ 
+        $("#selectall")[0].checked = false;
+    }
+    if ($('.check:checked').length == $('.check').length ){ 
+        $("#selectall")[0].checked = true;
+    }
+});*/
+
+$(function() {
+  $(document).on('change', ':file', function() {
+    var input = $(this),
+    numFiles = input.get(0).files ? input.get(0).files.length : 1,
+    label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+    input.trigger('fileselect', [numFiles, label]);
+  });
+
+  $(document).ready( function() {
+
+    $(':file').on('fileselect', function(event, numFiles, label) {
+      var input = $(this).parents('.input-group').find(':text'),
+      log = numFiles > 1 ? numFiles + ' files were' : label + ' was ';
+      if( input.length ) {
+        input.val(log);
+      }
+    });
+  }); 
+});
+
+</script>
+<!-- Js -->
+<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="/lib/js/jquery.toaster.js"></script>
+	<script type="text/javascript" src="lib/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="src/js/invertindex.js"></script>
+	<script type="text/javascript" src="lib/js/angular.min.js"></script>
+	<script type="text/javascript" src="lib/js/app.js"></script>
+	<script type="text/javascript" src="/lib/js/dir-pagination.js"></script>
+</html> ../../src/
