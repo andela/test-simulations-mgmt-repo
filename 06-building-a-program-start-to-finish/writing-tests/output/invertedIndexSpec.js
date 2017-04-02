@@ -3,9 +3,50 @@ const books = require('../assets/books.json');
 const wrongdata = require('../assets/wrongdata.json');
 const emptyfile = require('../assets/emptyfile.json');
 const smallfile = require('../assets/smallfile.json');
+
 describe('InvertedIndex Class', () => {
   beforeAll(() => {
     this.invertedIndex = new InvertedIndex();
+  });
+
+  describe('Class instantaion', () => {
+    it('should be instantiated with the "new" keyword', () => {
+      const init = () => {
+        InvertedIndex();
+      };
+      expect(init).toThrowError
+      (`Class constructor InvertedIndex cannot be invoked without 'new'`);
+    });
+  });
+
+  describe('InvertedIndex class', () => {
+    it('Should contain the getIndex method', () => {
+      expect(typeof this.invertedIndex.tokenize).toBe('function');
+    });
+
+    it('Should contain the createIndex method', () => {
+      expect(typeof this.invertedIndex.uniqueWords).toBe('function');
+    });
+
+    it('Should contain the searchIndex method', () => {
+      expect(typeof this.invertedIndex.getTextFromJsonObj).toBe('function');
+    });
+
+    it('Should contain the readFile method', () => {
+      expect(typeof this.invertedIndex.validateFile).toBe('function');
+    });
+
+    it('Should contain the tokenize method', () => {
+      expect(typeof this.invertedIndex.createIndex).toBe('function');
+    });
+
+    it('Should contain the validateFile method', () => {
+      expect(typeof this.invertedIndex.getIndex).toBe('function');
+    });
+
+    it('Should contain the validateFile method', () => {
+      expect(typeof this.invertedIndex.searchIndex).toBe('function');
+    });
   });
 
   describe('Constructor', () => {
@@ -24,14 +65,14 @@ describe('InvertedIndex Class', () => {
 
   describe('tokenize', () => {
     it('should return an array of words', () => {
-      const input = 'jed is a boy'
+      const input = 'jed is a boy';
       const output = ['jed', 'is', 'a', 'boy'];
       expect(this.invertedIndex.tokenize(input))
         .toEqual(output);
     });
 
     it('sanitizes the input in the tokenize function', () => {
-      const input = 'tracy!!! is !@#$%^&*not -invited. &to my (wedding)'
+      const input = 'tracy!!! is !@#$%^&*not -invited. &to my (wedding)';
       const output = ['tracy', 'is', 'not', 'invited', 'to', 'my', 'wedding'];
       expect(this.invertedIndex.tokenize(input))
         .toEqual(output);
@@ -88,11 +129,11 @@ describe('InvertedIndex Class', () => {
     it('creates the correct index', () => {
       expect(this.invertedIndex.createIndex(smallfile, uniqueTermsBook, 'smallcorrectfile.json'))
         .toEqual({
-          "alice": [true],
-          "falls": [true],
-          "into": [true],
-          "a": [true],
-          "rabbit": [true]
+          alice: [true],
+          falls: [true],
+          into: [true],
+          a: [true],
+          rabbit: [true]
         });
     });
   });
@@ -141,7 +182,14 @@ describe('InvertedIndex Class', () => {
     it('returns the element being searched for in all files', () => {
       const keyword = 'alice';
       const fileName = 'all';
-      const output = {"correct.json":{"alice":[true,false,false,false]},"smallcorrectfile.json":{"alice":[true]}};
+      const output = {
+        'correct.json': {
+          alice: [true, false, false, false]
+        },
+        'smallcorrectfile.json': {
+          alice: [true]
+        }
+      };
       expect(this.invertedIndex.searchIndex(keyword, fileName))
         .toEqual(output);
     });
