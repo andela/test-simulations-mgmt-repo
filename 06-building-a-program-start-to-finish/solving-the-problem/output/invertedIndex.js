@@ -124,36 +124,34 @@ class InvertedIndex {
    * @return {Object} A filtered down version of the object you are currently
    *                  searching, based on the string you are typing.
    */
-  searchIndex(keywords, fileName) {
+  searchIndex(query, fileName) {
     if (fileName !== 'all') {
       const indexedData = this.getIndex(fileName);
-      if (keywords !== undefined && keywords.length > 0) {
-        const keyword = keywords.replace(/[^\w\s]/gi, ' ')
-          .match(/\w+/g);
+      if (query !== undefined && query.length > 0) {
+        const keyword = this.tokenize(query);
         this.searchData = {};
-        keyword.forEach((KEY) => {
-          const key = KEY.toLowerCase();
-          if (key in indexedData) {
-            this.searchData[key] = indexedData[key];
+        keyword.forEach((searchKeyUnfiltered) => {
+          const searchKey = searchKeyUnfiltered.toLowerCase();
+          if (searchKey in indexedData) {
+            this.searchData[searchKey] = indexedData[searchKey];
           }
         });
         return this.searchData;
       }
       return indexedData;
     } else {
-      if (keywords !== undefined && keywords.length > 0) {
-        const keyword = keywords.replace(/[^\w\s]/gi, ' ')
-          .match(/\w+/g);
+      if (query !== undefined && query.length > 0) {
+        const keyword = this.tokenize(query)
         const fileNames = Object.keys(this.tableObj);
         this.searchDataAll = {};
         fileNames.forEach((fileName) => {
           this.searchDataAll[fileName] = {};
-          keyword.forEach((word) => {
-            const key = word.toLowerCase();
+          keyword.forEach((searchKeyUnfiltered) => {
+            const searchKey = searchKeyUnfiltered.toLowerCase();
             const filekey = Object.keys(this.tableObj[fileName]);
-            if (filekey.indexOf(key) > -1) {
-              this.searchDataAll[fileName][key] = this.tableObj[fileName][key];
-          }
+            if (filekey.indexOf(searchKey) > -1) {
+              this.searchDataAll[fileName][searchKey] = this.tableObj[fileName][searchKey];
+            }
           });
         });
         return this.searchDataAll;
