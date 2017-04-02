@@ -3,7 +3,6 @@ const books = require('../assets/books.json');
 const wrongdata = require('../assets/wrongdata.json');
 const emptyfile = require('../assets/emptyfile.json');
 const smallfile = require('../assets/smallfile.json');
-
 describe('InvertedIndex Class', () => {
   beforeAll(() => {
     this.invertedIndex = new InvertedIndex();
@@ -121,6 +120,7 @@ describe('InvertedIndex Class', () => {
   describe('searchIndex', () => {
     beforeAll(() => {
       this.invertedIndex.createIndex(smallfile, ['alice', 'falls'], 'smallcorrectfile.json');
+      this.invertedIndex.createIndex(books, ['alice', 'falls'], 'correct.json');
     });
     it('returns empty if element being searched for does not exist', () => {
       const keyword = 'unqwerty';
@@ -129,12 +129,19 @@ describe('InvertedIndex Class', () => {
       expect(this.invertedIndex.searchIndex(keyword, fileName))
         .toEqual(output);
     });
-    it('returns the element being searched for', () => {
+    it('returns the element being searched for in a specific file', () => {
       const keyword = 'alice';
       const fileName = 'smallcorrectfile.json';
       const output = {
         alice: [true]
       };
+      expect(this.invertedIndex.searchIndex(keyword, fileName))
+        .toEqual(output);
+    });
+    it('returns the element being searched for in all files', () => {
+      const keyword = 'alice';
+      const fileName = 'all';
+      const output = {"correct.json":{"alice":[true,false,false,false]},"smallcorrectfile.json":{"alice":[true]}};
       expect(this.invertedIndex.searchIndex(keyword, fileName))
         .toEqual(output);
     });
