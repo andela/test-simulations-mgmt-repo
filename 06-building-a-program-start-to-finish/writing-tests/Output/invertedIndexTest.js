@@ -1,11 +1,11 @@
-/* Test Setup */
-const myInvertedIndex = new InvertedIndexClass();
-const book = require('./../book.json');
-const bookempty = require('./../bookempty.json');
-const bookwrongformat = require('./../bookwrongformat.json');
-const notBook = require('./../notBook.json');
-const books3 = require('./../books3.json');
+/* global InvertedIndexClass */
+import book from './../book.json';
+import bookempty from './../bookempty.json';
+import bookwrongformat from './../bookwrongformat.json';
+import notBook from './../notBook.json';
+import books3 from './../books3.json';
 
+const myInvertedIndex = new InvertedIndexClass();
 myInvertedIndex.files['book.json'] = book;
 myInvertedIndex.files['books3.json'] = books3;
 
@@ -42,12 +42,12 @@ describe('Inverted Index Test', () => {
   describe('Validate File', () => {
     it('should return false when file does not contain "title" & "text" format'
     , () => {
-      expect(InvertedIndexClass.validateFile(bookwrongformat))
+      expect(myInvertedIndex.validateFile(bookwrongformat))
       .toBeFalsy();
     });
   });
   it('verifies that the JSON file is valid', () => {
-    expect(InvertedIndexClass.validateFile(book).length).toEqual(2);
+    expect(myInvertedIndex.validateFile(book).length).toEqual(2);
   });
   describe('Create Index Table', () => {
     it('should ensure that index is created', () => {
@@ -67,7 +67,7 @@ describe('Inverted Index Test', () => {
   });
   describe('Tokenize', () => {
     it('should return correct terms in form of string in an array', () => {
-      expect(InvertedIndexClass.tokenize(books3[0].text))
+      expect(myInvertedIndex.tokenize(books3[0].text))
       .toEqual(['alice', 'falls', 'into', 'a', 'rabbit', 'hole', 'and',
         'enters', 'a', 'world', 'full', 'of', 'imagination']);
     });
