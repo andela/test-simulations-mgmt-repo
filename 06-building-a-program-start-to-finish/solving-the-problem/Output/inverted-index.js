@@ -24,11 +24,9 @@ class InvertedIndex {
      * @return {String} this.token
      */
   tokenize(words) {
-    this.token = words.replace(/,+/g, ' ')
-    .replace(/[^a-zA-Z 0-9\s]+/g, '')
-    .replace(/\s+/g, ' ')
-    .toLowerCase()
-    .trim();
+    this.token = words.toLowerCase()
+    .trim()
+    .match(/\w+/g);
     return this.token;
   }
   /**
@@ -87,7 +85,7 @@ class InvertedIndex {
     indexObject.forEach((object, position) => {
       const longSentence = `${object.title} ${object.text}`;
       const tokenized = this.tokenize(longSentence);
-      const wordArray = tokenized.split(' ');
+      const wordArray = tokenized;
 
       wordArray.forEach((word) => {
         if (newIndex[word] === undefined) {
@@ -118,8 +116,8 @@ class InvertedIndex {
    * @param {void} arguments of terms
    * @return {Array} array of terms
    */
-  flattenSearch(...args) {
-    return args.reduce((acc, val) =>
+  flattenSearch(...argument) {
+    return argument.reduce((acc, val) =>
       acc.concat(Array.isArray(val) ?
       this.flattenSearch(val) : val.split(' ')), []);
   }
