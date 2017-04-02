@@ -4,7 +4,7 @@
 - **With**: *independently*
 
 ####Link to Release Notes
-Can be found [here](https://docs.google.com/document/d/1fgcPKwGtqnptlxUOQxn1nmEZfgp-vh74U_zVLERnfAU/)
+Can be found [here](https://github.com/andela-tezebuike/inverted-index/wiki/Release-Notes)
 
 #### Targeted Learning Outcomes
 - [Creativity](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/05%20-%20Creativity)
