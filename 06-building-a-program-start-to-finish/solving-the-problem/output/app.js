@@ -12,13 +12,16 @@ angular.module('root', ['ngAnimate', 'toastr'])
     $scope.createIndex = () => {
       $scope.isSearching = false;
       const getSelectedFile = document.getElementById('uploadedFilesSelect');
-      $scope.uploadedFileName = getSelectedFile.options[getSelectedFile.selectedIndex].text;
+      $scope.uploadedFileName =
+      getSelectedFile.options[getSelectedFile.selectedIndex].text;
       if ($scope.uploadedFileName === '') {
         toastr.error('Please select a file and click Create index', 'Error');
       }
       const selectedFileObj = $scope.fileStore[$scope.uploadedFileName];
-      const uniqueTerms = invertedIndex.getTextFromJsonObj($scope.fileStore[$scope.uploadedFileName]);
-      invertedIndex.createIndex(selectedFileObj, uniqueTerms, $scope.uploadedFileName);
+      const uniqueTerms =
+      invertedIndex.getTextFromJsonObj(selectedFileObj);
+      const fileName = $scope.uploadedFileName;
+      invertedIndex.createIndex(selectedFileObj, uniqueTerms, fileName);
       $scope.indexedData = invertedIndex.getIndex($scope.uploadedFileName);
       $scope.docsMock = $scope.indexedData[uniqueTerms[0]];
       $scope.docsMockTrue = true;
@@ -30,10 +33,12 @@ angular.module('root', ['ngAnimate', 'toastr'])
       $scope.isSearching = true;
       $scope.searchKey = '';
       const getSearchFile = document.getElementById('uploadedFilesSearch');
-      $scope.searchFileName = getSearchFile.options[getSearchFile.selectedIndex].text;
+      $scope.searchFileName =
+      getSearchFile.options[getSearchFile.selectedIndex].text;
       $scope.indexedData = invertedIndex.getIndex($scope.searchFileName);
-      if (angular.isUndefined($scope.indexedData) && $scope.searchFileName !== 'all') {
-        toastr.info('You must Create the Index a file to be able search through it', 'Info');
+      if (angular.isUndefined($scope.indexedData) &&
+      $scope.searchFileName !== 'all') {
+        toastr.info('You must Create the Index of a file to search it', 'Info');
         $scope.docsMockTrue = false;
       } else if ($scope.searchFileName === 'all') {
         $scope.searchAll = invertedIndex.searchIndex('', 'all');
@@ -48,39 +53,37 @@ angular.module('root', ['ngAnimate', 'toastr'])
       }
     };
 
-    $scope.processFile = (fileStore) => {
-      return new Promise((resolve, reject) => {
-        const fileInput = document.getElementById('fileInput');
-        const fileLength = fileInput.files.length;
-        if (fileLength === 0) {
-          toastr.error('Please select a valid JSON file and click Upload File', 'Error');
-        }
-        for (let i = 0; i < fileLength; i += 1) {
-          const fileName = fileInput.files[i].name;
-          $scope.panelName = fileName;
-          const file = fileInput.files[i];
-          $scope.readFile(file)
-            .then((response) => {
-              const fileContent = angular.fromJson(response);
-              const validate = invertedIndex.validateFile(fileContent);
-              const validationStatus = validate.valid;
-              if (validationStatus) {
-                fileStore[file.name] = fileContent;
-                document.getElementById('uploadedFilesSelect')
-                  .style.display = 'block';
-                toastr.success(`${fileName} has been uploaded`, 'File Uploaded');
-                resolve(fileStore);
-              } else {
-                toastr.error(`${fileName} is an invalid JSON file`, 'Error');
-                reject(fileStore[file.name]);
-              }
-            })
-            .catch(() => {
-              toastr.error('Empty file', 'Warning', 'Error');
-            });
-        }
-      });
-    };
+    $scope.processFile = fileStore => new Promise((resolve, reject) => {
+      const fileInput = document.getElementById('fileInput');
+      const fileLength = fileInput.files.length;
+      if (fileLength === 0) {
+        toastr.error('select a valid JSON file and click Upload', 'Error');
+      }
+      for (let i = 0; i < fileLength; i += 1) {
+        const fileName = fileInput.files[i].name;
+        $scope.panelName = fileName;
+        const file = fileInput.files[i];
+        $scope.readFile(file)
+          .then((response) => {
+            const fileContent = angular.fromJson(response);
+            const validate = invertedIndex.validateFile(fileContent);
+            const validationStatus = validate.valid;
+            if (validationStatus) {
+              fileStore[file.name] = fileContent;
+              document.getElementById('uploadedFilesSelect')
+                .style.display = 'block';
+              toastr.success(`${fileName} has been uploaded`, 'File Uploaded');
+              resolve(fileStore);
+            } else {
+              toastr.error(`${fileName} is an invalid JSON file`, 'Error');
+              reject(fileStore[file.name]);
+            }
+          })
+          .catch(() => {
+            toastr.error('Empty file', 'Warning', 'Error');
+          });
+      }
+    });
 
     $scope.getDocIndex = (fileName) => {
       const unique = Object.keys($scope.searchAll[fileName])[0];
@@ -88,19 +91,17 @@ angular.module('root', ['ngAnimate', 'toastr'])
       return $scope.AllDocLength;
     };
 
-    $scope.readFile = (file) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          if (reader.result) {
-            resolve(reader.result);
-          } else {
-            reject(false);
-          }
-        };
-        reader.readAsText(file);
-      });
-    };
+    $scope.readFile = file => new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.result) {
+          resolve(reader.result);
+        } else {
+          reject(false);
+        }
+      };
+      reader.readAsText(file);
+    });
 
     $scope.uploadFile = () => {
       $scope.processFile($scope.fileStore)
@@ -122,7 +123,7 @@ angular.module('root', ['ngAnimate', 'toastr'])
     };
 
     $scope.filteredDataAll = {};
-    $scope.$watch("searchKey", (newValue, oldValue) => {
-        $scope.filteredDataAll = invertedIndex.searchIndex(newValue, 'all');
+    $scope.$watch('searchKey', (newValue) => {
+      $scope.filteredDataAll = invertedIndex.searchIndex(newValue, 'all');
     });
   });

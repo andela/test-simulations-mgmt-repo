@@ -15,7 +15,7 @@ class InvertedIndex {
 
   /**
    * A method that tokenizes the string that is passed through it
-   * @param  {string} data the string that is gotten from the "text" key in the JSON object
+   * @param  {string} data the string  from the "text" key in the JSON
    * @return {Array} containing String.
    */
   tokenize(data) {
@@ -35,7 +35,7 @@ class InvertedIndex {
   }
 
   /**
-   * A method that tokenizes an object value and gets the unique terms in the object values
+   * A method that tokenizes an object and gets the unique terms in the object
    * @param  {Object} fileJson the uploaded JSON file object
    * @return {Array}  of the unique terms in the fileJson
    */
@@ -119,7 +119,7 @@ class InvertedIndex {
 
   /**
    * A method that searches the index of the current file
-   * @param  {String} keywords  the string you are currently typing
+   * @param  {String} query  the string you are currently typing
    * @param  {String} fileName  the name of the file
    * @return {Object} A filtered down version of the object you are currently
    *                  searching, based on the string you are typing.
@@ -139,25 +139,25 @@ class InvertedIndex {
         return this.searchData;
       }
       return indexedData;
-    } else {
-      if (query !== undefined && query.length > 0) {
-        const keyword = this.tokenize(query)
-        const fileNames = Object.keys(this.tableObj);
-        this.searchDataAll = {};
-        fileNames.forEach((fileName) => {
-          this.searchDataAll[fileName] = {};
-          keyword.forEach((searchKeyUnfiltered) => {
-            const searchKey = searchKeyUnfiltered.toLowerCase();
-            const filekey = Object.keys(this.tableObj[fileName]);
-            if (filekey.indexOf(searchKey) > -1) {
-              this.searchDataAll[fileName][searchKey] = this.tableObj[fileName][searchKey];
-            }
-          });
-        });
-        return this.searchDataAll;
-      }
-      return this.tableObj;
     }
+    if (query !== undefined && query.length > 0) {
+      const keyword = this.tokenize(query);
+      const fileNames = Object.keys(this.tableObj);
+      this.searchDataAll = {};
+      fileNames.forEach((allFileName) => {
+        this.searchDataAll[allFileName] = {};
+        keyword.forEach((searchKeyUnfiltered) => {
+          const searchKey = searchKeyUnfiltered.toLowerCase();
+          const filekey = Object.keys(this.tableObj[allFileName]);
+          if (filekey.indexOf(searchKey) > -1) {
+            this.searchDataAll[allFileName][searchKey] =
+            this.tableObj[allFileName][searchKey];
+          }
+        });
+      });
+      return this.searchDataAll;
+    }
+    return this.tableObj;
   }
 }
 if (typeof window === 'undefined') {
