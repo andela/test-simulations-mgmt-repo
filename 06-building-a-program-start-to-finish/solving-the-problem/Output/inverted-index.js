@@ -91,9 +91,10 @@ class InvertedIndexClass {
    *@param {Object} inputFile The file to be checked
    *@return {Boolean} validity status of the file to be checked
   */
-  static validateFile(inputFile) {
-    if (inputFile[0].text && inputFile[0].title) {
-      return inputFile;
+  validateFile(inputFile) {
+    this.inputFile = inputFile;
+    if (this.inputFile[0].text && this.inputFile[0].title) {
+      return this.inputFile;
     }
     return false;
   }
@@ -124,3 +125,5 @@ class InvertedIndexClass {
     }
   }
 }
+
+
