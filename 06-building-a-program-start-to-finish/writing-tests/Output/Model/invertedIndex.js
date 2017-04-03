@@ -24,11 +24,11 @@ class InvertedIndex {
      * @return {String} this.token
      */
   tokenize(words) {
-    this.token = words.replace(/,+/g, ' ')
-    .replace(/[^a-zA-Z 0-9\s]+/g, '')
-    .replace(/\s+/g, ' ')
-    .toLowerCase()
-    .trim();
+    this.token = words.toLowerCase()
+    .replace(/[^\w\s]|_/g, '')
+    .split(/\s+/);
+    // .trim()
+    // .match(/\w+/g);
     return this.token;
   }
   /**
@@ -87,7 +87,7 @@ class InvertedIndex {
     indexObject.forEach((object, position) => {
       const longSentence = `${object.title} ${object.text}`;
       const tokenized = this.tokenize(longSentence);
-      const wordArray = tokenized.split(' ');
+      const wordArray = tokenized;
 
       wordArray.forEach((word) => {
         if (newIndex[word] === undefined) {
@@ -113,16 +113,6 @@ class InvertedIndex {
 
     return this.index[fileName];
   }
-  /**
-   * @method flattenSearch
-   * @param {void} arguments of terms
-   * @return {Array} array of terms
-   */
-  flattenSearch(...argument) {
-    return argument.reduce((acc, val) =>
-      acc.concat(Array.isArray(val) ?
-      this.flattenSearch(val) : val.split(' ')), []);
-  }
 /**
      * it returns the word searched for in the object it was found
      *
@@ -137,8 +127,7 @@ class InvertedIndex {
     let tempObject = {};
     if (fileName !== 'All files') {
       const selectedIndex = this.index[fileName];
-      let terms = this.tokenize(searchTerms);
-      terms = this.flattenSearch(searchTerms);
+      const terms = this.tokenize(searchTerms);
       terms.forEach((term) => {
         if (selectedIndex) {
           Object.keys(selectedIndex).forEach((savedWord) => {
@@ -153,8 +142,7 @@ class InvertedIndex {
     Object.keys(this.index).forEach((filename) => {
       tempObject = {};
       const selectedIndex = this.index[filename];
-      let terms = this.tokenize(searchTerms);
-      terms = this.flattenSearch(terms);
+      const terms = this.tokenize(searchTerms);
       terms.forEach((term) => {
         if (selectedIndex) {
           Object.keys(selectedIndex).forEach((savedWord) => {

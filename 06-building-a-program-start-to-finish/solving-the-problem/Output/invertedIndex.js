@@ -25,13 +25,15 @@ class InvertedIndex {
      */
   tokenize(words) {
     this.token = words.toLowerCase()
-    .trim()
-    .match(/\w+/g);
+    .replace(/[^\w\s]|_/g, '')
+    .split(/\s+/);
+    // .trim()
+    // .match(/\w+/g);
     return this.token;
   }
   /**
    * Reads the data from an uploaded file.
-   * @param {object} file - The file to be read
+   * @param {File} file - The file to be read
    * @param {Function} callback - The callback function on file read
    * @returns {void}
    */
@@ -111,16 +113,6 @@ class InvertedIndex {
 
     return this.index[fileName];
   }
-  /**
-   * @method flattenSearch
-   * @param {void} argument of terms
-   * @return {Array} array of terms
-   */
-  flattenSearch(...argument) {
-    return argument.reduce((acc, val) =>
-      acc.concat(Array.isArray(val) ?
-      this.flattenSearch(val) : val.split(' ')), []);
-  }
 /**
      * it returns the word searched for in the object it was found
      *
@@ -135,8 +127,7 @@ class InvertedIndex {
     let tempObject = {};
     if (fileName !== 'All files') {
       const selectedIndex = this.index[fileName];
-      let terms = this.tokenize(searchTerms);
-      terms = this.flattenSearch(searchTerms);
+      const terms = this.tokenize(searchTerms);
       terms.forEach((term) => {
         if (selectedIndex) {
           Object.keys(selectedIndex).forEach((savedWord) => {
@@ -151,8 +142,7 @@ class InvertedIndex {
     Object.keys(this.index).forEach((filename) => {
       tempObject = {};
       const selectedIndex = this.index[filename];
-      let terms = this.tokenize(searchTerms);
-      terms = this.flattenSearch(terms);
+      const terms = this.tokenize(searchTerms);
       terms.forEach((term) => {
         if (selectedIndex) {
           Object.keys(selectedIndex).forEach((savedWord) => {
