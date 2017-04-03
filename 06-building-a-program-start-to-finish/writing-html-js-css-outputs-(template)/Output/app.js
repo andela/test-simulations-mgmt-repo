@@ -54,10 +54,10 @@ angular.module('InvertedIndexApp', [])
     };
   }])
 .filter('range', () => (input, range) => {
-  for (let i = 0; i < parseInt(range, 10); i += 1) {
-    input.push(i);
-  }
-
+  const rangeLength = parseInt(range, 10);
+  rangeLength.forEach((index) => {
+    input.push(index);
+  });
   return input;
 });
 

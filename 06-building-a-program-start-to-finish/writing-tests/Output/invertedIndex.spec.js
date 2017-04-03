@@ -47,7 +47,7 @@ describe('InvertedIndex Test Suite', () => {
       var reader = new FileReader();
       reader.addEventListener('load', (e) => {
         const fileRead = reader.result
-        expect(this.invertedIndex.validateFile(fileRead)).toHaveBeenCalled;
+        expect(InvertedIndex.validateFile(fileRead)).toHaveBeenCalled;
         done();
      });
     });
@@ -57,8 +57,8 @@ describe('InvertedIndex Test Suite', () => {
     });
 
     it('should return the false if the file cannot be parsed', () => {
-      const redFile = InvertedIndex.readFile(alice);
-      expect(typeof redFile).toEqual('object');
+      const readFile = InvertedIndex.readFile(alice);
+      expect(typeof readFile).toEqual('object');
     });
   });
 

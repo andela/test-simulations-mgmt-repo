@@ -124,15 +124,15 @@ class InvertedIndex {
     const result = {};
     const files = this.indexed;
     Object.keys(files).forEach((filename) => {
-      const stored = this.getIndex(filename);
-      const mySearch = InvertedIndex.tokenize(phrase);
+      const storedIndex = this.getIndex(filename);
+      const searchWords = InvertedIndex.tokenize(phrase);
       const search = {
         eachWord: {},
-        numOfDocs: stored.numOfDocs
+        numOfDocs: storedIndex.numOfDocs
       };
-      mySearch.forEach((word) => {
-        if (stored.eachWord[word]) {
-          search.eachWord[word] = stored.eachWord[word];
+      searchWords.forEach((word) => {
+        if (storedIndex.eachWord[word]) {
+          search.eachWord[word] = storedIndex.eachWord[word];
         } else search.eachWord[word] = [];
       });
       result[filename] = search;
