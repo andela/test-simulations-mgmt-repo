@@ -3,9 +3,10 @@
 const InvertedIndex = require('../public/builds/InvertedIndex').InvertedIndex;
 
 const books = require('../booksamples/books.json');
-const booksInvalidContent = require('../booksamples/books-invalid-content.json');
-const bookBadJson = require('../booksamples/bad.json');
-const bookEmptyJson = require('../booksamples/book-empty.json');
+const booksInvalidContent = require('../booksamples/booksInvalidContent.json');
+const bookBadJson = require('../booksamples/bookBadJson.json');
+const bookEmptyJson = require('../booksamples/bookEmptyJson.json');
+
 const bookText = ' ';
 
 const iDex = new InvertedIndex();
@@ -28,7 +29,7 @@ describe('iDex Inverted Index', () => {
       expect(iDex instanceof InvertedIndex).toBeTruthy();
     });
 
-    it('should default instance properties to object types', () => { //* *Edit */
+    it('should default instance properties to object types', () => {
       expect(iDex.iDexMapper).toBeDefined();
       expect(typeof iDex.iDexMapper).toEqual('object');
 
@@ -47,31 +48,29 @@ describe('iDex Inverted Index', () => {
     });
 
     it('should return the json file for an empty json', () => {
-      expect(InvertedIndex.readFile(JSON.stringify(bookEmptyJson))).toEqual((bookEmptyJson));
+      expect(InvertedIndex.readFile(JSON.stringify(bookEmptyJson)))
+        .toEqual((bookEmptyJson));
     });
 
-    it('should return the false if the file cannot be parsed', () => {
+    it('should return false if the file cannot be parsed', () => {
       expect(InvertedIndex.readFile((bookText))).toBe((false));
       expect(InvertedIndex.readFile((bookText))).toBeFalsy();
     });
   });
 
   describe('The validateFile method', () => {
-    describe('each document must have a title and text', () => {
+    describe('ensures each document is valid', () => {
       let result = '';
       beforeEach((done) => {
         InvertedIndex.validateFile(bookBadJson, 'bookBadJson.json')
-        .then((response) => {
-          result = response;
-          done();
-        })
         .catch((error) => {
           result = error;
           done();
         });
       });
       it('should have a `title` and `text` properties', () => {
-        expect(result).toBe('Document 1 in bookBadJson.json book do not have a "title" or "text" fields');
+        const expected = "No 'title' or 'text' in Document 1 of bookBadJson";
+        expect(result).toBe(expected);
         expect(typeof result).toBe('string');
       });
     });
@@ -79,11 +78,7 @@ describe('iDex Inverted Index', () => {
     describe('title and text properties must have valid contents', () => {
       let result = '';
       beforeEach((done) => {
-        InvertedIndex.validateFile(booksInvalidContent, 'booksInvalidContent.json')
-        .then((response) => {
-          result = response;
-          done();
-        })
+        InvertedIndex.validateFile(booksInvalidContent, 'booksInvalidContent')
         .catch((error) => {
           result = error;
           done();
@@ -99,10 +94,6 @@ describe('iDex Inverted Index', () => {
       let result = '';
       beforeEach((done) => {
         InvertedIndex.validateFile(bookEmptyJson, 'bookEmptyJson.json')
-        .then((response) => {
-          result = response;
-          done();
-        })
         .catch((error) => {
           result = error;
           done();
@@ -121,31 +112,30 @@ describe('iDex Inverted Index', () => {
         .then((response) => {
           result = response;
           done();
-        })
-        .catch((error) => {
-          result = error;
-          done();
         });
       });
       it('both title and text must contain values', () => {
         expect(result).toEqual({ books: {
           0: {
             title: 'how to read a book',
-            text: 'men are rational animals. their rationality agreement is the source of their power to agree. ',
+            text: 'men are rational animals. their rationality ' +
+                  'agreement is the source of their power to agree. ',
           },
           1: {
             title: 'the naked ape.',
-            text: 'indeed, we have the most subtle and complex facial expression system of all living animals.',
+            text: 'indeed, we have the most subtle and complex' +
+                  ' facial expression system of all living animals.',
           },
-        }});
+        } });
         expect(typeof result).toBe('object');
       });
     });
   });
 
   describe('The tokenize method', () => {
-    it('should return  text stripped of multiple/trailing white spaces, special characters', () => {
-      const txt = '  This!@#*$($)%) is a \t really  \n random#*! string )#......';
+    it('should return  text stripped of multiple/trailing ' +
+      ' white spaces, special characters', () => {
+      const txt = '  This!@#*$($)%) is a \t really\n random#*! string )#......';
       const expected = 'this is a really random string';
       expect(InvertedIndex.tokenize(txt)).toEqual(expected);
       expect(InvertedIndex.tokenize(txt)).toContain('random');
@@ -154,14 +144,15 @@ describe('iDex Inverted Index', () => {
     });
 
     it('should return  only lowercase letters', () => {
-      const txt = '  ThIS!@#*$($)%) is a \t REALLY  \n RanDOm#*! stRinG )#......';
+      const txt = '  ThIS!@#*$($)%) is a \t REALLY  \n RanDOm#*! stRinG )#...';
       const expected = 'this is a really random string';
       expect(InvertedIndex.tokenize(txt)).toEqual(expected);
     });
   });
 
   describe('The createsArray method', () => {
-    it('should return an array of single words from a each document "title" and "text"', () => {
+    it('should return an array of words from ' +
+        'a each document "title" & "text"', () => {
       const sentence = {
         0: {
           title: 'my cheese',
@@ -172,10 +163,13 @@ describe('iDex Inverted Index', () => {
           text: 'fly with an edge',
         },
       };
-      const expected = [['my', 'cheese', 'knew', 'their', 'edge'], ['times', 'of', 'sciences', 'fly', 'with', 'an', 'edge']];
-      expect(InvertedIndex.createsArray(sentence)).toEqual(expected);
-      expect(typeof InvertedIndex.createsArray(sentence)).toBe('object');
-      expect(Array.isArray(InvertedIndex.createsArray(sentence))).toBeTruthy();
+      const expected = [['my', 'cheese', 'knew', 'their', 'edge'],
+        ['times', 'of', 'sciences', 'fly', 'with', 'an', 'edge']];
+
+      expect(iDex.createsArray('bookname', sentence)).toEqual(expected);
+      expect(typeof iDex.createsArray('bookname', sentence)).toBe('object');
+      expect(Array.isArray(iDex.createsArray('bookname', sentence)))
+        .toBeTruthy();
     });
   });
 
@@ -195,10 +189,6 @@ describe('iDex Inverted Index', () => {
       iDex.createIndex('mybook', book)
         .then((response) => {
           result = response;
-          done();
-        })
-        .catch((error) => {
-          result = error;
           done();
         });
     });
@@ -221,43 +211,46 @@ describe('iDex Inverted Index', () => {
   });
 
   describe('The getIndex method', () => {
-    it('should be able to retreive all indexes of a book already indexed', () => {
-      expect(iDex.getIndex('books')).toEqual({
-        how: [0],
-        to: [0],
-        read: [0],
-        a: [0],
-        book: [0],
-        men: [0],
-        are: [0],
-        rational: [0],
-        animals: [0, 1],
-        their: [0],
-        rationality: [0],
-        agreement: [0],
-        is: [0],
-        the: [0, 1],
-        source: [0],
-        of: [0, 1],
-        power: [0],
-        agree: [0],
-        naked: [1],
-        ape: [1],
-        indeed: [1],
-        we: [1],
-        have: [1],
-        most: [1],
-        subtle: [1],
-        and: [1],
-        complex: [1],
-        facial: [1],
-        expression: [1],
-        system: [1],
-        all: [1],
-        living: [1] });
-    });
+    it('should be able to retreive all indexes of a book already indexed',
+      () => {
+        expect(iDex.getIndex('books')).toEqual({
+          how: [0],
+          to: [0],
+          read: [0],
+          a: [0],
+          book: [0],
+          men: [0],
+          are: [0],
+          rational: [0],
+          animals: [0, 1],
+          their: [0],
+          rationality: [0],
+          agreement: [0],
+          is: [0],
+          the: [0, 1],
+          source: [0],
+          of: [0, 1],
+          power: [0],
+          agree: [0],
+          naked: [1],
+          ape: [1],
+          indeed: [1],
+          we: [1],
+          have: [1],
+          most: [1],
+          subtle: [1],
+          and: [1],
+          complex: [1],
+          facial: [1],
+          expression: [1],
+          system: [1],
+          all: [1],
+          living: [1] });
+      });
 
-    it('should be able to retreive all indexes of a word in a book already indexed', () => {
+    it('should be able to retreive all indexes ' +
+      ' of a word in a book already indexed', () => {
+
       expect(iDex.getIndex('books').complex).toEqual([1]);
       expect(iDex.getIndex('books').rationality).toEqual([0]);
       expect(iDex.getIndex('books').facial).toEqual([1]);
@@ -289,7 +282,8 @@ describe('iDex Inverted Index', () => {
       }]);
     });
 
-    it('should return apropriate result when searching for multiple files', () => {
+    it('should return apropriate result when ' +
+      'searching for multiple files', () => {
       expect(iDex.searchIndex('allBooks', 'haw animals')).toEqual([
         {
           books: {
@@ -324,7 +318,8 @@ describe('iDex Inverted Index', () => {
     });
 
     it('should return false if book name has not been indexed', () => {
-      expect(iDex.searchIndex('unknownBook', 'cheese doughnut')).toEqual([false]);
+      expect(iDex.searchIndex('unknownBook', 'cheese doughnut'))
+        .toEqual([false]);
       const searchResult = iDex.searchIndex('unknownBook', 'cheese doughnut');
       const iterator = searchResult[Symbol.iterator]();
       expect(iterator.next().value).toBeFalsy();
@@ -333,16 +328,18 @@ describe('iDex Inverted Index', () => {
 
   describe('The getSearchResult method', () => {
     it('should return apropriate result', () => {
-      expect(iDex.getSearchResult('books', ['complex', 'read', 'animals'])).toEqual({
-        books: {
-          complex: [1],
-          read: [0],
-          animals: [0, 1],
-        },
-      });
+      expect(iDex.getSearchResult('books', ['complex', 'read', 'animals']))
+        .toEqual({
+          books: {
+            complex: [1],
+            read: [0],
+            animals: [0, 1],
+          },
+        });
     });
     it('should return false if book name has not been indexed', () => {
-      expect(iDex.getSearchResult('unknownBook', ['cheese', 'doughnut'])).toEqual(false);
+      expect(iDex.getSearchResult('unknownBook', ['cheese', 'doughnut']))
+        .toEqual(false);
     });
   });
 });
