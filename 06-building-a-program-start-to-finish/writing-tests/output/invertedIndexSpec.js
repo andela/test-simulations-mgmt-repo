@@ -21,8 +21,8 @@ describe('InvertedIndex Class', () => {
   });
 
   describe('InvertedIndex class', () => {
-    it('Should contain the getIndex method', () => {
-      expect(typeof this.invertedIndex.tokenize)
+    it('Should contain the tokenize method', () => {
+      expect(typeof InvertedIndex.tokenize)
         .toBe('function');
     });
 
@@ -75,14 +75,14 @@ describe('InvertedIndex Class', () => {
     it('should return an array of words', () => {
       const input = 'jed is a boy';
       const output = ['jed', 'is', 'a', 'boy'];
-      expect(this.invertedIndex.tokenize(input))
+      expect(InvertedIndex.tokenize(input))
         .toEqual(output);
     });
 
     it('sanitizes the input in the tokenize function', () => {
       const input = 'tracy!!! is !@#$%^&*not -invited. &to my (wedding)';
       const output = ['tracy', 'is', 'not', 'invited', 'to', 'my', 'wedding'];
-      expect(this.invertedIndex.tokenize(input))
+      expect(InvertedIndex.tokenize(input))
         .toEqual(output);
     });
   });

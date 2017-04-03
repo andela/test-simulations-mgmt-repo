@@ -18,10 +18,10 @@ class InvertedIndex {
    * @param  {string} text the string  from the "text" key in the JSON
    * @return {Array} containing String.
    */
-  tokenize(text) {
-    this.terms = text.replace(/[^\w\s]/gi, ' ')
+  static tokenize(text) {
+    const terms = text.replace(/[^\w\s]/gi, ' ')
       .match(/\w+/g);
-    return this.terms;
+    return terms;
   }
 
   /**
@@ -47,7 +47,7 @@ class InvertedIndex {
         newText += `${' '}`;
         newText += obj.text;
       });
-    const uniqueTerms = this.uniqueWords(this.tokenize(newText))
+    const uniqueTerms = this.uniqueWords(InvertedIndex.tokenize(newText))
       .map(x => x.toLowerCase());
     return uniqueTerms;
   }
@@ -128,7 +128,7 @@ class InvertedIndex {
     if (fileName !== 'all') {
       const indexedData = this.getIndex(fileName);
       if (query !== undefined && query.length > 0) {
-        const keyword = this.tokenize(query);
+        const keyword = InvertedIndex.tokenize(query);
         this.searchFile = {};
         keyword.forEach((searchKeyUnfiltered) => {
           const searchKey = searchKeyUnfiltered.toLowerCase();
@@ -141,7 +141,7 @@ class InvertedIndex {
       return indexedData;
     }
     if (query !== undefined && query.length > 0) {
-      const keyword = this.tokenize(query);
+      const keyword = InvertedIndex.tokenize(query);
       const fileNames = Object.keys(this.globalIndex);
       const searchFiles = {};
       fileNames.forEach((allFileName) => {
