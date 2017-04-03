@@ -84,7 +84,8 @@ describe('Inverted Index Test', () => {
     });
     it('should return array of terms without space or invalid characters',
     () => {
-      expect(myInvertedIndex.tokenize('alice.,&-falls')).toEqual(['alice', 'falls']);
+      expect(myInvertedIndex.tokenize('alice.,&-falls')).toEqual(['alice',
+        'falls']);
     });
   });
   describe('Search Index', () => {
