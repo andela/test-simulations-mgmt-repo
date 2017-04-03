@@ -31,7 +31,7 @@ class InvertedIndex {
   }
   /**
    * Reads the data from an uploaded file.
-   * @param {File} file - The file to be read
+   * @param {object} file - The file to be read
    * @param {Function} callback - The callback function on file read
    * @returns {void}
    */
