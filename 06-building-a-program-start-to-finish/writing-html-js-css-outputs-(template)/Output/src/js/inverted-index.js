@@ -1,4 +1,3 @@
-
 /**
  * @class InvertedIndex
  */
@@ -12,7 +11,7 @@ class InvertedIndexClass {
   }
   /**
    * createIndex
-   * @param {Object} fileName name of file to map index for
+   * @param {String} fileName name of file to map index for
    * @return {Boolean} false if index is not created
    */
   createIndex(fileName) {
@@ -48,7 +47,7 @@ class InvertedIndexClass {
   /**
    * tokenization
    * Obtain an array of terms from a string
-   * @param {inputData} inputData The filecontent to be tokenized
+   * @param {String} inputData The filecontent to be tokenized
    * @return {Object} An array of the generated token
    */
   tokenize(inputData) {
@@ -87,7 +86,6 @@ class InvertedIndexClass {
     });
     return Object.keys(this.result).length > 0 ? this.result : false;
   }
-
   /**
    *validateJsonContent.
    *@param {Object} inputFile The file to be checked
@@ -127,5 +125,3 @@ class InvertedIndexClass {
     }
   }
 }
-
-

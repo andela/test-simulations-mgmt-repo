@@ -1,9 +1,4 @@
-/* global Materialize */
-/* global FileReader */
-/* global angular */
-/* global InvertedIndexClass */
-/* global document */
-/* global $ */
+
 
 const indexApp = angular.module('indexApp', []);
 indexApp.controller('indexCtrl', ($scope) => {
@@ -53,7 +48,7 @@ indexApp.controller('indexCtrl', ($scope) => {
       try {
         fileJsonContent = JSON.parse(fileReader.result);
       } catch (e) {
-        Materialize.toast('Invalid Please upload a JSON file with content',
+        Materialize.toast('Please upload a JSON file with content',
       2000, 'red');
         return;
       }

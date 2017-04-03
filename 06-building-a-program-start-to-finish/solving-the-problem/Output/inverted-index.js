@@ -1,4 +1,3 @@
-
 /**
  * @class InvertedIndex
  */
@@ -12,7 +11,7 @@ class InvertedIndexClass {
   }
   /**
    * createIndex
-   * @param {Object} fileName name of file to map index for
+   * @param {String} fileName name of file to map index for
    * @return {Boolean} false if index is not created
    */
   createIndex(fileName) {
@@ -21,8 +20,9 @@ class InvertedIndexClass {
     currentFileContent.forEach((document, index) => {
       const documentTitle = document.title;
       const documentText = document.text;
-      const normalize = InvertedIndexClass
-.tokenize(`${documentText} ${documentTitle}`).sort();
+
+      const normalize = this.tokenize(`${documentText} ${documentTitle}`)
+      .sort();
       normalize.forEach((word) => {
         if (word in this.indexTable[fileName]) {
           if (this.indexTable[fileName][word].indexOf(index) === -1) {
@@ -47,10 +47,11 @@ class InvertedIndexClass {
   /**
    * tokenization
    * Obtain an array of terms from a string
-   * @param {inputData} inputData The filecontent to be tokenized
+   * @param {String} inputData The filecontent to be tokenized
    * @return {Object} An array of the generated token
    */
-  static tokenize(inputData) {
+  tokenize(inputData) {
+    this.inputData = inputData;
     this.invalidCharacters = /[^a-z0-9\s]/gi;
     return inputData.replace(this.invalidCharacters, ' ')
       .toLowerCase()
@@ -69,7 +70,7 @@ class InvertedIndexClass {
   searchIndex(searchTerms, fileNames) {
     const fileTitle = fileNames || Object.keys(this.files);
     this.result = {};
-    const allSearchTerms = InvertedIndexClass.tokenize(searchTerms);
+    const allSearchTerms = this.tokenize(searchTerms);
     fileTitle.forEach((currentFile) => {
       allSearchTerms.forEach((term) => {
         if (Object.prototype.hasOwnProperty
@@ -85,7 +86,6 @@ class InvertedIndexClass {
     });
     return Object.keys(this.result).length > 0 ? this.result : false;
   }
-
   /**
    *validateJsonContent.
    *@param {Object} inputFile The file to be checked
@@ -125,5 +125,3 @@ class InvertedIndexClass {
     }
   }
 }
-
-
