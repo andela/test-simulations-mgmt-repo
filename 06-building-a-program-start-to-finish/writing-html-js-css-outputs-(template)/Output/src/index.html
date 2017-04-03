@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html ng-app="indexApp">
+<head>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body ng-controller="indexCtrl">
+  <header>
+    <nav>
+    <div class="nav-wrapper teal darken-3">
+      <a href="#" class="brand-logo left"> &nbsp; smartIN</a>
+      <a href="#modal1" class="right padInstr">Help</a>
+      <i class="material-icons right">info_outline</i>
+    </div>
+  </nav>
+     <p>You are welcome to the Home of smart indexing... Enjoy your Elastic 
+       search...</p>
+    <div id="response-modal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">An Error Occurred</h4>
+          </div>
+          <div class="modal-body">
+            <p>{{message}}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+  <section>
+    <div class="row">
+      <div class="col s12">
+        <div class="top">
+
+          <div class="col s6 file-action">
+            <h5> Upload document </h5>
+
+            <form action="#">
+              <div class="file-field input-field">
+                <div class="btn">
+                  <span>Choose File</span>
+                  <input type="file" id="fileInput">
+                </div>
+                <div class="file-path-wrapper">
+                  <input class="file-path validate" type="text" placeholder="Upload files here">
+                </div>
+              </div>
+            </form>
+            <button ng-show="currentFileName" class="btn waves waves-effect" ng-click="indexFile('{{ currentFileName }}')"> 
+                    Create Index
+            </button>
+          </div>
+          <div class="col s6">
+            <h5> Search </h5>
+            <div class="input-field">
+              <input type="search" id="search" placeholder="search">
+              <label for="search"></label>
+            </div>
+            <div class="">
+              <p class="checkbox" ng-repeat="file in indexedFiles">
+                <input type="checkbox" id="{{ file }}" ng-click="updateFilesToSearch($event)" value="{{ file }}" />
+                <label for="{{ file }}">{{ file }} </label>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6" ng-if="indexTable">
+        <h6> Index Table </h6>
+      </div>
+      <div class="col s6" ng-if="liveSearchResult">
+        <h6> Search Result </h6>
+        <p ng-if="liveSearchResult === false"> no result found </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6 index-table-place">
+        <ul class="collapsible" data-collapsible="accordion">
+
+          <li ng-repeat="(file, words) in indexTable">
+
+            <div class="collapsible-header">
+              <p>
+                <i class="material-icons">
+            keyboard_arrow_right
+            </i> {{file}}</p>
+            </div>
+            <div class="collapsible-body">
+              <div>
+                <table class="striped bordered">
+                  <thead>
+                    <th> Words </th>
+                    <th ng-repeat="docId in getBookDocs(file)">
+                       {{myInvertedIndex.files[file][docId].title}}
+                    </th>
+                    <thead>
+                      <tbody>
+                        <tr ng-repeat="(word, docs) in words">
+                          <td> {{ word }} </td>
+                          <td ng-repeat="docId in getBookDocs(file)">
+                            <i class="material-icons teal-text" ng-if="docs.includes(docId)">
+                      check
+                    </i>
+                            <i class="material-icons red-text" ng-if="docs.includes(docId) === false">
+                      close
+                    </i>
+                          </td>
+                        </tr>
+                      </tbody>
+                </table>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <!-- Modal Structure -->
+  <div id="modal1" class="modal teal lighten-1">
+    <div class="modal-content white-text">
+      <h5><i class="material-icons right">info_outline</i>How To Use This App</h5>
+      <ul>
+        <li> Upload a valid JSON file</li>
+        <li>Ensure items in the file has
+            <b><em>title </em></b>and
+             <b><em>text</em></b> keys </li>
+        <li>Click on the Create Index button to create an index table for your document
+        </li>
+        <li> Type your search word on the search space to view the index table for the selected words.
+        </li>
+        <li> You can use the checkbox to select the book you intend searching on.</li>
+      </ul>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class=" modal-action modal-close waves-effect teal lighten-1 btn-flat white-text">OK</a>
+    </div>
+  </div>
+      <div class="col s6 result-place">
+        <ul class = "collapsible" dat-collapsible = "accordion">
+          <li ng-repeat="(file, words) in liveSearchResult">
+            <div class="collapsible-header">
+              <p>
+                <i class="material-icons">
+            keyboard_arrow_right
+            </i> {{file}}</p>
+            </div>
+            <div class="collapsible-body">
+
+              <div>
+                <table class="striped bordered">
+                  <thead>
+                    <th> Words </th>
+                    <th ng-repeat="docId in getBookDocs(file)">
+                      {{ myInvertedIndex.files[file][docId].title }}
+                    </th>
+                    <thead>
+                      <tbody>
+                        <tr ng-repeat="(word, docs) in words">
+                          <td> {{ word }} </td>
+                          <td ng-repeat="docId in getBookDocs(file)">
+                            <i class="material-icons teal-text" ng-if="docs.includes(docId)">
+                      check
+                    </i>
+                            <i class="material-icons red-text" ng-if="docs.includes(docId) === false">
+                      close
+                    </i>
+                          </td>
+                        </tr>
+                      </tbody>
+                </table>
+              </div>
+            </div>
+          </li>
+        </ul>
+
+      </div>
+
+    </div>
+
+    </div>
+  </section>
+  </div>
+  <!-- End of Modal -->
+  <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+  <!-- Beginning  of footer -->
+  <footer class="page-footer cyan darken-4">
+    <div class="footer-copyright">
+      <div class="container white-text">
+        © AKANDE Imisioluwa..2017 Inverted Index Application
+        <a class="grey-text text-lighten-4 right" href="https://github.com/andela-iakande/invertedindex">Check My GitHub</a>
+      </div>
+    </div>
+  </footer>
+  <!-- End of footer -->
+
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+  <script type="text/javascript" src="js/inverted-index.js"></script>
+  <script type="text/javascript" src="js/app.js"></script>
+  </div>
+</body>
+</html>

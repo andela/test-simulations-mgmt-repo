@@ -1,0 +1,11 @@
+bookwrongformat = [
+  {
+    "what": "Alice in Wonderland",
+    "next": "Alice falls into a rabbit hole and enters a world full of imagination."
+  },
+
+  {
+    "are": "The Lord of the Rings: The Fellowship of the Ring.",
+    "how": "An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring."
+  }
+]
