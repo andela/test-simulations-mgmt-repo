@@ -4,4 +4,5 @@
 - **With**: *independently*
 
 #### Link to mu Medium Post 
+
 - [Medium Post](https://medium.com/@maximufkingzy/the-adventure-experience-so-far-andela-3c3f6ccbcfa1)
