@@ -1,9 +1,7 @@
-
-
 const indexApp = angular.module('indexApp', []);
 indexApp.controller('indexCtrl', ($scope) => {
   $scope.appName = 'smartIN';
-  $scope.myInvertedIndex = new InvertedIndexClass();
+  $scope.myInvertedIndex = new invertedIndex();
   $scope.indexTable = '';
   $scope.indexTableFiles = [];
   $scope.currentFileName = null;
