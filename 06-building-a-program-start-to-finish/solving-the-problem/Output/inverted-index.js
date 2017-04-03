@@ -113,10 +113,10 @@ class InvertedIndex {
   }
   /**
    * @method flattenSearch
-   * @param {void} arguments of terms
+   * @param {void} argument of terms
    * @return {Array} array of terms
    */
-  flattenSearch(argument) {
+  flattenSearch(...argument) {
     return argument.reduce((acc, val) =>
       acc.concat(Array.isArray(val) ?
       this.flattenSearch(val) : val.split(' ')), []);
