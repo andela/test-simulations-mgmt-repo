@@ -9,13 +9,12 @@ class InvertedIndex {
   **/
   constructor() {
     this.fileIndices = {};
-    this.searchIndices = {};
   }
   /**
    * Set Index - Sets the indices of all indexed files
    * @param {String} filename - Name of the indexed file
    * @param {Object} indices - Indices of the file
-   * @return {object} Indexed file name and it's indices'
+   * @return {Object} Indexed file name and it's indices'
   **/
   setIndex(filename, indices) {
     this.fileIndices[filename] = indices;
@@ -23,7 +22,7 @@ class InvertedIndex {
   /**
    * Validate File
    * It checks if a json file is a json array of json objects
-   * @param {Object} file is an array of json objects
+   * @param {Array} file is an array of json objects
    * @return {Boolean} True if a json file is valid and False otherwise
   **/
   static validateFile(file) {
@@ -40,21 +39,23 @@ class InvertedIndex {
     return true;
   }
   /**
-   * Tokenize
-   * It splits sentence into an array of refined words
-   * @param {String} text - string of texts
-   * @return {Array} An array of refined split texts
+    * Tokenize
+    * It splits sentence into an array of refined words
+    * @param {String} text - string of texts
+    * @return {Array} An array of refined split texts
   **/
   static tokenize(text) {
-    const remove = /[^'^\w\s]/g;
-    const lowerCase = text.replace(remove, ' ').toLowerCase().split(' ');
-    return lowerCase.sort().filter(item => Boolean(item));
+    const remove = /[^\w'\s]/g;
+    const lowerCase = text.replace(remove, ' ').toLowerCase();
+    const divideText = lowerCase.split(' ');
+    const sortedText = divideText.sort();
+    return sortedText.filter(item => Boolean(item));
   }
   /**
    * Create Index
    * It creates the index of a file
    * @param {String} fileName - Filename of the file to be indexed
-   * @param {String} fileContent - Content of the uploaded file
+   * @param {Object} fileContent - Content of the uploaded file
    * @return {Object} An object of each word and their indices in a sorted way
   **/
   createIndex(fileName, fileContent) {
@@ -101,7 +102,7 @@ class InvertedIndex {
   **/
   searchIndex(searchTerm, filename) {
     let searchResult = {};
-    this.searchIndices = {};
+    const searchIndices = {};
     const tokenizedTerms = InvertedIndex.tokenize(searchTerm);
     let index;
     if (filename !== 'All files') {
@@ -112,8 +113,8 @@ class InvertedIndex {
           searchResult[term] = index[term];
         }
       });
-      this.searchIndices[filename] = searchResult;
-      return this.searchIndices;
+      searchIndices[filename] = searchResult;
+      return searchIndices;
     }
     // Search all files
     Object.keys(this.fileIndices).forEach((file) => {
@@ -124,11 +125,8 @@ class InvertedIndex {
           searchResult[term] = index[term];
         }
       });
-      this.searchIndices[file] = searchResult;
+      searchIndices[file] = searchResult;
     });
-    return this.searchIndices;
+    return searchIndices;
   }
 }
-
-const findIndex = new InvertedIndex();
-findIndex.createIndex();
