@@ -98,7 +98,7 @@ a:active {
 }
 
 .cover {
-  padding: 40px 0;
+  padding: 60px 0;
   background-image: url("../img/fishing.jpg");
   background-size: cover;
   background-position: center;
@@ -119,7 +119,11 @@ a:active {
 }
 
 .search {
+  position: fixed;
+  top: 50px;
+  width: 100%;
   margin-bottom: 30px;
+  z-index: 995;
 }
 
 .search .input-group-btn i {
@@ -195,6 +199,11 @@ a:active {
 
 .index-table .table-div {
   overflow-y: auto;
+}
+
+.uploaded-files ul {
+  list-style: none;
+  padding: 0;
 }
 
 footer {

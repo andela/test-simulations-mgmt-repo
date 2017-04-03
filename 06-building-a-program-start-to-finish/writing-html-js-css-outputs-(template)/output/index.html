@@ -48,16 +48,10 @@
     <div class="container">
       <h3>Inverted Index </h3>
       <p>
-        An Inverted Index is an Index Data Structure storing a mapping from 
-        content to location (i.e. a mapping of words or numbers to it's 
-        location in a database file). This Data Structure is widely used in 
-        several scenarios e.g. Cell Phone Lookup.
+        An Inverted Index is an Index Data Structure storing a mapping from content to location (i.e. a mapping of words or numbers to it's location in a database file). This Data Structure is widely used in several scenarios e.g. Cell Phone Lookup.
       </p>
       <p>
-        Elasticsearch uses a structure called an inverted index, which is designed 
-        to allow very fast full-text searches. An inverted index consists of a list 
-        of all the unique words that appear in any document, and for each word, a 
-        list of the documents in which it appears.
+        Elasticsearch uses a structure called an inverted index, which is designed to allow very fast full-text searches. An inverted index consists of a list of all the unique words that appear in any document, and for each word, a list of the documents in which it appears.
       </p>
       <h3>Valid file structure</h3>
       <div class="file-structure">
@@ -93,11 +87,11 @@
         <div class="col-sm-6">
           <h3>Uploading a File</h3>
           <ul>
-            <li>Click the 'Choose a file' button and select a 
-              <span class="underline" data-toggle="tooltip" data-title="Click About to see the correct format">valid</span>
-              json file</li>
-            <li>Click 'Create Index' to display the index(s)</li>
-            <li>You can upload more files, click the file's name to view its index</li>
+            <li>Click the 'Choose a file' button and select a
+              <span class="underline" data-toggle="tooltip" data-title="Click About to see the correct format">valid</span> json file</li>
+            <li>You can upload several files.</li>
+            <li>When you are done uploading, click 'Create Index' to create and display the index(s)</li>
+            <li>Click a file's name to view only it's index</li>
             <li>Hover over the book heading to view its full title</li>
           </ul>
         </div>
@@ -120,32 +114,35 @@
 
   <!-- Wrapper div -->
   <div class="cover" id="home-section">
+   
+    <!--   Search  -->
+    <div class="search" ng-show="index.filenames.length > 0">
+     <div class="container">
+       <div class="row">
+         <div class="col-xs-4">
+           <select name="files" id="searchFilename" class="form-control">
+             <option value="all" selected>Search All Files</option>
+             <option ng-repeat="file in index.filenames" value="{{file}}">{{file}}</option>
+           </select>
+         </div>
+         <div class="col-xs-8">
+           <div class="input-group">
+             <input type="text" class="form-control" placeholder="Search for..." ng-model="searchKey" ng-keypress="searchOnEnter($event, searchKey)">
+             <span class="input-group-btn">
+               <button class="btn btn-default" type="button" ng-click="search(searchKey)">
+                 <i class="fa fa-search"></i>
+               </button>
+             </span>
+           </div>
+         </div>
+       </div>
+     </div>
+    </div>
+   
     <div class="container">
       <!--   Alerts  -->
       <div class="alert alert-success">File added, Deleted</div>
       <div class="alert alert-danger">Invalid File, Nothing found</div>
-
-      <!--   Search  -->
-      <div class="search" ng-show="index.filenames.length > 0">
-        <div class="row">
-          <div class="col-md-4">
-            <select name="files" id="searchFilename" class="form-control">
-             <option value="all" selected>Search All Files</option>
-              <option ng-repeat="file in index.filenames" value="{{file}}">{{file}}</option>
-           </select>
-          </div>
-          <div class="col-md-8">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search for..." ng-model="searchKey" ng-keypress="searchOnEnter($event, searchKey)">
-              <span class="input-group-btn">
-                <button class="btn btn-default" type="button" ng-click="search(searchKey)">
-                  <i class="fa fa-search"></i>
-                </button>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div class="row">
         <!--    Upload File   -->
@@ -157,14 +154,14 @@
           <input type="file" id="fileInput">
           <label for="fileInput" class="fileInput"><i class="fa fa-upload"></i> Choose a file</label>
           <br><br>
-          <a href="#" class="btn-blue show-help" ng-show="index.filenames.length < 1">
+          <a href="#" class="btn-blue show-help" ng-show="filenames.length < 1">
             <i class="fa fa-life-bouy"></i> View Help
           </a>
 
           <!--    List of Files     -->
-          <div ng-show="index.filenames.length > 0">
-            <h3>Click Create Index or a filename below.</h3>
-            <button class="btn-blue btn show-all" ng-click="show('all')" ng-show="index.filenames.length > 0">
+          <div ng-show="filenames.length > 0">
+            <h3>Click Create Index to index files.</h3>
+            <button class="btn-blue btn show-all" ng-click="createIndex()">
               Create Index 
             </button>
             <ul>
@@ -176,55 +173,66 @@
           </div>
         </div>
 
-        <!--    Tables    -->
-        <div class="col-md-8 index-table" ng-show="index.filenames.length > 0">
-
-          <!--Show Index(es)-->
-          <div class="table-div" ng-show="showIndex" ng-repeat="filename in indexed.filenames">
-            <h3>{{filename}}</h3>
-            <table class="table">
-              <thead>
-                <th>Word</th>
-                <th ng-repeat="book in indexed.files[filename].bookTitles track by $index">
-                  <span data-toggle="tooltip" data-title="{{book}}" data-placement="left">
-                    Book{{$index + 1}}
-                  </span>
-                </th>
-              </thead>
-              <tbody>
-                <tr ng-repeat="word in indexed.files[filename].allWords">
-                  <td>{{word}}</td>
-                  <td ng-repeat="boolean in indexed.files[filename].words[word] track by $index">
-                    <i class="fa fa-{{verifyWord(boolean)}}"></i>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+        <div class="col-md-8">
+          <!--     Uploaded Files    -->
+          <div class="uploaded-files text-center" ng-if="!showSearch && !showIndex">
+            <h3 ng-show="filenames.length > 0">Uploaded Files:</h3>
+            <ul>
+              <li ng-repeat="filename in filenames">{{filename}}</li>
+            </ul>
           </div>
 
-          <!--Search Result -->
-          <div class="table-div" ng-show="!showIndex && showSearch" ng-repeat="filename in searchResult.filenames">
-            <h3>{{filename}}</h3>
-            <table class="table">
-              <thead>
-                <th>Word</th>
-                <th ng-repeat="book in index.files[filename].bookTitles track by $index">
-                  <span data-toggle="tooltip" data-title="{{book}}" data-placement="left">
-                    Book{{$index + 1}}
-                  </span>
-                </th>
-              </thead>
-              <tbody>
-                <tr ng-repeat="word in searchResult[filename].allWords">
-                  <td>{{word}}</td>
-                  <td ng-repeat="boolean in searchResult[filename].words[word] track by $index">
-                    <i class="fa fa-{{verifyWord(boolean)}}"></i>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <!--    Tables    -->
+          <div class=" index-table" ng-show="index.filenames.length > 0">
+
+            <!--Show Index(es)-->
+            <div class="table-div" ng-show="showIndex" ng-repeat="filename in indexed.filenames">
+              <h3>{{filename}}</h3>
+              <table class="table">
+                <thead>
+                  <th>Word</th>
+                  <th ng-repeat="book in indexed.files[filename].bookTitles track by $index">
+                    <span data-toggle="tooltip" data-title="{{book}}" data-placement="left">
+                      Book{{$index + 1}}
+                    </span>
+                  </th>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="word in indexed.files[filename].allWords">
+                    <td>{{word}}</td>
+                    <td ng-repeat="boolean in indexed.files[filename].words[word] track by $index">
+                      <i class="fa fa-{{verifyWord(boolean)}}"></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!--Search Result -->
+            <div class="table-div" ng-show="!showIndex && showSearch" ng-repeat="filename in searchResult.filenames">
+              <h3>{{filename}}</h3>
+              <table class="table">
+                <thead>
+                  <th>Word</th>
+                  <th ng-repeat="book in index.files[filename].bookTitles track by $index">
+                    <span data-toggle="tooltip" data-title="{{book}}" data-placement="left">
+                      Book{{$index + 1}}
+                    </span>
+                  </th>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="word in searchResult[filename].allWords">
+                    <td>{{word}}</td>
+                    <td ng-repeat="boolean in searchResult[filename].words[word] track by $index">
+                      <i class="fa fa-{{verifyWord(boolean)}}"></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
+
 
       </div>
 

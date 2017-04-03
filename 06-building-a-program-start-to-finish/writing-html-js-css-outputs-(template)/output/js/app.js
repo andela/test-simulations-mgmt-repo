@@ -5,9 +5,12 @@ myApp.controller('mainController', ['$scope', ($scope) => {
 
   $scope.searchResult = {};
   $scope.indexed = {};
+  $scope.fileContents = {};
+  $scope.filenames = [];
 
   $scope.deleteFileIndex = (filename) => {
     if ($scope.index.deleteFileIndex(filename)) {
+      $scope.filenames.splice($scope.filenames.indexOf(filename), 1);
       $scope.show('all');
       $scope.flash('Deleted');
     }
@@ -37,7 +40,15 @@ myApp.controller('mainController', ['$scope', ($scope) => {
     }, 300);
   };
 
-  // display a file's index
+  // Creates the index(s)
+  $scope.createIndex = () => {
+    $scope.filenames.forEach((file) => {
+      $scope.index.createIndex($scope.fileContents[file], file);
+    });
+    $scope.show('all');
+  };
+
+  // Display a file's index
   $scope.getIndex = (filename) => {
     const result = { files: {} };
     result.files[filename] = $scope.index.getIndex(filename);
@@ -70,9 +81,13 @@ myApp.controller('mainController', ['$scope', ($scope) => {
       if (!InvertedIndex.validateFile(result)) {
         return reject('Invalid File Format');
       }
-      if (!$scope.index.createIndex(result, file.name)) {
-        return reject('File already exists');
+      if ($scope.filenames.indexOf(file.name) !== -1) {
+        return reject('File already added');
       }
+
+      $scope.filenames.push(file.name);
+      $scope.fileContents[file.name] = result;
+
       $scope.show('none');
       return resolve();
     };
@@ -100,6 +115,7 @@ myApp.controller('mainController', ['$scope', ($scope) => {
     $('.alert-success').fadeIn().delay(800).slideUp();
   };
 
+  // Perform Search
   $scope.search = (searchKey) => {
     const filename = $('#searchFilename').val();
     let result = {};
@@ -111,6 +127,7 @@ myApp.controller('mainController', ['$scope', ($scope) => {
     if (!result) return $scope.flash('Not found', 'error');
     $scope.searchResult = result;
     $scope.show('search');
+    window.scrollTo(0, 0);
   };
 
   // Upload file and read it's content
@@ -121,7 +138,7 @@ myApp.controller('mainController', ['$scope', ($scope) => {
     });
     promise.then(() => {
       $scope.$apply(() => {
-        $scope.flash('File added!');
+        $scope.flash('File(s) uploaded!');
       });
     }, (error) => {
       $scope.flash(error, 'error');
