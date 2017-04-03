@@ -11,7 +11,6 @@ class InvertedIndex {
   constructor() {
     this.searchIndices = {};
     this.indexedFiles = {};
-    this.allTitles = {};
   }
 
   /**
@@ -25,16 +24,17 @@ class InvertedIndex {
   readFile(eachFile) {
     let fileContent;
     return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsText(eachFile);
-      reader.onload = ((event) => {
-        try {
+      try {
+        const reader = new FileReader();
+        reader.onload = (event) => {
           fileContent = JSON.parse(event.target.result);
-          resolve(fileContent);
-        } catch (err) {
-          reject(err);
-        }
-      });
+          const response = InvertedIndex.validateFile(fileContent);
+          resolve(response);
+        };
+        reader.readAsText(eachFile);
+      } catch (err) {
+        reject(err);
+      }
     });
   }
 
@@ -47,12 +47,23 @@ class InvertedIndex {
    * @memberOf InvertedIndex
    */
   static validateFile(jsonContent) {
+    let isValid = {};
     if (Object.keys(jsonContent).length === 0 && typeof jsonContent === 'object') {
-      return false;
-    } let isValid = true;
+      isValid = {
+        success: false
+      };
+      return isValid;
+    }
     jsonContent.forEach((doc) => {
       if (!doc.title || !doc.text) {
-        isValid = false;
+        isValid = {
+          success: false
+        };
+      } else {
+        isValid = {
+          success: true,
+          jsonContent
+        };
       }
     });
     return isValid;
@@ -143,7 +154,6 @@ class InvertedIndex {
       const tokenizedWords = InvertedIndex.tokenizeWords(joinedkeys);
       splittedWords[key] = InvertedIndex.splitAndSort(tokenizedWords);
     });
-    // index words
     Object.keys(splittedWords).forEach((keys) => {
       splittedWords[keys].forEach((words) => {
         if (!indices.hasOwnProperty(words)) {
@@ -171,21 +181,19 @@ class InvertedIndex {
    *
    *
    * @param {String} searchWords - the words you require indices for
-   * @param {String} fileName - the name of the file
+   * @param {String} searchBook - the name of the file
    * @returns{Object} searchOutput - the words and corresponding indices
    *
    * @memberOf InvertedIndex
    */
-  searchIndex(searchWords, fileName) {
+  searchIndex(searchWords, searchBook) {
     const searchOutput = {};
-    // if(fileName==='All') return
     if (typeof searchWords !== 'string') {
       return false;
     }
     searchWords = InvertedIndex.tokenizeWords(searchWords);
     const sortedWords = InvertedIndex.splitAndSort(searchWords);
-    // console.log(sortedWords)
-    const index = this.indexedFiles[fileName];
+    const index = this.indexedFiles[searchBook];
     sortedWords.forEach((word) => {
       if (index[word]) {
         searchOutput[word] = index[word];
@@ -193,7 +201,7 @@ class InvertedIndex {
         searchOutput[word] = [];
       }
     });
-    this.searchIndices[fileName] = searchOutput;
+    this.searchIndices[searchBook] = searchOutput;
     return searchOutput;
   }
 }

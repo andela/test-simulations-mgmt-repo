@@ -4,4 +4,4 @@
 - **With**: *independently*
 
 #### Targeted Learning Outcomes
-- [View PR](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/21%20-%20Agile%20Process)
+- [View PR](https://github.com/andela-fmustapha/inverted-index/pull/12)

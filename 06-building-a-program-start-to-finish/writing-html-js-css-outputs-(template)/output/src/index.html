@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html ng-app='angular'>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>BookSwitch</title>
+
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel= "stylesheet" type="text/css" />
+</head>
+
+<body ng-controller="index">
+    <div id="wrapper">
+    <!--<script src="jquery-3.1.1.min.js"></script>-->
+    <div id="header">
+        <div id='headerTitle' float='center'>
+            <h1>BookSwitch</h1>
+        </div>
+    </div>
+
+    <div id="help">{{message}}</div>
+
+    <div id="content">
+        <div id="user-input">
+            <label for='fUpload'> select files: </label>
+            <input type="file" id="fUpload" onchange="angular.element(this).scope().validateFiles()" multiple accept=".json"><br>
+            <!--<input ng-model="upload" type="button" id="upload" name="upload" value="Upload><br><br>-->
+            <button id="create-index" name="create-index" ng-click="createBookIndex()">Create Index</button><br>
+        </div>
+        <div id='selectBooks'>
+            <label>Select Book:</label>
+            <select ng-model ="bookList">
+             <option ng-repeat="(filename, filecontent) in content">{{filename}}</option>
+             </select>
+            <span>
+            Search words:<input type="search" id="search" name="search">
+            <button id="button" name="create-index" ng-click= "searchBookIndex()">Go </button>
+          </span>
+        </div>
+    </div>
+    <div id='result'>
+        <!--<div id="user-output">-->
+    <div id= "user-output" ng-show='showIndex' ng-repeat="(filename, filedata) in fileIndices">
+        <p id='paragraph'><b>{{filename}}</b></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Words</th>
+                    <th ng-repeat='title in titles[filename]'>{{title}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="(key, values) in filedata">
+                    <td> {{key}} </td>
+                    <td ng-repeat="number in docCount[filename]">
+                        <span ng-if="values.includes(number) == true">
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true">√</span>
+                            <!--<span aria-hidden="true"> YES </span>-->
+                        </span>
+                        <span ng-if="values.includes(number) === false">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"> X </span>
+                            <!--<span aria-hidden="true"> X </span>-->
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id= "user-output" ng-show='showSearch' ng-repeat="(filename, filedata) in searchFeedback">
+        <p id='paragraph'><b>{{filename}}</b></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Words</th>
+                    <th ng-repeat='title in titles[filename]'>{{title}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="(key, values) in filedata">
+                    <td> {{key}} </td>
+                    <td ng-repeat="number in docCount[filename]">
+                        <span ng-if="values.includes(number) == true">
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true">√</span>
+                            <!--<span aria-hidden="true"> YES </span>-->
+                        </span>
+                        <span ng-if="values.includes(number) === false">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"> X </span>
+                            <!--<span aria-hidden="true"> X </span>-->
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+    <div id="footer">Copyright &copy; FAM.com</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://code.angularjs.org/1.3.0-rc.1/angular.min.js"></script>
+    <script src="js/inverted.js"></script>
+    <script src="js/indexController.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    </div>
+</body>
+
+</html>

@@ -21,6 +21,7 @@ The `InvertedIndex Class` makes explicit use of the constructor design pattern i
 class InvertedIndex {
 
   constructor() {
+    this.searchIndices = {};
     this.indexedFiles = {};
   }
 
