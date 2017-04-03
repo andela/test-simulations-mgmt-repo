@@ -12,6 +12,7 @@ const InvertedIndex = class {
     this.iDexMapper = {};
     this.numberOfDocuments = {};
     this.unIndexedBooks = {};
+    this.indexedBookTitles = {};
   }
 
   /**
@@ -54,7 +55,7 @@ const InvertedIndex = class {
             };
           } else {
             const index = parseInt(eachIndex, 10) + 1;
-            reject(`Document ${index} in ${bookname}.json book do not have a "title" or "text" fields`);
+            reject(`No 'title' or 'text' in Document ${index} of ${bookname}`);
           }
         });
         resolve(bookHolder);
@@ -74,17 +75,27 @@ const InvertedIndex = class {
     return sanitizedText.toLowerCase();
   }
 
+  setBookTitles(bookname, title) {
+    if (this.indexedBookTitles[bookname]) {
+      this.indexedBookTitles[bookname].push(title);
+    } else {
+      this.indexedBookTitles[bookname] = [];
+      this.indexedBookTitles[bookname].push(title);
+    }
+  }
+
   /**
    * Creates a word array for each document in a book
    * @param {Object} book - documents in a book
    * @return {Array.<Object>} bookContents - words in each document
    */
-  static createsArray(book) {
+  createsArray(bookname, book) {
     const bookContents = [];
     Object.keys(book).map((documentPosition) => {
       const mergedTitleAndText = `${book[documentPosition].title} 
       ${book[documentPosition].text}`;
-      bookContents.push(this.tokenize(mergedTitleAndText).split(' '));
+      bookContents.push(InvertedIndex.tokenize(mergedTitleAndText).split(' '));
+      this.setBookTitles(bookname, book[documentPosition].title);
     });
     return bookContents;
   }
@@ -98,7 +109,7 @@ const InvertedIndex = class {
   createIndex(bookname, book) {
     const tokenIndex = {};
     this.numberOfDocuments[bookname] = [];
-    const bookContents = InvertedIndex.createsArray(book);
+    const bookContents = this.createsArray(bookname, book);
     return new Promise((resolve) => {
       bookContents.map((eachdocument, documentPosition) => {
         const documentPositionToInt = parseInt(documentPosition, 10);
