@@ -148,7 +148,8 @@ class InvertedIndex {
    * @returns {array} array equivalent with unique items
   */
   static getUnique(wordArray) {
-    return wordArray.filter((value, index, self) => self.indexOf(value) === index);
+    return wordArray.filter((value, index, self) =>
+      self.indexOf(value) === index);
   }
 
   /**
