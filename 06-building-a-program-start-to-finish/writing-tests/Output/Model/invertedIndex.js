@@ -27,8 +27,6 @@ class InvertedIndex {
     this.token = words.toLowerCase()
     .replace(/[^\w\s]|_/g, '')
     .split(/\s+/);
-    // .trim()
-    // .match(/\w+/g);
     return this.token;
   }
   /**
