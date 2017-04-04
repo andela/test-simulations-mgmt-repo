@@ -5,6 +5,48 @@ const fileAPI = require('file-api');
 const File = fileAPI.File;
 
 describe('Inverted Index Test Suite: ', () => {
+  describe('InvertedIndex class: ', () => {
+    beforeEach(() => {
+      this.invertedIndex = new InvertedIndex();
+    });
+
+    it('should return an instance of InvertedIndex on instantiation', () => {
+      expect(this.invertedIndex instanceof InvertedIndex).toBeTruthy();
+    });
+
+    it('should have a static readFile method', () => {
+      expect(typeof InvertedIndex.readFile).toEqual('function');
+    });
+
+    it('should have a static validateFile method', () => {
+      expect(typeof InvertedIndex.validateFile).toEqual('function');
+    });
+
+    it('should have a static tokenize method', () => {
+      expect(typeof InvertedIndex.tokenize).toEqual('function');
+    });
+
+    it('should have a createIndex method', () => {
+      expect(typeof this.invertedIndex.createIndex).toEqual('function');
+    });
+
+    it('should have a removeIndex method', () => {
+      expect(typeof this.invertedIndex.removeIndex).toEqual('function');
+    });
+
+    it('should have a getIndex method', () => {
+      expect(typeof this.invertedIndex.getIndex).toEqual('function');
+    });
+
+    it('should have a getTitles method', () => {
+      expect(typeof this.invertedIndex.getTitles).toEqual('function');
+    });
+
+    it('should have a searchIndex method', () => {
+      expect(typeof this.invertedIndex.searchIndex).toEqual('function');
+    });
+  });
+
   describe('Reading file data: ', () => {
     it('should read and return the contents of a file via callback', (done) => {
       const file = new File('./validBooks.json');
