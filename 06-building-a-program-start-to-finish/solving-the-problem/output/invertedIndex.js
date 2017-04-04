@@ -9,7 +9,6 @@ class InvertedIndex {
    * @constructor
    */
   constructor() {
-    this.unique = [];
     this.globalIndex = {};
   }
 
@@ -29,9 +28,9 @@ class InvertedIndex {
    * @param {Array} text Array of strings
    * @returns {Array} Returns array of unique words
    */
-  uniqueWords(text) {
-    this.unique = [...new Set(text)];
-    return this.unique;
+  static uniqueWords(text) {
+    const unique = [...new Set(text)];
+    return unique;
   }
 
   /**
@@ -39,7 +38,7 @@ class InvertedIndex {
    * @param  {Object} file the uploaded JSON file object
    * @return {Array}  of the unique terms in the file
    */
-  getText(file) {
+  static getText(file) {
     let newText = `${' '}`;
     Object.keys(file)
       .forEach((key) => {
@@ -47,7 +46,8 @@ class InvertedIndex {
         newText += `${' '}`;
         newText += obj.text;
       });
-    const uniqueTerms = this.uniqueWords(InvertedIndex.tokenize(newText))
+    const uniqueTerms = InvertedIndex
+      .uniqueWords(InvertedIndex.tokenize(newText))
       .map(x => x.toLowerCase());
     return uniqueTerms;
   }
@@ -94,7 +94,7 @@ class InvertedIndex {
    */
   createIndex(file, fileName) {
     const indexedFiles = {};
-    const uniqueTerms = this.getText(file);
+    const uniqueTerms = InvertedIndex.getText(file);
     uniqueTerms.forEach((uniqueKeys) => {
       const arr = [];
       file.forEach((jsonObjText) => {
@@ -151,7 +151,7 @@ class InvertedIndex {
           const fileKey = Object.keys(this.globalIndex[allFileName]);
           if (fileKey.indexOf(searchKey) > -1) {
             searchFiles[allFileName][searchKey] =
-            this.globalIndex[allFileName][searchKey];
+              this.globalIndex[allFileName][searchKey];
           }
         });
       });

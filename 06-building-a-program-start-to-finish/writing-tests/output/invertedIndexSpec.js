@@ -27,12 +27,12 @@ describe('InvertedIndex Class', () => {
     });
 
     it('Should contain the uniqueWords method', () => {
-      expect(typeof this.invertedIndex.uniqueWords)
+      expect(typeof InvertedIndex.uniqueWords)
         .toBe('function');
     });
 
     it('Should contain the getText method', () => {
-      expect(typeof this.invertedIndex.getText)
+      expect(typeof InvertedIndex.getText)
         .toBe('function');
     });
 
@@ -89,12 +89,12 @@ describe('InvertedIndex Class', () => {
 
   describe('getText', () => {
     it('should return an array of words', () => {
-      expect(this.invertedIndex.getText(smallfile))
+      expect(InvertedIndex.getText(smallfile))
         .toEqual(['alice', 'falls', 'into', 'a', 'rabbit']);
     });
 
     it('filters out symbols', () => {
-      expect(this.invertedIndex.getText(smallfile))
+      expect(InvertedIndex.getText(smallfile))
         .toEqual(['alice', 'falls', 'into', 'a', 'rabbit']);
     });
   });
@@ -103,7 +103,7 @@ describe('InvertedIndex Class', () => {
     it('should return an array of unique words', () => {
       const input = ['aa', 'aa', 'aa'];
       const output = ['aa'];
-      expect(this.invertedIndex.uniqueWords(input))
+      expect(InvertedIndex.uniqueWords(input))
         .toEqual(output);
     });
   });
