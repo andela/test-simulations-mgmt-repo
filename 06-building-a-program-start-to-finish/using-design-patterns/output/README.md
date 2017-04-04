@@ -21,7 +21,6 @@ class InvertedIndex {
   
   constructor() {
     this.fileIndices = {};
-    this.searchIndices = {};
   }
 
   createIndex(fileName, fileContent) {
