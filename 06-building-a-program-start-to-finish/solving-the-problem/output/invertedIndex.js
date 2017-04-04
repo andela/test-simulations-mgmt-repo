@@ -40,9 +40,10 @@ class InvertedIndex {
    */
   static getText(file) {
     let newText = '';
+    const space = ' ';
     Object.keys(file)
       .map((index) => {
-        newText += `${file[index].text} `;
+        newText += `${file[index].text} ${space}`;
         return newText;
       });
     const terms = InvertedIndex.tokenize(newText);
