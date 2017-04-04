@@ -4,4 +4,6 @@
 - **With**: *independently*
 
 #### Targeted Learning Outcomes
-- [Staging](https://book-switch.herokuapp.com/)
+- [Staging](https://book-switch-staging.herokuapp.com/)
+- [Review](https://book-switch-production-pr-12.herokuapp.com/)
+- [Production](https://book-switch-production.herokuapp.com/)
