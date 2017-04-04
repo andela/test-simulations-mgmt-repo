@@ -108,12 +108,10 @@ describe('InvertedIndex', () => {
     it('should return an array of text and title joined together', () => {
       let test =
         {
-          title: 'Alice in Wonderland',
-          text: 'Falls into a hole.'
+          title: 'Alice',
+          text: 'falls into a hole.'
         };
-      const newDoc =
-       'Alice in Wonderland Falls into a hole. ' +
-         'Alice in Wonderland Falls into a hole.';
+      const newDoc = 'Alice falls into a hole. Alice falls into a hole.';
       test = InvertedIndex.formatJSON(test);
       expect(newDoc).toEqual(test);
     });
@@ -144,8 +142,8 @@ describe('InvertedIndex', () => {
       .toBeGreaterThan(0);
     });
 
-    it('should check that index maps the string to the correct objects in json'
-     + ' array', () => {
+    it(`should check that index maps the string to
+      the correct objects in json array`, () => {
       const createdIndex = {
         a: [0],
         alice: [0],
@@ -231,9 +229,8 @@ describe('InvertedIndex', () => {
         };
 
       let search = {};
-      search = invertedIndex.searchIndices('all',
-        'Barbie loves cartoons but she\'s scared of an unusual wizard,' +
-          'alice fall\'s');
+      search = invertedIndex.searchIndices('all', `Barbie loves cartoons
+        but she's scared of an unusual wizard, alice fall's`);
       expect(Object.keys(search)).toEqual(Object.keys(allFiles));
       expect(values(allFiles)).toEqual(values(allFiles));
     });
