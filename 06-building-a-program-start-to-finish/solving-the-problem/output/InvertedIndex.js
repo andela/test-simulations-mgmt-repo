@@ -32,7 +32,8 @@ class InvertedIndex {
     for (let i = 0; i < file.length; i += 1) {
       const item = file[i];
       if (!(Object.prototype.hasOwnProperty.call(item, 'title') &&
-      (Object.prototype.hasOwnProperty.call(item, 'text')))) {
+      (Object.prototype.hasOwnProperty.call(item, 'text')) &&
+      item.title.length > 0 && item.text.length > 0)) {
         return false;
       }
     }
