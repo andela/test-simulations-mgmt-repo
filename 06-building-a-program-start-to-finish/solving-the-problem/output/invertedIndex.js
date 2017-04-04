@@ -13,23 +13,23 @@ class InvertedIndex {
   }
 
   /**
-   * A method that tokenizes the string that is passed through it
-   * @param  {string} text the string  from the "text" key in the JSON
+   * A method that converts string into an array
+   * @param  {string} word the string  from the "text" key in the JSON
    * @return {Array} containing String.
    */
-  static tokenize(text) {
-    const terms = text.replace(/[^\w\s]/gi, ' ')
+  static tokenize(word) {
+    const terms = word.replace(/[^\w\s]/gi, ' ')
       .match(/\w+/g);
     return terms;
   }
 
   /**
    * A method that filters the array passed into it for unique words
-   * @param {Array} text Array of strings
+   * @param {Array} words Array of strings
    * @returns {Array} Returns array of unique words
    */
-  static uniqueWords(text) {
-    const unique = [...new Set(text)];
+  static uniqueWords(words) {
+    const unique = [...new Set(words)];
     return unique;
   }
 
@@ -39,15 +39,15 @@ class InvertedIndex {
    * @return {Array}  of the unique terms in the file
    */
   static getText(file) {
-    let newText = `${' '}`;
+    let newText = '';
     Object.keys(file)
-      .forEach((key) => {
-        const obj = file[key];
-        newText += `${' '}`;
-        newText += obj.text;
+      .map((index) => {
+        newText += `${file[index].text} `;
+        return newText;
       });
+    const terms = InvertedIndex.tokenize(newText);
     const uniqueTerms = InvertedIndex
-      .uniqueWords(InvertedIndex.tokenize(newText))
+      .uniqueWords(terms)
       .map(x => x.toLowerCase());
     return uniqueTerms;
   }
@@ -64,25 +64,31 @@ class InvertedIndex {
       valid: false,
       message: 'This is an Invalid JSON File',
     };
-    Object.keys(parsedFile)
-      .forEach((key) => {
-        const uploadedFile = parsedFile[key];
-        const validFormat = ['title', 'text'];
-        const parsedFileFormat = Object.keys(uploadedFile);
-        const fileTextKey = Object.keys(parsedFileFormat)
-          .map(objKeys => parsedFileFormat[objKeys]);
-        if (validFormat.toString() === fileTextKey.toString()) {
-          isValid = {
-            valid: true,
-            message: 'This JSON Format is correct',
-          };
-        } else {
-          isValid = {
-            valid: false,
-            message: 'This JSON Format is Incorrect',
-          };
-        }
-      });
+    try {
+      Object.keys(parsedFile)
+        .forEach((key) => {
+          const uploadedFile = parsedFile[key];
+          const validFormat = ['title', 'text'];
+          const parsedFileFormat = Object.keys(uploadedFile);
+          const fileTextKey = Object.keys(parsedFileFormat)
+            .map(objKeys => parsedFileFormat[objKeys]);
+          if (validFormat.toString() === fileTextKey.toString()) {
+            isValid = {
+              valid: true,
+              message: 'This JSON Format is correct',
+            };
+          } else {
+            isValid = {
+              valid: false,
+              message: 'This JSON Format is Incorrect',
+            };
+            throw isValid;
+          }
+        });
+    } catch (error) {
+      if (error.valid === false) return error;
+      throw error;
+    }
     return isValid;
   }
 

@@ -19,7 +19,7 @@ angular.module('root', ['ngAnimate', 'toastr'])
       }
       const selectedFileObj = $scope.fileStore[$scope.uploadedFileName];
       const uniqueTerms =
-      invertedIndex.getText(selectedFileObj);
+      InvertedIndex.getText(selectedFileObj);
       const fileName = $scope.uploadedFileName;
       invertedIndex.createIndex(selectedFileObj, fileName);
       $scope.indexedFile = invertedIndex.getIndex($scope.uploadedFileName);
@@ -48,7 +48,7 @@ angular.module('root', ['ngAnimate', 'toastr'])
         $scope.table2 = false;
         $scope.table1 = true;
         const getFileName = $scope.fileStore[$scope.searchFileName];
-        const uniqueTerms = invertedIndex.getText(getFileName);
+        const uniqueTerms = InvertedIndex.getText(getFileName);
         $scope.docsMock = $scope.indexedFile[uniqueTerms[0]];
       }
     };
