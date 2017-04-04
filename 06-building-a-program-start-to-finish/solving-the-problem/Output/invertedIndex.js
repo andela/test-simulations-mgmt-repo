@@ -27,8 +27,6 @@ class InvertedIndex {
     this.token = words.toLowerCase()
     .replace(/[^\w\s]|_/g, '')
     .split(/\s+/);
-    // .trim()
-    // .match(/\w+/g);
     return this.token;
   }
   /**
@@ -102,15 +100,11 @@ class InvertedIndex {
 /**
      * It returns the index of the words
      * @method getIndex
-     * @param {Object} fileName
+     * @param {String} fileName
      *
      * @return {object} gets the index
      */
   getIndex(fileName) {
-    if (Object.keys(fileName).length < 1) {
-      return this.index;
-    }
-
     return this.index[fileName];
   }
 /**
