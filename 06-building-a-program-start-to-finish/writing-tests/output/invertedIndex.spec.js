@@ -4,7 +4,7 @@ const values = require('object.values');
 const book = require('../../json files/books.json');
 const emptyJsonFile = require('../../json files/emptyJsonFile.json');
 const emptyArrayFile = require('../../json files/emptyArrayFile.json');
-const invalid = require('../../json files/invalidFile.json');
+const invalidFile = require('../../json files/invalidFile.json');
 const notArray = require('../../json files/notArray.json');
 const invalidTitleAndText = require('../../json files/books copy 3.json');
 const anotherBook = require('../../json files/anotherBook.json');
@@ -80,8 +80,14 @@ describe('InvertedIndex', () => {
 
     it('should return false if file is a JSON but not an array of an array',
      () => {
-       expect(InvertedIndex.validateFile(invalid)).toBeFalsy();
+       expect(InvertedIndex.validateFile(invalidFile)).toBeFalsy();
      });
+  });
+
+  describe('Read file', () => {
+    it('should be defined', () => {
+      expect(InvertedIndex.readFile).not.toBeUndefined();
+    });
   });
 
   describe('Tokenize words', () => {
@@ -91,15 +97,38 @@ describe('InvertedIndex', () => {
           title: 'Alice in Wonderland',
           text: 'Falls into a hole.'
         };
-      const tokens = ['a', 'alice', 'falls', 'hole', 'in', 'into', 'wonderland'];
+      const tokens =
+        ['a', 'alice', 'falls', 'hole', 'in', 'into', 'wonderland'];
       test = InvertedIndex.tokenize(test);
       expect(tokens).toEqual(test);
     });
   });
 
+  describe('formatJSON', () => {
+    it('should return an array of text and title joined together', () => {
+      let test =
+        {
+          title: 'Alice in Wonderland',
+          text: 'Falls into a hole.'
+        };
+      const newDoc = 'Alice in Wonderland Falls into a hole. Alice in Wonderland Falls into a hole.';
+      test = InvertedIndex.formatJSON(test);
+      expect(newDoc).toEqual(test);
+    });
+  });
+
+  describe('getUnique', () => {
+    it('should return unique words in an array', () => {
+      let words = ['go', 'go', 'come', 'come'];
+      const unique = ['go', 'come'];
+      words = InvertedIndex.getUnique(words);
+      expect(words).toEqual(unique);
+    });
+  });
+
   describe('createIndex', () => {
     it('should return false if index is not created', () => {
-      expect(invertedIndex.createIndex(invalid)).toEqual(false);
+      expect(invertedIndex.createIndex(invalidFile)).toEqual(false);
     });
 
     it('should return true if index is created', () => {
@@ -145,10 +174,16 @@ describe('InvertedIndex', () => {
         'book.json'))).toBeTruthy();
     });
 
-    it('should return true if search term is a string', () => {
+    it('should return true if search term is a array', () => {
       const newWords = ['I love Barbie and Alice'];
       expect(Object.keys(invertedIndex.searchIndices(newWords,
         'anotherBook.json'))).toBeTruthy();
+    });
+
+    it('should return false if search term is not found', () => {
+      invertedIndex.createIndex('books.json', book);
+      const result = invertedIndex.searchIndices('alicce', 'books.json');
+      expect(result).toEqual(false);
     });
 
     it('should return true if search term is a number', () => {
