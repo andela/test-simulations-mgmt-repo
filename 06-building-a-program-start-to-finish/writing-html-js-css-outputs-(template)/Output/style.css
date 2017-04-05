@@ -106,28 +106,20 @@
     background-color: teal;
     margin-bottom: 10px;
 }
-.table-fixed thead {
-    width: 100%;
+.table thead {
     color: #fff;
+    width: 950px;
 }
-.table-fixed tbody {
+.table tbody {
     height: 230px;
-    overflow-y: auto;
-    width: 100%;
     color: teal;
-}
-.table-fixed thead,
-.table-fixed tbody,
-.table-fixed tr,
-.table-fixed td,
-.table-fixed th {
-    display: block;
-}
-.table-fixed tbody td,
-.table-fixed thead > tr> th {
-    float: left;
-    border-bottom-width: 0;
+    width: 950px;
 }
 .th {
     background-color: teal !important;
+}
+.flow{
+    width: 100%;
+    overflow: auto;
+    height: 300px;
 }

@@ -12,7 +12,6 @@ class InvertedIndex {
    */
   constructor() {
     this.index = {};
-    this.temp_search = [];
     this.searchResult = {};
     this.allIndex = {};
     this.token = '';

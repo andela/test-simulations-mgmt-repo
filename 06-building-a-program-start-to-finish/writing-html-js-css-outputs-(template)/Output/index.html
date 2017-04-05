@@ -46,7 +46,7 @@
                   </form>
                </div>
             </div>
-            <div class='col-sm-6 col-md-6'>
+            <div class='col-sm-6 col-md-8'>
                <div class="dropdown">
                   <span class="dropdown-toggle drop" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                      <div class="pull-left"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Instruction</div>
@@ -74,7 +74,8 @@
                   <h3 class="style"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>Indices Table</h3>
                   <div ng-repeat="(filename, index) in indices">
                      <h3 class='h3'> Display Index for {{filename}} </h3>
-                     <table class="table table-fixed">
+                     <div class='flow'>
+                     <table class="table table">
                         <thead class='thead'>
                            <tr class='tr'>
                               <th class="th col-md-4">Terms</th>
@@ -90,6 +91,7 @@
                            </tr>
                         </tbody>
                      </table>
+                     </div>
                      <hr/>
                   </div>
                </div>
@@ -102,17 +104,17 @@
             <div class="modal-content">
                <div ng-repeat="(filename, content) in searchResults">
                   <h3 class='h3'>Display Search for {{filename}}</h3>
-                  <table class="table table-fixed">
-                     <thead class='table-fixed thead'>
-                        <tr class='table-fixed tr'>
-                           <th class="table-fixed th col-md-4">Words</th>
-                           <th class="table-fixed th col-md-4" ng-repeat="document in fileContent[filename] track by $index">{{document.title}}</th>
+                  <table class="table table">
+                     <thead class='table thead'>
+                        <tr class='table tr'>
+                           <th class="table th col-md-4">Words</th>
+                           <th class="table th col-md-4" ng-repeat="document in fileContent[filename] track by $index">{{document.title}}</th>
                         </tr>
                      </thead>
-                     <tbody class='table-fixed tbody'>
-                        <tr ng-repeat="(key, value) in content" class='table-fixed tr'>
-                           <td class="table-fixed td col-md-4">{{key}}</td>
-                           <td ng-repeat="number in numberOfDocuments[filename] track by $index" class="table-fixed td col-md-4">
+                     <tbody class='table tbody'>
+                        <tr ng-repeat="(key, value) in content" class='table tr'>
+                           <td class="table td col-md-4">{{key}}</td>
+                           <td ng-repeat="number in numberOfDocuments[filename] track by $index" class="table td col-md-4">
                               <span ng-class="value.includes(number) ? 'glyphicon-ok' : 'glyphicon-remove'" class="glyphicon glyphicon-ok"></span>
                            </td>
                         </tr>
