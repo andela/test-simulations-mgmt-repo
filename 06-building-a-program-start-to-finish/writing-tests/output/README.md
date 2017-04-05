@@ -3,5 +3,5 @@
 - **Deliver**: Your test files for the Inverted Index class and all associated dependencies.
 - **With**: *independently*
 
-#### Targeted Learning Outcomes
-- This Folder contains my test files and its dependencies.
+#### 
+This folder Contains all my test files and its dependencies
