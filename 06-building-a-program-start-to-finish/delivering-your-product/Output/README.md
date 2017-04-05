@@ -4,4 +4,4 @@
 - **With**: *independently*
 
 #### Targeted Learning Outcomes
-[Link to release note!](https://docs.google.com/a/andela.com/document/d/1kbvLKewvndFRu_7ez4qlVHpyv6Kun1CzDr0X-WlOiuw/edit?usp=sharing)
+[Link to release note on wiki!](https://github.com/andela-fomokaro/Inverted-Index-Project/wiki/NOXIES-INDEX-RELEASE-NOTE-26-03-2017)
