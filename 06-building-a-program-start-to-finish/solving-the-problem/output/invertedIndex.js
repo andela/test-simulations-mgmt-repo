@@ -49,7 +49,7 @@ class InvertedIndex {
     const terms = InvertedIndex.tokenize(newText);
     const uniqueTerms = InvertedIndex
       .uniqueWords(terms)
-      .map(x => x.toLowerCase());
+      .map(uniqueWord => uniqueWord.toLowerCase());
     return uniqueTerms;
   }
 
@@ -72,7 +72,7 @@ class InvertedIndex {
           const validFormat = ['title', 'text'];
           const parsedFileFormat = Object.keys(uploadedFile);
           const fileTextKey = Object.keys(parsedFileFormat)
-            .map(objKeys => parsedFileFormat[objKeys]);
+            .map(parsedFileKey => parsedFileFormat[parsedFileKey]);
           if (validFormat.toString() === fileTextKey.toString()) {
             isValid = {
               valid: true,
@@ -104,8 +104,8 @@ class InvertedIndex {
     const uniqueTerms = InvertedIndex.getText(file);
     uniqueTerms.forEach((uniqueKeys) => {
       const arr = [];
-      file.forEach((jsonObjText) => {
-        arr.push((jsonObjText.text.toLowerCase())
+      file.forEach((fileText) => {
+        arr.push((fileText.text.toLowerCase())
           .includes(uniqueKeys));
       });
       indexedFiles[uniqueKeys] = arr;
