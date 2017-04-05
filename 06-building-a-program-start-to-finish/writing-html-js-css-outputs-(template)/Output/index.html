@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html ng-app="invIndex">
+
+  <head>
+
+    <script type="text/javascript" src="https://code.angularjs.org/1.6.3/angular.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script type="text/javascript" src="inverted-index.js"></script>
+
+    <script type="text/javascript" src="app.js"></script>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    
+    <link rel="stylesheet" href="stylesheet.css">
+
+    
+  </head>
+
+  <body ng-controller="invController">
+    <div class="nav">
+
+      <div class="container">
+        <form class="form-inline">
+          <div class="form-group">
+            <label class="btn btn-large btn-block btn-primary">Upload File
+              <input class="form-control" type="file" multiple accept=".json" id="upload">
+            </label>
+          </div>
+
+          <div class="form-group" ng-show="uploadedFiles.length >= 1">
+            <select class="form-control" id = "loaded" ng-model="selectedFile">
+              <option ng-repeat="item in uploadedFiles">{{ item }}</option>
+            </select>
+          </div>
+
+          <div class="form-group" ng-show="uploadedFiles.length >= 1">
+            <button class="btn btn-primary" ng-click="getIndex(selectedFile)">Create Index</button>
+          </div>
+
+          <div class="form-group pull-right" ng-hide="count < 1">
+            <input type="text" class="form-control" placeholder="Type search terms" name="srch-term" id="srch-term" ng-model="selectedSearch">
+              <button class="btn btn-default" type="submit" ng-click="searchIndex()">
+                <i class="glyphicon glyphicon-search"></i>
+              </button>
+          </div>
+
+          <div class="form-group pull-right">
+            <select class="form-control" ng-hide="count < 1" ng-model="fileToSearch">
+              <option value="All" ng-if="count > 1">All</option>
+              <option ng-repeat="(key, values) in filesIndexed">{{ key }}</option>
+            </select>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+
+    <div class="container">
+      <div class="jumbotron">
+        <h1>Inverted Index</h1>
+        <p>Get Inverted Index anywhere in the world!</p>
+        <div class="bg"></div>
+      </div>
+    </div>
+
+    <div class="container" ng-show="showIndex">
+      <div class="row">
+        <div ng-repeat="(key, details) in indexed">
+          <h2>
+            <span>Showing index for {{details.indexedFile}}</span>
+          </h2>
+          <table class="table table-striped">
+            <thead>
+              <th>Words</th>
+              <th  style="text-align:center" ng-repeat="i in details.title">{{i}}</th>
+            </thead>
+            <tbody>
+              <tr ng-repeat="(key, value) in details.indexes">
+                <td>{{key}}</td>
+                <td ng-repeat="docposition in details.docs" style="text-align:center; font-weight:bold">
+                  <span ng-if="value.includes(docposition)" style="color:green" class="glyphicon glyphicon-ok"></span>
+                  <span ng-if="!value.includes(docposition)" style="color:red" class="glyphicon glyphicon-remove"></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" ng-show="!showIndex">
+      <div class="row">
+        <div ng-repeat="(key, details) in search">
+          <h2>
+            <span>Search result for "{{displaySearch}}" in "{{details.searchedFile}}"</span>
+          </h2>
+          <table class="table table-striped">
+            <thead>
+              <th>Words</th>
+              <th  style="text-align:center" ng-repeat="i in details.title">{{i}}</th>
+            </thead>
+            <tbody>
+              <tr ng-repeat="(key, value) in details.indexes">
+                <td>{{key}}</td>
+                <td ng-repeat="docposition in details.docs" style="text-align:center; font-weight:bold">
+                  <span ng-if="value.includes(docposition)" style="color:green" class="glyphicon glyphicon-ok"></span>
+                  <span ng-if="!value.includes(docposition)" style="color:red" class="glyphicon glyphicon-remove"></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+  <div class="container">
+    <br>
+	  <footer>&copyPfunky inc</footer>
+  </div>
+ 
+  </body>
+
+</html>
