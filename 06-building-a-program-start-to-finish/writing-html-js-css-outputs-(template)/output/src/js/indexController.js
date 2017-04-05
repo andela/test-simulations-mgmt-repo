@@ -1,16 +1,5 @@
 const app = angular.module('angular', []);
 app.controller('index', ['$scope', 'alertFactory', ($scope, alertFactory) => {
-  $scope.message = 'About this application!\n\n' +
-  "- Click 'Upload File'\n\n" +
-   "- Click 'Create Index'\n" +
-   '- View indices below/n \n' +
-      '- To search through indexed files\n\n' +
-       '- Click selectbook dropdown\n' +
-      '- Select the file you want to search\n' +
-      '- Enter your search term in search box\n\n' +
-      '- Separate words in term with a single space\n\n' +
-      " -Then click the 'Go'\n";
-
   $scope.result = '';
   $scope.content = {};
   $scope.docCount = {};
@@ -33,7 +22,7 @@ app.controller('index', ['$scope', 'alertFactory', ($scope, alertFactory) => {
         try {
           goodExt.push(eachFile.name);
           invertedIndex.readFile(eachFile).then((response) => {
-            if (response.success) {
+            if (response.status) {
               $scope.content[eachFile.name] = response.jsonContent;
               const docTitles = [];
               const count = [];
@@ -78,18 +67,25 @@ app.controller('index', ['$scope', 'alertFactory', ($scope, alertFactory) => {
 
   $scope.searchBookIndex = () => {
     $scope.searchFeedback = {};
-    const searchInput = document.getElementById('search').value;
+    const searchInput = $scope.search;
     const searchBook = $scope.bookList;
     if (searchInput === undefined && searchBook !== undefined) {
       searchFeedback = invertedIndex.getIndex(searchBook);
     } else if (searchInput !== undefined && searchBook !== undefined) {
-      try {
-        $scope.searchFeedback[searchBook] = invertedIndex.searchIndex(searchInput, searchBook);
+      // try {
+      if (searchBook === 'All') {
+        $scope.searchFeedback = invertedIndex.searchIndex(searchInput, searchBook);
         $scope.showIndex = false;
         $scope.showSearch = true;
-      } catch (err) {
-        alertFactory.error('Unable to search file', err);
+      } else {
+        $scope.searchFeedback[searchBook] = invertedIndex
+            .searchIndex(searchInput, searchBook)[searchBook];
+        $scope.showIndex = false;
+        $scope.showSearch = true;
       }
+      // } catch (err) {
+      //   alertFactory.error('Unable to search file', err);
+      // }
     } else { return 'Please select a file to search for words'; }
   };
 }]);

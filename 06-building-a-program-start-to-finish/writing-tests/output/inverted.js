@@ -42,33 +42,40 @@ class InvertedIndex {
   *
    *
    * @param {Object} jsonContent
-   * @returns{Boolean} isValid - returns true if a json file is valid and false otherwise
-   *
+   * @returns{Object} isValid - returns true and JSON content file is valid and false otherwise
+   * @returns{Object} formatError - returns a name and message if json file has an invalid format
    * @memberOf InvertedIndex
    */
   static validateFile(jsonContent) {
     let isValid = {};
+    const formatError = {
+      name: 'validate file structure',
+      message: 'File structure is invalid'
+    };
     if (Object.keys(jsonContent).length === 0 && typeof jsonContent === 'object') {
       isValid = {
-        success: false
+        status: false
       };
       return isValid;
     }
-    jsonContent.forEach((doc) => {
-      if (!doc.title || !doc.text) {
-        isValid = {
-          success: false
-        };
-      } else {
-        isValid = {
-          success: true,
-          jsonContent
-        };
-      }
-    });
+    try {
+      jsonContent.forEach((doc) => {
+        if (!doc.title || !doc.text) {
+          throw formatError;
+        } else {
+          isValid = {
+            status: true,
+            jsonContent
+          };
+          return isValid;
+        }
+      });
+    } catch (error) {
+      if (error.name === 'validate file structure') return false;
+      throw error;
+    }
     return isValid;
   }
-
   /**
    *
    *
@@ -182,7 +189,7 @@ class InvertedIndex {
    *
    * @param {String} searchWords - the words you require indices for
    * @param {String} searchBook - the name of the file
-   * @returns{Object} searchOutput - the words and corresponding indices
+   * @returns{Object} searchIndices - the words and corresponding indices per book/file.
    *
    * @memberOf InvertedIndex
    */
@@ -193,16 +200,31 @@ class InvertedIndex {
     }
     searchWords = InvertedIndex.tokenizeWords(searchWords);
     const sortedWords = InvertedIndex.splitAndSort(searchWords);
-    const index = this.indexedFiles[searchBook];
-    sortedWords.forEach((word) => {
-      if (index[word]) {
-        searchOutput[word] = index[word];
-      } else {
-        searchOutput[word] = [];
-      }
-    });
-    this.searchIndices[searchBook] = searchOutput;
-    return searchOutput;
+    if (searchBook !== 'All') {
+      const index = this.indexedFiles[searchBook];
+      sortedWords.forEach((word) => {
+        if (index[word]) {
+          searchOutput[word] = index[word];
+        } else {
+          searchOutput[word] = [];
+        }
+      });
+      this.searchIndices[searchBook] = searchOutput;
+    } else {
+      const index = this.indexedFiles;
+      Object.keys(index).forEach((filename) => {
+        const indexedFile = this.indexedFiles[filename];
+        sortedWords.forEach((word) => {
+          if (indexedFile[word]) {
+            searchOutput[word] = indexedFile[word];
+          } else {
+            searchOutput[word] = [];
+          }
+        });
+        this.searchIndices[filename] = searchOutput;
+      });
+    }
+    return this.searchIndices;
   }
 }
 

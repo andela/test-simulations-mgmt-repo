@@ -48,16 +48,28 @@ describe('InvertedIndex class', () => {
     });
 
   it('should return false for empty json files', () => {
-    expect(InvertedIndex.validateFile(emptyBook)).toBeFalsy();
+    const successMsg = { status: false };
+
+    expect(InvertedIndex.validateFile(emptyBook)).toEqual(successMsg);
   });
 
   it('should return true for uploaded files with property "title" and "text" ', () => {
-    expect(InvertedIndex.validateFile(validBook)).toBeTruthy();
+    const successMsg = { status: true,
+      jsonContent:
+      [Object({ title: 'Alice in Wonderland',
+        text: 'Alice falls into a rabbit hole.' }),
+        Object({ title: 'The Lord of the Rings',
+          text: 'An unusual alliance of man.' }),
+        Object({ title: 'The Lord of the Rings:',
+          text: 'An unusual alliance of man.' })
+      ] };
+    expect(InvertedIndex.validateFile(smallBook)).toEqual(successMsg);
   });
 
   it('should return false for files without "title" and "text" properties',
      () => {
-       expect(InvertedIndex.validateFile(invalidBook)).toBeFalsy();
+       const msg = false;
+       expect(InvertedIndex.validateFile(invalidBook)).toEqual(msg);
      });
 
   it('should return false if file is not an array of JSON object',
@@ -67,7 +79,8 @@ describe('InvertedIndex class', () => {
 
   it('should return false if file contains an empty array',
      () => {
-       expect(InvertedIndex.validateFile(malformedJSON)).toBeFalsy();
+       const msg = { status: false };
+       expect(InvertedIndex.validateFile(malformedJSON)).toEqual(msg);
      });
 
   describe('Create Index', () => {
@@ -133,7 +146,7 @@ describe('InvertedIndex class', () => {
     let searchTerm = {};
     searchTerm = invertedIndex.searchIndex('Alice, and her unusual imagination',
       'smallValidBook.json');
-    expect(Object.keys(searchTerm)).toEqual(Object.keys(requiredOutput['smallValidBook.json']));
-    expect(searchTerm).toEqual(requiredOutput['smallValidBook.json']);
+    expect(Object.keys(searchTerm)).toEqual(Object.keys(requiredOutput));
+    expect(searchTerm).toEqual(requiredOutput);
   });
 });

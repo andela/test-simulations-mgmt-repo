@@ -18,8 +18,22 @@
             <h1>BookSwitch</h1>
         </div>
     </div>
-
-    <div id="help">{{message}}</div>
+    <div id="help">
+    <list>
+        <p>About this application!</p>
+        <p>To create an inverted index for your books/files</p>
+        <li>Click 'Upload File</li>
+        <li>Click 'Create Index'</li>
+        <li>View indices below</li>
+        <p>To search through indexed files,<p>
+         <li>Click selectbook dropdown</li>
+        <li>Select the file you want to search or 'All' to search all files</li>
+        <li>Enter your search term in search box</li>
+        <li>Separate words in term with a single space</li>
+        <li>Then click the 'Go' button</li>
+        </ul>
+    </list>
+    </div>
 
     <div id="content">
         <div id="user-input">
@@ -31,10 +45,11 @@
         <div id='selectBooks'>
             <label>Select Book:</label>
             <select ng-model ="bookList">
+                 <option >All</option>
              <option ng-repeat="(filename, filecontent) in content">{{filename}}</option>
              </select>
             <span>
-            Search words:<input type="search" id="search" name="search">
+            Search words:<input type="search" ng-model="search" name="search">
             <button id="button" name="create-index" ng-click= "searchBookIndex()">Go </button>
           </span>
         </div>

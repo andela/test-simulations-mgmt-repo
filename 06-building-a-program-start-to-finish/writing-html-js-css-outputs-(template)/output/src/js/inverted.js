@@ -189,7 +189,7 @@ class InvertedIndex {
    *
    * @param {String} searchWords - the words you require indices for
    * @param {String} searchBook - the name of the file
-   * @returns{Object} searchIndices - the words and corresponding indices per book/file.
+   * @returns{Object} searchOutput - the words and corresponding indices
    *
    * @memberOf InvertedIndex
    */
