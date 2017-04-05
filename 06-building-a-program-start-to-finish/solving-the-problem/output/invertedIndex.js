@@ -1,10 +1,12 @@
-/*eslint-disable */
 /* global FileReader */
+/* global InvertedIndex */
 /**
  * @class InvertedIndex
  * @classdesc blah blah
  */
+/* eslint-disable */
 class InvertedIndex {
+  /* eslint-enable */
   /**
    * * @constructor
    * initialises the class base properties
@@ -14,7 +16,6 @@ class InvertedIndex {
     this.indexedFiles = {};
     this.uploadedFiles = {};
   }
-  /*eslint-enable */
   /**
    * @createIndex method
    * @param {fileName} fileName
@@ -27,9 +28,9 @@ class InvertedIndex {
     const numOfBooks = fileContent.length;
     for (let bookIndex = 0; bookIndex <
       numOfBooks; bookIndex += 1) {
-      const { title, text } = fileContent[bookIndex];
-      const tokens = InvertedIndex.tokenize(`${title} ${text}`);
-      const indicies = this.indicies[fileName];
+      const { title, text } = fileContent[bookIndex],
+        tokens = InvertedIndex.tokenize(`${title} ${text}`),
+        indicies = this.indicies[fileName];
       tokens.forEach((token) => {
         if (token in indicies) {
           const eachToken = indicies[token];
@@ -64,8 +65,8 @@ class InvertedIndex {
    * create index of the fileName
    */
   getNumOfBooks(fileName) {
-    const numOfBooks = this.indexedFiles[fileName];
-    const indexArr = [];
+    const numOfBooks = this.indexedFiles[fileName],
+      indexArr = [];
     for (let i = 0; i < numOfBooks; i += 1) {
       indexArr.push(i);
     }
@@ -99,9 +100,9 @@ class InvertedIndex {
       const bookReader = new FileReader();
       bookReader.onload = (function onload() {
         return (readObj) => {
-          const tranFile = [];
-          const fileName = currentFile.name;
-          const fileContent = readObj.target.result;
+          const tranFile = [],
+            fileName = currentFile.name,
+            fileContent = readObj.target.result;
           try {
             InvertedIndex.validateFile(fileContent, fileName);
             const content = JSON.parse(fileContent);
@@ -129,20 +130,19 @@ class InvertedIndex {
       const error = `${fileName} has an Invalid File extension, JSON only`;
       throw new Error(error);
     }
+    let content;
     try {
-      JSON.parse(fileContent);
+      content = JSON.parse(fileContent);
     } catch (e) {
       const error = `OOPS!!! ${fileName} is not well formatted`;
       throw new Error(error);
     }
-    const content = JSON.parse(fileContent);
     if (content.length === 0) {
       const error = `${fileName} is an empty JSON file`;
       throw new Error(error);
     }
     content.forEach((elem) => {
-      if (!Object.keys(elem).includes('title')
-          || !Object.keys(elem).includes('text')) {
+      if (!elem.title || !elem.text) {
         const error = `OOPS!!! ${fileName} does not contain title and text`;
         throw new Error(error);
       }
@@ -158,14 +158,13 @@ class InvertedIndex {
    * reads the content of the book
    */
   searchIndex(keyword, locations) {
-    const self = this;
-    const books = Object.keys(self.indicies);
+    const books = Object.keys(this.indicies);
     if (!keyword) {
       const error = 'please enter a keyword to search.';
       throw new Error(error);
     }
 
-    self.finalResult = {};
+    this.finalResult = {};
     if (!locations || books.length === 0) {
       const error = 'No file has been indexed yet';
       throw new Error(error);
@@ -174,7 +173,7 @@ class InvertedIndex {
     }
     locations.forEach((fileName) => {
       const result = this.getResult(keyword, fileName);
-      self.finalResult[fileName] = result;
+      this.finalResult[fileName] = result;
     });
     return true;
   }
@@ -187,10 +186,13 @@ class InvertedIndex {
    * get the result of the keyword from the indicies
    */
   getResult(keyword, fileName) {
-    const searchResult = {};
-    const keywords = InvertedIndex.cleanValues(keyword);
-    const fileIndex = this.indicies[fileName];
-    const currentToken = Object.keys(this.indicies[fileName]);
+    const searchResult = {},
+      keywords = InvertedIndex.cleanValues(keyword),
+      fileIndex = this.indicies[fileName],
+      currentToken = Object.keys(this.indicies[fileName]);
+    if (keywords.length === 0) {
+      throw new Error('Search for Aplhanumeric values only not special character');
+    }
     keywords.forEach((elem) => {
       if (currentToken.includes(elem)) {
         searchResult[elem] = fileIndex[elem];
@@ -208,9 +210,12 @@ class InvertedIndex {
    * cleans the keyword for search
    */
   static cleanValues(str) {
-    const value = str.replace(/[&\\#,+()$~%.'":*?<>{}]/g, ' ')
+    let value = str.replace(/[&\\#,+()$~%.'":*?<>{}]/g, '')
+    .replace(/[[|\]]/g, '')
     .toLowerCase()
+    .trim()
     .split(/\b\s+(?!$)/);
+    value = value.filter(elem => elem !== '');
     return value;
   }
 }
