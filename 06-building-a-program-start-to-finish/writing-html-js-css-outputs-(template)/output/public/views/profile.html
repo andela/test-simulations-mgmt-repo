@@ -1,0 +1,150 @@
+<div class="main full-height">
+  <div class="navbar-fixed">
+    <nav>
+      <div class="nav-wrapper grey lighten-2">
+        <img class="logo-icon" src="img/icons/logo-dark.ico" />
+        <a class="brand-logo grey-text text-darken-3">Welcome, {{ currentUser.name || currentUser.username || 'Guest' }}</a>
+        <ul id="nav-mobile" class="right" ng-show="currentUser">
+          <li><a class="btn waves-effect grey darken-3 grey-text text-lighten-2" ng-click="signout()">Sign Out</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <div class="grey darken-3 full-height">
+    <div class="container width-90 full-height" style="padding-top:3%;">
+      <div class="row full-height">
+        <div class="col s4 height-90">
+          <div class="card grey lighten-1 height-90">
+            <div class="card-content grey-text text-darken-3 center">
+              <div class="card-title">
+                <h5>Upload your book(s)</h5>
+              </div>
+              <div class="row center">
+                  <div class="file-field input-field center">
+                    <div class="col s8 offset-s2">
+                      <div class="btn waves-effect grey darken-3 grey-text text-lighten-2" style="position:relative;">
+                        <span>Upload JSON</span>
+                        <input type="file" multiple id="jsonfileinput"/>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="row center">
+                <a id="create" class="btn waves-effect grey darken-3 grey-text text-lighten-2" ng-click="indexFiles()">Create Index</a>
+                <div ng-show="filesAreUploaded()" class="padding-10 scroll">
+                  <strong>Clicking will create index for:</strong>
+                  <ul>
+                    <li ng-repeat="file in uploadedFiles">{{ file.name }}</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col s8 height-90">
+          <div class="card scrollable grey lighten-2 height-90">
+            <div class="card-content grey-text text-darken-3 center full-height">
+              <div class="card-title">
+                <h5>Uploaded Books</h5>
+              </div>
+              <div ng-hide="invertedIndex" class="padding-10">
+                <p class="center">You have no uploaded files.</p>
+              </div>
+              <div ng-hide="!invertedIndex" class="height-90 scroll">
+                <form>
+                  <div class="row input-field">
+                    <div class="col s9 offset-s1">
+                      <input id="search" type="search" placeholder="Search" class="transparent" ng-model="keywords" required/>
+                    </div>
+                    <div class="col s1">
+                      <a class="btn-floating waves-effect grey darken-3 grey-text text-lighten-2" ng-click="search()">
+                        <i class="material-icons">search</i>
+                      </a>
+                    </div>
+                  </div>
+                </form>
+                <table>
+                  <tr ng-repeat="fileName in invertedIndex.fileNames" show-tooltips>
+                    <td>
+                      <input id="{{ 'checkbox-' + fileName }}" type="checkbox" class="filled-in checkbox-dark" ng-model="uploadedFileNames[fileName]" />
+                      <label for="{{ 'checkbox-' + fileName }}">&nbsp</label>
+                    </td>
+                    <td>{{ fileName }}</td>
+                    <td>
+                      <i class="tooltipped material-icons clickable grey-text text-darken-3" ng-click="saveToDatabase(fileName)" ng-show="currentUser"
+                      data-position="top" data-delay="50" data-tooltip="Save this file to the cloud">backup</i>
+                      &nbsp
+                      <i class="tooltipped material-icons clickable grey-text text-darken-3" ng-click="deleteFromDatabase(fileName)" ng-show="currentUser"
+                      data-position="top" data-delay="50" data-tooltip="Delete this file from the cloud">delete</i>
+                      &nbsp
+                      <i class="tooltipped material-icons clickable grey-text text-darken-3" ng-click="deleteFromAll(fileName)" data-position="top"
+                      data-delay="50" data-tooltip="Completely delete this file">delete_forever</i>
+                      &nbsp
+                      <span id="{{ 'checkbox-' + getValidID(fileName) + '-preloader' }}" class="preloader-wrapper small right">
+                        <div class="spinner-layer spinner-green-only">
+                          <div class="circle-clipper left">
+                            <div class="circle"></div>
+                          </div><div class="gap-patch">
+                            <div class="circle"></div>
+                          </div><div class="circle-clipper right">
+                            <div class="circle"></div>
+                          </div>
+                        </div>
+                      </span>
+                    </td>
+                    <td><a class="btn-floating btn-small tooltipped waves-effect grey darken-3 grey-text text-lighten-2" ng-click="showIndex(fileName)"
+                    data-position="top" data-delay="50" data-tooltip="View index for this file"><i class="material-icons">visibility</i></a></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="viewindex" class="modal grey lighten-2 grey-text text-darken-3">
+        <h5 class="center">Index of {{ currentFileName }}</h5>
+        <table class="centered">
+          <thead>
+            <tr>
+              <th>Term</th>
+              <th ng-repeat="title in currentTitles">{{ title }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="(term, books) in currentIndex">
+              <td>{{ term }}</td>
+              <td ng-repeat="title in currentTitles">
+                <i class="material-icons green-text" ng-hide="books.indexOf(title) < 0">done</i>
+                <i class="material-icons red-text" ng-hide="books.indexOf(title) > -1">close</i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="viewsearchresults" class="modal grey lighten-2 grey-text text-darken-3">
+        <h5 class="center"><strong>Search for "{{ keywords }}"</strong></h5>
+        <div ng-repeat="(fileName, fileTitles) in searchResults.titles">
+          <h5 class="center">{{ fileName }}</h5>
+          <table class="centered">
+            <thead>
+              <tr>
+                <th>Term</th>
+                <th ng-repeat="title in fileTitles">{{ title }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="(term, result) in searchResults.results[fileName]">
+                <td>{{ term }}</td>
+                <td ng-repeat="title in fileTitles">
+                  <i class="material-icons green-text" ng-hide="result.indexOf(title) < 0">done</i>
+                  <i class="material-icons red-text" ng-hide="result.indexOf(title) > -1">close</i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
