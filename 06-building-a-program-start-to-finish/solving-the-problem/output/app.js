@@ -79,7 +79,7 @@ angular.module('root', ['ngAnimate', 'toastr'])
               reject(fileStore[file.name]);
             }
           })
-          .catch(() => {
+          .catch((error) => {
             toastr.error('Empty file', 'Warning', 'Error');
           });
       }
@@ -109,6 +109,8 @@ angular.module('root', ['ngAnimate', 'toastr'])
           $scope.$apply(() => {
             $scope.fileNames = Object.keys(result);
           });
+        })
+        .catch(() => {
         });
     };
 
