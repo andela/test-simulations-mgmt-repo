@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html ng-app="invertedIndex">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inverted Index</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
+
+  </head>
+  <body ng-controller="InvertedController" ng-cloak>
+    <script src="js/app.js"></script>
+
+    <div id="navbar">
+      <ul>
+        <li id="home"><a href="#">Inverted Index</a></li>
+
+      <div class="nav-buttons">
+        <div ng-show="indexInLocalStorage()" class="dropdown right">
+          <button id="dropdown" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> Recently Indexed <span class="caret"></span> </button>
+                <ul class="dropdown-menu" ng-if="recentlyIndexed().length" ng-click="$event.stopPropagation()">
+                  <li ng-repeat="file in recentlyIndexed() track by $index" style="display: block; cursor: pointer">
+                    <div style="margin-left: 10px">
+                      <a ng-click="getIndex(file)" style="float: left">{{file}}</a>
+                      <a ng-click="deleteIndex(file)" style="color: #c42940; float: right;" ng-show="recentlyIndexed()[recentlyIndexed().indexOf(file)]">x</a>
+                    </div>
+                  </li>
+
+                  <li value="Delete All" ng-show="moreThanOneStored">
+                    <button ng-click="deleteIndex('Delete All')" style="width: 100%; background-color: #c42940; margin-top: 20px; border-radius: 0px;">Delete All</button>
+                  </li>
+                </ul>
+            </div>
+
+        <button data-toggle="collapse" data-target="#about" id="aboutButton">About</button>
+          <div id="about" class="collapse" style="margin-top: 15px">
+            <p>
+              An inverted index consists of a list of all the unique words that appear in any
+              document, and for each word, a list of the documents in which it appears.
+            </p>
+
+          </p>
+              This app takes an input JSON file (the JSON file should consist an array of objects, each
+              object representing a document), and outputs a table showing which words appear in which
+              document. You can also search for individual words in indexed documents.
+            </p>
+          </div>
+        </div>
+
+        <div class="dropdown" id="dropdownSmall">
+          <div ng-show="indexInLocalStorage()" class="dropdown right">
+          <button id="dropdown" class="btn btn-primary" data-toggle="dropdown"> <i class="fa fa-file"></i> </button>
+              <ul class="dropdown-menu" ng-if="recentlyIndexed.length" ng-click="$event.stopPropagation()">
+                <li ng-repeat="file in recentlyIndexed track by $index" style="display: block; cursor: pointer;">
+                  <div style="margin-left: 10px">
+                    <a ng-click="getIndex(file)" style="float: left">{{file}}</a>
+                    <a ng-click="deleteIndex(file)" style="color: #c42940; float: right;" ng-show="recentlyIndexed[recentlyIndexed.indexOf(file)]">x</a>
+                  </div>
+                </li>
+
+                <li value="Delete All" ng-show="moreThanOneStored">
+                  <button ng-click="deleteIndex('Delete All')" style="width: 100%; background-color: #c42940; margin-top: 20px; border-radius: 0px;">Delete All</button>
+                </li>
+              </ul>
+            </div>
+
+      </div>
+
+        <button id="littleAboutButton" data-toggle="collapse" data-target="#smallAbout" class="btn btn-primary">?</button>
+          <div id="smallAbout" class="collapse" style="margin-top: 15px">
+            <p>
+              An inverted index consists of a list of all the unique words that appear in any
+              document, and for each word, a list of the documents in which it appears.
+            </p>
+
+          </p>
+              This app takes an input JSON file (the JSON file should consist an array of objects, each
+              object representing a document), and outputs a table showing which words appear in which
+              document. You can also search for individual words in indexed documents.
+            </p>
+          </div>
+
+      </ul>
+    </div>
+
+    <div id="response-modal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">An Error Occurred</h4>
+          </div>
+          <div class="modal-body">
+            <p>{{message}}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <section>
+
+  <div class="jumbotron">
+    <h2 typed type-speed="120">Upload JSON file. Create Index. Search!</h2>
+  </div>
+
+      <div>
+        <input type="file" id="file" multiple="multiple">
+        <label for="file" class="col-sm-12 col-xs-12"> <span><i class="fa fa-upload" aria-hidden="true"></i></span> Upload JSON </label>
+      </div>
+
+      <div class="choices col-sm-12 col-md-6 col-xs-12" ng-hide="displayCreate === false">
+        <select ng-model="fileToIndex" ng-options="fileName as fileName for (fileName, value) in uploadedFiles" id="createSelect"> </select>
+        <button ng-click="createIndex()" style="margin-left: 10px" id="createIndex">Create Index</button>
+      </div>
+
+      <div class="choices col-sm-12 col-md-6 col-xs-12" ng-hide="isEmpty(indexedFiles)" id="searchIndex">
+        <select id="searchSelect" ng-model="fileToSearch">
+          <option value="All Files" ng-if="moreThanOneIndexed"> All Files </option>
+          <option value="{{filename}}"ng-repeat="(filename, index) in indexedFiles"> {{filename}} </option>
+        </select>
+
+        <div id="searchbox">
+          <span class="icon"><i class="fa fa-search"></i></span>
+          <input type="search" id="search" placeholder="Search..." ng-model="searchString" ng-keyup="searchIndex()" />
+        </div>
+      </div>
+
+    <div id="blackLine"></div>
+
+    <div class="indexResult" style="overflow-x:auto;">
+      <p></p>
+      <table class="table table-striped" ng-show="displayIndex">
+
+        <thead>
+          <tr>
+            <th>Words</th>
+            <th ng-repeat="title in tableHeads track by $index">{{title}}</th>
+          </tr>
+        </thead>
+
+      <tbody>
+        <tr ng-repeat="(key, value) in indexedFiles[justIndexed]">
+          <td> {{key}} </td>
+          <td ng-repeat="title in tableHeads"> <span ng-if = "value.includes($index)"> <i class="fa fa-check" aria-hidden="true"></i> </span> <span ng-if = "value.includes($index) === false"> <i class="fa fa-times" aria-hidden="true"></i> </span> </td>
+        </tr>
+      </tbody>
+
+      </table>
+
+      <div ng-repeat="(file, result) in searchResult" ng-show="displayIndex === false && !isEmpty(searchResult[file])" style="overflow-x:auto;">
+        <h4> {{file | uppercase}} </h4>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Words</th>
+              {{tableHeads = fileIndices[file][1]; ""}}
+              <th ng-repeat="title in tableHeads track by $index">{{title}}</th>
+            </tr>
+          </thead>
+
+        <tbody>
+          <tr ng-repeat="(key, value) in result">
+            <td> {{key}} </td>
+            <td ng-repeat="title in tableHeads">
+            <span ng-if = "value.includes($index)"> <i class="fa fa-check" aria-hidden="true"></i> </span>
+            <span ng-if = "value.includes($index) === false"> <i class="fa fa-times" aria-hidden="true"></i> </span>
+            <span ng-if = "!value"> <i class="fa fa-times" aria-hidden="true"></i> </span>
+          </td>
+          </tr>
+        </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </section>
+  </body>
+
+  <script type="text/javascript" src="https://cdn.rawgit.com/codekraft-studio/angular-typed/master/dist/angular-typed.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="js/InvertedIndex.js"></script>
+</html>
