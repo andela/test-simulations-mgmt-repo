@@ -87,7 +87,7 @@ class InvertedIndex {
           }
         });
     } catch (error) {
-      if (error.valid === false) return error;
+      if (error.valid === false);
       throw error;
     }
     return isValid;
