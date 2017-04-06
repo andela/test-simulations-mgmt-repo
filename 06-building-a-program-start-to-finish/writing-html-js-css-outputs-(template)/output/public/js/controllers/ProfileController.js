@@ -106,10 +106,13 @@ function profileCtrl($scope, $http, $rootScope, $location, $timeout) {
         $scope.searchResults = $scope.invertedIndex
           .searchIndex($scope.keywords, $scope.filesToSearch);
         let isFound = false;
-        Object.keys($scope.searchResults.results).forEach((token) => {
-          if ($scope.searchResults.results[token].length > 0) {
-            isFound = true;
-          }
+        Object.keys($scope.searchResults.results).forEach((fileName) => {
+          Object.keys($scope.searchResults.results[fileName])
+            .forEach((token) => {
+              if ($scope.searchResults.results[fileName][token].length > 0) {
+                isFound = true;
+              }
+            });
         });
         if (isFound) {
           $('#viewsearchresults').modal('open');
@@ -188,7 +191,7 @@ function profileCtrl($scope, $http, $rootScope, $location, $timeout) {
     document.getElementById('alertMessage').innerHTML = message;
     $('#alert').modal('open');
   };
-  $scope.getValidID = str => (str.replace(/[. ]/g, '_'));
+  $scope.getValidID = str => (str.replace(/[^\w-]/g, '_'));
   $scope.serialize = () => (
     JSON.stringify({
       fileNames: $scope.invertedIndex.fileNames,

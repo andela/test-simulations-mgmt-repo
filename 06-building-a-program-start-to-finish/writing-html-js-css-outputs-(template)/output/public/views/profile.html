@@ -123,24 +123,27 @@
         </table>
       </div>
       <div id="viewsearchresults" class="modal grey lighten-2 grey-text text-darken-3">
-        <h5 class="center">Search for "{{ keywords }}" in {{ filesToSearch.join(', ') }}</h5>
-        <table class="centered">
-          <thead>
-            <tr>
-              <th>Term</th>
-              <th ng-repeat="title in searchResults.titles">{{ title }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="(term, result) in searchResults.results">
-              <td>{{ term }}</td>
-              <td ng-repeat="title in searchResults.titles">
-                <i class="material-icons green-text" ng-hide="result.indexOf(title) < 0">done</i>
-                <i class="material-icons red-text" ng-hide="result.indexOf(title) > -1">close</i>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <h5 class="center"><strong>Search for "{{ keywords }}"</strong></h5>
+        <div ng-repeat="(fileName, fileTitles) in searchResults.titles">
+          <h5 class="center">{{ fileName }}</h5>
+          <table class="centered">
+            <thead>
+              <tr>
+                <th>Term</th>
+                <th ng-repeat="title in fileTitles">{{ title }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="(term, result) in searchResults.results[fileName]">
+                <td>{{ term }}</td>
+                <td ng-repeat="title in fileTitles">
+                  <i class="material-icons green-text" ng-hide="result.indexOf(title) < 0">done</i>
+                  <i class="material-icons red-text" ng-hide="result.indexOf(title) > -1">close</i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

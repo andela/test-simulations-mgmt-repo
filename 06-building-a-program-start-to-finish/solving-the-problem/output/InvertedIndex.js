@@ -27,13 +27,19 @@ class InvertedIndex {
     const titles = [];
     const index = {};
     books.forEach((book) => {
-      titles.push(book.title);
+      let titleToAdd = `${book.title}`;
+      let suffix = 0;
+      while (titles.indexOf(titleToAdd) > -1) {
+        suffix += 1;
+        titleToAdd = `${book.title} (${suffix})`;
+      }
+      titles.push(titleToAdd);
       const tokens = InvertedIndex.tokenize(`${book.title} ${book.text}`);
       tokens.forEach((token) => {
         if (token in index) {
-          index[token].push(book.title);
+          index[token].push(titleToAdd);
         } else {
-          index[token] = [book.title];
+          index[token] = [titleToAdd];
         }
       });
     });
@@ -88,17 +94,15 @@ class InvertedIndex {
     const keyTokens = InvertedIndex.tokenize(keywords).sort();
     const resultIndex = {
       results: {},
-      titles: []
+      titles: {}
     };
     fileNames.forEach((fileName) => {
-      resultIndex.titles = resultIndex.titles.concat(this.getTitles(fileName));
-    });
-    keyTokens.forEach((token) => {
-      resultIndex.results[token] = [];
-      fileNames.forEach((fileName) => {
+      resultIndex.titles[fileName] = this.getTitles(fileName);
+      resultIndex.results[fileName] = {};
+      keyTokens.forEach((token) => {
+        resultIndex.results[fileName][token] = [];
         if (this.getIndex(fileName)[token]) {
-          resultIndex.results[token] = resultIndex.results[token]
-            .concat(this.getIndex(fileName)[token]);
+          resultIndex.results[fileName][token] = this.getIndex(fileName)[token];
         }
       });
     });

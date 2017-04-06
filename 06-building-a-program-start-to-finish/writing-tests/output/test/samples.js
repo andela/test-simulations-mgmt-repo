@@ -29,10 +29,14 @@ module.exports = {
     {
       title: 'Hogfather',
       text: "It's the night before Hogswatch. And it's too quiet."
+    },
+    {
+      title: 'Hogfather',
+      text: "It's the night before Hogswatch. And it's too quiet."
     }
   ],
   tokens: ['death', 'comes', 'to', 'us', 'all', 'when', 'he', 'came', 'mort', 'offered', 'him', 'a', 'job'],
-  titles: ['Mort', 'Reaper Man', 'Soul Music', 'Hogfather'],
+  titles: ['Mort', 'Reaper Man', 'Soul Music', 'Hogfather', 'Hogfather (1)'],
   index: {
     mort: ['Mort'],
     death: ['Mort', 'Reaper Man', 'Soul Music'],
@@ -56,7 +60,7 @@ module.exports = {
     gone: ['Reaper Man'],
     which: ['Reaper Man'],
     leads: ['Reaper Man'],
-    the: ['Reaper Man', 'Soul Music', 'Hogfather'],
+    the: ['Reaper Man', 'Soul Music', 'Hogfather', 'Hogfather (1)'],
     kind: ['Reaper Man'],
     of: ['Reaper Man'],
     chaos: ['Reaper Man'],
@@ -88,14 +92,14 @@ module.exports = {
     theres: ['Soul Music'],
     in: ['Soul Music'],
     family: ['Soul Music'],
-    hogfather: ['Hogfather'],
-    its: ['Hogfather'],
-    night: ['Hogfather'],
-    before: ['Hogfather'],
-    hogswatch: ['Hogfather'],
-    and: ['Hogfather'],
-    too: ['Hogfather'],
-    quiet: ['Hogfather']
+    hogfather: ['Hogfather', 'Hogfather (1)'],
+    its: ['Hogfather', 'Hogfather (1)'],
+    night: ['Hogfather', 'Hogfather (1)'],
+    before: ['Hogfather', 'Hogfather (1)'],
+    hogswatch: ['Hogfather', 'Hogfather (1)'],
+    and: ['Hogfather', 'Hogfather (1)'],
+    too: ['Hogfather', 'Hogfather (1)'],
+    quiet: ['Hogfather', 'Hogfather (1)']
   },
   extraBooks: [
     {
@@ -123,10 +127,19 @@ module.exports = {
     dogs: ['More Alphabet']
   },
   searchResults: {
-    the: ['Alphabet', 'More Alphabet', 'Reaper Man', 'Soul Music', 'Hogfather'],
-    death: ['Mort', 'Reaper Man', 'Soul Music'],
-    he: ['Mort'],
-    comes: ['Mort'],
-    extravaganza: []
+    'extraBooks.json': {
+      comes: [],
+      death: [],
+      extravaganza: [],
+      he: [],
+      the: ['Alphabet', 'More Alphabet']
+    },
+    'validBooks.json': {
+      comes: ['Mort'],
+      death: ['Mort', 'Reaper Man', 'Soul Music'],
+      extravaganza: [],
+      he: ['Mort'],
+      the: ['Reaper Man', 'Soul Music', 'Hogfather', 'Hogfather (1)']
+    }
   }
 };
