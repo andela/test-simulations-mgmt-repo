@@ -4,6 +4,6 @@
 - **With**: *independently*
 
 #### Result
-- [Review URL]()
+- [Review URL](https://inverdex-staging-pr-8.herokuapp.com/)
 - [Staging URL](https://inverdex-staging.herokuapp.com/)
 - [Production URL](https://inverdex.herokuapp.com/)
