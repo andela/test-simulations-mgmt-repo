@@ -1,2 +1,2 @@
 #### Ouput
-- [Successful TravisCI Build](https://travis-ci.org/andela-tAdedotun/Inverted-Index/builds/217411110)
+- [Successful TravisCI Build](https://travis-ci.org/andela-tAdedotun/Inverted-Index/builds/219090413)
