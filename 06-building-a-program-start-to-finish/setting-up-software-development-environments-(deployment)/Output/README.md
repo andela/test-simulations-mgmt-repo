@@ -5,7 +5,7 @@
 
 #### Here are links to the `review`, `staging` & `production` apps
  - [Review]
- (https://invertedindex-review.herokuapp.com/index.html)
+ (https://review-indexx-app.herokuapp.com/)
 
  - [Staging]
  (https://invertedindex-staging.herokuapp.com/index.html)
