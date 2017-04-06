@@ -14,8 +14,8 @@ describe('InvertedIndex Class', () => {
         InvertedIndex();
       };
       expect(init)
-        .toThrowError(`Class constructor ` +
-          `InvertedIndex cannot be invoked without 'new'`);
+        .toThrowError(`Class constructor` +
+           ` InvertedIndex cannot be invoked without 'new'`);
     });
   });
 
