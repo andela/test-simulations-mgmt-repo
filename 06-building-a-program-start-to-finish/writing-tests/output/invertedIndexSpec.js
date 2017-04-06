@@ -10,12 +10,12 @@ describe('InvertedIndex Class', () => {
 
   describe('Class instantaion', () => {
     it('should be instantiated with the "new" keyword', () => {
+      const msg = `Class constructor InvertedIndex cannot be invoked without 'new'`;
       const init = () => {
         InvertedIndex();
       };
       expect(init)
-        .toThrowError(`Class constructor` +
-           ` InvertedIndex cannot be invoked without 'new'`);
+        .toThrowError(msg);
     });
   });
 
@@ -116,10 +116,12 @@ describe('InvertedIndex Class', () => {
           .valid)
         .toBe(true);
     });
-    it('should return false if an invalid file was uploaded', () => {
+    it('should return false if an empty file was uploaded', () => {
       expect(InvertedIndex.validateFile(emptyFile)
           .valid)
         .toBe(false);
+    });
+    it('should return false if an invalid file was uploaded', () => {
       expect(InvertedIndex.validateFile(wrongData)
           .valid)
         .toBe(false);
