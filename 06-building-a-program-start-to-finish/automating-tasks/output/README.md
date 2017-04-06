@@ -4,4 +4,4 @@
 - **With**: *independently*
 
 #### Targeted Learning Outcomes
-- [Output for Gulp automation](https://www.youtube.com/watch?v=7ffZj81sxnc)
+- [Output for Gulp automation](https://www.youtube.com/watch?v=nEFPgr37qNk&feature=youtu.be)

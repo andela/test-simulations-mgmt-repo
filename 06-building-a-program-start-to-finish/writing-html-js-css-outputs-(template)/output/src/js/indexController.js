@@ -21,7 +21,7 @@ app.controller('index', ['$scope', 'alertFactory', ($scope, alertFactory) => {
       } else {
         try {
           goodExt.push(eachFile.name);
-          invertedIndex.readFile(eachFile).then((response) => {
+          InvertedIndex.readFile(eachFile).then((response) => {
             if (response.status) {
               $scope.content[eachFile.name] = response.jsonContent;
               const docTitles = [];
@@ -41,7 +41,8 @@ app.controller('index', ['$scope', 'alertFactory', ($scope, alertFactory) => {
             alertFactory.error('Unable to read file', error);
           });
         } catch (error) {
-          alertFactory.error(`${eachFile.name} does not have the right structure`);
+          alertFactory.error(`${eachFile.name} 
+            does not have the right structure`);
         }
       }
     });
@@ -56,7 +57,8 @@ app.controller('index', ['$scope', 'alertFactory', ($scope, alertFactory) => {
   $scope.createBookIndex = () => {
     Object.keys($scope.content).forEach((filename) => {
       try {
-        $scope.fileIndices = invertedIndex.createIndex($scope.content[filename], filename);
+        $scope.fileIndices = invertedIndex
+          .createIndex($scope.content[filename], filename);
         $scope.showIndex = true;
         $scope.showSearch = false;
       } catch (err) {
@@ -74,7 +76,8 @@ app.controller('index', ['$scope', 'alertFactory', ($scope, alertFactory) => {
     } else if (searchInput !== undefined && searchBook !== undefined) {
       // try {
       if (searchBook === 'All') {
-        $scope.searchFeedback = invertedIndex.searchIndex(searchInput, searchBook);
+        $scope.searchFeedback = invertedIndex
+          .searchIndex(searchInput, searchBook);
         $scope.showIndex = false;
         $scope.showSearch = true;
       } else {

@@ -11,7 +11,7 @@ MVC is an achitectural pattern that is used to separate an application's concern
 - *View* - represents the front end view of the data that model contains. e.g. `index.html`
 - *Controller* - acts on both model and view. It controls the data flow into model object and updates the view whenever data changes. e.g. `indexController.js`
 
-Hence as explained above, in the case of the Inverted Index App, the model is the `InvertedIndex Class`, the view is the front end HTML and CSS, while the controller is the JavaScript app and the associated `inverted.js`.
+Hence as explained above, in the case of the Inverted Index App, the model is the `InvertedIndex Class`, the view is the front end HTML and CSS, while the controller is the JavaScript app and the associated `inverted-index.js`.
 
 #### Constructor Pattern
 Constructors are special methods used to create specific types of objects both preparing the object for use and accepting arguments during instatntiation which can then be used to set the values of member properties and methods when the object is first created.
@@ -25,7 +25,7 @@ class InvertedIndex {
     this.indexedFiles = {};
   }
 
-  readFile(eachFile) {
+  static readFile(eachFile) {
 
   }
 
