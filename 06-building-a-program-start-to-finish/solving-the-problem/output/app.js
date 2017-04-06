@@ -79,8 +79,8 @@ angular.module('root', ['ngAnimate', 'toastr'])
               reject(fileStore[file.name]);
             }
           })
-          .catch((error) => {
-            toastr.error('Empty file', 'Warning', 'Error');
+          .catch(() => {
+            toastr.error('This is an invalid JSON file', 'Warning', 'Error');
           });
       }
     });
