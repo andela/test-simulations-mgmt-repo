@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="invertedIndex">
+<head>
+    <title>DPLEX : INVERTED INDEX APP</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <link rel="stylesheet" href="https://bootswatch.com/darkly/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/angular-toastr/dist/angular-toastr.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animate.css">
+
+</head>
+<body ng-controller="dPlexController">
+    <!-- beginning of the header -->
+    <header>
+      <div class="navbar navbar-default shadow" style="background: teal;">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">DPlex - Inverted Index</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+          <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input ng-model="searchTerm" type="text" class="form-control" placeholder="Enter Search words">
+            </div>
+            <div class="form-group">
+              <select class="form-control" id="filename" name='filename' ng-model="uploadToSearch" ng-hide="isEmpty(allFilesIndexed)">
+                <option value="{{key}}" ng-repeat="(key, value) in allFilesIndexed">{{key}}</option>
+                <option value="all" ng-if="allFlag">All files</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-default" ng-click="searchIndex()">Search</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    </header>
+    <!-- end of headder -->
+
+    <!-- Begin modal -->
+    <div id="response-modal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Warning</h4>
+          </div>
+          <div class="modal-body">
+            <p>{{message}}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- end modal -->
+    <div class="container">
+      <h4 class="site_title mega">{{ title }}</h4>
+        <div class="col-sm-8">
+            <form class="form-inline">
+                <div class="form-group">
+
+                    <label class="btn btn-primary">Upload File
+                      <input class="form-control" style="display:none" type="file" id="uploadfile"  multiple>
+                    </label>
+                </div>
+                <div class="form-group">
+                  <select ng-hide="isEmpty(uploadedFiles)" class="form-control" ng-model="uploadSelected" ng-options="key as key for (key, value) in uploadedFiles">
+                  </select>
+                </div>
+                <div class="form-group">
+                  <button class="btn btn-primary" ng-click="createIndex()">CREATE INDEX</button>
+                </div>
+            </form>
+            <div class="clearfix"></div>
+            <hr/>
+
+            <div class="row">
+              <div ng-repeat="(key, details) in indexed" ng-show="indexed">
+                <h2>
+                  <span ng-if="indexDisplay">Showing index for {{details.indexedFile}}</span>
+                  <span ng-if="!indexDisplay">Search result for "{{searchQuery}}" in "{{details.searchedFile}}"</span>
+                </h2>
+                <table class="table table-striped" id='myTable'>
+                  <thead>
+                    <th>Tokens</th>
+                    <th style="text-align:center" ng-repeat="i in details.documents">Document {{i+1}}</th>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="(key, value) in details.indexes">
+                      <td>{{key}}</td>
+                      <td ng-repeat="docnum in details.documents" style="text-align:center; font-weight:bold">
+                        <span ng-if="value.includes(docnum)">X</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <br/>
+        </div>
+        <div class="col-sm-4">
+            <blockquote>
+              <h1>
+                About DPlex
+              </h1>
+                <p>
+                  DPlex in an inverted index application. DPlex allows you to
+                  upload a book in JSON format. You can index the document and
+                  search for occurences of word(s) in a document or entirely
+                  uploaded documents.
+                </p>
+
+                <p>
+                  <h3>How to use</h3>
+                  <ol>
+                    <li>To Create indexes of a file
+                        <ul>
+                          <li>Select a file in JSON format and the structure
+                            below</li>
+                          <li>Select the document to index from the list of
+                            files and click Create Index</li>
+                        </ul>
+                    </li>
+                    <li>Search Files
+                        <ul>
+                          <li>Enter the search terms which could either be a single word or combination of words.</li>
+                          <li>Select which of the indexed file you want to search. You can also search files.</li>
+                        </ul>
+                    </li>
+                  </ol>
+                </p>
+            </blockquote>
+            <blockquote>
+              Sample JSON Format to be uploaded can be found <a href='https://gist.github.com/q-ode/72019451b98f079a8d737eb7a412bf14' target='_blank'>here</a>
+            </blockquote>
+
+        </div>
+    </div>
+</body>
+  <script type="text/javascript" src="src/module.js"></script>
+  <script src="https://unpkg.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="src/invertedindex.js"></script>
+  <script type="text/javascript" src="src/app.js"></script>
+</html>

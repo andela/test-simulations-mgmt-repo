@@ -4,4 +4,4 @@
 - **With**: *independently*
 
 - **Repository with One Pull Request:**
-- My Application's Repository with at least one pull request [Anu's Repository](https://github.com/andela-aonifade/invertedindex)
+- My Application's Repository with at least one pull request [Anu's Repository](https://github.com/andela-aonifade/dplex)

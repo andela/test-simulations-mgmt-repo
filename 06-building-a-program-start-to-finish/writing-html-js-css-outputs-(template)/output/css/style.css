@@ -1,0 +1,35 @@
+
+.shadow{
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.site_title {
+    color: #f35626;
+    background-image: -webkit-linear-gradient(92deg,#f35626,#feab3a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-animation: hue 60s infinite linear;
+}
+@media (min-width: 650px) {
+  .mega {
+    font-size: 4rem;
+    line-height: 1;
+  }
+}
+
+.main{
+  margin-top: 0;
+  max-width: 650px;
+}
+
+.resultview{
+  max-width: 950px;
+}
+
+.padding5{
+  padding: 5px;
+}
+
+.padding10{
+  padding: 10px;
+}
