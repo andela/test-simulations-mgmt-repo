@@ -2,6 +2,7 @@
 <html ng-app="invertedIndex">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Inverted Index</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -17,10 +18,19 @@
         <li id="home"><a href="#">Inverted Index</a></li>
 
       <div class="nav-buttons">
-        <div ng-show="indexInLocalStorage" class="dropdown right">
+        <div ng-show="indexInLocalStorage()" class="dropdown right">
           <button id="dropdown" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> Recently Indexed <span class="caret"></span> </button>
-                <ul class="dropdown-menu">
-                  <li ng-repeat="file in recentlyIndexed" style="display: block; cursor: pointer"> <a ng-click="getIndex(file)">{{file}}</a> <div style="margin-left: 10px"></div> </li>
+                <ul class="dropdown-menu" ng-if="recentlyIndexed().length" ng-click="$event.stopPropagation()">
+                  <li ng-repeat="file in recentlyIndexed() track by $index" style="display: block; cursor: pointer">
+                    <div style="margin-left: 10px">
+                      <a ng-click="getIndex(file)" style="float: left">{{file}}</a>
+                      <a ng-click="deleteIndex(file)" style="color: #c42940; float: right;" ng-show="recentlyIndexed()[recentlyIndexed().indexOf(file)]">x</a>
+                    </div>
+                  </li>
+
+                  <li value="Delete All" ng-show="moreThanOneStored">
+                    <button ng-click="deleteIndex('Delete All')" style="width: 100%; background-color: #c42940; margin-top: 20px; border-radius: 0px;">Delete All</button>
+                  </li>
                 </ul>
             </div>
 
@@ -40,16 +50,25 @@
         </div>
 
         <div class="dropdown" id="dropdownSmall">
-          <div ng-show="indexInLocalStorage" class="dropdown right">
+          <div ng-show="indexInLocalStorage()" class="dropdown right">
           <button id="dropdown" class="btn btn-primary" data-toggle="dropdown"> <i class="fa fa-file"></i> </button>
-                <ul class="dropdown-menu">
-                  <li ng-repeat="file in recentlyIndexed" style="display: block; cursor: pointer"> <a ng-click="getIndex(file)">{{file}}</a> <div style="margin-left: 10px"></div> </li>
-                </ul>
+              <ul class="dropdown-menu" ng-if="recentlyIndexed.length" ng-click="$event.stopPropagation()">
+                <li ng-repeat="file in recentlyIndexed track by $index" style="display: block; cursor: pointer;">
+                  <div style="margin-left: 10px">
+                    <a ng-click="getIndex(file)" style="float: left">{{file}}</a>
+                    <a ng-click="deleteIndex(file)" style="color: #c42940; float: right;" ng-show="recentlyIndexed[recentlyIndexed.indexOf(file)]">x</a>
+                  </div>
+                </li>
+
+                <li value="Delete All" ng-show="moreThanOneStored">
+                  <button ng-click="deleteIndex('Delete All')" style="width: 100%; background-color: #c42940; margin-top: 20px; border-radius: 0px;">Delete All</button>
+                </li>
+              </ul>
             </div>
 
       </div>
 
-        <button id="littleAbout" data-toggle="collapse" data-target="#smallAbout" class="btn btn-primary">?</button>
+        <button id="littleAboutButton" data-toggle="collapse" data-target="#smallAbout" class="btn btn-primary">?</button>
           <div id="smallAbout" class="collapse" style="margin-top: 15px">
             <p>
               An inverted index consists of a list of all the unique words that appear in any
@@ -88,7 +107,7 @@
     <section>
 
   <div class="jumbotron">
-    <h2 typed type-speed="150">Upload JSON file. Create Index. Search!</h2>
+    <h2 typed type-speed="120">Upload JSON file. Create Index. Search!</h2>
   </div>
 
       <div>
@@ -141,7 +160,7 @@
           <thead>
             <tr>
               <th>Words</th>
-              {{tableHeads = newIndex.getIndex(file)[1]; ""}}
+              {{tableHeads = fileIndices[file][1]; ""}}
               <th ng-repeat="title in tableHeads track by $index">{{title}}</th>
             </tr>
           </thead>
@@ -169,5 +188,5 @@
   <script type="text/javascript" src="https://cdn.rawgit.com/codekraft-studio/angular-typed/master/dist/angular-typed.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="js/inverted-index.js"></script>
+  <script src="js/InvertedIndex.js"></script>
 </html>
