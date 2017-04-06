@@ -80,7 +80,7 @@ angular.module('root', ['ngAnimate', 'toastr'])
             }
           })
           .catch(() => {
-            toastr.error('This is an invalid JSON file', 'Warning', 'Error');
+            toastr.error(`${fileName} is an invalid JSON file`, 'Error');
           });
       }
     });
