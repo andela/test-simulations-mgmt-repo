@@ -58,16 +58,22 @@ describe('Inverted Index Test Suite: ', () => {
   });
 
   describe('Validation of file data: ', () => {
-    it('should return false if book data is not an array of object literals',
-      () => {
-        expect(InvertedIndex.validateFile('andela')).toBe(false);
-        expect(InvertedIndex.validateFile(19)).toBe(false);
-        expect(InvertedIndex.validateFile(['food', 'is', 'good'])).toBe(false);
-      });
+    it('should return false if book data is a string', () => {
+      expect(InvertedIndex.validateFile('andela')).toBe(false);
+    });
+
+    it('should return false if book data is a number', () => {
+      expect(InvertedIndex.validateFile(19)).toBe(false);
+    });
 
     it('should return false if book data is an empty array', () => {
       expect(InvertedIndex.validateFile([])).toBe(false);
     });
+
+    it('should return false if book data is not an array of object literals',
+      () => {
+        expect(InvertedIndex.validateFile(['food', 'is', 'good'])).toBe(false);
+      });
 
     it('should return false if book data is not properly structured', () => {
       expect(InvertedIndex.validateFile(samples.invalidBooks)).toBe(false);

@@ -6,6 +6,8 @@ function homeCtrl($scope, $http, $rootScope, $location) {
       fullWidth: true,
     });
   });
+
+  $scope.usernameExists = false;
   $scope.incorrectLogin = false;
   $scope.openSignup = () => {
     $('#signup').modal('open');
@@ -20,6 +22,9 @@ function homeCtrl($scope, $http, $rootScope, $location) {
         if (res.status === 200) {
           $rootScope.currentUser = res.data;
           $location.url('/profile');
+        } else if (res.status === 204) {
+          $('#signup-preloader').removeClass('active');
+          $scope.usernameExists = true;
         }
       }, (err) => {
         $('#signup-preloader').removeClass('active');
