@@ -99,7 +99,8 @@
               <tr ng-repeat="(eachWord, documents) in indexedFiles.eachWord">
                 <td class="divider">{{eachWord}}</td>
                 <td ng-repeat="doc_num in [] | range:indexedFiles.numOfDocs">
-                  <span ng-if="documents.indexOf(doc_num) !== -1" class="text-center">x</span>
+                   <span ng-if="documents.indexOf(doc_num) !== -1" class="text-center">x</span>
+                   <span ng-if="documents.indexOf(doc_num) === -1" class="text-center">~</span>
                 </td>
               </tr>
             </tbody>

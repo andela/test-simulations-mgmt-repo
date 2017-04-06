@@ -37,17 +37,17 @@ angular.module('InvertedIndexApp', [])
     };
 
     $scope.displaySearch = () => {
+      const filename = $scope.searchOption.split('.')[0];
       $scope.searchResults = {};
       if ($scope.phrase.length < 1) {
         $scope.errorHandler = 'Please enter a word to search';
       } else if ($scope.searchOption === 'All') {
-        $scope.searchResults = invertedIndex.searchIndex($scope.phrase);
+        $scope.searchResults = invertedIndex.searchIndex($scope.phrase, filename);
         $scope.displaySearchResult = true;
         $scope.displayIndexes = false;
       } else {
-        const filename = $scope.searchOption.split('.')[0];
         $scope.searchResults[filename] =
-          invertedIndex.searchIndex($scope.phrase)[filename];
+        invertedIndex.searchIndex($scope.phrase, filename);
         $scope.displaySearchResult = true;
         $scope.displayIndexes = false;
       }
@@ -55,9 +55,9 @@ angular.module('InvertedIndexApp', [])
   }])
 .filter('range', () => (input, range) => {
   const rangeLength = parseInt(range, 10);
-  rangeLength.forEach((index) => {
-    input.push(index);
-  });
+  for (let i = 0; i < rangeLength; i += 1) {
+    input.push(i);
+  }
   return input;
 });
 

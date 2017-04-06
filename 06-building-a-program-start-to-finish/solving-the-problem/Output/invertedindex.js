@@ -15,7 +15,7 @@ class InvertedIndex {
    * Get the index for a particular file
    * @function
    * @param {String} fileName
-   * @return {Object} index object
+   * @return {Object} returns the indexed object
    */
   getIndex(fileName) {
     return this.indexed[fileName];
@@ -25,7 +25,7 @@ class InvertedIndex {
    * Read files using FileReader
    * @function
    * @param {String} file
-   * @return {Promise} validateFile response
+   * @return {Promise} from validateFile response
    */
   static readFile(file) {
     return new Promise((resolve, reject) => {
@@ -47,33 +47,39 @@ class InvertedIndex {
    * Validate File
    * @function
    * @param {string} fileToValidate content of the file uploaded
-   * @return {Object} result.success should return true or false
+   * @return {Object} returns either errorMsg or result.
    */
   static validateFile(fileToValidate) {
-    const fileLength = fileToValidate.length;
     let result = {};
-    for (let key = 0; key < fileLength; key += 1) {
-      if (typeof fileToValidate !== 'object'
-          || Object.keys(fileToValidate[key]).length !== 2
-          || fileToValidate[key].title === undefined
-          || fileToValidate[key].text === undefined
-          || typeof fileToValidate[key].title !== 'string'
-          || typeof fileToValidate[key].text !== 'string') {
-        result = {
-          success: false,
-          message: 'has an invalid JSON format.'
-        };
-      } else {
-        result = {
-          success: true,
-          message: 'File is valid',
-          fileToValidate
-        };
-      }
+    const errorMsg = {
+      success: false,
+      message: 'has an invalid JSON format.'
+    };
+    try {
+      result = {
+        success: true,
+        message: 'File is valid',
+        fileToValidate
+      };
+      fileToValidate.forEach((book) => {
+        if (typeof book !== 'object' || Object.keys(book).length !== 2) {
+          errorMsg.message = 'has not only one key';
+          throw errorMsg;
+        }
+        if (book.title === undefined || book.text === undefined) {
+          errorMsg.message = 'does not have title or text defined';
+          throw errorMsg;
+        }
+        if (book.title === '' || book.text === '') {
+          errorMsg.message = 'cannot be empty';
+          throw errorMsg;
+        }
+      });
+    } catch (error) {
+      if (error.success === false) return errorMsg;
     }
     return result;
   }
-
   /**
    * Get individual words from a string of text.
    * @function
@@ -86,19 +92,18 @@ class InvertedIndex {
   }
 
   /**
-   * Create index
+   * Creates an index object from the file content and stores it
    * @function
-   * @param {string} fileName
-   * @param {Array} books
-   * @return {Object} index object
+   * @param {String} fileName name of uploaded file
+   * @param {Array} books content of uploaded file
+   * @return {Object} index of the uploaded file
    */
   createIndex(fileName, books) {
     const indices = {};
     books.forEach((book, index) => {
-      let words = '';
-      words = (`${book.title} ${book.text}`);
-      words = InvertedIndex.tokenize(words);
-      words.forEach((word) => {
+      let tokens = `${book.title} ${book.text}`;
+      tokens = InvertedIndex.tokenize(tokens);
+      tokens.forEach((word) => {
         if (indices[word]) {
           if (indices[word].indexOf(index) === -1) {
             indices[word].push(index);
@@ -115,15 +120,33 @@ class InvertedIndex {
   }
 
   /**
-   * Search Index.
+   * Searches the index
    * @function
-   * @param {String} phrase search string
-   * @returns {Object} search result object.
+   * @param {String} phrase string containing word(s) to be searched for
+   * @param {Object} filename name of an indexed file or All.
+   * @return {Object} search result with eachword and number of documents.
    */
-  searchIndex(phrase) {
-    const result = {};
-    const files = this.indexed;
-    Object.keys(files).forEach((filename) => {
+  searchIndex(phrase, filename) {
+    let result = {};
+    if (filename === 'All') {
+      const files = this.indexed;
+      Object.keys(files).forEach((file) => {
+        const storedIndex = this.getIndex(file);
+        const searchWords = InvertedIndex.tokenize(phrase);
+        const search = {
+          eachWord: {},
+          numOfDocs: storedIndex.numOfDocs
+        };
+        searchWords.forEach((word) => {
+          if (storedIndex.eachWord[word]) {
+            if (!(search.eachWord[word] in search)) {
+              search.eachWord[word] = storedIndex.eachWord[word];
+            }
+          } else search.eachWord[word] = [];
+        });
+        result[file] = search;
+      });
+    } else {
       const storedIndex = this.getIndex(filename);
       const searchWords = InvertedIndex.tokenize(phrase);
       const search = {
@@ -132,11 +155,13 @@ class InvertedIndex {
       };
       searchWords.forEach((word) => {
         if (storedIndex.eachWord[word]) {
-          search.eachWord[word] = storedIndex.eachWord[word];
+          if (!(search.eachWord[word] in search)) {
+            search.eachWord[word] = storedIndex.eachWord[word];
+          }
         } else search.eachWord[word] = [];
       });
-      result[filename] = search;
-    });
+      result = search;
+    }
     return result;
   }
 }

@@ -4,7 +4,7 @@
 - **With**: *independently*
 
 ### Link to a successful Travis build on development branch
-[Travis development branch - Andela-Judensi/inverted-index](https://travis-ci.org/andela-tezebuike/inverted-index/jobs/217681187)
+[Travis CI](https://travis-ci.org/andela-tezebuike/inverted-index/builds/218060350)
 
 ### Image showing travis build on development branch
 ![Travis build](https://github.com/andela/test-simulations-mgmt-repo/blob/bayo-kakashi-tezebuike/06-building-a-program-start-to-finish/setting-up-continuous-integration-(build-server)/output/travis.png)

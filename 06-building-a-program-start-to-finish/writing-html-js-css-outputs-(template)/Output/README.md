@@ -3,6 +3,13 @@
 - **Deliver**: a folder containing the template for the proposed frontend of your project
 - **With**: *independently*
 
+#### Find below the screenshots of the propsed frontend.
+![Home page](Homepage.png)
+
+![Index display](indexdisplay.png)
+
+![Search view](Searchview.png)
+
 #### Targeted Learning Outcomes
 - [HTML & CSS](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/29%20-%20HTML%20%26%20CSS)
 - [UI/UX](https://github.com/andela/learningmap/tree/master/Phase-C/Entry-level%20Developer/Curriculum/36%20-%20UI-UX)
