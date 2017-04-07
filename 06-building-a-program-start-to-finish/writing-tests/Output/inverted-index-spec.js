@@ -1,16 +1,15 @@
 /* global describe, it, expect */
-
-const valid1 = require('../../valid1.json');
-const valid2 = require('../../valid2.json');
-const valid3 = require('../../valid3.json');
-const valid4 = require('../../valid4.json');
-const invalid1 = require('../../invalid1.json');
-const invalid2 = require('../../invalid2.json');
-const invalid3 = require('../../invalid3.json');
-const invalid4 = require('../../invalid4.json');
-const invalid5 = require('../../invalid5.json');
-const invalid6 = require('../../invalid6.json');
-const invalid7 = require('../../invalid7.json');
+const valid1 = require('../../src/test books/valid1.json'),
+      valid2 = require('../../src/test books/valid2.json'),
+      valid3 = require('../../src/test books/valid3.json'),
+      valid4 = require('../../src/test books/valid4.json'),
+      invalid1 = require('../../src/test books/invalid1.json'),
+      invalid2 = require('../../src/test books/invalid2.json'),
+      invalid3 = require('../../src/test books/invalid3.json'),
+      invalid4 = require('../../src/test books/invalid4.json'),
+      invalid5 = require('../../src/test books/invalid5.json'),
+      invalid6 = require('../../src/test books/invalid6.json'),
+      invalid7 = require('../../src/test books/invalid7.json');
 
 const valid3AsIndexed = { '777': [ 1 ], the: [ 0, 1 ], triumphant: [ 0 ],
                           church: [ 0 ], christians: [ 0 ], are: [ 0 ],
@@ -27,92 +26,146 @@ const valid4AsIndexed = { testing: [ 0 ], could: [ 0, 1 ], be: [ 0, 1 ],
                           pass: [ 1 ], fulfilling: [ 1 ], and: [ 1 ],
                           rewarding: [ 1 ] }
 
-const textString = 'why are We *% \n so blind \t to see two-timers#@!`~-_+=/?";'
+const textString = 'why are We *% \n so blind \t to see two-timers#@!`~-_+=/?";';
 const tokenizedTextString = [ 'why', 'are', 'we', 'so', 'blind', 'to', 'see',
-                              'two', 'timers' ]
+                              'two', 'timers' ];
 
-const invIndex = new InvertedIndex();
+const invertedIndex = new InvertedIndex();
 
 describe('InvertedIndex', () => {
   
-  describe('class methods', () => {
-    it('Should be defined', () => {
-      expect(invIndex.getIndex).not.toBeUndefined();
-      expect(invIndex.createIndex).not.toBeUndefined();
-      expect(invIndex.tokenize).not.toBeUndefined();
-      expect(invIndex.validateFile).not.toBeUndefined();
-      expect(invIndex.searchIndex).not.toBeUndefined();
+  describe('constructor', () => {
+    it('should be an instance of  InvertedIndex', () => {
+      expect(invertedIndex instanceof InvertedIndex).toBeTruthy();
+      expect(typeof (invertedIndex)).toEqual('object');
+    });
+
+    it('should have defualt instatiated  values', () => {
+      expect(invertedIndex.allIndexed).not.toBe(null);
+      expect(invertedIndex.allTitles).not.toBe(null);
+      expect(invertedIndex.documentsIndex).not.toBe(null);
+      expect(invertedIndex.allIndexed).toEqual({});
+      expect(invertedIndex.allTitles).toEqual({});
+      expect(invertedIndex.documentsIndex).toEqual({});
+      expect(invertedIndex.allIndexed).toBeDefined();
+      expect(invertedIndex.allTitles).toBeDefined();
+      expect(invertedIndex.documentsIndex).toBeDefined();
     });
   });
 
-  describe('class methods', () => {
-    it('Should be functions', () => {
-      expect(typeof invIndex.readFile).toBe('function');
-      expect(typeof invIndex.createIndex).toBe('function');
-      expect(typeof invIndex.getIndex).toBe('function');
-      expect(typeof invIndex.searchIndex).toBe('function');
-      expect(typeof invIndex.validateFile).toBe('function');
-      expect(typeof invIndex.tokenize).toBe('function');
+  describe('readFile', () => {
+    it('should be defined', () => {
+      expect(invertedIndex.readFile).not.toBeUndefined();
+    });
+
+    it('should be a function', () => {
+      expect(typeof invertedIndex.readFile).toBe('function');      
     });
   });
 
   describe('tokenize', () => {
-    it('Should eliminate special characters, symbols and white spaces', () => {
-      expect(invIndex.tokenize(textString)).toEqual(tokenizedTextString);
+    it('should eliminate special characters, symbols and white spaces', () => {
+      expect(invertedIndex.tokenize).not.toBeUndefined();
+      expect(typeof invertedIndex.tokenize).toBe('function');
+      expect(invertedIndex.tokenize(textString)).toEqual(tokenizedTextString);
     });
   });
 
   describe('createIndex', () => {
-    it('Should create indices properly', () => {
-      expect(invIndex.createIndex(valid3, 'valid3.json')).toEqual(valid3AsIndexed);
+    it('should create indices properly', () => {
+      expect(invertedIndex.createIndex).not.toBeUndefined();
+      expect(typeof invertedIndex.createIndex).toBe('function');
+      expect(invertedIndex.createIndex(valid3, 'valid3.json')).toEqual(valid3AsIndexed);
     });
   });
 
   describe('getIndex', () => {
-    it('Should get indices from already created ones', () => {
-      invIndex.createIndex(valid3, 'valid3.json');
-      expect(invIndex.getIndex(valid3, 'valid3.json')).toEqual(valid3AsIndexed);
+    it('should get indices from already created ones', () => {
+      invertedIndex.createIndex(valid3, 'valid3.json');
+      expect(invertedIndex.getIndex).not.toBeUndefined();
+      expect(typeof invertedIndex.getIndex).toBe('function');
+      expect(invertedIndex.getIndex(valid3, 'valid3.json')).toEqual(valid3AsIndexed);
     });
 
-    it('Should create indices if file is not yet indexed', () => {
-      expect(invIndex.getIndex(valid4, 'valid4.json')).toEqual(valid4AsIndexed);
+    it('should create indices if file is not yet indexed', () => {
+      expect(invertedIndex.getIndex(valid4, 'valid4.json')).toEqual(valid4AsIndexed);
     });
   });
 
   describe('validateFile', () => {
-    it('Should be false if file is not an array', () => {
-      expect(invIndex.validateFile(invalid1, 'invalid1.json')).toBeFalsy();
+    it('should be defined and should be false if file is not an array', () => {
+      expect(invertedIndex.validateFile).not.toBeUndefined();      
+      expect(invertedIndex.validateFile(invalid1, 'invalid1.json')).toBeFalsy();
     });
 
-    it('Should be false if file is not an array of objects', () => {
-      expect(invIndex.validateFile(invalid2, 'invalid2.json')).toBeFalsy();
+    it('should be a function and should be false if file is not an array of objects', () => {
+      expect(typeof invertedIndex.validateFile).toBe('function');      
+      expect(invertedIndex.validateFile(invalid2, 'invalid2.json')).toBeFalsy();
     });
 
-    it('Should be false if file does not contain only "text" and "title" keys', () => {
-      expect(invIndex.validateFile(invalid3, 'invalid3.json')).toBeFalsy();
-      expect(invIndex.validateFile(invalid4, 'invalid4.json')).toBeFalsy();
-      expect(invIndex.validateFile(invalid5, 'invalid5.json')).toBeFalsy();
+    it('should be false if file does not contain only "text" and "title" keys', () => {
+      expect(invertedIndex.validateFile(invalid3, 'invalid3.json')).toBeFalsy();
+      expect(invertedIndex.validateFile(invalid4, 'invalid4.json')).toBeFalsy();
+      expect(invertedIndex.validateFile(invalid5, 'invalid5.json')).toBeFalsy();
     });
 
-    it('Should be false if file  "text" and "title" values are not Strings', () => {
-      expect(invIndex.validateFile(invalid6, 'invalid6.json')).toBeFalsy();
-      expect(invIndex.validateFile(invalid7, 'invalid7.json')).toBeFalsy();
+    it('should be false if file  "text" and "title" values are not Strings', () => {
+      expect(invertedIndex.validateFile(invalid6, 'invalid6.json')).toBeFalsy();
+      expect(invertedIndex.validateFile(invalid7, 'invalid7.json')).toBeFalsy();
     });
 
-    it('Should be true if files are formatted properly', () => {
-      expect(invIndex.validateFile(valid1, 'valid1.json')).toBeTruthy();
-      expect(invIndex.validateFile(valid2, 'valid2.json')).toBeTruthy();
+    it('should be true if files are formatted properly', () => {
+      expect(invertedIndex.validateFile(valid1, 'valid1.json')).toBeTruthy();
+      expect(invertedIndex.validateFile(valid2, 'valid2.json')).toBeTruthy();
     });
   });
 
   describe('searchIndex', () => {
-    it('Should be able to get indices of words from already indexed files', () => {
-      invIndex.createIndex(valid3, 'valid3.json');
-      invIndex.createIndex(valid4, 'valid4.json');
-      expect(invIndex.searchIndex('could', 'valid4.json')).toEqual([ 0, 1 ]);
-      expect(invIndex.searchIndex('testing', 'valid4.json')).toEqual([ 0 ]);
-      expect(invIndex.searchIndex('pass', 'valid4.json')).toEqual([ 1 ]);
-      expect(invIndex.searchIndex('the', 'valid3.json')).toEqual([ 0, 1 ]);
+    it('should be able to get indices of words from already indexed files', () => {
+      invertedIndex.createIndex(valid3, 'valid3.json');
+      invertedIndex.createIndex(valid4, 'valid4.json');
+
+      expect(invertedIndex.searchIndex).not.toBeUndefined();
+      expect(typeof invertedIndex.searchIndex).toBe('function');
+      expect((invertedIndex.searchIndex('and', 'valid4.json'))[0].indexes.and).toEqual([1]);
+      expect((invertedIndex.searchIndex('the', 'valid3.json'))[0].indexes.the).toEqual([ 0, 1 ]);
+    });
+
+    it('should be false if empty string is searched for', () => {
+      invertedIndex.createIndex(valid3, 'valid3.json');
+      expect(invertedIndex.searchIndex(' ', 'valid3.json')).toBe(false);
+    });
+
+    it('should be able to search for multiple words in one file', () => {
+      invertedIndex.createIndex(valid1, 'valid1.json');
+
+      expect((invertedIndex.searchIndex('and, the, that', 'valid1.json'))[0].indexes)
+                            .toEqual({and: [ 0, 1 ], the: [ 0, 1, 2 ], that: [ 2 ]});
+    });
+
+    it('should be able to search for multiple words in multiple files', () => {
+      invertedIndex.createIndex(valid1, 'valid1.json');
+      invertedIndex.createIndex(valid2, 'valid2.json');
+
+      expect((invertedIndex.searchIndex('the, that, in', 'All'))[2].indexes)
+                            .toEqual({the: [ 0, 1, 2 ], that: [ 2 ], in: [ 0, 2 ]});
+
+      expect((invertedIndex.searchIndex('the, that, in', 'All'))[2].searchedFile)
+                            .toEqual('valid1.json');
+
+      expect((invertedIndex.searchIndex('the, that, in', 'All'))[2].title)
+                            .toEqual(["The 'Alice' in Wonderland",
+                                      "The Lord of the Rings: The Fellowship of the Ring.",
+                                      "The Tower of Babel: Ancient History."]);
+
+      expect((invertedIndex.searchIndex('the, that, in', 'All'))[3].indexes)
+                            .toEqual({the: [ 2 ], that: [ 0, 1, 2 ], in: undefined});  
+
+      expect((invertedIndex.searchIndex('the, that, in', 'All'))[3].searchedFile)
+                            .toEqual('valid2.json');
+
+      expect((invertedIndex.searchIndex('the, that, in', 'All'))[3].title)
+                            .toEqual(["Trial and Error", "Sound of Music.", "Pfunky"]);                                                
     });
   });
 });

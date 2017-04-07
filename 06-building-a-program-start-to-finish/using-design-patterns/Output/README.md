@@ -59,13 +59,13 @@ For this application, the `InvertedIndex Class` makes use of the constructor des
 
 ```
 
-A new instance of this class can be created by calling the constructor:
+A new instance of this class can be created and used by calling the constructor as below:
 ```
-const invIndex = new InvertedIndex();
+const invertedIndex = new InvertedIndex();
 
-invdIndex.createIndex(fileDetails, 'file.json');
+invertedIndex.createIndex(fileDetails, 'file.json');
 
-invIndex.getIndices(fileDetails, 'file.json');
+invertedIndex.getIndex(fileDetails, 'file.json');
 
-invIndex.searchIndex(wordsToSearchFor, 'file.json');
+invertedIndex.searchIndex(wordsToSearchFor, 'file.json');
 ```

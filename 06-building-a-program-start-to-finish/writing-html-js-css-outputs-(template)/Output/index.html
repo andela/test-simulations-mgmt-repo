@@ -9,15 +9,15 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    <script type="text/javascript" src="inverted-index.js"></script>
+    <script type="text/javascript" src="./src/model/inverted-index.js"></script>
 
-    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="./src/controller/app.js"></script>
 
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     
-    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="./src/stylesheet.css">
 
     
   </head>
@@ -62,14 +62,6 @@
 
     </div>
 
-    <div class="container">
-      <div class="jumbotron">
-        <h1>Inverted Index</h1>
-        <p>Get Inverted Index anywhere in the world!</p>
-        <div class="bg"></div>
-      </div>
-    </div>
-
     <div class="container" ng-show="showIndex">
       <div class="row">
         <div ng-repeat="(key, details) in indexed">
@@ -84,9 +76,9 @@
             <tbody>
               <tr ng-repeat="(key, value) in details.indexes">
                 <td>{{key}}</td>
-                <td ng-repeat="docposition in details.docs" style="text-align:center; font-weight:bold">
-                  <span ng-if="value.includes(docposition)" style="color:green" class="glyphicon glyphicon-ok"></span>
-                  <span ng-if="!value.includes(docposition)" style="color:red" class="glyphicon glyphicon-remove"></span>
+                <td ng-repeat="index in details.documentIndexes" style="text-align:center; font-weight:bold">
+                  <span ng-if="value.includes(index)" style="color:green" class="glyphicon glyphicon-ok"></span>
+                  <span ng-if="!value.includes(index)" style="color:red" class="glyphicon glyphicon-remove"></span>
                 </td>
               </tr>
             </tbody>
@@ -99,7 +91,7 @@
       <div class="row">
         <div ng-repeat="(key, details) in search">
           <h2>
-            <span>Search result for "{{displaySearch}}" in "{{details.searchedFile}}"</span>
+            <span>Search result for "{{details.wordsSearchedFor}}" in "{{details.searchedFile}}"</span>
           </h2>
           <table class="table table-striped">
             <thead>
@@ -109,14 +101,22 @@
             <tbody>
               <tr ng-repeat="(key, value) in details.indexes">
                 <td>{{key}}</td>
-                <td ng-repeat="docposition in details.docs" style="text-align:center; font-weight:bold">
-                  <span ng-if="value.includes(docposition)" style="color:green" class="glyphicon glyphicon-ok"></span>
-                  <span ng-if="!value.includes(docposition)" style="color:red" class="glyphicon glyphicon-remove"></span>
+                <td ng-repeat="index in details.documentIndexes" style="text-align:center; font-weight:bold">
+                  <span ng-if="value.includes(index)" style="color:green" class="glyphicon glyphicon-ok"></span>
+                  <span ng-if="!value.includes(index)" style="color:red" class="glyphicon glyphicon-remove"></span>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="jumbotron">
+        <h1>Inverted Index</h1>
+        <p>Get Inverted Index anywhere in the world!</p>
+        <div class="bg"></div>
       </div>
     </div>
 
