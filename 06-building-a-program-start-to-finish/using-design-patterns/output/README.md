@@ -17,7 +17,7 @@ The Model-View-Controller pattern proposes three main components or objects to b
 In OOP languages e.g. Javascript, a constructor is a special method used to initialize a newly created object once memory has been allocated for it. 
 The `InvertedIndex` class makes explicit use of the constructor design pattern in that, to create an instance of the class, a constructor function must be called which initializes the indexes object that holds a hashmap of all the indexes create from the uploaded files.
 
-```
+```javascript
 class InvertedIndex {
   /**
    * Class Constructor
@@ -81,7 +81,7 @@ class InvertedIndex {
 ```
 We can create an instance of the class by calling the constructor:
 
-```
+```javascript
 const invIndex = new InvertedIndex();
 
 invIndex.createIndex('books', content);
