@@ -13,27 +13,26 @@
 
 Constructors are special methods used to create specific types of objects both preparing the object for use and accepting arguments during instantiation which can then be used to set the values of member properties and methods when the object is first created. The InvertedIndex Class makes explicit use of the constructor design pattern in that, to create an instance of the class, a constructor function must be called which initializes the indexes object that holds a hashmap of all the indexes create from the uploaded files.
 
-``` /**
+``` **
  * @class InvertedIndex
- * @classdesc blah blah
+ * @classdesc containing the InvertedIndex methods
  */
-class InvertedIndex {
+export default class InvertedIndex {
   /**
    * * @constructor
    * initialises the class base properties
    */
   constructor() {
-    this.indicies = {};
+    this.indices = {};
     this.indexedFiles = {};
     this.uploadedFiles = {};
   }
   /**
    * @createIndex method
-   * @param {fileName} fileName
-   * @param {fileContent} fileContent
-   * @returns {boolean}
+   * @param {string} fileName
+   * @param {Object} fileContent
+   * @returns {boolean} true - index created successfully
    * create index of the fileName
-   */
-  createIndex(fileName, fileContent) {```
+   */```
 
 To use the methods of the object you first have to create an instance of the class by doing: myClass = new InvertedIndex() then myclass.createIndex();
