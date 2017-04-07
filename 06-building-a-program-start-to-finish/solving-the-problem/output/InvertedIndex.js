@@ -1,4 +1,3 @@
-'use strict';
 /**
  * Class representing InvertedIndex
  */
@@ -31,17 +30,17 @@ const InvertedIndex = class {
 
   /**
    * Ensures all the documents in a particular file is valid
-   * @param {array} allBooks - Array containing document objects of bookname
-   * @param {string} bookname - Name of the book to validate
+   * @param {array} allBooks - Array containing document objects of bookName
+   * @param {string} bookName - Name of the book to validate
    * @return {Promise.<bookHolder>} An Object containing validated book
    */
-  static validateFile(allBooks, bookname) {
+  static validateFile(allBooks, bookName) {
     return new Promise((resolve, reject) => {
       if (Object.keys(allBooks).length < 1) {
         reject('Cannot index an empty object');
       } else {
-        bookname = bookname.split('.')[0];
-        const bookHolder = { [bookname]: {} };
+        bookName = bookName.split('.')[0];
+        const bookHolder = { [bookName]: {} };
         allBooks.map((eachBook, eachIndex) => {
           if (Object.prototype.hasOwnProperty.call(eachBook, 'title')
             && Object.prototype.hasOwnProperty.call(eachBook, 'text')) {
@@ -49,14 +48,15 @@ const InvertedIndex = class {
               const index = parseInt(eachIndex, 10) + 1;
               reject(`Document ${index} have an empty title or text.`);
             }
-            bookHolder[bookname][eachIndex] = {
+            bookHolder[bookName][eachIndex] = {
               title: eachBook.title.toLowerCase(),
               text: eachBook.text.toLowerCase(),
             };
           } else {
             const index = parseInt(eachIndex, 10) + 1;
-            reject(`No 'title' or 'text' in Document ${index} of ${bookname}`);
+            reject(`No 'title' or 'text' in Document ${index} of ${bookName}`);
           }
+          return this;
         });
         resolve(bookHolder);
       }
@@ -69,52 +69,60 @@ const InvertedIndex = class {
    * @return {String} sanitizedText - sanitized contents of each document
    */
   static tokenize(text) {
-    let sanitizedText = text.replace(/[^\w\s]+/gi, '');
-    sanitizedText = sanitizedText.replace(/\s\s+/g, ' ');
-    sanitizedText = sanitizedText.replace(/^[.\s]+|[.\s]+$/g, '');
-    return sanitizedText.toLowerCase();
-  }
-
-  setBookTitles(bookname, title) {
-    if (this.indexedBookTitles[bookname]) {
-      this.indexedBookTitles[bookname].push(title);
-    } else {
-      this.indexedBookTitles[bookname] = [];
-      this.indexedBookTitles[bookname].push(title);
-    }
+    return text.replace(/[^\w\s]/gi, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .toLowerCase();
   }
 
   /**
    * Creates a word array for each document in a book
+   * @param {String} bookName - name of a book to index
    * @param {Object} book - documents in a book
    * @return {Array.<Object>} bookContents - words in each document
    */
-  createsArray(bookname, book) {
+  createsArray(bookName, book) {
     const bookContents = [];
     Object.keys(book).map((documentPosition) => {
       const mergedTitleAndText = `${book[documentPosition].title} 
       ${book[documentPosition].text}`;
       bookContents.push(InvertedIndex.tokenize(mergedTitleAndText).split(' '));
-      this.setBookTitles(bookname, book[documentPosition].title);
+      this.setBookTitles(bookName, book[documentPosition].title);
+      return this;
     });
     return bookContents;
   }
 
   /**
+   * Sets title(s) for a book in an instance variable - indexedBookTitles
+   * @param {String} bookName - name of a book being indexed
+   * @param {String} title - a titlee in the book being indexed
+   * @returns {Void} indexedBookTitles - instance variable
+   */
+  setBookTitles(bookName, title) {
+    if (this.indexedBookTitles[bookName]) {
+      this.indexedBookTitles[bookName].push(title);
+    } else {
+      this.indexedBookTitles[bookName] = [];
+      this.indexedBookTitles[bookName].push(title);
+    }
+  }
+
+  /**
    * Creates the index for specified book
-   * @param {string} bookname - Name of book to be indexed
+   * @param {string} bookName - Name of book to be indexed
    * @param {object} book - document words in specified book
    * @return {Promise.<iDexMapper>} - indexes of specified book
    */
-  createIndex(bookname, book) {
+  createIndex(bookName, book) {
     const tokenIndex = {};
-    this.numberOfDocuments[bookname] = [];
-    const bookContents = this.createsArray(bookname, book);
+    this.numberOfDocuments[bookName] = [];
+    const bookContents = this.createsArray(bookName, book);
     return new Promise((resolve) => {
       bookContents.map((eachdocument, documentPosition) => {
         const documentPositionToInt = parseInt(documentPosition, 10);
-        this.numberOfDocuments[bookname].push(documentPositionToInt);
-        eachdocument.map((eachWord) => {
+        this.numberOfDocuments[bookName].push(documentPositionToInt);
+        return eachdocument.map((eachWord) => {
           if (tokenIndex[eachWord]) {
             if (tokenIndex[eachWord].indexOf(documentPositionToInt) === -1) {
               tokenIndex[eachWord].push(documentPositionToInt);
@@ -122,37 +130,39 @@ const InvertedIndex = class {
           } else {
             tokenIndex[eachWord] = [documentPositionToInt];
           }
+          return this;
         });
       });
-      this.iDexMapper[bookname] = tokenIndex;
-      resolve(this.iDexMapper[bookname]);
+      this.iDexMapper[bookName] = tokenIndex;
+      resolve(this.iDexMapper[bookName]);
     });
   }
 
   /**
    * Get’s indexes created for particular files
-   * @param {String} bookname - name of book to get its indexes
-   * @return {Object.<iDexMapper>} - indexes of specified bookname
+   * @param {String} bookName - name of book to get its indexes
+   * @return {Object.<iDexMapper>} - indexes of specified bookName
    */
-  getIndex(bookname) {
-    return this.iDexMapper[bookname];
+  getIndex(bookName) {
+    return this.iDexMapper[bookName];
   }
 
 /**
  * Searches through one or more indices for words
- * @param {String} bookname - name of book to search
+ * @param {String} bookName - name of book to search
  * @param {String} tokens - words to search
  * @return {Object.<searchResult>} - words in each book specified
  */
-  searchIndex(bookname, tokens) {
+  searchIndex(bookName, tokens) {
     tokens = tokens.split(' ');
     const allBooks = this.iDexMapper;
-    const bookToSearchName = bookname;
+    const bookToSearchName = bookName;
     const searchResult = [];
     if (bookToSearchName === 'allBooks') {
       Object.keys(allBooks).map((book) => {
         const search = this.getSearchResult(book, tokens);
         searchResult.push(search);
+        return searchResult;
       });
     } else {
       const search = this.getSearchResult(bookToSearchName, tokens);
@@ -163,19 +173,20 @@ const InvertedIndex = class {
 
   /**
    * Get search result for the specified book
-   * @param {String} bookname - name of book to search
+   * @param {String} bookName - name of book to search
    * @param {String} tokens - words to search
    * @return {Object<searchResult>} - words in specified books
    */
-  getSearchResult(bookname, tokens) {
+  getSearchResult(bookName, tokens) {
     const allBooks = this.iDexMapper;
-    if (!(allBooks[bookname])) {
+    if (!(allBooks[bookName])) {
       return false;
     }
     const searchResult = {};
-    searchResult[bookname] = {};
+    searchResult[bookName] = {};
     tokens.map((word) => {
-      searchResult[bookname][word] = allBooks[bookname][word] || [];
+      searchResult[bookName][word] = allBooks[bookName][word] || [];
+      return searchResult;
     });
     return searchResult;
   }
