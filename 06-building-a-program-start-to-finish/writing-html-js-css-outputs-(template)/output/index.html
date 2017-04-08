@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html ng-app="iDexApp">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iDex | Inverted Index Search</title>
+  <link rel='stylesheet' href="css/style.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/angular-toastr/dist/angular-toastr.css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.js"></script>
+  <link href="/images/logo.png" rel="icon" type="image/x-icon"/>
+</head>
+
+<body ng-controller="iicontroller" ng-cloak>
+
+  <nav class="navbar navbar-toggleable-md sticky-top navbar-light bg-faded">
+    <button class="navbar-toggler navbar-toggler-left" type="button" data-toggle="collapse" data-target="#iDexCollapse"
+        aria-controls="iDexCollapse" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="container">
+      <div class="col-md-2">
+        <a class="navbar-brand" href="#">iDex</a>
+      </div>
+
+      <div class="col-md-10">
+        <div class="collapse navbar-collapse row" id="iDexCollapse">
+          <div class="col-xs-4 col-sm-4 col-md-6">
+            <input class="form-control" type="search" placeholder="Search Idex" ng-model="searchToken" ng-change="doLiveSearch()"/>
+          </div>
+          <!--<br class="visible-xs visible-sm">-->
+          <div class="col-xs-4 col-sm-4 col-md-3">
+            <select class="form-control" ng-model="bookToSearch" ng-change="searchIndexButtonText()">
+              <option ng-repeat="bookTitle in bookTitles" value="{{ bookTitle }}">{{ bookTitle }}</option>
+              <option value="allBooks"  ng-if="bookTitles.length > 1"> All Books</option>
+            </select>
+          </div>
+          <!--<br class="visible-xs visible-sm">-->
+          <div class="col-xs-4 col-sm-4 col-md-3">
+            <button class="btn btn-primary btn-block" id="search-idex" ng-click="clickSearch()" type="button"><i class="fa fa-search"></i>  iDex</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container" style="margin-top: 40px">
+    <div class="row">
+      <div class="col-md-3 hidden-sm-down">
+        <div class="card">
+          <img class="card-img-top img-responsive" src="images/idex-card.jpg" alt="iDex - Find it, Index it">
+          <div class="card-block">
+            <h4 class="card-title text-center">Brief iDex guide</h4>
+            <div class="card-text">
+              <ul class="how-to-use-iiapp">
+                <li>Upload a Book (or multiple books) of .json file type</li>
+                <li>Select a particular book from the dropdown</li>
+                <li>Create and Index of words from the selected book </li>
+                <li>Search for word(s) in any of the indexed books</li>
+                <li>Sort your index to ease usage</li>
+                <li>Or enable live search via the <span style="color: red; cursor: pointer;" data-toggle="modal" data-target="#iiappModalSettings">menu</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="row hidden-sm-down">
+          <p style="margin: 0 auto">iDex &copy; 2017 <span class="text-center">Andela</span></p>
+        </div>
+      </div>
+
+      <div class="col-md-9">
+        <div class="row">
+          <div class="col-5 book-uploader">
+            <label class="btn btn-primary btn-block" type="file">
+              <i class="fa fa-upload"></i> Upload a book<input class="" type="file" style="display:none;" id="book-uploader" multiple input type="file" accept=".json" />
+            </label>
+          </div>
+
+          <div class="col book-selector">
+            <select class="form-control" id="fileTitles" ng-model="selectedBook" ng-change="createIndexButtonText()">
+                <option ng-repeat="bookTitle in bookTitles" value="{{ bookTitle }}">{{ bookTitle }}</option>
+                <option value="allBooks"  ng-if="bookTitles.length > 1"> All Books</option>
+              </select>
+          </div>
+
+          <div class="col book-indexer">
+            <button class="btn btn-block btn-primary" id="create-index" ng-click="buildIndex()"><i class="fa fa-user"></i> Hello there!</button>
+          </div>
+
+          
+          <div class="col-12" style="margin-top: 20px">
+            <!-- Begin Create Index table -->
+            <div class="table-responsive" ng-show="showIndexes">
+              <table class="table table-striped table-hover table-sm">
+                <thead class="thead-inverse">
+                  <th></th>
+                  <th>{{ selectedBook  | uppercase }}
+                    <button ng-click="toggleSort()" id="toggele-sort" class="btn btn-primary btn-sm btn-toggle">Toggle sort <i class="fa fa-arrows-v"></i></button>
+                    <button ng-click="buildIndex()" id="toggele-sortB" class="btn btn-primary btn-sm btn-toggle">Toggle sort <i class="fa fa-arrows-v"></i></button>
+                    </th>
+                  <tr>
+                    <th>#</th>
+                    <th> Tokens </th>
+                    <th ng-repeat="document in numberOfDocuments[selectedBook]">Document {{ document + 1 }}</th>
+                  </tr>
+                </thead>
+                <tr ng-repeat="(token, docPosition) in iiScopeHolder"> 
+                  <td> {{ $index + 1 +'.' }} </td>
+                  <td> {{ token }} </td>
+                  <td ng-repeat="index in numberOfDocuments[selectedBook]">
+                    <span ng-if="docPosition.includes(index)" class="fa fa-check text-success"></span>
+                    <span ng-if="docPosition.indexOf(index) == -1" class="fa fa-close text-danger"></span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <!-- End of Create Index Table -->
+
+            <!-- Begin Search Index table -->
+            <div ng-repeat="book in searchResult" class="table-responsive" ng-show="showSearches">
+              <table ng-repeat="(bookname, bookcontent) in book"class="table table-striped table-hover table-sm">
+                <thead class="thead-inverse">
+                  <th></th>
+                  <th>Search result for {{ bookname | uppercase }}</th>
+                  <tr>
+                    <th>#</th>
+                    <th> Token </th>
+                    <th ng-repeat="document in numberOfDocuments[bookname]">Document {{ document + 1 }}</th>
+                  </tr>
+                </thead>
+
+                <tr ng-repeat="(key, value) in bookcontent"> 
+                  <td> {{ $index + 1 +'.' }} </td>
+                  <td> {{ key }} </td>
+                  <td ng-repeat="document in numberOfDocuments[bookname]">
+                    <span ng-if="value.includes(document)" class="fa fa-check text-success"></span>
+                    <span ng-if="value.indexOf(document) == -1" class="fa fa-close text-danger"></span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <!-- End of Search Index Table -->
+          </div>
+        </div>
+      </div>
+        <p class="hidden-md-up" style="margin: 0 auto; text-align: center;">iDex &copy; 2017 <span class="text-center">Andela</span></p>
+    </div>
+  </div>
+
+<button type="button" class="btn btn-primary btn-circle btn-xl iDexBtnTools" data-toggle="modal" data-target="#iiappModalSettings"><i class="fa fa-list"></i></button>
+<button type="button" class="btn btn-primary btn-circle btn-xl iDexBtnInfo" data-toggle="modal" data-target="#iDexAbout"><i class="fa fa-info"></i></button>
+
+<div class="modal fade" id="iDexModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title navbar-brand">iDex</h5>
+      </div>
+      <div class="modal-body" id="modal-body" style="text-align: center;">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="iiappModalSettings" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title navbar-brand">iDex Settings</h5>
+      </div>
+      <div class="modal-body row" id="modal-setting-body" style="text-align: center;">
+        <p class="text-notice">
+          <strong>Note: </strong> These are one time actions. Be sure before you use any as an action may not be reverted.</p>
+         <div class="col-xs-6 col-sm-6 col-md-6">
+            <label class="custom-control btn btn-primary btn-block custom-checkbox mb-2 mr-sm-2 mb-sm-0 live-search">
+              <input type="checkbox" class="custom-control-input" checked="checked" ng-model="liveSearch" value="false">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description text-center"><i class="fa fa-magic"></i> Live search</span>
+            </label>
+          </div>
+          <div class="col-xs-6 col-sm-6 col-md-6">
+            <button ng-click="saveAllData()" class="btn btn-primary btn-block"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Save data</button>
+          </div>
+
+          <div class=""><br><br><br></div>
+          
+          <div class="col-xs-6 col-sm-6 col-md-6">
+            <button ng-click="loadAllData()" class="btn btn-primary btn-block"><i class="fa fa-cloud-download"></i> Load data</button>
+          </div>
+          <div class="col-xs-6 col-sm-6 col-md-6">
+            <button ng-click="deleteAllData()" class="btn btn-warning btn-block"><i class="fa fa-trash"></i> Delete data</button>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="iDexAbout" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title navbar-brand">About iDex</h5>
+      </div>
+      <div class="modal-body text-center text-justify" id="iDexAboutBody">
+        <p>
+          iDex
+        </p>
+        <p>
+          <blockquote class="blockquote-reverse">
+            In computer science, an inverted index (also referred to as postings file or inverted file)
+            is an index data structure storing a mapping from content, such as words or numbers, to its 
+            locations in a database file, or in a document or a set of documents (named in contrast to a 
+            Forward Index, which maps from documents to content). The purpose of an inverted index is to allow fast 
+            full text searches, at a cost of increased processing when a document is added to the database.
+            <footer class="blockquote-footer">Wikipedia <cite title="Inverted index">Inverted index</cite></footer>
+          </blockquote>
+        </p>
+        <h4 class="text-center">How to use iDex</h4>
+        <p>
+           <ul class="how-to-use-iiapp text-left" style="font-size: 16px; padding: 0 20px;">
+            <li>Upload a Book (or multiple books) of .json file type</li>
+            <li>Select a particular book from the dropdown</li>
+            <li>Create and Index of words from the selected book </li>
+            <li>Search for word(s) in any or all of the indexed books</li>
+            <li>Sort your indexes to ease usage</li>
+            <li>Or enable live search via the <span style="color: red; cursor: pointer;" data-toggle="modal" data-target="#iiappModalSettings">menu</span></li>
+            <li>Using the tools, save your indexes for later use</li>
+            <li>Or, load already saved indexes for later use</li>
+          </ul>
+        </p>
+        <p></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="https://rawgithub.com/gsklee/ngStorage/master/ngStorage.js"></script>
+  <script src="https://unpkg.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
+  <script src="lib/iDexApp.min.js"></script>
+  <script src="lib/services/utilityservice.min.js"></script>
+  <script src="lib/controllers/controller.min.js"></script>
+  <script src="lib/inverted-index.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://use.fontawesome.com/d12eecba89.js"></script>
+  <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+</body>
+</html>
