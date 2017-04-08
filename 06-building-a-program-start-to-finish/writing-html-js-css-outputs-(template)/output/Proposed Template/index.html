@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html ng-app="root">
+
+<head>
+  <title>Inverted Index</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet" type="text/css">
+  <link href="public/css/main.css" rel="stylesheet" type="text/css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.10.3/css/bootstrap-tour.css" rel="stylesheet" type="text/css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/angular-toastr/2.1.1/angular-toastr.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body ng-controller="invertedController" class="ng-cloak">
+  <header>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Inverted-Index-Webapp</a>
+        </div>
+        <button class="btn btn-primary navbar-btn" onclick="startTour()">Take a tour</button>
+        <form action="" class="navbar-form navbar-right">
+          <div class="form-group">
+            <select ng-model="searchFileName" id="uploadedFilesSearch" ng-change="searchIndex()" class="form-control">
+                <option value="" selected>select index</option>
+                <option>all</option>
+                <option ng-repeat="file in fileNames">{{ file }}</option>                     
+            </select>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input ng-model="searchKey" type="Search" placeholder="Type to search" class="form-control searchIndex" />
+              <div class="input-group-btn">
+                <button class="btn btn-primary">
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </nav>
+  </header>
+  <div class="container">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="well">
+            <div class="container-fluid">
+              <h1 class="text-center faq">FAQ</h1>
+              <hr>
+              <ol>
+                <li>What is a valid file format for this app?</li>
+                <ul>
+                  <li>It must be a .json file.</li>
+                  <li>It must be an array of objects.</li>
+                  <li>It must strictly have keys of "title" and "text" for each object.</li>
+                </ul>
+                <li>Why is my search index showing a blank page?</li>
+                <ul>
+                  <li>You need to create the index of a file before you can search the file.</li>
+                </ul>
+                <li>Can I upload multiple Files?</li>
+                <ul>
+                  <li>Yes you can.</li>
+                </ul>
+                <li>Can I search for multiple words</li>
+                <ul>
+                  <li>Yes you can.</li>
+                </ul>
+                <li>Can I search multiple files?</li>
+                <ul>
+                  <li>No you can't.</li>
+                </ul>
+                <li>I still dont know what this application does.</li>
+                <ul>
+                  <li>No problem, visit <a href="https://en.wikipedia.org/wiki/Inverted_index" target="_blank">Here</a> or
+                    <a href="https://www.elastic.co/guide/en/elasticsearch/guide/current/inverted-index.html" target="_blank">Here</a>.</li>
+                </ul>
+                <li>How do I learn to use this application.</li>
+                <ol>
+                  <li>You can take a tour of the app by clicking the "Take a tour" button.</li>
+                  <li>You can just play around with the application</li>
+                  <li>You can just <a href="#" onclick="startTour()">Click Here</a></li>
+                </ol>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="verticalLine">
+            <div class="row">
+              <div class="col-md-3 col-md-offset-1">
+                <form>
+                  <div class="row">
+                    <div class="form-group">
+                      <input type="file" id="fileInput" multiple accept=".json" style="display: none;" />
+                      <label class="btn btn-default form-control uploadLabel" for="fileInput">
+                        Select a file
+                      </label>
+                      <span class='label label-info' id="uploadFileInfo"></span>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group">
+                      <button ng-click="uploadFile()" class="btn btn-primary btn-sm uploadFile form-control">Upload File</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="col-md-6 col-md-offset-2">
+                <form>
+                  <div class="row">
+                    <div class="form-group">
+                      <button ng-click="createIndex()" class="btn btn-primary createIndex form-control">Create index</button>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group">
+                      <select ng-model="selectedFileName" ng-options="file for file in fileNames" id="uploadedFilesSelect" class="form-control">
+									</select>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <hr>
+            <!-- Show single table -->
+            <div ng-if="table1">
+              <div class="row">
+                <div class="col-md-9 col-md-offset-1">
+                  <table class="table table-hover" data-toggle="collapse">
+                    <thead class="thead-inverse">
+                      <tr>
+                        <th ng-if="docsMockTrue">Term</th>
+                        <th ng-repeat="docNo in docsMock track by $index" ng-if="docsMockTrue">
+                          Doc {{$index+1}}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="(value, occurences) in filteredData(searchKey)">
+                        <td ng-bind="value"></td>
+                        <td ng-repeat="present in occurences track by $index">
+                          <span class="green" ng-if="present == true"><i class="glyphicon glyphicon-ok"></i></span>
+                          <span class="red" ng-if="present == false"><i class="glyphicon glyphicon-remove"></i></span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- Show all table  -->
+            <div ng-if="table2">
+              <div class="row">
+                <div class="col-md-9 col-md-offset-1">
+                  <div ng-repeat="(fileName, tableVal) in searchAll">
+                    <h3 class="text-center text-primary">Showing Index for {{ fileName }}</h3>
+                    <table class="table table-hover">
+                      <thead class="thead-inverse">
+                        <tr>
+                          <th>Term</th>
+                          <th ng-repeat="x in getDocIndex(fileName) track by $index">
+                            Doc {{$index+1}}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="(key, value) in tableVal">
+                          <td>{{ key }}</td>
+                          <td ng-repeat="present in value track by $index">
+                            <span class="green" ng-if="present == true"><i class="glyphicon glyphicon-ok"></i></span>
+                            <span class="red" ng-if="present == false"><i class="glyphicon glyphicon-remove"></i></span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <br>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-resource.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-animate.js"></script>
+  <script src="public/js/angular-toastr.tpls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.10.3/js/bootstrap-tour.js"></script>
+  <script src="public/js/invertedIndex.js"></script>
+  <script src="public/js/tour.js"></script>
+  <script src="public/js/app.js"></script>
+
+</html>
