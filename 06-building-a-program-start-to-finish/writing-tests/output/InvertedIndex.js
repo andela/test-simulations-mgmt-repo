@@ -56,7 +56,7 @@ const InvertedIndex = class {
             const index = parseInt(eachIndex, 10) + 1;
             reject(`No 'title' or 'text' in Document ${index} of ${bookName}`);
           }
-          return this;
+          return bookHolder;
         });
         resolve(bookHolder);
       }
@@ -88,7 +88,7 @@ const InvertedIndex = class {
       ${book[documentPosition].text}`;
       bookContents.push(InvertedIndex.tokenize(mergedTitleAndText).split(' '));
       this.setBookTitles(bookName, book[documentPosition].title);
-      return this;
+      return bookContents;
     });
     return bookContents;
   }
@@ -130,7 +130,7 @@ const InvertedIndex = class {
           } else {
             tokenIndex[eachWord] = [documentPositionToInt];
           }
-          return this;
+          return tokenIndex[eachWord];
         });
       });
       this.iDexMapper[bookName] = tokenIndex;
