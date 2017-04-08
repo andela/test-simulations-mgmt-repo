@@ -1,15 +1,10 @@
-// book with valid contents
 const validBook = require('./test/testFiles/validBook.json');
-// book with invalid content
+const validBook2 = require('./test/testFiles/validBook2.json');
 const invalidBook = require('./test/testFiles/invalidBook.json');
-// empty book
 const emptyBook = require('./test/testFiles/emptyBook.json');
-// empty book
 const malformedBook = require('./test/testFiles/malformedBook.json');
-// book with few words
 const smallValidBook = require('./test/testFiles/smallValidBook.json');
-// Inverted Index class file
-const InvertedIndex = require('../src/js/inverted-index.js').InvertedIndex;
+const InvertedIndex = require('../src/js/InvertedIndex.js').InvertedIndex;
 
 const invertedIndex = new InvertedIndex();
 
@@ -31,12 +26,12 @@ describe('InvertedIndex class', () => {
       expect(typeof InvertedIndex.uniqueWords).toBe('function');
     });
 
-    it('should check that the class has a tokenizeWords method', () => {
-      expect(typeof InvertedIndex.tokenizeWords).toBe('function');
+    it('should check that the class has a tokenizeText method', () => {
+      expect(typeof InvertedIndex.tokenizeText).toBe('function');
     });
 
-    it('should check that the class has a splitAndSort method', () => {
-      expect(typeof InvertedIndex.splitAndSort).toBe('function');
+    it('should check that the class has a removeBadCharacters method', () => {
+      expect(typeof InvertedIndex.removeBadCharacters).toBe('function');
     });
 
     it('should check that the class has a getIndex method', () => {
@@ -47,10 +42,22 @@ describe('InvertedIndex class', () => {
       expect(typeof invertedIndex.searchIndex).toBe('function');
     });
   });
-  describe('Validate File', () => {
+
+  describe('The validateFile method', () => {
     it('should check that the contents of the uploaded file is valid',
     () => {
-      expect(InvertedIndex.validateFile(validBook)).toBeTruthy();
+      const msg = { status: true,
+        jsonContent:
+        [{ title: 'Alice in Wonderland',
+          text: 'Alice falls into a rabbit hole and enters a world '
+          + 'full of imagination.' },
+        { title: 'The Lord of the Rings: The Fellowship of the Ring.',
+          text: 'An unusual alliance of man, elf, dwarf, wizard and hobbit '
+          + 'seek to destroy a powerful ring.' },
+        { title: 'The Lord of the Rings: The Fellowship of.',
+          text: 'An unusual alliance of man, elf, dwarf, wizard and hobbit '
+          + 'seek to destroy a powerful ring.' }] };
+      expect(InvertedIndex.validateFile(validBook)).toEqual(msg);
     });
 
     it('should return false for empty json files', () => {
@@ -62,25 +69,35 @@ describe('InvertedIndex class', () => {
     it('should return true for files with property "title" and "text" ', () => {
       const successMsg = { status: true,
         jsonContent:
-        [Object({ title: 'Alice in Wonderland',
-          text: 'Alice falls into a rabbit hole.' }),
-          Object({ title: 'The Lord of the Rings',
-            text: 'An unusual alliance of man.' }),
-          Object({ title: 'The Lord of the Rings:',
-            text: 'An unusual alliance of man.' })
-        ] };
+        [
+          {
+            title: 'Alice in Wonderland',
+            text: 'Alice falls into a rabbit hole.'
+          },
+
+          {
+            title: 'The Lord of the Rings',
+            text: 'An unusual alliance of man.'
+          },
+          {
+            title: 'The Lords of the Rings',
+            text: 'An unusual alliance of man.'
+          }
+        ]
+      };
       expect(InvertedIndex.validateFile(smallValidBook)).toEqual(successMsg);
     });
 
     it('should return false for files without "title" and "text" properties',
      () => {
-       const msg = false;
+       const msg = { status: false };
        expect(InvertedIndex.validateFile(invalidBook)).toEqual(msg);
      });
 
     it('should return false if file is not an array of JSON object',
      () => {
-       expect(InvertedIndex.validateFile(invalidBook)).toBeFalsy();
+       const msg = { status: false };
+       expect(InvertedIndex.validateFile(invalidBook)).toEqual(msg);
      });
 
     it('should return false if file contains an empty array',
@@ -90,10 +107,11 @@ describe('InvertedIndex class', () => {
      });
   });
 
-  describe('Create Index', () => {
+  describe('The createIndex method', () => {
     it('should return mapped indices to words in a JSON file', () => {
-      const expectedResult =
-        { 'smallValidBook.json':
+      invertedIndex.createIndex(validBook2, 'validBook2.json');
+      invertedIndex.createIndex(smallValidBook, 'smallValidBook.json');
+      const result =
         { a: [0],
           alice: [0],
           falls: [0],
@@ -104,27 +122,34 @@ describe('InvertedIndex class', () => {
           wonderland: [0],
           alliance: [1, 2],
           an: [1, 2],
-          lord: [1, 2],
-          man: [1, 2],
+          man: [1],
           of: [1, 2],
-          rings: [1, 2],
+          rings: [1],
           the: [1, 2],
-          unusual: [1, 2] } };
-      expect(invertedIndex.createIndex(smallValidBook,
-        'smallValidBook.json')).toEqual(expectedResult);
+          unusual: [1, 2],
+          lords: [2],
+          rocks: [2] };
+      expect(invertedIndex.getIndex('validBook2.json')).toEqual(result);
     });
   });
 
-  describe('Tokenize Words', () => {
-    it('should strip out special characters from excerpt in documents', () => {
-      let excerpt = 'Alice loves her ima&&gination';
-      const expectedTokens = 'Alice loves her imagination';
-      excerpt = InvertedIndex.tokenizeWords(excerpt);
-      expect(expectedTokens).toEqual(excerpt);
+  describe('The removeBadCharacters method', () => {
+    it('should strip out special characters from strings in documents', () => {
+      let text = 'Alice loves her ima&&gination';
+      const expectedString = 'Alice loves her imagination';
+      text = InvertedIndex.removeBadCharacters(text);
+      expect(expectedString).toEqual(text);
     });
   });
 
-  describe('Unique Words', () => {
+  describe('The readFile method', () => {
+    it('should return true if content was read from a valid JSON file', () => {
+      expect(InvertedIndex.readFile('smallValidBook.json'))
+        .toBeTruthy();
+    });
+  });
+
+  describe('The UniqueWords method', () => {
     it('should ensure that a word is not repeated, for proper indexing', () => {
       let excerpt = ['alice', 'alice', 'be', 'called', 'loves', 'loves'];
       const expectedWords = ['alice', 'be', 'called', 'loves'];
@@ -133,26 +158,38 @@ describe('InvertedIndex class', () => {
     });
   });
 
-  describe('splitAndSort Words', () => {
-    it('should make all words lowercase, then it'
-    + 'should ensure that sentences are splitted into an array of words,'
-    + 'then sorted alphabetically to make searching more intuitive'
-    + 'and make indexing more accurate', () => {
-      let excerpt = 'The Lord of the Rings';
+  describe('The tokenizeText method', () => {
+    it('should make all words lowercase', () => {
+      let words = 'THE LORD OF THE RINGS';
       const expectedResult = ['lord', 'of', 'rings', 'the'];
-      excerpt = InvertedIndex.splitAndSort(excerpt);
+      words = InvertedIndex.tokenizeText(words);
+      expect(expectedResult).toEqual(words);
+    });
+
+    it('should ensure that sentences are splitted into an array of words'
+    , () => {
+      let excerpt = 'Alice in Wonderland';
+      const expectedResult = ['alice', 'in', 'wonderland'];
+      excerpt = InvertedIndex.tokenizeText(excerpt);
+      expect(expectedResult).toEqual(excerpt);
+    });
+
+    it('should sort words alphabetically', () => {
+      let excerpt = 'The Rings of the Lords';
+      const expectedResult = ['lords', 'of', 'rings', 'the'];
+      excerpt = InvertedIndex.tokenizeText(excerpt);
       expect(expectedResult).toEqual(excerpt);
     });
   });
 
-  describe('Get Index', () => {
+  describe('The getIndex method', () => {
     it('should verify that index has been created', () => {
       expect(Object.keys(invertedIndex.getIndex('smallValidBook.json')).length)
         .toBeGreaterThan(0);
     });
   });
 
-  describe('Search index', () => {
+  describe('The searchIndex method', () => {
     describe('Search index of words', () => {
       it('should return true if search term is a string', () => {
         const term = 'Wonderland of rings';
@@ -187,17 +224,20 @@ describe('InvertedIndex class', () => {
       });
 
       it('should search through all files that are indexed', () => {
-        const output = {
-          'smallValidBook.json':
-          {
-            alice: [0],
+        const output =
+          { 'smallValidBook.json':
+          { alice: [0],
             and: [],
             her: [],
             imagination: [],
-            unusual: [1, 2]
-          }
-
-        };
+            unusual: [1, 2] },
+            'validBook2.json':
+            { alice: [0],
+              and: [],
+              her: [],
+              imagination: [],
+              unusual: [1, 2]
+            } };
         let term = {};
         term = invertedIndex.searchIndex('Alice, and her unusual imagination',
         'All');

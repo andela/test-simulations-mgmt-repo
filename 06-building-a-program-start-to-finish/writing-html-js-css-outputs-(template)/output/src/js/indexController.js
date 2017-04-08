@@ -2,40 +2,40 @@ const app = angular.module('angular', []);
 app.controller('index', ['$scope', 'alertFactory', ($scope, alertFactory) => {
   $scope.result = '';
   $scope.content = {};
-  $scope.docCount = {};
+  $scope.documentCount = {};
   $scope.titles = {};
   $scope.showIndex = false;
   $scope.showSearch = false;
 
   const invertedIndex = new InvertedIndex();
 
-  // function to read content from each file and validate JSON content structure
+// function to read content from each file and validate JSON content structure
   $scope.validateFiles = () => {
-    const badExt = [];
-    const goodExt = [];
+    const badExtention = [];
+    const goodExtention = [];
     const fileInput = document.getElementById('fUpload');
     Object.keys(fileInput.files).forEach((file) => {
       const eachFile = fileInput.files[file];
       if (!eachFile.name.toLowerCase().match(/\.json$/)) {
-        badExt.push(eachFile.name);
+        badExtention.push(eachFile.name);
       } else {
         try {
-          goodExt.push(eachFile.name);
+          goodExtention.push(eachFile.name);
           InvertedIndex.readFile(eachFile).then((response) => {
             if (response.status) {
               $scope.content[eachFile.name] = response.jsonContent;
-              const docTitles = [];
+              const documentTitles = [];
               const count = [];
               let index = 0;
               response.jsonContent.forEach((doc) => {
-                docTitles.push(doc.title);
+                documentTitles.push(doc.title);
                 count.push(index);
                 index += 1;
               });
-              $scope.titles[eachFile.name] = docTitles;
-              $scope.docCount[eachFile.name] = count;
+              $scope.titles[eachFile.name] = documentTitles;
+              $scope.documentCount[eachFile.name] = count;
             } else {
-              alertFactory.error('Unable to read thatt file', error);
+              alertFactory.error('Unable to read that file', error);
             }
           }).catch((error) => {
             alertFactory.error('Unable to read file', error);
@@ -46,19 +46,19 @@ app.controller('index', ['$scope', 'alertFactory', ($scope, alertFactory) => {
         }
       }
     });
-    badExt.forEach((ext) => {
+    badExtention.forEach((ext) => {
       alertFactory.error(`Bad Extension: ${ext}`);
     });
-    goodExt.forEach((ext) => {
+    goodExtention.forEach((ext) => {
       alertFactory.success(`Good Extension(s): ${ext}`);
     });
   };
 
   $scope.createBookIndex = () => {
-    Object.keys($scope.content).forEach((filename) => {
+    Object.keys($scope.content).forEach((fileName) => {
       try {
         $scope.fileIndices = invertedIndex
-          .createIndex($scope.content[filename], filename);
+        .createIndex($scope.content[fileName], fileName);
         $scope.showIndex = true;
         $scope.showSearch = false;
       } catch (err) {
@@ -74,7 +74,6 @@ app.controller('index', ['$scope', 'alertFactory', ($scope, alertFactory) => {
     if (searchInput === undefined && searchBook !== undefined) {
       searchFeedback = invertedIndex.getIndex(searchBook);
     } else if (searchInput !== undefined && searchBook !== undefined) {
-      // try {
       if (searchBook === 'All') {
         $scope.searchFeedback = invertedIndex
           .searchIndex(searchInput, searchBook);
@@ -86,9 +85,6 @@ app.controller('index', ['$scope', 'alertFactory', ($scope, alertFactory) => {
         $scope.showIndex = false;
         $scope.showSearch = true;
       }
-      // } catch (err) {
-      //   alertFactory.error('Unable to search file', err);
-      // }
     } else { return 'Please select a file to search for words'; }
   };
 }]);

@@ -22,6 +22,7 @@
     <list>
         <p>About this application!</p>
         <p>To create an inverted index for your books/files</p>
+        <li>Ensure your files are in '.json' format</li>
         <li>Click 'Upload File</li>
         <li>Click 'Create Index'</li>
         <li>View indices below</li>
@@ -40,13 +41,13 @@
             <label for='fUpload'> select files: </label>
             <input type="file" id="fUpload" onchange="angular.element(this).scope().validateFiles()" multiple accept=".json"><br>
             <!--<input ng-model="upload" type="button" id="upload" name="upload" value="Upload><br><br>-->
-            <button id="create-index" name="create-index" ng-click="createBookIndex()">Create Index</button><br>
+            <button id="create-index" name="create-index" ng-click="createBookIndex()" ng-cloak>Create Index</button><br>
         </div>
         <div id='selectBooks'>
             <label>Select Book:</label>
             <select ng-model ="bookList">
                  <option >All</option>
-             <option ng-repeat="(filename, filecontent) in content">{{filename}}</option>
+             <option ng-repeat="(filename, filecontent) in content" ng-cloak>{{filename}}</option>
              </select>
             <span>
             Search words:<input type="search" ng-model="search" name="search">
@@ -57,19 +58,19 @@
     <div id='result'>
         <!--<div id="user-output">-->
     <div id= "user-output" ng-show='showIndex' ng-repeat="(filename, filedata) in fileIndices">
-        <p id='paragraph'><b>{{filename}}</b></p>
+        <p id='paragraph' ng-cloak><b>{{filename}}</b></p>
         <table>
             <thead>
                 <tr>
                     <th>Words</th>
-                    <th ng-repeat='title in titles[filename]'>{{title}}</th>
+                    <th ng-repeat='title in titles[filename]' ng-cloak>{{title}}</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr ng-repeat="(key, values) in filedata">
-                    <td> {{key}} </td>
-                    <td ng-repeat="number in docCount[filename]">
-                        <span ng-if="values.includes(number) == true">
+            <tbody ng-cloak>
+                <tr ng-repeat="(key, values) in filedata" >
+                    <td ng-cloak> {{key}} </td>
+                    <td ng-repeat="number in documentCount[filename]" ng-cloak>
+                        <span ng-if="values.includes(number) == true" ng-cloak>
                             <span class="glyphicon glyphicon-ok" aria-hidden="true">√</span>
                             <!--<span aria-hidden="true"> YES </span>-->
                         </span>
@@ -83,19 +84,19 @@
         </table>
     </div>
     <div id= "user-output" ng-show='showSearch' ng-repeat="(filename, filedata) in searchFeedback">
-        <p id='paragraph'><b>{{filename}}</b></p>
+        <p id='paragraph' ng-cloak><b>{{filename}}</b></p>
         <table>
             <thead>
                 <tr>
                     <th>Words</th>
-                    <th ng-repeat='title in titles[filename]'>{{title}}</th>
+                    <th ng-repeat='title in titles[filename]' ng-cloak>{{title}}</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody ng-cloak> 
                 <tr ng-repeat="(key, values) in filedata">
-                    <td> {{key}} </td>
-                    <td ng-repeat="number in docCount[filename]">
-                        <span ng-if="values.includes(number) == true">
+                    <td ng-cloak>  {{key}} </td>
+                    <td ng-repeat="number in documentCount[filename]" ng-cloak>
+                        <span ng-if="values.includes(number) == true" ng-cloak>
                             <span class="glyphicon glyphicon-ok" aria-hidden="true">√</span>
                             <!--<span aria-hidden="true"> YES </span>-->
                         </span>
@@ -112,7 +113,7 @@
     <div id="footer">Copyright &copy; FAM.com</div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://code.angularjs.org/1.3.0-rc.1/angular.min.js"></script>
-    <script src="js/inverted-index.js"></script>
+    <script src="js/InvertedIndex.js"></script>
     <script src="js/indexController.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     </div>
