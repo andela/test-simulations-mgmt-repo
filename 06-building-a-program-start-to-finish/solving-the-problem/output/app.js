@@ -15,7 +15,8 @@ angular.module('root', ['ngAnimate', 'toastr'])
       $scope.uploadedFileName =
       getSelectedFile.options[getSelectedFile.selectedIndex].text;
       if ($scope.uploadedFileName === '') {
-        toastr.error('Please select a file and click Create index', 'Error');
+        return toastr.error(`Please select a file and 
+        click Create index`, 'Error');
       }
       const selectedFile = $scope.fileStore[$scope.uploadedFileName];
       const uniqueTerms =
@@ -38,8 +39,9 @@ angular.module('root', ['ngAnimate', 'toastr'])
       $scope.indexedFile = invertedIndex.getIndex($scope.searchFileName);
       if (angular.isUndefined($scope.indexedFile) &&
       $scope.searchFileName !== 'all') {
-        toastr.info('You must Create the Index of a file to search it', 'Info');
         $scope.docsMockTrue = false;
+        return toastr.info(`You must Create the Index of a 
+        file to search it`, 'Info');
       } else if ($scope.searchFileName === 'all') {
         $scope.searchAll = invertedIndex.searchIndex('', 'all');
         $scope.table1 = false;
@@ -57,7 +59,8 @@ angular.module('root', ['ngAnimate', 'toastr'])
       const fileInput = document.getElementById('fileInput');
       const fileLength = fileInput.files.length;
       if (fileLength === 0) {
-        toastr.error('select a valid JSON file and click Upload', 'Error');
+        return toastr.error(`select a valid JSON 
+        file and click Upload`, 'Error');
       }
       for (let i = 0; i < fileLength; i += 1) {
         const fileName = fileInput.files[i].name;
