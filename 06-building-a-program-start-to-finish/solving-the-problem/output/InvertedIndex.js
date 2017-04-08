@@ -8,7 +8,7 @@ const InvertedIndex = class {
    * @constructor
    */
   constructor() {
-    this.iDexMapper = {};
+    this.allIndexedBooks = {};
     this.numberOfDocuments = {};
     this.unIndexedBooks = {};
     this.indexedBookTitles = {};
@@ -41,7 +41,7 @@ const InvertedIndex = class {
       } else {
         bookName = bookName.split('.')[0];
         const bookHolder = { [bookName]: {} };
-        allBooks.map((eachBook, eachIndex) => {
+        allBooks.forEach((eachBook, eachIndex) => {
           if (Object.prototype.hasOwnProperty.call(eachBook, 'title')
             && Object.prototype.hasOwnProperty.call(eachBook, 'text')) {
             if ((eachBook.title).length < 1 || (eachBook.text).length < 1) {
@@ -56,7 +56,6 @@ const InvertedIndex = class {
             const index = parseInt(eachIndex, 10) + 1;
             reject(`No 'title' or 'text' in Document ${index} of ${bookName}`);
           }
-          return bookHolder;
         });
         resolve(bookHolder);
       }
@@ -83,12 +82,11 @@ const InvertedIndex = class {
    */
   createsArray(bookName, book) {
     const bookContents = [];
-    Object.keys(book).map((documentPosition) => {
+    Object.keys(book).forEach((documentPosition) => {
       const mergedTitleAndText = `${book[documentPosition].title} 
       ${book[documentPosition].text}`;
       bookContents.push(InvertedIndex.tokenize(mergedTitleAndText).split(' '));
       this.setBookTitles(bookName, book[documentPosition].title);
-      return bookContents;
     });
     return bookContents;
   }
@@ -119,10 +117,10 @@ const InvertedIndex = class {
     this.numberOfDocuments[bookName] = [];
     const bookContents = this.createsArray(bookName, book);
     return new Promise((resolve) => {
-      bookContents.map((eachdocument, documentPosition) => {
+      bookContents.forEach((eachdocument, documentPosition) => {
         const documentPositionToInt = parseInt(documentPosition, 10);
         this.numberOfDocuments[bookName].push(documentPositionToInt);
-        return eachdocument.map((eachWord) => {
+        eachdocument.forEach((eachWord) => {
           if (tokenIndex[eachWord]) {
             if (tokenIndex[eachWord].indexOf(documentPositionToInt) === -1) {
               tokenIndex[eachWord].push(documentPositionToInt);
@@ -130,11 +128,10 @@ const InvertedIndex = class {
           } else {
             tokenIndex[eachWord] = [documentPositionToInt];
           }
-          return tokenIndex[eachWord];
         });
       });
-      this.iDexMapper[bookName] = tokenIndex;
-      resolve(this.iDexMapper[bookName]);
+      this.allIndexedBooks[bookName] = tokenIndex;
+      resolve(this.allIndexedBooks[bookName]);
     });
   }
 
@@ -144,7 +141,7 @@ const InvertedIndex = class {
    * @return {Object.<iDexMapper>} - indexes of specified bookName
    */
   getIndex(bookName) {
-    return this.iDexMapper[bookName];
+    return this.allIndexedBooks[bookName];
   }
 
 /**
@@ -155,14 +152,13 @@ const InvertedIndex = class {
  */
   searchIndex(bookName, tokens) {
     tokens = tokens.split(' ');
-    const allBooks = this.iDexMapper;
+    const allBooks = this.allIndexedBooks;
     const bookToSearchName = bookName;
     const searchResult = [];
     if (bookToSearchName === 'allBooks') {
-      Object.keys(allBooks).map((book) => {
+      Object.keys(allBooks).forEach((book) => {
         const search = this.getSearchResult(book, tokens);
         searchResult.push(search);
-        return searchResult;
       });
     } else {
       const search = this.getSearchResult(bookToSearchName, tokens);
@@ -178,15 +174,14 @@ const InvertedIndex = class {
    * @return {Object<searchResult>} - words in specified books
    */
   getSearchResult(bookName, tokens) {
-    const allBooks = this.iDexMapper;
+    const allBooks = this.allIndexedBooks;
     if (!(allBooks[bookName])) {
       return false;
     }
     const searchResult = {};
     searchResult[bookName] = {};
-    tokens.map((word) => {
+    tokens.forEach((word) => {
       searchResult[bookName][word] = allBooks[bookName][word] || [];
-      return searchResult;
     });
     return searchResult;
   }

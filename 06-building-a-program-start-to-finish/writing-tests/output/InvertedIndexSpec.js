@@ -256,11 +256,12 @@ describe('iDex Inverted Index', () => {
           living: [1] });
       });
 
-    it('should be able to retreive single words from a book already indexed', () => {
-      expect(invertedIndex.getIndex('books').complex).toEqual([1]);
-      expect(invertedIndex.getIndex('books').rationality).toEqual([0]);
-      expect(invertedIndex.getIndex('books').facial).toEqual([1]);
-    });
+    it('should be able to retreive single words from a book already indexed',
+      () => {
+        expect(invertedIndex.getIndex('books').complex).toEqual([1]);
+        expect(invertedIndex.getIndex('books').rationality).toEqual([0]);
+        expect(invertedIndex.getIndex('books').facial).toEqual([1]);
+      });
 
     it('should return an `undefined` for unavailable words', () => {
       expect(invertedIndex.getIndex('books').africa).toBeUndefined();
