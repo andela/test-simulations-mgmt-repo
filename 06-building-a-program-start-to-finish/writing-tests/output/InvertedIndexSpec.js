@@ -60,7 +60,7 @@ describe('iDex Inverted Index', () => {
   });
 
   describe('The validateFile method', () => {
-    describe('ensures each document is valid', () => {
+    describe('given a file with no "title" or "text" properties', () => {
       let result = '';
       beforeEach((done) => {
         InvertedIndex.validateFile(bookBadJson, 'bookBadJson.json')
@@ -69,14 +69,14 @@ describe('iDex Inverted Index', () => {
           done();
         });
       });
-      it('should have a `title` and `text` properties', () => {
+      it('should return an appropriate message', () => {
         const expected = "No 'title' or 'text' in Document 1 of bookBadJson";
         expect(result).toBe(expected);
         expect(typeof result).toBe('string');
       });
     });
 
-    describe('title and text properties must have valid contents', () => {
+    describe('given a file with empty "title" OR "text" properties', () => {
       let result = '';
       beforeEach((done) => {
         InvertedIndex.validateFile(booksInvalidContent, 'booksInvalidContent')
@@ -85,28 +85,29 @@ describe('iDex Inverted Index', () => {
           done();
         });
       });
-      it('both title and text must contain values', () => {
+      it('should return an appropriate message', () => {
         expect(result).toBe('Document 1 have an empty title or text.');
         expect(typeof result).toBe('string');
       });
     });
 
-    describe('title and text properties must have valid contents', () => {
-      let result = '';
-      beforeEach((done) => {
-        InvertedIndex.validateFile(bookEmptyJson, 'bookEmptyJson.json')
+    describe('given a file with no/invalid properties OR property values',
+      () => {
+        let result = '';
+        beforeEach((done) => {
+          InvertedIndex.validateFile(bookEmptyJson, 'bookEmptyJson.json')
         .catch((error) => {
           result = error;
           done();
         });
+        });
+        it('should return `Cannot index an empty object`', () => {
+          expect(result).toBe('Cannot index an empty object');
+          expect(typeof result).toBe('string');
+        });
       });
-      it('both title and text must contain values', () => {
-        expect(result).toBe('Cannot index an empty object');
-        expect(typeof result).toBe('string');
-      });
-    });
 
-    describe('title and text properties must have valid contents', () => {
+    describe('given a file with valid content', () => {
       let result = '';
       beforeEach((done) => {
         InvertedIndex.validateFile(books, 'books.json')
@@ -115,7 +116,7 @@ describe('iDex Inverted Index', () => {
           done();
         });
       });
-      it('both title and text must contain values', () => {
+      it('should return validated object with all document', () => {
         expect(result).toEqual({ books: {
           0: {
             title: result.books['0'].title,
@@ -141,7 +142,7 @@ describe('iDex Inverted Index', () => {
       expect(InvertedIndex.tokenize(txt).length).toBe(expected.length);
     });
 
-    it('should return  only lowercase letters', () => {
+    it('should return only lowercase letters', () => {
       const txt = '  ThIS!@#*$($)%) is a \t REALLY  \n RanDOm#*! stRinG )#...';
       const expected = 'this is a really random string';
       expect(InvertedIndex.tokenize(txt)).toEqual(expected);
@@ -255,13 +256,13 @@ describe('iDex Inverted Index', () => {
           living: [1] });
       });
 
-    it('should retreive all indexes of a book already indexed', () => {
+    it('should be able to retreive single words from a book already indexed', () => {
       expect(invertedIndex.getIndex('books').complex).toEqual([1]);
       expect(invertedIndex.getIndex('books').rationality).toEqual([0]);
       expect(invertedIndex.getIndex('books').facial).toEqual([1]);
     });
 
-    it('should return an undefined for unavailable words', () => {
+    it('should return an `undefined` for unavailable words', () => {
       expect(invertedIndex.getIndex('books').africa).toBeUndefined();
       expect(invertedIndex.getIndex('books').andela).toBeUndefined();
       expect(invertedIndex.getIndex('books').tdd).toBeUndefined();
@@ -269,7 +270,7 @@ describe('iDex Inverted Index', () => {
   });
 
   describe('The searchIndex method', () => {
-    it('should return an empty result if no token was searched for', () => {
+    it('should return an empty `array` if no token was searched for', () => {
       expect(invertedIndex.searchIndex('books', '')).toEqual([{
         books: {
           '': [],
@@ -277,7 +278,7 @@ describe('iDex Inverted Index', () => {
       }]);
     });
 
-    it('should return appropriate result', () => {
+    it('should return appropriate result with valid words', () => {
       expect(invertedIndex.searchIndex('books', 'complex read animals'))
         .toEqual([{
           books: {
