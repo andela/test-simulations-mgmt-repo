@@ -12,12 +12,12 @@ class InvertedIndex {
   }
   /**
    * Set Index - Sets the indices of all indexed files
-   * @param {String} filename - Name of the indexed file
+   * @param {String} fileName - Name of the indexed file
    * @param {Object} indices - Indices of the file
    * @return {Object} Indexed file name and it's indices'
   **/
-  setIndex(filename, indices) {
-    this.fileIndices[filename] = indices;
+  setIndex(fileName, indices) {
+    this.fileIndices[fileName] = indices;
   }
   /**
    * Validate File
@@ -33,7 +33,7 @@ class InvertedIndex {
       const item = file[i];
       if (!(Object.prototype.hasOwnProperty.call(item, 'title') &&
       (Object.prototype.hasOwnProperty.call(item, 'text')) &&
-      item.title.length > 0 && item.text.length > 0)) {
+      (item.title.length > 0) && (item.text.length > 0))) {
         return false;
       }
     }
@@ -47,31 +47,30 @@ class InvertedIndex {
   **/
   static tokenize(text) {
     const remove = /[^\w'\s]|('\s)/g;
-    const lowerCase = text.replace(remove, ' ').toLowerCase();
-    const divideText = lowerCase.split(' ');
-    const sortedText = divideText.sort();
-    return sortedText.filter(item => Boolean(item));
+    return text.replace(remove, ' ').toLowerCase()
+      .split(' ').sort()
+      .filter(item => Boolean(item));
   }
   /**
    * Create Index
    * It creates the index of a file
    * @param {String} fileName - Filename of the file to be indexed
    * @param {Object} fileContent - Content of the uploaded file
-   * @return {Object} An object of each word and their indices in a sorted way
+   * @return {String} A message if the index is created or not
   **/
   createIndex(fileName, fileContent) {
     const indices = {};
     if (InvertedIndex.validateFile(fileContent)) {
-      fileContent.forEach((doc, docIndex) => {
-        const word = `${doc.title} ${doc.text}`;
+      fileContent.forEach((document, documentIndex) => {
+        const word = `${document.title} ${document.text}`;
         const tokenized = InvertedIndex.tokenize(word);
         tokenized.forEach((token) => {
           if (token in indices) {
-            if (indices[token].indexOf(docIndex) === -1) {
-              indices[token].push(docIndex);
+            if (indices[token].indexOf(documentIndex) === -1) {
+              indices[token].push(documentIndex);
             }
           } else {
-            indices[token] = [docIndex];
+            indices[token] = [documentIndex];
           }
         });
       });
@@ -83,14 +82,14 @@ class InvertedIndex {
   /**
    * Get Index
    * It gets the index of a specified filename
-   * @param {String} filename - Filename of the index to get
+   * @param {String} fileName - Filename of the index to get
    * @return {Object} An object of each word and their indices in a sorted way
   **/
-  getIndex(filename) {
+  getIndex(fileName) {
     const result = {};
-    const tokens = Object.keys(this.fileIndices[filename]).sort();
+    const tokens = Object.keys(this.fileIndices[fileName]).sort();
     tokens.forEach((token) => {
-      result[token] = this.fileIndices[filename][token];
+      result[token] = this.fileIndices[fileName][token];
     });
     return result;
   }
@@ -98,23 +97,23 @@ class InvertedIndex {
    * Search Index
    * It searches through file(s)
    * @param {String} searchTerm - words to search
-   * @param {String} filename - Filename of the index to get
+   * @param {String} fileName - Filename of the index to get
    * @return {Object} Displays table of search result
   **/
-  searchIndex(searchTerm, filename) {
+  searchIndex(searchTerm, fileName) {
     let searchResult = {};
     const searchIndices = {};
     const tokenizedTerms = InvertedIndex.tokenize(searchTerm);
     let index;
-    if (filename !== 'All files') {
+    if (fileName !== 'All files') {
       // Search single file with filename
-      index = this.fileIndices[filename];
+      index = this.fileIndices[fileName];
       tokenizedTerms.forEach((term) => {
         if (index[term]) {
           searchResult[term] = index[term];
         }
       });
-      searchIndices[filename] = searchResult;
+      searchIndices[fileName] = searchResult;
       return searchIndices;
     }
     // Search all files
