@@ -17,8 +17,7 @@ class InvertedIndex {
    * @return {promise} - promise object to be acted on if file
    * reading is succesful or not
    */
-  readFile(file, fileName) {
-    this.file = file;
+  static readFile(file, fileName) {
     const validJson = /.+\.json$/;
 
     if (!validJson.exec(fileName)) {
@@ -40,22 +39,21 @@ class InvertedIndex {
         resolve(fileContent);
       };
 
-      fileReader.readAsText(this.file);
+      fileReader.readAsText(file);
     });
   }
 
   /**
    * @desc validateFile: Checks if documents
    *  in object have the specified structure of title and text keys
-   * @param {Object} file
+   * @param {Object} fileContent
    * - the object to validate for required structure
    * @throws
    * - throws an error if object doesn't does not have title and text keys
    * @return {Object} - returns object back to caller if object is valid
    */
-  validateFile(file) {
-    this.file = file;
-    this.file.forEach((doc) => {
+  static validateFile(fileContent) {
+    fileContent.forEach((doc) => {
       if (!(Object.prototype.hasOwnProperty.call(doc, 'title')
       && Object.prototype.hasOwnProperty.call(doc, 'text'))) {
         throw new Error(`Your JSON file does not have the expected format.
@@ -63,26 +61,26 @@ class InvertedIndex {
       }
     });
 
-    return this.file;
+    return fileContent;
   }
 
   /**
    * @desc tokenize: Returns an array of valid words in all text fields of file.
      Also returns an array of valid words in a single string.
-   * @param {(Object | String)} file - object or string to be tokenized
+   * @param {(Object | String)} fileContent - object or string to be tokenized
    - the object whose texts are to be tokenized or string to tokenize
    * @return {array} - array of valid words
    */
-  tokenize(file) {
+  static tokenize(fileContent) {
     const validWord = /[a-zA-Z]+/g;
-    this.file = file;
     let words = '';
     let found;
     const validWordsArray = [];
 
-    if (typeof (this.file) === 'object') {
-      for (let i = 0; i < this.file.length; i += 1) {
-        words = words.concat(`${this.file[i].text} `);
+    if (typeof (fileContent) === 'object') {
+      for (let i = 0; i < fileContent.length; i += 1) {
+        // concatenate texts of documents into a single string
+        words = words.concat(`${fileContent[i].text} `);
       }
 
       while (found = validWord.exec(words)) {
@@ -93,7 +91,7 @@ class InvertedIndex {
       return [...new Set(validWordsArray)].sort();
     }
 
-    while (found = validWord.exec(this.file)) {
+    while (found = validWord.exec(fileContent)) {
       validWordsArray.push(found[0]);
     }
 
@@ -102,18 +100,18 @@ class InvertedIndex {
 
   /**
    * @desc getTitles: Gets the titles of documents in uploaded file
-   * @param {Object} file - the object whose document titles you want to get
+   * @param {Object} fileContent
+      - the object whose document titles you want to get
    * @return {array} - returns an array of document titles
    */
-  getTitles(file) {
-    this.file = file;
+  static getTitles(fileContent) {
     const titles = [];
     const texts = [];
 
-    for (let i = 0; i < this.file.length; i += 1) {
-      let fileTitle = this.file[i].title;
+    for (let i = 0; i < fileContent.length; i += 1) {
+      let fileTitle = fileContent[i].title;
 
-      if (texts.indexOf(this.file[i].text) === -1) {
+      if (texts.indexOf(fileContent[i].text) === -1) {
         if (titles.indexOf(fileTitle) !== -1) {
           fileTitle += ' - Copy';
         }
@@ -122,7 +120,7 @@ class InvertedIndex {
         titles.push(fileTitle);
       }
 
-      texts.push(this.file[i].text);
+      texts.push(fileContent[i].text);
     }
 
     return titles;
@@ -130,17 +128,16 @@ class InvertedIndex {
 
   /**
    * @desc lowerDocText: Turns the text fields of documents to lower case
-   * @param {Object} file - the object whose document texts you want to lower
+   * @param {Object} fileContent
+      - the object whose document texts you want to lower
    * @return {Object} - returns the object with its text fields lowered
    */
-  lowerDocText(file) {
-    this.file = file;
-    this.file.forEach((doc) => {
-      const eachDoc = doc;
-      eachDoc.text = eachDoc.text.toLowerCase();
+  static lowerDocText(fileContent) {
+    fileContent.forEach((document) => {
+      document.text = document.text.toLowerCase();
     });
 
-    return this.file;
+    return fileContent;
   }
 
   /**
@@ -153,25 +150,25 @@ class InvertedIndex {
     containing indices for file and titles of documents in file
    */
   createIndex(fileName, fileContent) {
-    let fileRead;
+    let jsonContent;
     try {
-      fileRead = this.lowerDocText(fileContent);
+      jsonContent = InvertedIndex.lowerDocText(fileContent);
     } catch (err) {
       throw new Error('This file\'s structure is ' +
       'invalid. Only array of objects are allowed.');
     }
 
-    this.validateFile(fileRead);
+    InvertedIndex.validateFile(jsonContent);
 
     const indices = {};
-    const words = this.tokenize(fileRead);
+    const words = InvertedIndex.tokenize(jsonContent);
 
     words.forEach((word) => {
       const docsWithWord = [];
 
-      fileRead.forEach((doc, docIndex) => {
+      jsonContent.forEach((doc, docIndex) => {
         // split doc's text into an array to allow whole word checks
-        const wordsInDoc = this.tokenize(doc.text);
+        const wordsInDoc = InvertedIndex.tokenize(doc.text);
         if (wordsInDoc.indexOf(word) !== -1) {
           docsWithWord.push(docIndex);
         }
@@ -180,7 +177,7 @@ class InvertedIndex {
       indices[word] = docsWithWord;
     });
 
-    const fileTitles = this.getTitles(fileContent);
+    const fileTitles = InvertedIndex.getTitles(fileContent);
     this.indexedFiles[fileName] = [indices, fileName, fileTitles];
 
     return this.indexedFiles;
@@ -194,11 +191,10 @@ class InvertedIndex {
    - the search query (a list of words separated by any delimeter)
    * @return {Object} - object containing search words that appear in index
    */
-  buildSearchResult(fileName, searchString, indexedFiles) {
-    this.fileName = fileName;
-    const searchWords = this.tokenize(searchString.toLowerCase());
+  static buildSearchResult(fileName, searchString, indexedFiles) {
+    const searchWords = InvertedIndex.tokenize(searchString.toLowerCase());
     const searchResults = {};
-    const indexOfFile = indexedFiles[this.fileName][0];
+    const indexOfFile = indexedFiles[fileName][0];
 
     searchWords.forEach((searchItem) => {
       Object.keys(indexOfFile).forEach((word) => {
@@ -220,23 +216,22 @@ class InvertedIndex {
    - object containing more than one file names and their indices
    * @return {Object} - object containing search words that appear in index
    */
-  searchIndex(fileName, searchString, indexedFiles) {
-    this.fileName = fileName;
-    this.searchString = searchString.toLowerCase();
+  static searchIndex(fileName, searchString, indexedFiles) {
+    searchString = searchString.toLowerCase();
 
-    if (this.fileName === 'All Files') {
+    if (fileName === 'All Files') {
       const resultForFile = {};
       const allFiles = Object.keys(indexedFiles);
 
       allFiles.forEach((file) => {
         resultForFile[file] =
-            this.buildSearchResult(file, searchString, indexedFiles);
+            InvertedIndex.buildSearchResult(file, searchString, indexedFiles);
       });
 
       return resultForFile;
     }
 
-    return this.buildSearchResult(this.fileName
-        , this.searchString, indexedFiles);
+    return InvertedIndex.buildSearchResult(fileName,
+       searchString, indexedFiles);
   }
 }
