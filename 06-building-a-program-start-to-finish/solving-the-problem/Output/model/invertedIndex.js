@@ -28,7 +28,7 @@ class InvertedIndex {
     fileContent.forEach((book, index) => {
       let text = `${book.title} ${book.text}`;
       titles.push(book.title);
-      text = this.tokenize(text);
+      text = InvertedIndex.tokenize(text);
       text.forEach((word) => {
         if (!(word in indexed)) {
           indexed[word] = [(index)];
@@ -38,9 +38,9 @@ class InvertedIndex {
       });
     });
     const documents = [];
-    for (let i = 0; i < titles.length; i += 1) {
-      documents.push(i);
-    }
+    titles.forEach((title, index) => {
+      documents.push(index);
+    });
     this.allIndexed[fileName] = indexed;
     this.allTitles[fileName] = titles;
     this.documentsIndex[fileName] = documents;
@@ -68,10 +68,8 @@ class InvertedIndex {
    * @param {string} text - the validated text to be tokenized
    * @return {array} array of words in the document
   */
-  tokenize(text) {
-    this.text = text;
-    const cleanWords = this.text.toLowerCase().match(/[a-z0-9]+/g);
-    return cleanWords;
+  static tokenize(text) {
+    return text.toLowerCase().match(/[a-z0-9]+/g);
   }
 
   /**
@@ -81,20 +79,19 @@ class InvertedIndex {
    * @param {Object} fileContent - the uploaded contents of the file
    * @return {Boolean} true or false if the method was successful or not
   */
-  validateFile(fileContent) {
-    this.fileContent = fileContent;
-    if (Array.isArray(this.fileContent)) {
-      for (let item = 0; item < this.fileContent.length; item += 1) {
-        if ((typeof this.fileContent[item]) !== 'object') {
+  static validateFile(fileContent) {
+    if (Array.isArray(fileContent)) {
+      for (let item = 0; item < fileContent.length; item += 1) {
+        if ((typeof fileContent[item]) !== 'object') {
           return false;
         }
-        if (Object.keys(this.fileContent[item]).length !== 2 ||
-            Object.keys(this.fileContent[item])[0] !== 'title' ||
-            Object.keys(this.fileContent[item])[1] !== 'text') {
+        if (Object.keys(fileContent[item]).length !== 2 ||
+            Object.keys(fileContent[item])[0] !== 'title' ||
+            Object.keys(fileContent[item])[1] !== 'text') {
           return false;
         }
-        if ((typeof this.fileContent[item].title) !== 'string' ||
-            (typeof this.fileContent[item].text) !== 'string') {
+        if ((typeof fileContent[item].title) !== 'string' ||
+            (typeof fileContent[item].text) !== 'string') {
           return false;
         }
       }
@@ -108,27 +105,26 @@ class InvertedIndex {
    * @param {JSON} rawFile - the raw uploaded file
    * @return {String} string of text in the uploaded file
   */
-  readFile(rawFile) {
-    this.rawFile = rawFile;
+  static readFile(rawFile) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = data => resolve(data.target.result);
-      reader.onerror = error => reject(`Error reading + 
-                                ${this.rawFile.name}: ${error.target.result}`);
-      reader.readAsText(this.rawFile);
+      reader.onerror = error => reject(
+                      `Error reading ${rawFile.name}: ${error.target.result}`);
+      reader.readAsText(rawFile);
     });
   }
 
   /**
    * searchIndex method searches the indexed files for occurences of words
-   * @param {String} word - word(s) that one is searching for
+   * @param {String} words - word(s) that one is searching for
    * @param {String} fileName - specific file or all to search through
    * @return {Object} Object with indexes of word(s) in the file(s)
    *                  and other file properties
   */
-  searchIndex(word, fileName) {
+  searchIndex(words, fileName) {
     const found = [];
-    const cleanedTerms = this.tokenize(word);
+    const cleanedTerms = InvertedIndex.tokenize(words);
 
     if (cleanedTerms === null) {
       return false;
