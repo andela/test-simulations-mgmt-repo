@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+  <link href='//fonts.googleapis.com/css?family=Prociono' rel='stylesheet'>
+  <link href='//fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
+  <link rel="stylesheet" href="public/css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+  <script src="https://unpkg.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/angular-toastr/dist/angular-toastr.css">
+  <link rel="shortcut icon" href="public/images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="public/images/favicon.ico" type="image/x-icon">
+  <title>Inverted Index</title>
+</head>
+<header>
+  <!-- Fixed navbar -->
+  <nav class="navbar navbar-inverse">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#"> <span class="white"> Meek - Inverted Index </span></a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#" data-toggle="modal" data-target="#myModal"> <span  class="white"> About </span> </a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+<body link="blue" ng-app="Indexed">
+  <!-- Modal -->
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <!--overview of inverted-index-->
+          <h4 class="modal-title navbar white" id="overview">Overview</h4>
+        </div>
+        <div class="modal-body">
+          <p class="text-justify">An <strong>inverted index</strong> consists of a list of all the unique words that appear in any document,
+          and for each word, a list of the documents in which it appears.
+          The Inverted index application takes a JSON array of text objects and creates an index from the array.
+          The index allows a user to search for texts in the array that contain a specified collection of words.
+          </p>
+          <ul>
+            <li>How to create an Index</li>
+            <ol>
+              <li>Upload one or more JSON file(s)
+                <p>JSON files should be in this <a href="https://gist.github.com/q-ode/72019451b98f079a8d737eb7a412bf14" id="format">format</a></p>
+              </li>
+              <li>Select a file to create it's index</li>
+              <li>Click 'Create Index' button</li>
+            </ol>
+            <li>How to search through file(s)</li>
+            <ol> 
+              <li>Select a file to search or 'All files'</li>
+              <li>Enter your search terms and results will be displayed</li>
+            </ol>
+          </ul>
+          <br>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container content" ng-controller="fileController">
+    <div class="row">
+      <div class="jumbotron jumbotron-billboard" id="jumb">
+        <div class="img"></div> 
+      </div>
+      <div class="col-sm-4 jumbotron">
+        <h3 id="display" class="help-block"> Select a file to upload </h3>
+        <div class="form-group">
+          <label for="file-input" class="btn btn-default btn-file btn-info btn-lg">Upload File &nbsp;
+            <span class="glyphicon glyphicon-upload"></span>
+            <input type="file" id="file-input" multiple accept="application/json">
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-4 jumbotron"> 
+        <div class="form-group">
+          <select class="form-control" id="selectedFile">
+            <option>--Select a file to create index--</option>
+            <option ng-repeat="name in fileNames">{{ name }}</option>
+          </select>
+        </div>
+        <button class="btn btn-info btn-lg" ng-click="createIndex()">Create Index &nbsp;
+          <span class="glyphicon glyphicon-book"></span>
+        </button>
+      </div>
+      <div class="col-sm-4 jumbotron"> 
+        <div class="form-group">
+          <select class="form-control" id="searchFile">
+            <option>Select a file to search</option>
+            <option ng-repeat="(key, value) in indexedFiles">{{ key }}</option>
+            <option>All files</option> 
+          </select>
+        </div>
+        <div class="input-group">
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-search"> </span>
+          </span>
+          <input type="text" class="form-control form-group col-md-6" placeholder="Search Word" id="searchBox" ng-keyup="searchIndex()">
+        </div>
+      </div> 
+    </div>
+    <br>
+    <!--inverted-index table -->
+    <div ng-repeat="(name, index) in indexed">
+      <div id="resultTable">
+        <table class="table table-striped table-responsive table-hover" ng-show="showTable">
+          <div class="row" ng-show="tableTitle">
+            <div class="col-md-12">
+              <h2><span class="glyphicon glyphicon-th-large"></span>&nbsp;Inverted Index Table for <em>{{ name }}</em></h2><br>
+            </div>
+          </div>
+          <thead>
+            <tr class="success">
+              <th>Tokens</th>
+              <th ng-repeat="fileTitle in fileTitles[name]">{{ fileTitle }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="(key, values) in index">
+              <td>{{ key }}</td> 
+              <td ng-repeat="number in range(docsCount[name])"><span ng-if="values.includes(number)"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span><span ng-if="values.includes(number) === false"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+    <br>
+    </div>
+    <!--search result table-->
+    <div class="row" ng-show="showResultTable" ng-repeat="(name, index) in mySearch">
+      <div id="resultTable">
+        <table class="table table-striped table-responsive table-hover">
+          <div class="row">
+            <div class="col-md-12">
+              <h2><span class="glyphicon glyphicon-th-large"></span>&nbsp;Search result for "{{ query }}" in {{ name }}</h2><br>
+            </div>
+          </div>
+          <thead>
+            <tr class="success">
+              <th>Tokens</th>
+              <th ng-repeat="fileTitle in fileTitles[name]">{{ fileTitle }}</th>
+            </tr>
+          </thead>
+          <tbody>  
+            <tr ng-repeat="(key, values) in index">
+            <td>{{ key }}</td>
+            <td ng-repeat="number in range(docsCount[name])"><span ng-if="values.includes(number)"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span><span ng-if="values.includes(number) === false"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span>
+            </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+  <footer class="footer">
+    <div class="container">
+      <p>(c) 2017 &nbsp;&nbsp;&nbsp;<a href="#"> Home</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>follow me on &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a href="https://twitter.com/mehrceey04">Twitter</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://github.com/andela-moseni">Github</a></p>
+    </div>
+  </footer>
+  <!-- scripts are loaded here -->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="InvertedIndex.js"></script>
+  <script type="text/javascript" src="public/js/app.js"></script>
+</body>
+</html>
