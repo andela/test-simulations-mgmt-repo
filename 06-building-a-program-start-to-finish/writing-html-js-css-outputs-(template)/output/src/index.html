@@ -20,7 +20,7 @@
       <div class="nav-buttons">
         <div ng-show="indexInLocalStorage()" class="dropdown right">
           <button id="dropdown" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> Recently Indexed <span class="caret"></span> </button>
-                <ul class="dropdown-menu" ng-if="recentlyIndexed().length" ng-click="$event.stopPropagation()">
+                <ul class="dropdown-menu dropdown-menu-right" ng-if="recentlyIndexed().length" ng-click="$event.stopPropagation()">
                   <li ng-repeat="file in recentlyIndexed() track by $index" style="display: block; cursor: pointer">
                     <div style="margin-left: 10px">
                       <a ng-click="getIndex(file)" style="float: left">{{file}}</a>
@@ -52,11 +52,11 @@
         <div class="dropdown" id="dropdownSmall">
           <div ng-show="indexInLocalStorage()" class="dropdown right">
           <button id="dropdown" class="btn btn-primary" data-toggle="dropdown"> <i class="fa fa-file"></i> </button>
-              <ul class="dropdown-menu" ng-if="recentlyIndexed.length" ng-click="$event.stopPropagation()">
-                <li ng-repeat="file in recentlyIndexed track by $index" style="display: block; cursor: pointer;">
+              <ul class="dropdown-menu dropdown-menu-right" ng-if="recentlyIndexed().length" ng-click="$event.stopPropagation()">
+                <li ng-repeat="file in recentlyIndexed() track by $index" style="display: block; cursor: pointer;">
                   <div style="margin-left: 10px">
                     <a ng-click="getIndex(file)" style="float: left">{{file}}</a>
-                    <a ng-click="deleteIndex(file)" style="color: #c42940; float: right;" ng-show="recentlyIndexed[recentlyIndexed.indexOf(file)]">x</a>
+                    <a ng-click="deleteIndex(file)" style="color: #c42940; float: right;" ng-show="recentlyIndexed()[recentlyIndexed().indexOf(file)]">x</a>
                   </div>
                 </li>
 
