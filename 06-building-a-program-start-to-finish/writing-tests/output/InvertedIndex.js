@@ -130,23 +130,6 @@ class InvertedIndex {
   /**
    *
    *
-   * @static
-   * @param {Object} document - single object of a JSON formatted file
-   * @returns{String} concatenatedText -
-   *  returns the concatenated values of object keys
-   *
-   * @memberOf InvertedIndex
-   */
-  static concatenateText(document) {
-    // if a document exists? combine title and text to split at once
-    let concatenatedText = '';
-    concatenatedText = `${document.title} ${document.text}`;
-    return concatenatedText;
-  }
-
-  /**
-   *
-   *
    * @param {Array} validatedFileContent - contents of a valid JSON file
    * @param {String} fileName - name of the file
    * @returns{Object} this.indexedFiles -
@@ -158,7 +141,7 @@ class InvertedIndex {
     const indices = {};
     const documentWords = {};
     validatedFileContent.forEach((document, key) => {
-      const concatenatedText = InvertedIndex.concatenateText(document);
+      const concatenatedText = `${document.title} ${document.text}`;
       const text = InvertedIndex.removeBadCharacters(concatenatedText);
       documentWords[key] = InvertedIndex.tokenizeText(text);
     });
