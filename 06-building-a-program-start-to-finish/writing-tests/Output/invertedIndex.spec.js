@@ -2,7 +2,7 @@ const alice = require('../books/alice.json');
 const rabbits = require('../books/rabbits.json');
 const wrongkeys = require('../books/wrongkeys.json');
 const oneKey = require('../books/oneKey.json');
-const emptyString = require('../books/emptystring.json');
+const emptystring = require('../books/emptystring.json');
 
 describe('InvertedIndex Test Suite', () => {
   beforeAll(() => {
@@ -123,7 +123,7 @@ describe('InvertedIndex Test Suite', () => {
 
     it('should throw error for a file with empty string', () => {
       try {
-        InvertedIndex.validateFile(emptyString);
+        InvertedIndex.validateFile(emptystring);
       } catch (error) {
         expect(error.message).toBe('cannot be empty');
       }
