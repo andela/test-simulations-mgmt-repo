@@ -4,4 +4,4 @@
 - **With**: *independently*
 
 #### Targeted Learning Outcomes
-- [Pull Request URL with reviewers](https://github.com/andela-aonifade/dplex/pulls)
+- [Pull Request URL with reviewers](https://github.com/andela-aonifade/dplex/pull/1)
