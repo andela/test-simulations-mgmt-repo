@@ -1,12 +1,9 @@
-Click here to go to the Github repo
-
-
 #### Output
 - **Using**: GitHub
 - **Deliver**: the repository for your proposed project and at least one `Pull Request`
 - **With**: *independently*
 
-#### Click here to go to the Github repo
+##### Click here to go to the Github repo
 - [andela-tezebuike/inverted-index]
 (https://github.com/andela-tezebuike/inverted-index.git)
 
