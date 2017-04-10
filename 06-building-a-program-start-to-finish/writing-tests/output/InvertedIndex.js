@@ -54,9 +54,6 @@ class InvertedIndex {
     };
     if (Object.keys(jsonContent).length === 0 &&
        typeof jsonContent === 'object') {
-      isValid = {
-        status: false
-      };
       return isValid;
     }
     try {

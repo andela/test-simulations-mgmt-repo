@@ -48,21 +48,27 @@ describe('InvertedIndex class', () => {
     () => {
       const msg = { status: true,
         jsonContent:
-        [{ title: 'Alice in Wonderland',
-          text: 'Alice falls into a rabbit hole and enters a world '
-          + 'full of imagination.' },
-        { title: 'The Lord of the Rings: The Fellowship of the Ring.',
-          text: 'An unusual alliance of man, elf, dwarf, wizard and hobbit '
-          + 'seek to destroy a powerful ring.' },
-        { title: 'The Lord of the Rings: The Fellowship of.',
-          text: 'An unusual alliance of man, elf, dwarf, wizard and hobbit '
-          + 'seek to destroy a powerful ring.' }] };
-      expect(InvertedIndex.validateFile(validBook)).toEqual(msg);
+        [
+          {
+            title: 'Alice in Wonderland',
+            text: 'Alice falls into a rabbit hole.'
+          },
+
+          {
+            title: 'The Lord of the Rings',
+            text: 'An unusual alliance of man.'
+          },
+          {
+            title: 'The Lords of the Rings',
+            text: 'An unusual alliance of man.'
+          }
+        ]
+      };
+      expect(InvertedIndex.validateFile(smallValidBook)).toEqual(msg);
     });
 
     it('should return false for empty json files', () => {
       const successMsg = { status: false };
-
       expect(InvertedIndex.validateFile(emptyBook)).toEqual(successMsg);
     });
 
