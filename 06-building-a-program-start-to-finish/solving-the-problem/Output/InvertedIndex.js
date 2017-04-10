@@ -117,7 +117,7 @@ class InvertedIndex {
     this.filenames.push(fileName);
     this.indexed[fileName] = {
       eachWord: indices,
-      numOfDocs: books.length
+      count: books.length
     };
   }
 
@@ -136,7 +136,7 @@ class InvertedIndex {
       const searchWords = InvertedIndex.tokenize(phrase);
       const search = {
         eachWord: {},
-        numOfDocs: storedIndex.numOfDocs
+        count: storedIndex.count
       };
       searchWords.forEach((word) => {
         if (storedIndex.eachWord[word]) {
