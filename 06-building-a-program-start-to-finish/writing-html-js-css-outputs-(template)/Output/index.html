@@ -9,7 +9,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    <script type="text/javascript" src="./src/model/inverted-index.js"></script>
+    <script type="text/javascript" src="./src/model/invertedIndex.js"></script>
 
     <script type="text/javascript" src="./src/controller/app.js"></script>
 
@@ -40,7 +40,7 @@
           </div>
 
           <div class="form-group" ng-show="uploadedFiles.length >= 1">
-            <button class="btn btn-primary" ng-click="getIndex(selectedFile)">Create Index</button>
+            <button class="btn btn-primary" ng-click="createIndex(selectedFile)">Create Index</button>
           </div>
 
           <div class="form-group pull-right" ng-hide="count < 1">
@@ -71,7 +71,7 @@
           <table class="table table-striped">
             <thead>
               <th>Words</th>
-              <th  style="text-align:center" ng-repeat="i in details.title">{{i}}</th>
+              <th  style="text-align:center" ng-repeat="i in details.title track by $index">{{i}}</th>
             </thead>
             <tbody>
               <tr ng-repeat="(key, value) in details.indexes">
@@ -96,7 +96,7 @@
           <table class="table table-striped">
             <thead>
               <th>Words</th>
-              <th  style="text-align:center" ng-repeat="i in details.title">{{i}}</th>
+              <th  style="text-align:center" ng-repeat="i in details.title track by $index">{{i}}</th>
             </thead>
             <tbody>
               <tr ng-repeat="(key, value) in details.indexes">
