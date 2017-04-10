@@ -9,6 +9,7 @@ class InvertedIndex {
    */
   constructor() {
     this.indexed = {};
+    this.filenames = [];
   }
 
   /**
@@ -113,9 +114,10 @@ class InvertedIndex {
         }
       });
     });
+    this.filenames.push(fileName);
     this.indexed[fileName] = {
       eachWord: indices,
-      count: books.length
+      numOfDocs: books.length
     };
   }
 
@@ -127,31 +129,14 @@ class InvertedIndex {
    * @return {Object} search result with eachword and number of documents.
    */
   searchIndex(phrase, filename) {
-    let result = {};
-    if (filename === 'All') {
-      const files = this.indexed;
-      Object.keys(files).forEach((file) => {
-        const storedIndex = this.getIndex(file);
-        const searchWords = InvertedIndex.tokenize(phrase);
-        const search = {
-          eachWord: {},
-          count: storedIndex.count
-        };
-        searchWords.forEach((word) => {
-          if (storedIndex.eachWord[word]) {
-            if (!(search.eachWord[word] in search)) {
-              search.eachWord[word] = storedIndex.eachWord[word];
-            }
-          } else search.eachWord[word] = [];
-        });
-        result[file] = search;
-      });
-    } else {
-      const storedIndex = this.getIndex(filename);
+    const result = {};
+    const files = (filename === 'All') ? this.filenames : [filename];
+    files.forEach((file) => {
+      const storedIndex = this.getIndex(file);
       const searchWords = InvertedIndex.tokenize(phrase);
       const search = {
         eachWord: {},
-        count: storedIndex.count
+        numOfDocs: storedIndex.numOfDocs
       };
       searchWords.forEach((word) => {
         if (storedIndex.eachWord[word]) {
@@ -160,8 +145,8 @@ class InvertedIndex {
           }
         } else search.eachWord[word] = [];
       });
-      result = search;
-    }
+      result[file] = search;
+    });
     return result;
   }
 }

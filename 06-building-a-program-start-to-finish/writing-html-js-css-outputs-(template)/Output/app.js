@@ -47,7 +47,7 @@ angular.module('InvertedIndexApp', [])
         $scope.displayIndexes = false;
       } else {
         $scope.searchResults[filename] =
-        invertedIndex.searchIndex($scope.phrase, filename);
+        invertedIndex.searchIndex($scope.phrase, filename)[filename];
         $scope.displaySearchResult = true;
         $scope.displayIndexes = false;
       }

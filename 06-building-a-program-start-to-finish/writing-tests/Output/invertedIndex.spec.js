@@ -1,3 +1,4 @@
+const invertedIndex = new InvertedIndex();
 const alice = require('../books/alice.json');
 const rabbits = require('../books/rabbits.json');
 const wrongkeys = require('../books/wrongkeys.json');
@@ -6,9 +7,8 @@ const emptystring = require('../books/emptystring.json');
 
 describe('InvertedIndex Test Suite', () => {
   beforeAll(() => {
-    this.invertedIndex = new InvertedIndex();
-    this.invertedIndex.createIndex('alice', alice);
-    this.invertedIndex.createIndex('rabbits', rabbits);
+    invertedIndex.createIndex('alice', alice);
+    invertedIndex.createIndex('rabbits', rabbits);
     const eventListener = jasmine.createSpy();
     const dummyFileReader = { addEventListener: eventListener };
     spyOn(window, 'FileReader').and.returnValue(dummyFileReader);
@@ -20,22 +20,22 @@ describe('InvertedIndex Test Suite', () => {
     });
 
     it('should create inverted index instance', () => {
-      expect(this.invertedIndex instanceof InvertedIndex).toBe(true);
+      expect(invertedIndex instanceof InvertedIndex).toBe(true);
     });
 
     it('should have object as the instance of invertedIndex', () => {
-      expect(typeof this.invertedIndex).toEqual('object');
+      expect(typeof invertedIndex).toEqual('object');
     });
 
     it('should have an indexed object to hold all indexes', () => {
-      expect(typeof this.invertedIndex.indexed).toEqual('object');
+      expect(typeof invertedIndex.indexed).toEqual('object');
     });
   });
 
   describe('The readFile method', () => {
     it('should read a file', () => {
       const reader = new FileReader();
-      reader.addEventListener('load', (e) => {
+      reader.addEventListener('load', (event) => {
         const fileRead = reader.result;
         expect(fileRead).toBeTruthy();
         expect(JSON.parse(fileRead) instanceof Object).toBeTruthy();
@@ -64,7 +64,7 @@ describe('InvertedIndex Test Suite', () => {
 
   describe('createIndex function', () => {
     it('should create an index for a valid file', () => {
-      expect(this.invertedIndex.indexed.alice.numOfDocs).toBe(3);
+      expect(invertedIndex.indexed.alice.numOfDocs).toBe(3);
     });
 
     it('should should return a valid indexed object', () => {
@@ -81,22 +81,22 @@ describe('InvertedIndex Test Suite', () => {
           rat: [1],
           rabbit: [1] },
         numOfDocs: 2 };
-      expect(this.invertedIndex.indexed.rabbits)
+      expect(invertedIndex.indexed.rabbits)
         .toEqual(indices);
     });
 
     it('should not create an index for a invalid file', () => {
-      expect(this.invertedIndex.indexed.justwords).toBe(undefined);
+      expect(invertedIndex.indexed.justwords).toBe(undefined);
     });
   });
 
   describe('getIndex function', () => {
     it('should not return an index for a file that is not indexed', () => {
-      expect(this.invertedIndex.getIndex('wrongkeys')).toBeFalsy();
+      expect(invertedIndex.getIndex('wrongkeys')).toBeFalsy();
     });
-    
+
     it('should return an index for an indexed file', () => {
-      expect(this.invertedIndex.getIndex('alice')).toBeTruthy();
+      expect(invertedIndex.getIndex('alice')).toBeTruthy();
     });
   });
 
@@ -146,17 +146,18 @@ describe('InvertedIndex Test Suite', () => {
 
   describe('searchIndex function', () => {
     it('should return object as type of searchIndex for alice', () => {
-      const searchResult = this.invertedIndex.searchIndex('alice', 'alice');
+      const searchResult = invertedIndex.searchIndex('alice', 'alice');
       expect(searchResult instanceof Object).toBeTruthy();
     });
 
     it('should return the result of searchIndex for alice', () => {
       const searchResult = {
-        eachWord: {
-          alice: [0, 1, 2],
-          jump: [] },
-        numOfDocs: 3 };
-      expect(this.invertedIndex.searchIndex('alice jump', 'alice')).toEqual(searchResult);
+        alice: {
+          eachWord: {
+            alice: [0, 1, 2],
+            jump: [] },
+          numOfDocs: 3 } };
+      expect(invertedIndex.searchIndex('alice jump', 'alice')).toEqual(searchResult);
     });
 
     it('should return object as type of searchIndex for rabbits', () => {
@@ -172,7 +173,7 @@ describe('InvertedIndex Test Suite', () => {
             jump: [] },
           numOfDocs: 2 }
       };
-      expect(this.invertedIndex.searchIndex('alice jump', 'All')).toEqual(searchResult);
+      expect(invertedIndex.searchIndex('alice jump', 'All')).toEqual(searchResult);
     });
   });
 });
