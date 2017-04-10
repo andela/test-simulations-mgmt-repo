@@ -156,7 +156,8 @@ describe('InvertedIndex Test Suite', () => {
             alice: [0, 1, 2],
             jump: [] },
           numOfDocs: 3 } };
-      expect(invertedIndex.searchIndex('alice jump', 'alice')).toEqual(searchResult);
+      expect(invertedIndex.searchIndex('alice jump', 'alice'))
+        .toEqual(searchResult);
     });
 
     it('should return object as type of searchIndex for rabbits', () => {
@@ -172,7 +173,8 @@ describe('InvertedIndex Test Suite', () => {
             jump: [] },
           numOfDocs: 2 }
       };
-      expect(invertedIndex.searchIndex('alice jump', 'All')).toEqual(searchResult);
+      expect(invertedIndex.searchIndex('alice jump', 'All'))
+        .toEqual(searchResult);
     });
   });
 });
