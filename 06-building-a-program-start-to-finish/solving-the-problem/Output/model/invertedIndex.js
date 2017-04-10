@@ -52,11 +52,10 @@ class InvertedIndex {
    * getIndex method gets the indexed file with words from documents that were
    * found. If the file has not been indexed, it calls the create index method
    * to create the index
-   * @param {Object} fileContent - the file content we want to get indexed
-   * @param {String} fileName - the name of the file to be indexed
+   * @param {String} fileName - the name of the file to get indexes
    * @return {Object} all words in the file and their corresponding indexes
    */
-  getIndex(fileContent, fileName) {
+  getIndex(fileName) {
     if (fileName in this.allIndexed) {
       return this.allIndexed[fileName];
     }
@@ -118,7 +117,7 @@ class InvertedIndex {
   /**
    * searchIndex method searches the indexed files for occurences of words
    * @param {String} words - word(s) that one is searching for
-   * @param {String} fileName - specific file or all to search through
+   * @param {String} fileName - file or all files to search through
    * @return {Object} Object with indexes of word(s) in the file(s)
    *                  and other file properties
   */
@@ -133,32 +132,33 @@ class InvertedIndex {
     if (fileName === 'All') {
       const allFiles = Object.keys(this.allIndexed);
       allFiles.forEach((file) => {
-        const result = {};
-        cleanedTerms.forEach((term) => {
-          result[term] = this.allIndexed[file][term];
-        });
-        found.push({
-          indexes: result,
-          wordsSearchedFor: cleanedTerms.toString(),
-          documentIndexes: this.documentsIndex[file],
-          searchedFile: file,
-          title: this.allTitles[file],
-        });
+        found.push(this.searchOneFile(cleanedTerms, file));
       });
       return found;
     }
+    found.push(this.searchOneFile(cleanedTerms, fileName));
+    return found;
+  }
+
+  /**
+   * searchOneFile method searches the indexed file for occurences of words
+   * @param {String} words - word(s) that one is searching for
+   * @param {String} fileName - specific file you want to search through
+   * @return {Object} Object with indexes of word(s) in the file(s)
+   *                  and other file properties
+  */
+  searchOneFile(words, fileName) {
     const result = {};
-    cleanedTerms.forEach((term) => {
+    words.forEach((term) => {
       result[term] = this.allIndexed[fileName][term];
     });
-    found.push({
+    return ({
       indexes: result,
-      wordsSearchedFor: cleanedTerms.toString(),
+      wordsSearchedFor: words.toString(),
       documentIndexes: this.documentsIndex[fileName],
       searchedFile: fileName,
       title: this.allTitles[fileName],
     });
-    return found;
   }
 }
 
