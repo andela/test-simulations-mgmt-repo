@@ -14,15 +14,14 @@ class InvertedIndex {
    * @param  {File} file - Uploaded file to be read.
    * @return {void}
    */
-  readFile(file) {
-    this.file = file;
+  static readFile(file) {
     return new Promise((resolve, reject) => {
       const bookReader = new FileReader();
-      bookReader.onload = evt => resolve(evt.target.result);
-      bookReader.onerror = (evt) => {
-        reject(`Error reading + ${this.file.name}: ${evt.target.result}`);
+      bookReader.onload = event => resolve(event.target.result);
+      bookReader.onerror = (event) => {
+        reject(`Error reading + ${this.file.name}: ${event.target.result}`);
       };
-      bookReader.readAsText(this.file);
+      bookReader.readAsText(file);
     });
   }
   /**
@@ -31,14 +30,12 @@ class InvertedIndex {
    * @param  {Object} fileContent
    * @return {Boolean} isValid -True or false
    */
-  validateFile(fileName, fileContent) {
-    this.content = fileContent;
-    this.fileName = fileName;
+  static validateFile(fileName, fileContent) {
     let isValid = true;
     try {
-      const parsed = JSON.parse(JSON.stringify(this.content));
+      const parsed = JSON.parse(JSON.stringify(fileContent));
       isValid = (parsed.length <= 0) ||
-      (!this.fileName.toLowerCase().match(/\.json$/g)) ? false : isValid;
+      (!fileName.toLowerCase().match(/\.json$/g)) ? false : isValid;
       parsed.forEach((key) => {
         if (typeof key.title !== 'string' || typeof key.text !== 'string') {
           isValid = false;
@@ -57,10 +54,10 @@ class InvertedIndex {
   tokenize(fileText) {
     this.text = fileText;
     return [...new Set(this.text
-              .toLowerCase()        // Converts text to lower case
-              .replace(/[^\w\s]/g, '')  // Removes any non-word character
-              .split(/\s+/)       // Turns it into an array
-              .sort()           // Sorts array
+              .toLowerCase()
+              .replace(/[^\w\s]/g, '')
+              .split(/\s+/)
+              .sort()
     )];
   }
   /**
@@ -71,11 +68,11 @@ class InvertedIndex {
    */
   createIndex(fileName, content) {
     const fileIndex = {};
-    if (this.validateFile(fileName, content)) {
-      content.forEach((objDoc, index) => {
-        Object.keys(objDoc).forEach((key) => {
-          if (Object.prototype.hasOwnProperty.call(objDoc, key)) {
-            const tokens = this.tokenize(objDoc[key]);
+    if (InvertedIndex.validateFile(fileName, content)) {
+      content.forEach((fileContent, index) => {
+        Object.keys(fileContent).forEach((key) => {
+          if (Object.prototype.hasOwnProperty.call(fileContent, key)) {
+            const tokens = this.tokenize(fileContent[key]);
             tokens.forEach((token) => {
               if (fileIndex[token]) {
                 if (fileIndex[token].indexOf(index) === -1) {
@@ -102,18 +99,18 @@ class InvertedIndex {
   }
   /**
    * Searches through one or more indices for words
-   * @param  {String} fileName -File name
+   * @param  {String} fileArray -Input file array
    * @param  {String} query -Input token
    * @return {Object} searchResult
    */
-  searchIndex(fileArr, query) {
+  searchIndex(fileArray, query) {
     let index;
     this.searchIndices = {};
     const tokenized = this.tokenize(query);
-    if (!fileArr) {
-      fileArr = Object.keys(this.allIndices);
+    if (!fileArray) {
+      fileArray = Object.keys(this.allIndices);
     }
-    fileArr.forEach((fileName) => {
+    fileArray.forEach((fileName) => {
       const searchResult = {};
       index = this.allIndices[fileName];
       tokenized.forEach((word) => {
@@ -125,6 +122,7 @@ class InvertedIndex {
       });
       this.searchIndices[fileName] = searchResult;
     });
+    console.log(this.searchIndices);
     return this.searchIndices;
   }
 }

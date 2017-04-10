@@ -5,4 +5,4 @@
 
 #### Result
 - File containing class implementation attached to this folder.
-- [Link to class implementation](https://github.com/andela-oakinwa/inverted-index/blob/master/app/js/app.js)
+- [Link to class implementation](https://github.com/andela-oakinwa/inverted-index/blob/master/app/js/invertedIndex.js)
