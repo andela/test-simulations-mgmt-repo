@@ -39,7 +39,7 @@ class InvertedIndex {
   }
 
   /**
-  *
+   *
    *
    * @param {Object} jsonContent - file content
    * @returns{Object} isValid - returns true and JSON content for valid files
@@ -74,6 +74,7 @@ class InvertedIndex {
     }
     return isValid;
   }
+
   /**
    *
    *
@@ -112,6 +113,7 @@ class InvertedIndex {
     const term = text.replace(invalid, '');
     return term;
   }
+  
   /**
    *
    *

@@ -39,7 +39,7 @@ class InvertedIndex {
   }
 
   /**
-  *
+   *
    *
    * @param {Object} jsonContent - file content
    * @returns{Object} isValid - returns true and JSON content for valid files
