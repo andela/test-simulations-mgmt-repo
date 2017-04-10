@@ -52,11 +52,11 @@ describe('InvertedIndex Test Suite', () => {
       });
     });
 
-    it('should return the json file if it is valid', () => {
+    it('should be true if the function executes', () => {
       expect(InvertedIndex.readFile(alice)).toBeTruthy();
     });
 
-    it('should return the false if the file cannot be parsed', () => {
+    it('should return an object if it is valid', () => {
       const readFile = InvertedIndex.readFile(alice);
       expect(typeof readFile).toEqual('object');
     });
@@ -94,8 +94,7 @@ describe('InvertedIndex Test Suite', () => {
     it('should not return an index for a file that is not indexed', () => {
       expect(invertedIndex.getIndex('wrongkeys')).toBeFalsy();
     });
-
-    it('should return an index for an indexed file', () => {
+    it('should be true if an index exists', () => {
       expect(invertedIndex.getIndex('alice')).toBeTruthy();
     });
   });
@@ -133,7 +132,7 @@ describe('InvertedIndex Test Suite', () => {
   describe('tokenize function', () => {
     const words = 'Ralia, The Funk, And now: this is just Rowland';
 
-    it('should return Object as type of validFile', () => {
+    it('should be true if the function executes', () => {
       expect(InvertedIndex.tokenize(words)).toBeTruthy();
     });
 
