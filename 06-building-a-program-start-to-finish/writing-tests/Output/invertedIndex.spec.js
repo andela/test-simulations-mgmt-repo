@@ -3,7 +3,7 @@ const alice = require('../books/alice.json');
 const rabbits = require('../books/rabbits.json');
 const wrongkeys = require('../books/wrongkeys.json');
 const oneKey = require('../books/oneKey.json');
-const emptystring = require('../books/emptystring.json');
+const emptyString = require('../books/emptyString.json');
 
 describe('InvertedIndex Test Suite', () => {
   beforeAll(() => {
@@ -47,7 +47,7 @@ describe('InvertedIndex Test Suite', () => {
       const reader = new FileReader();
       reader.addEventListener('load', () => {
         const fileRead = JSON.parse(reader.result);
-        expect(InvertedIndex.validateFile(fileRead)).toHaveBeenCalled;
+        expect(InvertedIndex.validateFile(fileRead)).toHaveBeenCalled();
         done();
       });
     });
@@ -64,7 +64,7 @@ describe('InvertedIndex Test Suite', () => {
 
   describe('createIndex function', () => {
     it('should create an index for a valid file', () => {
-      expect(invertedIndex.indexed.alice.numOfDocs).toBe(3);
+      expect(invertedIndex.indexed.alice.count).toBe(3);
     });
 
     it('should should return a valid indexed object', () => {
@@ -80,7 +80,7 @@ describe('InvertedIndex Test Suite', () => {
           a: [1],
           rat: [1],
           rabbit: [1] },
-        numOfDocs: 2 };
+        count: 2 };
       expect(invertedIndex.indexed.rabbits)
         .toEqual(indices);
     });
@@ -122,7 +122,7 @@ describe('InvertedIndex Test Suite', () => {
 
     it('should throw error for a file with empty string', () => {
       try {
-        InvertedIndex.validateFile(emptystring);
+        InvertedIndex.validateFile(emptyString);
       } catch (error) {
         expect(error.message).toBe('cannot be empty');
       }
@@ -155,7 +155,7 @@ describe('InvertedIndex Test Suite', () => {
           eachWord: {
             alice: [0, 1, 2],
             jump: [] },
-          numOfDocs: 3 } };
+          count: 3 } };
       expect(invertedIndex.searchIndex('alice jump', 'alice'))
         .toEqual(searchResult);
     });
@@ -166,12 +166,12 @@ describe('InvertedIndex Test Suite', () => {
           eachWord: {
             alice: [0, 1, 2],
             jump: [] },
-          numOfDocs: 3 },
+          count: 3 },
         rabbits: {
           eachWord: {
             alice: [0, 1],
             jump: [] },
-          numOfDocs: 2 }
+          count: 2 }
       };
       expect(invertedIndex.searchIndex('alice jump', 'All'))
         .toEqual(searchResult);
