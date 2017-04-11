@@ -6,25 +6,26 @@
     text-align: center;
 }
 
+body{
+    background-image: url("/images/books-bg.png");
+    background-position: center;
+    background-size:cover;
+    margin: 0;
+}
+
 #help {
     float: left;
-    width: 12em;
+    width: 30%;
     border-radius: 25px;
     border: 1px solid gray;
     padding: 1em;
     overflow: hidden;
     margin: 10px;
-    background-color: SteelBlue;
+    background-color: Gainsboro;
     font-family: "HelveticaNeue-Light";
 }
 
-#paragraph{
-    border-bottom: 3px solid SteelBlue;
-    border-top: 3px solid SteelBlue;
-}
-
 /*style div tags*/
-
 #content {
     float: left;
     /*width: 50em;*/
@@ -38,24 +39,30 @@
 #user-input,
 #selectBooks {
     float: left;
-    width: 15em;
+    width: 60%;
     margin: 10px;
 }
 
-#user-output
+.user-output
 {
     float: left;
-    /*width: 100%;*/
-    /*margin: 10px;*/
     padding: 50px;
+}
+.selectFiles{
+    float: left;
+}
+.searchFiles{
+    float: left;
 }
 
 #result {
     float: left;
-    width: 50em;
+    width: 100%;
     background-color: Gainsboro;
     margin: 10px;
     border-radius: 25px;
+    max-height: 400px;
+    overflow:auto;
 }
 
 
@@ -95,17 +102,20 @@ th {
 }
 
 /*Style buttons */
-
+#go-button,
 #create-index {
     background-color: SteelBlue;
     border: none;
     color: white;
-    padding: 16px 32px;
+    padding: 10px 15px;
     text-decoration: none;
     margin: 4px 2px;
     cursor: pointer;
 }
 
+.verticalLine {
+  border-left: thick solid Steelblue;
+}
 
 /*Style footer*/
 
@@ -115,4 +125,6 @@ th {
     color: white;
     background-color: DimGrey;
     text-align: center;
+    bottom: 0;
+    width:100%
 }

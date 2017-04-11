@@ -212,5 +212,4 @@ class InvertedIndex {
     return this.searchIndices;
   }
 }
-
 module.exports.InvertedIndex = InvertedIndex;

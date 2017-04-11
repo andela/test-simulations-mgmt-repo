@@ -74,7 +74,6 @@ class InvertedIndex {
     }
     return isValid;
   }
-
   /**
    *
    *
@@ -113,7 +112,6 @@ class InvertedIndex {
     const term = text.replace(invalid, '');
     return term;
   }
-  
   /**
    *
    *
@@ -214,5 +212,4 @@ class InvertedIndex {
     return this.searchIndices;
   }
 }
-
 module.exports.InvertedIndex = InvertedIndex;
