@@ -122,7 +122,6 @@ class InvertedIndex {
       });
       this.searchIndices[fileName] = searchResult;
     });
-    console.log(this.searchIndices);
     return this.searchIndices;
   }
 }
