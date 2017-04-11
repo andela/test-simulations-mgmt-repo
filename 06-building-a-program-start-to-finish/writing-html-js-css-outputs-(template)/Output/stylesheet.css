@@ -1,0 +1,22 @@
+.th-center {
+  text-align: center;
+}
+
+.jumbotron .bg {
+  background-image:url('./Books.jpeg');
+  height: 200px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.jumbotron h1 {
+  color: blue;
+  font-size: 48px;  
+  font-family: sans-serif;
+  font-weight: bold;
+}
+
+.jumbotron p {
+  font-size: 20px;
+  color: purple;
+}
