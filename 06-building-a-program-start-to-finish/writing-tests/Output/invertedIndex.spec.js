@@ -35,7 +35,7 @@ describe('InvertedIndex Test Suite', () => {
   describe('The readFile method', () => {
     it('should read a file', () => {
       const reader = new FileReader();
-      reader.addEventListener('load', (event) => {
+      reader.addEventListener('load', () => {
         const fileRead = reader.result;
         expect(fileRead).toBeTruthy();
         expect(JSON.parse(fileRead) instanceof Object).toBeTruthy();
@@ -138,7 +138,7 @@ describe('InvertedIndex Test Suite', () => {
 
     it('should return the correct array or words', () => {
       expect(InvertedIndex.tokenize(words))
-        .toEqual(['ralia', 'the', 'funk', 'and', 'now', 'this', 'is', 
+        .toEqual(['ralia', 'the', 'funk', 'and', 'now', 'this', 'is',
           'just', 'rowland']);
     });
   });
