@@ -3,7 +3,7 @@
  * Dependencies declared globally
  */
 const InvertedIndex = require('../app/js/invertedIndex.js'),
-  invIndex = new InvertedIndex(),
+  invertedIndex = new InvertedIndex(),
   badFormat = require('./books/badFormat.json'),
   empty = require('./books/empty.json'),
   book = require('./books/book.json'),
@@ -21,8 +21,8 @@ describe('InvertedIndex class', () => {
  */
 describe('Constructor', () => {
   it('should be able to create an instance of InvertedIndex class', () => {
-    expect(typeof invIndex).toBe('object');
-    expect(invIndex instanceof InvertedIndex).toBe(true);
+    expect(typeof invertedIndex).toBe('object');
+    expect(invertedIndex instanceof InvertedIndex).toBe(true);
   });
 });
 /**
@@ -47,7 +47,7 @@ describe('validateFile', () => {
 describe('tokenize method', () => {
   it(`should return array of unique words
    without whitespace/characters`, () => {
-    expect(invIndex.tokenize(book[0].title))
+    expect(invertedIndex.tokenize(book[0].title))
     .toEqual(['alice', 'in', 'wonderland']);
   });
 });
@@ -56,12 +56,12 @@ describe('tokenize method', () => {
  */
 describe('createIndex method', () => {
   it('should return `true` if index is created', () => {
-    expect(invIndex.createIndex('otherBook.json', otherBook))
+    expect(invertedIndex.createIndex('otherBook.json', otherBook))
     .toEqual(true);
   });
 
   it('should return `false` if index is not created', () => {
-    expect(invIndex.createIndex('empty.json', empty))
+    expect(invertedIndex.createIndex('empty.json', empty))
     .toBeFalsy();
   });
 });
@@ -71,7 +71,7 @@ describe('createIndex method', () => {
 describe('getIndex method', () => {
   it(`should return index of words and 
     number of books in a json file`, () => {
-    const retObject = { words: { alice: [0],
+    const returnedObject = { words: { alice: [0],
       in: [0],
       wonderland: [0],
       a: [0],
@@ -80,7 +80,7 @@ describe('getIndex method', () => {
       into: [0],
       rabbit: [0] },
       bookCount: 1 };
-    expect(invIndex.getIndex(otherBook)).toEqual(retObject.word);
+    expect(invertedIndex.getIndex(otherBook)).toEqual(returnedObject.word);
   });
 });
 /**
@@ -90,7 +90,7 @@ describe('searchIndex method', () => {
   it(`should return an object 
     containing searched index from an index created`, () => {
     const query = 'in';
-    const retObject = { words: { alice: [0],
+    const returnedObject = { words: { alice: [0],
         in: [0],
         wonderland: [0],
         a: [0],
@@ -100,14 +100,14 @@ describe('searchIndex method', () => {
         rabbit: [0] },
         bookCount: 1 },
       searchResult = { 'otherBook.json': { in: [0] } };
-    expect(invIndex.searchIndex(retObject.word, query))
+    expect(invertedIndex.searchIndex(returnedObject.word, query))
     .toEqual(searchResult);
   });
 
   it(`should return an object
       with empty array indicating query not found in index created`, () => {
     const query = 'femi';
-    const retObject = { words: { alice: [0],
+    const returnedObject = { words: { alice: [0],
         in: [0],
         wonderland: [0],
         a: [0],
@@ -117,7 +117,7 @@ describe('searchIndex method', () => {
         rabbit: [0] },
         bookCount: 1 },
       searchResult = { 'otherBook.json': { femi: [] } };
-    expect(invIndex.searchIndex(retObject.word, query))
+    expect(invertedIndex.searchIndex(returnedObject.word, query))
     .toEqual(searchResult);
   });
 });
