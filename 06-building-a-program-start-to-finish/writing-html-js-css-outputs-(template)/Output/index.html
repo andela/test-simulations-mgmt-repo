@@ -1,0 +1,164 @@
+  <!DOCTYPE html>
+<html lang="en" ng-app="InvertedIndexApp" ng-cloak>
+<head>
+  <title>Inverted Index App</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" type = "text/css" href="./css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="js/InvertedIndex.js" type="text/javascript"> </script>
+
+
+</head>
+<body ng-controller="IndexController">
+  <nav class="navbar navbar-default ">
+    <div class="container-fluid">
+      <div class="col-md-3 col-xs-3 nav-block form-inline">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Inverted Index App</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+<div class="container-fluid wellup">
+  <div class="container-fluid">
+      <div class="col-md-3 col-xs-3 nav-block form-inline">
+        <h3 class="text-center"> About the app</h3>
+      </div>
+      <div class="col-xs-5 col-md-5 nav-block">
+        <div class="form-group">
+          <input type="text" class="form-control search-box" ng-model="phrase">
+        </div>
+      </div>
+      <div class="col-xs-2 col-md-2 nav-block">
+        <div class="form-group">
+          <select ng-model="searchOption" class="select-search form-control">
+            <option>All</option>
+            <option ng-repeat="filename in fileNames | orderBy:filename">{{filename}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-xs-2 col-md-2 nav-block">
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary btn-block button-search" ng-click="displaySearch()">Search</button>
+        </div>
+      </div>
+    </div>
+
+  <div class="row">
+    <div class="col-xs-3 col-md-3">
+      <p> Inverted Index is designed to allow very fast full-text searches. It consists of a list of all the unique words
+        that appear in the document, and for each word, a list of documents in which it appears.</p>
+      <p>Inverted Index takes in a json file and creates an index of each in the file.
+         You can now search any index file for words of your choice.</p>
+        <h3> How to use it </h3>
+        <h4> Uploads</h4>
+        <ul>
+          <li>Upload a JSON file</li>
+          <li>Click Create Index</li>
+        </ul>
+        <h4> Search</h4>
+        <ul>
+          <li>Enter Search terms</li>
+          <li>Select files to search in</li>
+          <li>Click the search button</li>
+        </ul>
+    </div>
+
+
+
+    <div class="col-xs-7 col-md-7">
+      <p ng-show="showError" class="alert alert-danger text-center text-danger errMsg">{{ errorHandler }}</p>
+      <div class="col-md-4 col-xs-4">
+        <label for="upload" class="btn btn-primary form-control">Upload</label>
+        <input style="display:none" type='file' id ='upload'>
+      </div>
+      <div class="col-md-4 col-xs-4">
+        <select ng-model="getFile" ng-show="fileNames.length > 0" class="form-control">
+          <option ng-repeat="filename in fileNames | orderBy:filename">{{filename}}</option>
+        </select>
+      </div>
+      <div class="col-md-4 col-xs-4">
+        <button type="submit" class="btn btn-primary btn-block form-control" ng-click="displayIndex()">Create Index</button>
+      </div>
+
+    <div ng-if="displayIndexes" class="col-md-12">
+         <div class='tableArea'>
+          <table class="table table-striped">
+            <thead>
+              <th> Showing Index for {{ getFile }}</th>
+              <tr>
+                <th> Keywords</th>
+                <th ng-repeat="doc_num in [] | range:indexedFiles.numOfDocs"> Document {{doc_num + 1}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="(eachWord, documents) in indexedFiles.eachWord">
+                <td class="divider">{{eachWord}}</td>
+                <td ng-repeat="doc_num in [] | range:indexedFiles.numOfDocs">
+                   <span ng-if="documents.indexOf(doc_num) !== -1" class="text-center">x</span>
+                   <span ng-if="documents.indexOf(doc_num) === -1" class="text-center">~</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+
+    <div ng-if="displaySearchResult" class="col-md-12">
+       <div ng-repeat="(filename, result) in searchResults">
+           <div class='tableArea'>
+             <table class="table table-striped">
+               <thead>
+                 <th> Showing Index for {{filename}}</th>
+                 <tr>
+                   <th> Keywords</th>
+                   <th ng-repeat="doc_num in [] | range:searchResults[filename].numOfDocs"> Document {{doc_num + 1}}</th>
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr ng-repeat="(eachWord, documents) in searchResults[filename].eachWord">
+                   <td class="divider">{{eachWord}}</td>
+                   <td ng-repeat="doc_num in [] | range:searchResults[filename].numOfDocs">
+                     <span ng-if="documents.indexOf(doc_num) !== -1" class="text-center">x</span>
+                     <span ng-if="documents.indexOf(doc_num) === -1" class="text-center">~</span>
+                   </td>
+                  </tr>
+               </tbody>
+             </table>
+           </div>
+       </div>
+    </div>
+  </div>
+
+    <div class="col-xs-2 col-md-2 text-center">
+      <div ng-show="fileNames.length > 0">
+        <br>
+        <p> Click a file to create Index </p>
+        <div ng-show = "fileNames.length > 0">
+        <button ng-repeat = "file in fileNames" type="submit" class="btn btn-primary btn-block form-control" ng-click="displayIndex(file)"> {{file}} </button>
+      </div>
+      </div>
+      <p ng-show="fileNames.length < 1"> You have no uploaded file </p>
+    </div>
+
+  </div>
+</div>
+
+<div class="container" style="color: #fff;">
+  <footer>
+    <!-- <div class="container-fluid"> -->
+      <div>
+          <p class="text-center">&copy; Copyright 2017 Tracezeb</p>
+      </div>
+    <!-- </div> -->
+  </footer>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+<script type="text/javascript" src="./js/app.js"></script>
+</body>
+</html>
