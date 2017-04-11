@@ -1,0 +1,130 @@
+#header {
+    padding: 1em;
+    color: white;
+    background-color: SteelBlue;
+    clear: left;
+    text-align: center;
+}
+
+body{
+    background-image: url("/images/books-bg.png");
+    background-position: center;
+    background-size:cover;
+    margin: 0;
+}
+
+#help {
+    float: left;
+    width: 30%;
+    border-radius: 25px;
+    border: 1px solid gray;
+    padding: 1em;
+    overflow: hidden;
+    margin: 10px;
+    background-color: Gainsboro;
+    font-family: "HelveticaNeue-Light";
+}
+
+/*style div tags*/
+#content {
+    float: left;
+    /*width: 50em;*/
+    background-color: Gainsboro;
+    margin: 10px;
+    border-radius: 25px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#user-input,
+#selectBooks {
+    float: left;
+    width: 60%;
+    margin: 10px;
+}
+
+.user-output
+{
+    float: left;
+    padding: 50px;
+}
+.selectFiles{
+    float: left;
+}
+.searchFiles{
+    float: left;
+}
+
+#result {
+    float: left;
+    width: 100%;
+    background-color: Gainsboro;
+    margin: 10px;
+    border-radius: 25px;
+    max-height: 400px;
+    overflow:auto;
+}
+
+
+/*Style select input*/
+
+select {
+    font-family: 'Times New Roman';
+}
+
+select option {
+    background-color: #FFFF00;
+    color: #FF0000;
+}
+
+
+/*Style table*/
+
+table {
+    border-collapse: 1;
+    width: 100%;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 8px;
+    width: 50em;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2
+}
+
+th {
+    background-color: SteelBlue;
+    color: white;
+}
+
+/*Style buttons */
+#go-button,
+#create-index {
+    background-color: SteelBlue;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.verticalLine {
+  border-left: thick solid Steelblue;
+}
+
+/*Style footer*/
+
+#footer {
+    clear: both;
+    padding: 1em;
+    color: white;
+    background-color: DimGrey;
+    text-align: center;
+    bottom: 0;
+    width:100%
+}
