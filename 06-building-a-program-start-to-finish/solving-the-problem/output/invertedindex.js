@@ -23,11 +23,10 @@ class InvertedIndex {
   }
 
   /**
-   * readFile function is used to get all the index
+   * readFile read file from a given html element
    * @param {object} inputData - the json data to index
-   * @return {boolean} - When file is of bad extent of
-   * invalid json format
-   * @return {boolean} - When file is of the right extension structure
+   * @return {object|boolean} - When file have bad extension it returns
+   * false and return a json object if it is a good extension
    */
   readFile(inputData) {
     return new Promise((resolve, reject) => {
