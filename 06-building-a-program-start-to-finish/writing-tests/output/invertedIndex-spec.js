@@ -89,35 +89,19 @@ describe('getIndex method', () => {
 describe('searchIndex method', () => {
   it(`should return an object 
     containing searched index from an index created`, () => {
-    const query = 'in';
-    const returnedObject = { words: { alice: [0],
-        in: [0],
-        wonderland: [0],
-        a: [0],
-        falls: [0],
-        hole: [0],
-        into: [0],
-        rabbit: [0] },
-        bookCount: 1 },
+    const query = 'in',
+      fileArray = ['otherBook.json'],
       searchResult = { 'otherBook.json': { in: [0] } };
-    expect(invertedIndex.searchIndex(returnedObject.word, query))
+    expect(invertedIndex.searchIndex(fileArray, query))
     .toEqual(searchResult);
   });
 
   it(`should return an object
       with empty array indicating query not found in index created`, () => {
-    const query = 'femi';
-    const returnedObject = { words: { alice: [0],
-        in: [0],
-        wonderland: [0],
-        a: [0],
-        falls: [0],
-        hole: [0],
-        into: [0],
-        rabbit: [0] },
-        bookCount: 1 },
+    const query = 'femi',
+      fileArray = ['otherBook.json'],
       searchResult = { 'otherBook.json': { femi: [] } };
-    expect(invertedIndex.searchIndex(returnedObject.word, query))
+    expect(invertedIndex.searchIndex(fileArray, query))
     .toEqual(searchResult);
   });
 });

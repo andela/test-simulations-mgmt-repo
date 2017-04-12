@@ -1,108 +1,140 @@
 /* Default styling for the whole page */
 html, body{
-	font-family:"Trebuchet MS", Arial, sans-serif;
-	width: 100%;
-  	height: 100%;
-  	padding: 0;
-  	margin: 0;
-	font-size: 100%;
+    font-family:"Trebuchet MS", Arial, sans-serif;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    font-size: 100%;
  }
 
 /* Default for all divs */
 div{
-	box-sizing: border-box;
-	-moz-box-sizing:border-box;
-	-webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    box-sizing: border-box;
 }
 
 /* All links */
 a{
-	text-decoration: none !important;
-	color: rgb(0,0,0) !important;
+    text-decoration: none !important;
+    color: rgb(0,0,0) !important;
 }
 
 #file-list{
-	height: 30px;
-	border: 0;
+    height: 30px;
+    border: 0;
 
 }
 option{
-	display: block;
+    display: block;
 }
 
 .shadow{
-	box-shadow: 0 1px 2px -0.8px;
-	-moz-box-shadow: 0 1px 2px -0.8px;
-	-webkit-box-shadow: 0 1px 2px -0.8px;
+    -moz-box-shadow: 0 1px 2px -0.8px;
+    -webkit-box-shadow: 0 1px 2px -0.8px;
+    box-shadow: 0 1px 2px -0.8px;
 }
 
-.create-index-wrapper{
-	vertical-align: top;
-	margin-right: 30px;
-	display: inline;
+.create-index-wrapper {
+    vertical-align: top;
+    margin-right: 30px;
+    display: inline;
 }
 
 .bg-color{
-	background-color: rgba(62,159,235,0.2);
+    background-color: skyblue;
+    background-color: rgba(62,159,235,0.2);
 }
 /* Navigation bar */
 .main-nav{
-	height: 60px;
-	border: 0;
-	margin-bottom: 30px;
+    height: 60px;
+    border: 0;
 }
 
 /* Page Heading */
-.page-heading{
-	margin-bottom: -40px;
-	margin-top: 10px;
-	margin-left: 10px;
+.page-heading {
+    margin-bottom: -40px;
+    margin-top: 10px;
+    margin-left: 10px;
 }
-.main-heading{
-	display: inline-block;
-	float: left;
-}
-.header{
-	float: left;
+.main-heading {
+    display: inline-block;
 }
 
-.search-bar{
-	display: inline;
-	float: right;
+.header{
+    float: left;
+}
+
+.search-bar {
+    display: inline;
+}
+
+.msg-bar {
+    margin: 0 auto;
+    opacity: 1;
+    width: 900px;
+    margin-bottom: 5px;
+    -webkit-transition:  1s;
+    -moz-transition:  1s; 
+    -o-transition: 1s;    
+    transition: 1s; 
+}
+
+.msg-bar.fade {
+    opacity: 0;
+}
+
+/* Aside wrapper styling */
+.aside{
+    border-radius: 3px; 
+    margin-left: 40px;
+    width: 300px;
+    height: 100%;
+    font-size: 0.9em;
+    float: left;
+}
+
+/* App wrapper */
+.app-wrapper {
+    margin-left: 40px;
+    margin: 0 auto;
+    top: 0;
+    position: relative;
+    width: auto;
 }
 
 /* control-wrapper */
-.control-wrapper{
-	display: flex;
-	margin: 0 auto;
-	width: 900px;
-	border-radius: 3px;
-	clear: both;
-	height: 40px;
-	padding: 5px 10px;
+.control-wrapper {
+    display: flex;
+    margin: 0 auto;
+    width: auto;
+    border-radius: 3px;
+    height: 40px;
+    padding: 5px 10px;
 }
 
 .link-list{
-	list-style-type: none;
-	height: 30px;
-	color: rgb(255,255,255);
+    list-style-type: none;
+    height: 30px;
+    color: rgb(255,255,255);
 }
 
 .main-links li{
-	margin: 20px;
-	list-style: none;
-	
+    margin: 20px;
+    list-style: none;
+    
 }
 
 /* Upload block */
 .upload{
-	position: relative;
+    position: relative;
     margin-right: 20px;
 }
 
 /* Upload button */
-.upload input.file-upload{
-	position: absolute;
+.upload .file-upload{
+    position: absolute;
     top: 0;
     right: 0;
     cursor: pointer;
@@ -112,36 +144,33 @@ option{
 }
 
 .btn-upload{
-	height: 33px;
-	margin:5px;
-	border:0;
-	border-radius: 3px;
-	position: relative;
+    height: 33px;
+    margin:5px;
+    border:0;
+    border-radius: 3px;
+    position: relative;
 }
 
 .btn-color{
-	background-color: rgb(40,96,144);
+    background-color: blue;
+    background-color: rgb(40,96,144);
 }
 
-/* Search form */
-.search-form{
-	
-}
 
 /* Search input box */
 .search{
-	padding:5px 10px;
-	border: 0;
-	height: 30px;
-	border-radius: 3px;
-	margin-bottom: 0;
+    padding:5px 10px;
+    border: 0;
+    height: 30px;
+    border-radius: 3px;
+    margin-bottom: 0;
 }
 
 /* Search button */
 .submit{
     padding:6px 15px;
-  	border-radius: 3px;
-  	color: rgb(255,255,255);
+    border-radius: 3px;
+    color: rgb(255,255,255);
     height: 30px;
     margin-bottom: 0;
     text-align: center;
@@ -149,27 +178,78 @@ option{
 
 /* Main page styling */
 .main-section{
-	border-radius: 3px;
-	padding: 10px;
-	margin: 0 auto;
-	width: 900px;
-	margin-top: 30px;
+    border-radius: 3px;
+    padding: 10px;
+    width: auto;
+    margin-top: 30px;
 }
 
 /* Create Index button */
 .create-index{
-	color: rgb(255,255,255);
-	border-radius: 3px;
-	height: 30px;
-	width: 100px;
-	margin-bottom: 5px;
-	text-align: center;
+    color: rgb(255,255,255);
+    border-radius: 3px;
+    height: 30px;
+    width: 100px;
+    margin-bottom: 5px;
+    text-align: center;
 }
 
 /* Uploaded file name box */
 .file-name{
-	border: 0;
-	height: 33px;
-	margin-right: -5px;
-	margin-bottom: 5px;
+    border: 0;
+    height: 33px;
+    margin-right: -5px;
+    margin-bottom: 5px;
+}
+
+/* HD desktop screen */
+@media screen and (max-width: 1240px) {
+    .app-wrapper {
+        margin: 0 auto;
+        position: relative;
+        width: auto;
+    }
+
+    .aside {
+        width: 900px; 
+        margin: 0 auto;
+        margin-bottom: 20px;
+        float: none;
+    }
+}
+
+/* Desktop screen */
+@media screen and (max-width: 920px) {
+    .aside {
+        width: 900px;
+        margin: 0 auto;
+    }
+
+    .app-wrapper {
+        margin: 0 auto;
+        position: relative;
+        width: 900px;
+    }
+
+
+}
+
+/* Smartphone screen */
+@media screen and (max-width: 767px) {
+    .aside {
+        width: 700px;
+        margin: 0 auto;
+    }
+
+    .app-wrapper {
+        margin: 0 auto;
+        position: relative;
+        width: 700px;
+    }
+
+}
+
+/* Small phone screen */
+@media screen and (max-width: 375px) {
+
 }

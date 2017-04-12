@@ -107,7 +107,7 @@ class InvertedIndex {
     let index;
     this.searchIndices = {};
     const tokenized = this.tokenize(query);
-    if (!fileArray) {
+    if (fileArray[0] === '') {
       fileArray = Object.keys(this.allIndices);
     }
     fileArray.forEach((fileName) => {
