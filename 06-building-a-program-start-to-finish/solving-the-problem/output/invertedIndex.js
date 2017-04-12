@@ -79,7 +79,8 @@ export default class InvertedIndex {
    */
   static tokenize(words) {
     let value = words;
-    value = value.replace(/[&\\#,+()$~%.'":*?<>{}]/g, '')
+    value = value.replace(/[&\\#,+()$~%.'":*?<>{}]/g, ' ')
+    .replace(/[[|\]]/g, '')
       .trim()
       .toLowerCase()
       .split(/\s+/);
@@ -210,8 +211,8 @@ export default class InvertedIndex {
    * @returns {Array} contains cleaned words
    * cleans the keyword for search
    */
-  static cleanValues(word) {
-    let value = word.replace(/[&\\#,+()$~%.'":*?<>{}]/g, '')
+static cleanValues(words) {
+    let value = words.replace(/[&\\#,+()$~%.'":*?<>\-^!@{}]/g, '')
       .replace(/[[|\]]/g, '')
       .toLowerCase()
       .trim()
