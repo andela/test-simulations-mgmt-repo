@@ -90,8 +90,8 @@
 			'css'       :
 			{
 				'position' : 'fixed',
-				'top'      : '10px',
-				'right'    : '10px',
+				'top'      : '20px',
+				'right'    : '50px',
 				'width'    : '420px',
 				'zIndex'   : 50
 			}
@@ -105,7 +105,7 @@
 					'<span aria-hidden="true">&times;</span>' +
 					'<span class="sr-only">Close</span>' +
 				'</button>' +
-				'<span class="title"></span>: <span class="message"></span>' +
+				'<span class="message"></span>' +
 			'</div>',
 
 			'defaults' :

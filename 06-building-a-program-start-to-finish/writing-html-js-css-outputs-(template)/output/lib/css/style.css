@@ -33,7 +33,7 @@ input[type="button"],input[type="submit"],.port-grid ,.text p,.text h3{
 	transition:0.5s all;
 	-webkit-transition:0.5s all;
 	-moz-transition:0.5s all;
-	-o-transition:0.5s all;
+	-o-transition:0.7s all;
 	-ms-transition:0.5s all;
 }
 h1,h2,h3,h4,h5,h6{
@@ -108,7 +108,7 @@ label{
 		margin-left: 5px;
 	}
 	.content.white {
-		background: rgba(26, 170, 208, 0.5);
+		background: rgb(40, 96, 146);
 		    padding: 1em 0;
 	}
 	.content.black {
@@ -290,8 +290,9 @@ label{
 .btn-primary {
 	background-color: #1aaad0;
 }
+
 .navbar-brand h2 {
-	color: #1aaad0;
+	color: #286092;
 }
 /*--banner-inner--*/
 #slider2,

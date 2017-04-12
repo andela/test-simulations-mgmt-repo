@@ -15,7 +15,8 @@
     <link href="lib/css/custom.css" rel='stylesheet' type='text/css' />
 
 </head>
-<body ng-controller="IndexCtrl">
+
+<body ng-controller="IndexController">
     <div class="image-container set-full-height" style="background-image: url('lib/images/banner.jpg')">
         <div class="content white">
             <nav class="navbar navbar-default" role="navigation">
@@ -90,14 +91,14 @@
                                 </ul>
                             </div>
                         </form>
-                        <div class="alert alert-{{msgType}}" ng-show="showError">
+                        <div class="alert alert-{{msgType}}">
                             <button type="button" class="close" data-ng-click="switchBool('showError')">×</button>
                             <strong>{{note}}</strong> {{displayMsg}}
                         </div>
                 </div>
             </div>
             <div class="col-sm-8 col-sm-offset-0">
-                <div class="card" ng-show="welcome">
+                <div class="card" ng-show="welcomePage">
                     <h4 class="main-title">Welcome, Let's Get Started</h4>
                     <center>
                         <div class="welcome-text">Inverted Index is designed to allow very fast full-text searches. An Inverted Index consists of a
@@ -154,7 +155,7 @@
                             <tr ng-repeat="token in tokens">
                                 <td style="text-transform: capitalize;">{{token}}</td>
                                 <td ng-repeat="book in bookIndices">
-                                    <img ng-src="/lib/images/{{ book | rowFunc : indices[token] }}.png" width="20px" height="20px">
+                                    <img ng-src="/lib/images/{{ book | imageCheck : indices[token] }}.png" width="20px" height="20px">
                                 </td>
                             </tr>
                         </tbody>
@@ -181,7 +182,7 @@
                             <tr ng-repeat="(keyword, searchValue) in fileValue.result">
                                 <td style="text-transform: capitalize;">{{keyword}}</td>
                                 <td ng-repeat="val in fileValue.countBook">
-                                    <img ng-src="/lib/images/{{ val | rowFunc : searchValue}}.png" width="20px" height="20px">
+                                    <img ng-src="/lib/images/{{ val | imageCheck : searchValue}}.png" width="20px" height="20px">
                                 </td>
                             </tr>
                         </tbody>
@@ -189,37 +190,27 @@
                 </div>
             </div>
         </div>
+         <!-- /.content-wrapper -->
+    
+        <div class="col-md-12 col-sm-12">
+       <center><p style="font-size: 1.2em; color: #0f0f0f">≈Måximuƒ≈</p></center>
+       <footer class="main-footer">
+      <div class="pull-right hidden-xs">
+        <b>Version</b> 1.1.5
+      </div>
+      <strong>Copyright &copy; 2017 <a href="http://github.com/andela-ksolomon">Solomon Kingsley</a>.</strong> All rights reserved.
+    </footer>
+        </div>
     </div>
 </body>
-<script language="JavaScript">
-    $(function () {
-        $(document).on('change', ':file', function () {
-            var input = $(this),
-                numFiles = input.get(0).files ? input.get(0).files.length : 1,
-                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-            input.trigger('fileselect', [numFiles, label]);
-        });
-
-        $(document).ready(function () {
-
-            $(':file').on('fileselect', function (event, numFiles, label) {
-                var input = $(this).parents('.input-group').find(':text'),
-                    log = numFiles > 1 ? numFiles + ' files were' : label + ' was ';
-                if (input.length) {
-                    input.val(log);
-                }
-            });
-        });
-    });
-
-</script>
 <!-- Js -->
 <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="/lib/js/jquery.toaster.js"></script>
 <script type="text/javascript" src="lib/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="src/js/invertedIndex.js"></script>
 <script type="text/javascript" src="lib/js/angular.min.js"></script>
-<script type="text/javascript" src="build/js/app.js"></script>
+<script type="text/javascript" src="src/js/app.js"></script>
+<script type="text/javascript" src="/lib/js/main.js"></script>
+<script type="text/javascript" src="src/js/invertedIndex.js"></script>
 <script type="text/javascript" src="/lib/js/dir-pagination.js"></script>
 
 </html>

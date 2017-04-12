@@ -31,7 +31,14 @@ body {
     height: 500px;
     overflow-y: scroll;
     }
-
+.alert-danger {
+    background-color: #af4e4e !important;
+    color: #fff !important;
+}
+.alert-success {
+    background-color: rgb(52, 123, 97) !important;
+    color: #fff !important;
+}
 .bar-box {
     border-radius: 4px;
     box-shadow: 0 2px 2px rgba(204, 197, 185, 0.5);
