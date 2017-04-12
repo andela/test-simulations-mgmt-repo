@@ -1,4 +1,3 @@
-
 const hasProperty = Object.prototype.hasOwnProperty;
 let instance = null;
 
