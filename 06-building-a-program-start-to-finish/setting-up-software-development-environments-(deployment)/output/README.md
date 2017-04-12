@@ -9,4 +9,4 @@ https://staging-maximuf-index-pr-6.herokuapp.com/
 ##Staging App:
 https://staging-maximuf-index.herokuapp.com/
 ##Production
-https://max-index.herokuapp.com/
+https://maximuf-index.herokuapp.com/
