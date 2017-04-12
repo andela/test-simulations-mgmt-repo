@@ -22,9 +22,11 @@ export default class InvertedIndex {
    */
   createIndex(fileName, fileContent) {
     this.indices[fileName] = this.indices[fileName] || {};
+
     const totalBooks = fileContent.length;
-    for (let bookIndex = 0; bookIndex <
-      totalBooks; bookIndex += 1) {
+    Object.keys(fileContent)
+    .forEach((book, bookIndex) => {
+      book = fileContent[book];
       const { title, text } = fileContent[bookIndex],
         tokens = InvertedIndex.tokenize(`${title} ${text}`),
         indices = this.indices[fileName];
@@ -38,8 +40,7 @@ export default class InvertedIndex {
           indices[token] = [bookIndex];
         }
       });
-    }
-
+    });
     this.indexedFiles[fileName] = totalBooks;
     return true;
   }
@@ -62,11 +63,11 @@ export default class InvertedIndex {
   */
   booksIndex(fileName) {
     const totalBooks = this.indexedFiles[fileName],
-      indexArr = [];
+      bookArray = [];
     for (let i = 0; i < totalBooks; i += 1) {
-      indexArr.push(i);
+      bookArray.push(i);
     }
-    return indexArr;
+    return bookArray;
   }
 
 
@@ -94,22 +95,22 @@ export default class InvertedIndex {
   static readFile(currentFile) {
     return new Promise((resolve, reject) => {
       const bookReader = new FileReader();
-      bookReader.onload = (function onload() {
-        return (readObj) => {
-          const tranFile = [],
+      bookReader.onload = (() =>
+        (file) => {
+          const result = [],
             fileName = currentFile.name,
-            fileContent = readObj.target.result;
+            fileContent = file.target.result;
           try {
             InvertedIndex.validateFile(fileContent, fileName);
             const content = JSON.parse(fileContent);
-            tranFile.push(fileName);
-            tranFile.push(content);
-            resolve(tranFile);
-          } catch (e) {
-            reject(e);
+            result.push(fileName);
+            result.push(content);
+            resolve(result);
+          } catch (error) {
+            reject(error);
           }
-        };
-      })(currentFile);
+        }
+      )(currentFile);
       bookReader.readAsText(currentFile);
     });
   }
@@ -121,8 +122,8 @@ export default class InvertedIndex {
    * validates File Name and Content
    */
   static validateFile(fileContent, fileName) {
-    const fileExt = fileName.split('.').pop();
-    if (fileExt !== 'json') {
+    const fileExtension = fileName.split('.').pop();
+    if (fileExtension !== 'json') {
       const error = `${fileName} has an Invalid File extension, JSON only`;
       throw new Error(error);
     }
@@ -137,8 +138,8 @@ export default class InvertedIndex {
       const error = `${fileName} is an empty JSON file`;
       throw new Error(error);
     }
-    content.forEach((elem) => {
-      if (!elem.title || !elem.text) {
+    content.forEach((book) => {
+      if (!book.title || !book.text) {
         const error = `OOPS!!! ${fileName} does not contain title and text`;
         throw new Error(error);
       }
@@ -172,8 +173,8 @@ export default class InvertedIndex {
         const result = this.getResult(keyword, fileName);
         this.finalResult[fileName] = result;
       });
-    } catch (e) {
-      throw new Error(e);
+    } catch (error) {
+      throw new Error(error);
     }
   }
 
@@ -188,16 +189,16 @@ export default class InvertedIndex {
     const searchResult = {},
       keywords = InvertedIndex.cleanValues(keyword),
       fileIndex = this.indices[fileName],
-      currentToken = Object.keys(this.indices[fileName]);
+      fileToken = Object.keys(this.indices[fileName]);
     if (keywords.length === 0) {
       const error = 'Search for Aplhanumeric values only';
       throw (error);
     }
-    keywords.forEach((elem) => {
-      if (currentToken.includes(elem)) {
-        searchResult[elem] = fileIndex[elem];
+    keywords.forEach((word) => {
+      if (fileToken.includes(word)) {
+        searchResult[word] = fileIndex[word];
       } else {
-        searchResult[elem] = [];
+        searchResult[word] = [];
       }
     });
     return searchResult;
@@ -215,7 +216,8 @@ export default class InvertedIndex {
       .toLowerCase()
       .trim()
       .split(/\b\s+(?!$)/);
-    value = value.filter(elem => elem !== '');
+    value = value.filter(word => word !== '');
     return value;
   }
 }
+
