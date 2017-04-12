@@ -2,10 +2,16 @@
 const hasProperty = Object.prototype.hasOwnProperty;
 let instance = null;
 
+/**
+ * InvertedIndex class
+ * Contains methods for InvertedIndex
+ * Only allows single instance of the object to be created
+*/
 class InvertedIndex {
   /**
-    * constructor method
-    *@
+    * constructor method ensures that there is only
+    * one instance of the class
+    * @return {object} - Instance of the class
   */
   constructor() {
     if (!instance) {
@@ -20,9 +26,9 @@ class InvertedIndex {
   /**
    * readFile function is used to get all the index
    * @param {object} inputData - the json data to index
-   * @return {reject(false)} - When file is of bad extent of
+   * @return {boolean} - When file is of bad extent of
    * invalid json format
-   * @return {resolve(true)} - When file is of the right extension structure
+   * @return {boolean} - When file is of the right extension structure
    */
   readFile(inputData) {
     return new Promise((resolve, reject) => {
@@ -43,12 +49,13 @@ class InvertedIndex {
   }
 
   /**
-   * handleError handles error 
+   * handleError handles error
    * @param {string} fileName - Name of file being indexed or searched
    * @param {string} errorMessage - Error message to be displayed
-   * @param {boolean} errorStatus - True or False 
+   * @param {boolean} errorStatus - True or False
+   * @return {Object} error - Error Object
    */
-  handleError(fileName, errorMessage, errorStatus){
+  handleError(fileName, errorMessage, errorStatus) {
     delete this.filesIndexed[fileName];
     this.error.status = errorStatus;
     this.error.message = errorMessage;
@@ -115,7 +122,7 @@ class InvertedIndex {
   /**
    * tokenize: method removes special characters and converts the text to
    * lowercase and then returns the array of words
-   * @param {string} text- the text to be tokenized
+   * @param {string} text - the text to be tokenized
    * @return {array} array of words in the documents
   */
   tokenize(text) {
@@ -148,12 +155,12 @@ class InvertedIndex {
   /**
    * getIndex method returns the indexed words and the documents that were found
    * @param {string} filename - name of the file to get its index
-   * @return {Object|boolean} the index or false if unable to 
+   * @return {Object|boolean} the index or false if unable to
   */
   getIndex(filename) {
     try {
       if (!this.filesIndexed[filename]) {
-        this.handleError(filename, 'File selected not indexed', false)
+        this.handleError(filename, 'File selected not indexed', false);
       }
       const file = this.filesIndexed[filename];
       return file.index;
@@ -173,7 +180,6 @@ class InvertedIndex {
   */
   searchIndex(searchTerm, filename) {
     if ((typeof searchTerm === 'string' && searchTerm.trim() === '') ||
-      (typeof searchTerm === 'object' && searchTerm.length === 0) ||
       searchTerm === undefined) {
       return false;
     }
@@ -198,9 +204,9 @@ class InvertedIndex {
 
   /**
    * getSearchResults method checks the index of the file and returns the result
-   * @param searchTokens {searchTokens} - the search query of one or more words
-   * @param filename {string} - the name of the file
-   * @return {object} - an object with the found words as keys
+   * @param {searchTokens} searchTokens - the search query of one or more words
+   * @param {string} filename - the name of the file
+   * @return {array} result - an array of objects with the found words as keys
   */
   getSearchResults(searchTokens, filename) {
     const indexToSearch = this.getIndex(filename), result = {};
@@ -214,15 +220,17 @@ class InvertedIndex {
 
   /**
    * getDocuments get an array of the documents index e.g [0, 1, 2, 3]
-   * @param {filename} - name of the file to get its document
+   * @param {string} filename - name of the file to get its document
    * @return {array} an array of the documents index
   */
   getDocuments(filename) {
     const docs = [];
-    for (let i = 0; i < this.filesIndexed[filename].numOfDocs; i++) {
+    for (let i = 0; i < this.filesIndexed[filename].numOfDocs; i += 1) {
       docs.push(i);
     }
     return docs;
   }
 
 }
+
+module.export = InvertedIndex;
