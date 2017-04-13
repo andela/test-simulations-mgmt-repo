@@ -12,6 +12,7 @@ export default class InvertedIndex {
     this.indices = {};
     this.indexedFiles = {};
     this.uploadedFiles = {};
+    this.indexedBooks = [];
   }
   /**
    * @createIndex method
@@ -25,24 +26,28 @@ export default class InvertedIndex {
 
     const totalBooks = fileContent.length;
     Object.keys(fileContent)
-    .forEach((book, bookIndex) => {
-      book = fileContent[book];
-      const { title, text } = fileContent[bookIndex],
-        tokens = InvertedIndex.tokenize(`${title} ${text}`),
-        indices = this.indices[fileName];
-      tokens.forEach((token) => {
-        if (token in indices) {
-          const eachToken = indices[token];
-          if (eachToken.indexOf(bookIndex) === -1) {
-            indices[token].push(bookIndex);
+      .forEach((book, bookIndex) => {
+        book = fileContent[book];
+        const { title, text } = fileContent[bookIndex],
+          tokens = InvertedIndex.tokenize(`${title} ${text}`),
+          indices = this.indices[fileName];
+        tokens.forEach((token) => {
+          if (token in indices) {
+            const eachToken = indices[token];
+            if (eachToken.indexOf(bookIndex) === -1) {
+              indices[token].push(bookIndex);
+            }
+          } else {
+            indices[token] = [bookIndex];
           }
-        } else {
-          indices[token] = [bookIndex];
-        }
+        });
+        this.indexedBooks.push(fileName);
       });
-    });
     this.indexedFiles[fileName] = totalBooks;
-    return true;
+    if (this.indexedBooks.includes(fileName)) {
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -80,7 +85,7 @@ export default class InvertedIndex {
   static tokenize(words) {
     let value = words;
     value = value.replace(/[&\\#,+()$~%.'":*?<>{}]/g, ' ')
-    .replace(/[[|\]]/g, '')
+      .replace(/[[|\]]/g, '')
       .trim()
       .toLowerCase()
       .split(/\s+/);
@@ -207,17 +212,18 @@ export default class InvertedIndex {
 
   /**
    * @cleanValues method
-   * @param {string} word - word to clean
-   * @returns {Array} contains cleaned words
+   * @param {string} words - word to clean
+   * @returns {Array} words contains cleaned words
    * cleans the keyword for search
    */
-static cleanValues(words) {
+  static cleanValues(words) {
     let value = words.replace(/[&\\#,+()$~%.'":*?<>\-^!@{}]/g, '')
       .replace(/[[|\]]/g, '')
       .toLowerCase()
       .trim()
       .split(/\b\s+(?!$)/);
-    value = value.filter(word => word !== '');
+      
+      value = value.filter(word => word !== '');
     return value;
   }
 }

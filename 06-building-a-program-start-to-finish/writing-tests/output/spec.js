@@ -46,45 +46,47 @@ describe('Class and Method Instantaion', () => {
     expect(typeof InvertedIndex.validateFile).toBe('function');
   });
 });
+
 describe('InvertedIndex createIndex', () => {
   it('Should return true for creating Index', () => {
-    expect(invertedIndex.createIndex('books.json', myBook)).toBeTruthy();
-  });
-
-  it('Should return the numbers of books in a file', () => {
-    const numOfBooks = invertedIndex.booksIndex('books.json');
-    expect(numOfBooks.length).toEqual(6);
+    const indexedBooks = invertedIndex.indexedBooks,
+      fileName = 'books.json';
+    invertedIndex.createIndex(fileName, myBook);
+    expect(indexedBooks.includes(fileName)).toBeTruthy();
   });
 });
 
 describe('InvertedIndex searchIndex', () => {
-  it('Should return `No file has been indexed yet', () => {
+
+  it('Should return No file has been indexed yet if no index has been created',
+  () => {
     const search = () => {
       invertedIndex.searchIndex('alice');
     };
     expect(search).toThrowError('Error: No file has been indexed yet');
   });
 
-  it('Should return an empty if not found', () => {
+  it('Should return an empty array if token is not found', () => {
     invertedIndex.searchIndex('alive', ['books.json']);
     expect(invertedIndex.finalResult).toEqual(
       { 'books.json': Object({ alive: [] }) }
       );
   });
 
-  it('Should return `please enter a keyword to search.`', () => {
+  it('Should return `please enter a keyword to search.` when keyword is empty',
+  () => {
     const search = () => {
       invertedIndex.searchIndex();
     };
     expect(search).toThrowError('please enter a keyword to search.');
   });
 
-  it('Should return an object for searchResult', () => {
+  it('Should return an object for the searchResult', () => {
     expect(invertedIndex.getResult('alice', ['books.json']))
       .toEqual({ alice: [0, 3] });
   });
 
-  it('Should throw an error', () => {
+  it('Should throw an error if keyword contains special characters', () => {
     const validInput = () => {
       invertedIndex.getResult('[[[[[[[[[[[]]]]]]]]]', ['books.json']);
     };
@@ -92,19 +94,20 @@ describe('InvertedIndex searchIndex', () => {
   });
 });
 
-describe('InvertedIndex getIndex', () => {
-  it('Should return an object for getIndex method', () => {
+describe('InvertedIndex getIndex Method', () => {
+
+  it('Should return an object for the getIndex method', () => {
     expect(typeof getIndex).toBe('object');
   });
 
-  it('Should return an alive as the first token', () => {
+  it('Should return `alive` as the first token created', () => {
     const alltoken = Object.keys(getIndex);
     expect(alltoken[0]).toBe('alice');
   });
 });
 
-describe('InvertedIndex readFile', () => {
-  it('Should return an array for the JSON File', (done) => {
+describe('InvertedIndex readFile Method', () => {
+  it('Should return `Alice in Wonderland` as first title of the book', (done) => {
     const readFile = InvertedIndex.readFile(jsonFile);
     readFile.then((res) => {
       expect(res[1][0].title).toBe('Alice in Wonderland');
@@ -113,15 +116,17 @@ describe('InvertedIndex readFile', () => {
   });
 });
 
-describe('InvertedIndex tokenize', () => {
-  it('Should return array of tokenize words', () => {
-    expect(InvertedIndex.tokenize('alice-,monday,&tuesday#, ]]]]['))
+describe('InvertedIndex tokenize Method', () => {
+
+  it('Should return an array of tokenize words', () => {
+    expect(InvertedIndex.tokenize('alice%,monday,&tuesday#, ]]]]['))
     .toEqual(['alice', 'monday', 'tuesday']);
   });
 });
 
-describe('InvertedIndex validateFile', () => {
-  it('Should return true for well formatted File', () => {
+describe('InvertedIndex validateFile Method', () => {
+
+  it('Should return true for well formatted Files', () => {
     const book = JSON.stringify(myBook);
     expect(InvertedIndex.validateFile(book, 'books.json')).toBeTruthy();
   });
@@ -134,7 +139,8 @@ describe('InvertedIndex validateFile', () => {
     expect(checkEmptyBook).toThrowError('emptybook.json is not well formatted');
   });
 
-  it('Should throw an error for Invalid keys', () => {
+  it('Should throw an error for books that does not contain title or text',
+  () => {
     const name = 'invalidBook.json';
     const invalidKey = () => {
       InvertedIndex.validateFile(invalidKeys, name);
@@ -142,7 +148,7 @@ describe('InvertedIndex validateFile', () => {
     expect(invalidKey).toThrowError(`${name} is not well formatted`);
   });
 
-  it('Should return throw an error for Invalid file Extension', () => {
+  it('Should throw an error for Non-JSON file', () => {
     const validate = () => {
       InvertedIndex.validateFile('result', 'sample.txt');
     };
@@ -151,9 +157,11 @@ describe('InvertedIndex validateFile', () => {
   });
 });
 
-describe('InvertedIndex cleanValues', () => {
-  it('Should return an array of clean values', () => {
+describe('InvertedIndex cleanValues Method', () => {
+
+  it('Should return an array of clean keywords', () => {
     expect(InvertedIndex.cleanValues('How, are, you doing today'))
       .toEqual(['how', 'are', 'you', 'doing', 'today']);
   });
+  
 });
