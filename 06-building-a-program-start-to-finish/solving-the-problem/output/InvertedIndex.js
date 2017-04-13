@@ -54,6 +54,11 @@ const InvertedIndex = class {
    * @return {Object} - returns object back to caller if object is valid
    */
   static validateFile(fileContent) {
+    if (!Array.isArray(fileContent)) {
+      throw new Error(`This file's structure is invalid.
+       Only array of objects are allowed.`);
+    }
+
     fileContent.forEach((document) => {
       if (!(Object.prototype.hasOwnProperty.call(document, 'title')
       && Object.prototype.hasOwnProperty.call(document, 'text'))) {
@@ -142,15 +147,8 @@ const InvertedIndex = class {
     containing indices for file and titles of documents in file
    */
   createIndex(fileName, fileContent) {
-    let jsonContent;
-    try {
-      jsonContent = InvertedIndex.lowerDocumentText(fileContent);
-    } catch (err) {
-      throw new Error(`This file's structure is invalid.
-       Only array of objects are allowed.`);
-    }
-
-    InvertedIndex.validateFile(jsonContent);
+    InvertedIndex.validateFile(fileContent);
+    const jsonContent = InvertedIndex.lowerDocumentText(fileContent);
 
     const indices = {};
     const words = InvertedIndex.tokenize(jsonContent);
