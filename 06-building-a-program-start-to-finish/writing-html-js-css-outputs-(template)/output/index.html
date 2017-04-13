@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html ng-app="mainApp"  lang="en">
+  
+  <!--Contains site metadata and links-->
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>An Inverted Index App (Inverdex)</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css">
+  </head>
+  
+  <!--Visible part of page-->
+  <body ng-controller="MainController">
+
+    <!--Navigation bar-->
+    <nav class="navbar navbar-inverse navbar-light bg-faded main-nav shadow bg-color container-fluid">
+      <!-- Navigation links -->
+      <div class="container">
+        
+        <!-- Hamburger menu for links -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".main-links" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+          </button>
+          <span> <!--Page heading-->
+            <h3 class="page-heading navbar-brand"><a href="index.html">Inverdex</a></h3>
+          </span>
+        </div>
+
+        <!--Navigation buttons-->
+        <div class="navbar-collapse collapse">
+          <ul class="navbar-nav navbar-right main-links">
+            <li><a href="#" data-toggle="modal" data-target="#aboutMessage">About App</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#howToUse">How to Use</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#helpMessage">FAQ</a></li>
+          </ul>
+        </div>
+
+        <!-- About modal -->
+        <div class="modal fade" id="aboutMessage" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" >
+                <div class="modal-content">
+                    
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><b>About App</b></h4>
+                    </div>
+
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <h4><b>Inverdex</b></h4>
+                        <p>Inverdex is an app that maps words or number to its location in a database file. It implements Index Data Structure storing a mapping from content to location.
+                        This Data Structure is widely used in several scenarios e.g. Cell Phone Lookup (where you have a phonebook which several contacts and you type in a person's number which in turn brings out the contact details of the person associated with that number).</p>
+                        <p>This application builds an index from books in a file and allows you search through the file for words in that book according to the description <a href="https://www.elastic.co/guide/en/elasticsearch/guide/current/inverted-index.html" target="_blank"><b>here</b></a>. Also, the application will allow users upload a JSON file with this <a href="https://gist.github.com/q-ode/72019451b98f079a8d737eb7a412bf14" target="_blank"><b>structure.</b></a></p>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="close btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>                        
+            </div>
+        </div>
+
+        <!-- How to use modal -->
+        <div class="modal fade" id="howToUse" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><b>How to Use</b></h4>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <h4><b>Instructions</b></h4>
+                        <p>
+                          <ul>
+                            <li>Click <b>Upload File</b> button to upload valid json file (file with .json extension)</li>
+                            <li>After successful upload, select the file from the dropdown list.</li>
+                            <li>Click <b>Create Index</b> button to create index of words from the file.</li>
+                            <li>Enter a search query in the search box and click <b>Search Index</b> to search for a particular word.</li>
+                          </ul><br>
+                        </p>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="close btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ modal -->
+        <div class="modal fade" id="helpMessage" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><b>FAQ</b></h4>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <h4><b>Frequently Asked Questions</b></h4>
+                        <ul>
+                          <li>
+                            <i><b>Is this an Open Source project?</b></i>
+                            <p>Yes. This is an Open Source project.</p>
+                          </li>
+                          <li>
+                            <i><b>Would there be a subscription model any time soon?</b></i>
+                            <p>At the moment, we're interested in creating a better user experience for our users.</p>
+                          </li>
+                          <li>
+                            <i><b>Can I download my generated index to a file?</b></i>
+                            <p>No. We're still working on adding that feature to the app.</p>
+                          </li>
+                          <li>
+                            <i><b>How can I contribute to the project?</b></i>
+                            <p>Fork the project on <a href="https://github.com/andela-oakinwa/inverted-index.git" target="_blank"><b>Github</b>.</a></p>
+                          </li>
+                        </ul><br>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="close btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>                  
+      </div>
+    </nav>
+    
+    <!-- Main app page -->
+    <div class="container">
+      <!-- Aside wrapper -->
+      <div class="col-sm-2 aside shadow bg-color"> 
+          <!-- App info wrapper -->
+          <h5 class="text-center"><b>About App</b></h5>
+          <p>Inverdex is an app that maps words or number to its location in a database file. It implements Index Data Structure storing a mapping from content to location.
+          This Data Structure is widely used in several scenarios e.g. Cell Phone Lookup (where you have a phonebook which several contacts and you type in a person's number which in turn brings out the contact details of the person associated with that number).</p>
+          <p>This application builds an index from books in a file and allows you search through the file for words in that book according to the description <a href="https://www.elastic.co/guide/en/elasticsearch/guide/current/inverted-index.html" target="_blank"><b>here</b></a>. Also, the application will allow users upload a JSON file with this <a href="https://gist.github.com/q-ode/72019451b98f079a8d737eb7a412bf14" target="_blank"><b>structure.</b></a></p>
+      </div>
+      
+      <!-- Table and button wrapper -->
+      <div class="col-sm-10 app-wrapper">
+       <!-- Messsage bar -->
+        <div class="msg-bar alert alert-{{word}}" ng-model="message">
+          <div class="msg text-center"><b>{{message}}</b></div>
+        </div>
+
+        <!-- Upload, create-index and Search Bar wrapper -->
+        <div class="container control-wrapper shadow bg-color">
+        
+            <!-- Upload section -->
+            <div class="btn btn-primary upload">
+              <span class="btn-upload">Upload File</span>
+              <input type="file" class="file-upload" accept=".json" name="files[]" ng-submit="fileUpload()" id="all-files" multiple>
+            </div>
+
+            <!-- Create index bar -->
+            <span class="create-index-wrapper input-group">
+                <select name="fileList" id="file-list" ng-model="selectedFile">
+                  <option value=''>Select a File</option>
+                  <option ng-repeat="(fileName, fileContent) in fileObjects" placeholder="Select a book file">{{fileName}}</option>
+                </select>
+                <span>
+                    <button class="create-index btn btn-color" ng-click="createIndex(selectedFile)">Create Index</button>
+                </span>
+            </span>
+
+            <!-- Search index wrapper -->
+            <span ng-show="indices" class="search-form pull-right">
+              <input class="search" type="text" placeholder="Search here" ng-model="query">
+              <select name="fileList" id="file-list" ng-model="selectedFile">
+                  <option value=''>All</option>
+                  <option ng-repeat="filename in indexedFiles" placeholder="Select a book file">{{filename}}</option>
+              </select>
+              <input class="btn submit btn-color" type="submit" value="Search Index" ng-click="searchIndex(selectedFile, query)">
+            </span>
+          </div>
+  
+
+        <!-- Output section -->
+        <div class="container main-section shadow bg-color">
+          
+          <!-- Create index output table -->
+          <table ng-show="showIndex" ng-repeat="(fileName, val) in indices" class="table table-striped table-sm table-responsive">
+              <thead>
+                <th>Term(s)</th>
+                <th ng-repeat="eachBook in val.totalBooks">Book {{eachBook+1}}</th>
+              </thead>
+              <tr ng-repeat="eachToken in val.uniqueWords">
+                <td>{{eachToken}}</td>
+                <td ng-repeat="eachBook in val.totalBooks">
+                  <img ng-src="img/{{ eachBook | iconCheck : val.indexed[eachToken]}}.png" width="20px" height="20px">
+                </td>
+              </tr>
+          </table>
+
+          <!-- Search index output table -->
+          <table ng-show="!showIndex" ng-repeat="(fileName, value) in searchedIndices" class="table table-striped table-sm table-responsive">
+            <thead>
+              <th>Term(s)</th>
+              <th ng-repeat="eachBook in value.totalBooks">Book {{eachBook+1}}</th>
+            </thead>
+            <tr ng-repeat="(eachToken, result) in value.result">
+                <td>{{eachToken}}</td>
+                <td ng-repeat="eachBook in value.totalBooks">
+                  <img ng-src="img/{{ eachBook | iconCheck : result}}.png" width="20px" height="20px">
+                </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!--Shared scripts-->
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min.js'></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!--Custom scripts-->
+    <script src="js/invertedIndex.js"></script>
+    <script src="js/mainModule.js"></script>
+  </body>
+</html>
