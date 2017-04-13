@@ -1,9 +1,20 @@
 const newIndex = new InvertedIndex();
 
 describe('Tests for the InvertedIndex class', () => {
-  localStorage.indexedDocs = JSON.stringify({});
 
   describe('Tests for the validateFile method', () => {
+    it('should return error message for non-Array objects', () => {
+      expect(() => { newIndex.createIndex('hello', 'Hello World'); })
+          .toThrow(new Error(`This file's structure is invalid.
+       Only array of objects are allowed.`));
+      expect(() => { newIndex.createIndex('test', new Set(['a', 'the'])); })
+          .toThrow(new Error(`This file's structure is invalid.
+       Only array of objects are allowed.`));
+      expect(() => { newIndex.createIndex('test', 200); })
+          .toThrow(new Error(`This file's structure is invalid.
+       Only array of objects are allowed.`));
+    });
+
     it('returns contents of file if the file structure is valid', () => {
       expect(InvertedIndex.validateFile(testFile)).toEqual(testFile);
     });
@@ -35,7 +46,7 @@ describe('Tests for the InvertedIndex class', () => {
     it('should return the titles of documents in an array', () => {
       const result = ['Alice in Wonderland',
         'The Lord of the Rings: The Fellowship of the Ring.'];
-      expect(InvertedIndex.getTitles(shortFile2)).toEqual(result);
+      expect(InvertedIndex.getTitles(shortValidFile)).toEqual(result);
     });
 
     it('treats documents with the same name and content as one', () => {
@@ -49,7 +60,7 @@ describe('Tests for the InvertedIndex class', () => {
       const result = ['Alice in Wonderland',
         'The Lord of the Rings: The Fellowship of the Ring.',
         'The Lord of the Rings: The Fellowship of the Ring.'];
-      expect(InvertedIndex.getTitles(testFile3)).toEqual(result);
+      expect(InvertedIndex.getTitles(noDuplicateText)).toEqual(result);
     });
 
     it(`should include title in array if it has the same
@@ -57,23 +68,11 @@ describe('Tests for the InvertedIndex class', () => {
       const result = ['Alice in Wonderland',
         'The Lord of the Rings: The Fellowship of the Ring.',
         'The Lord of the Rings.'];
-      expect(InvertedIndex.getTitles(testFile2)).toEqual(result);
+      expect(InvertedIndex.getTitles(noDuplicateTitles)).toEqual(result);
     });
   });
 
   describe('Tests for the createIndex method', () => {
-    it('should return error message for non-Array objects', () => {
-      expect(() => { newIndex.createIndex('hello', 'Hello World'); })
-          .toThrow(new Error(`This file's structure is invalid.
-       Only array of objects are allowed.`));
-      expect(() => { newIndex.createIndex('test', new Set(['a', 'the'])); })
-          .toThrow(new Error(`This file's structure is invalid.
-       Only array of objects are allowed.`));
-      expect(() => { newIndex.createIndex('test', 200); })
-          .toThrow(new Error(`This file's structure is invalid.
-       Only array of objects are allowed.`));
-    });
-
     it('should return error message for files with improper key values', () => {
       const test = [
         {
@@ -103,7 +102,7 @@ describe('Tests for the InvertedIndex class', () => {
         of: [1],
         rabbit: [0],
         unusual: [1] };
-      expect(newIndex.createIndex('doc.json', shortFile2)['doc.json'][0])
+      expect(newIndex.createIndex('doc.json', shortValidFile)['doc.json'][0])
       .toEqual(result);
     });
 
@@ -122,17 +121,17 @@ describe('Tests for the InvertedIndex class', () => {
         rabbit: [0],
         unusual: [1] }, 'doc.json', ['Alice in Wonderland',
           'The Lord of the Rings: The Fellowship of the Ring.']];
-      expect(newIndex.createIndex('doc.json', shortFile2)['doc.json'])
+      expect(newIndex.createIndex('doc.json', shortValidFile)['doc.json'])
       .toEqual(result);
     });
 
     it('should only accept an array of objects', () => {
-      const testObj = {
+      const testObject = {
         title: 'Alice in Wonderland',
         text: 'Alice. falls- into@ a+ rabbit hole.',
       };
 
-      expect(() => { newIndex.createIndex('test.json', testObj); })
+      expect(() => { newIndex.createIndex('test.json', testObject); })
       .toThrow(new Error(`This file's structure is invalid.
        Only array of objects are allowed.`));
     });

@@ -68,7 +68,7 @@ const testFile = [
   },
 ];
 
-const testFile2 = [
+const noDuplicateTitles = [
   {
     title: 'Alice in Wonderland',
     text: `Alice falls into a rabbit hole and
@@ -88,7 +88,7 @@ const testFile2 = [
   },
 ];
 
-const testFile3 = [
+const noDuplicateText = [
   {
     title: 'Alice in Wonderland',
     text: `Alice falls into a rabbit hole and
@@ -114,7 +114,7 @@ const  shortFile = [
   },
 ];
 
-const shortFile2 = [
+const shortValidFile = [
   {
     title: 'Alice in Wonderland',
     text: 'Alice. falls- into@ a+ rabbit hole.',
