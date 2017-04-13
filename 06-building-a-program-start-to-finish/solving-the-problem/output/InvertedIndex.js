@@ -2,9 +2,10 @@
  * Implementation of the inverted index app.
  * @class
  */
-class InvertedIndex {
+const InvertedIndex = class {
   /**
    * @desc Initializes indexedFiles object
+   * @constructor
    */
   constructor() {
     this.indexedFiles = {};
@@ -14,8 +15,8 @@ class InvertedIndex {
    * @desc readFile: Reads the contents of file as text
    * @param {file} file - the file to be read
    * @param {string} fileName - the name of the file to be read
-   * @return {promise} - promise object to be acted on if file
-   * reading is succesful or not
+   * @return {promise|Boolean} - promise object to be acted on if file
+   * reading is succesful or not or false if file is invalid
    */
   static readFile(file, fileName) {
     const validJson = /.+\.json$/;
@@ -27,8 +28,8 @@ class InvertedIndex {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
 
-      fileReader.onload = (fileBeingRead) => {
-        const fileContent = fileBeingRead.target.result;
+      fileReader.onload = (fileReadEvent) => {
+        const fileContent = fileReadEvent.target.result;
 
         try {
           JSON.parse(fileContent);
@@ -53,9 +54,9 @@ class InvertedIndex {
    * @return {Object} - returns object back to caller if object is valid
    */
   static validateFile(fileContent) {
-    fileContent.forEach((doc) => {
-      if (!(Object.prototype.hasOwnProperty.call(doc, 'title')
-      && Object.prototype.hasOwnProperty.call(doc, 'text'))) {
+    fileContent.forEach((document) => {
+      if (!(Object.prototype.hasOwnProperty.call(document, 'title')
+      && Object.prototype.hasOwnProperty.call(document, 'text'))) {
         throw new Error(`Your JSON file does not have the expected format.
           Documents are to have title and text keys alone.`);
       }
@@ -74,25 +75,20 @@ class InvertedIndex {
   static tokenize(fileContent) {
     const validWord = /[a-zA-Z]+/g;
     let words = '';
-    let found;
-    const validWordsArray = [];
+    let validWordsArray = [];
 
     if (typeof (fileContent) === 'object') {
-      for (let i = 0; i < fileContent.length; i += 1) {
+      fileContent.forEach((eachDocument) => {
         // concatenate texts of documents into a single string
-        words = words.concat(`${fileContent[i].text} `);
-      }
+        words = words.concat(`${eachDocument.text} `);
+      });
 
-      while (found = validWord.exec(words)) {
-        validWordsArray.push(found[0]);
-      }
+      validWordsArray = words.match(validWord);
 
       // make the words in array unique and sort them
       return [...new Set(validWordsArray)].sort();
-    }
-
-    while (found = validWord.exec(fileContent)) {
-      validWordsArray.push(found[0]);
+    } else if (typeof fileContent === 'string') {
+      validWordsArray = fileContent.match(validWord);
     }
 
     return validWordsArray;
@@ -107,32 +103,28 @@ class InvertedIndex {
   static getTitles(fileContent) {
     const titles = [];
     const texts = [];
+    fileContent.forEach((eachDocument) => {
+      const fileTitle = eachDocument.title;
 
-    for (let i = 0; i < fileContent.length; i += 1) {
-      let fileTitle = fileContent[i].title;
-
-      if (texts.indexOf(fileContent[i].text) === -1) {
-        if (titles.indexOf(fileTitle) !== -1) {
-          fileTitle += ' - Copy';
-        }
+      if (texts.indexOf(eachDocument.text) === -1) {
         titles.push(fileTitle);
       } else if (titles.indexOf(fileTitle) === -1) {
         titles.push(fileTitle);
       }
 
-      texts.push(fileContent[i].text);
-    }
+      texts.push(eachDocument.text);
+    });
 
     return titles;
   }
 
   /**
-   * @desc lowerDocText: Turns the text fields of documents to lower case
+   * @desc lowerDocumentText: Turns the text fields of documents to lower case
    * @param {Object} fileContent
       - the object whose document texts you want to lower
    * @return {Object} - returns the object with its text fields lowered
    */
-  static lowerDocText(fileContent) {
+  static lowerDocumentText(fileContent) {
     fileContent.forEach((document) => {
       document.text = document.text.toLowerCase();
     });
@@ -152,10 +144,10 @@ class InvertedIndex {
   createIndex(fileName, fileContent) {
     let jsonContent;
     try {
-      jsonContent = InvertedIndex.lowerDocText(fileContent);
+      jsonContent = InvertedIndex.lowerDocumentText(fileContent);
     } catch (err) {
-      throw new Error('This file\'s structure is ' +
-      'invalid. Only array of objects are allowed.');
+      throw new Error(`This file's structure is invalid.
+       Only array of objects are allowed.`);
     }
 
     InvertedIndex.validateFile(jsonContent);
@@ -164,17 +156,17 @@ class InvertedIndex {
     const words = InvertedIndex.tokenize(jsonContent);
 
     words.forEach((word) => {
-      const docsWithWord = [];
+      const documentsWithWord = [];
 
-      jsonContent.forEach((doc, docIndex) => {
+      jsonContent.forEach((document, documentIndex) => {
         // split doc's text into an array to allow whole word checks
-        const wordsInDoc = InvertedIndex.tokenize(doc.text);
-        if (wordsInDoc.indexOf(word) !== -1) {
-          docsWithWord.push(docIndex);
+        const wordsInDocument = InvertedIndex.tokenize(document.text);
+        if (wordsInDocument.indexOf(word) !== -1) {
+          documentsWithWord.push(documentIndex);
         }
       });
 
-      indices[word] = docsWithWord;
+      indices[word] = documentsWithWord;
     });
 
     const fileTitles = InvertedIndex.getTitles(fileContent);
@@ -186,8 +178,8 @@ class InvertedIndex {
   /**
    * @desc buildSearchResult: Builds search result for fileName
    * @param {string} fileName - the name of the file to build search result for
-   * @param {string} searchString
-   * @param {Object} indexedFiles
+   * @param {string} searchString - the search query to perform search on
+   * @param {Object} indexedFiles - indexed files to search through
    - the search query (a list of words separated by any delimeter)
    * @return {Object} - object containing search words that appear in index
    */
@@ -234,4 +226,4 @@ class InvertedIndex {
     return InvertedIndex.buildSearchResult(fileName,
        searchString, indexedFiles);
   }
-}
+};

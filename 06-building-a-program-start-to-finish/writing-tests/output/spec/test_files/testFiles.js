@@ -10,7 +10,8 @@ const allFilesMock = {
     man: [1],
     of: [1],
     rabbit: [0],
-    unusual: [1] }, ['Alice in Wonderland', 'The Lord of the Rings: The Fellowship of the Ring.']],
+    unusual: [1] }, ['Alice in Wonderland',
+     'The Lord of the Rings: The Fellowship of the Ring.']],
 
   'test.json': [{ alice: [0],
     alliance: [1, 2],
@@ -24,67 +25,80 @@ const allFilesMock = {
     imagination: [0],
     rabbit: [0],
     unusual: [1, 2],
-    wizard: [1, 2] }, ['Alice in Wonderland', 'The Lord of the Rings: The Fellowship of the Ring.', 'The Lord of the Rings.']],
+    wizard: [1, 2] }, ['Alice in Wonderland',
+      'The Lord of the Rings: The Fellowship of the Ring.',
+      'The Lord of the Rings.']],
 };
 
-const lowerDocFile = [
+const lowerDocumentFile = [
   {
     title: 'Alice in Wonderland',
-    text: 'Alice falls into a rabbit hole and enters a world full of imagination.',
+    text: `Alice falls into a rabbit hole and
+     enters a world full of imagination.`,
   },
   {
     title: 'The Lord of the Rings: The Fellowship of the Ring.',
-    text: 'An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring.',
+    text: `An unusual alliance of man, elf, dwarf, wizard
+     and hobbit seek to destroy a powerful ring.`,
   },
 
   {
     title: 'The Lord of the Rings: The Fellowship of the Ring.',
-    text: 'An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring.',
+    text: `An unusual alliance of man, elf, dwarf, wizard
+     and hobbit seek to destroy a powerful ring.`,
   },
 ];
 
 const testFile = [
   {
     title: 'Alice in Wonderland',
-    text: 'Alice falls into a rabbit hole and enters a world full of imagination.',
+    text: `Alice falls into a rabbit hole and
+     enters a world full of imagination.`,
   },
   {
     title: 'The Lord of the Rings: The Fellowship of the Ring.',
-    text: 'An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring.',
+    text: `An unusual alliance of man, elf, dwarf, wizard
+     and hobbit seek to destroy a powerful ring.`,
   },
 
   {
     title: 'The Lord of the Rings: The Fellowship of the Ring.',
-    text: 'An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring.',
+    text: `An unusual alliance of man, elf, dwarf, wizard
+     and hobbit seek to destroy a powerful ring.`,
   },
 ];
 
 const testFile2 = [
   {
     title: 'Alice in Wonderland',
-    text: 'Alice falls into a rabbit hole and enters a world full of imagination.',
+    text: `Alice falls into a rabbit hole and
+     enters a world full of imagination.`,
   },
 
   {
     title: 'The Lord of the Rings: The Fellowship of the Ring.',
-    text: 'An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring.',
+    text: `An unusual alliance of man, elf, dwarf, wizard
+     and hobbit seek to destroy a powerful ring.`,
   },
 
   {
     title: 'The Lord of the Rings.',
-    text: 'An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring.',
+    text: `An unusual alliance of man, elf, dwarf, wizard
+     and hobbit seek to destroy a powerful ring.`,
   },
 ];
 
 const testFile3 = [
   {
     title: 'Alice in Wonderland',
-    text: 'Alice falls into a rabbit hole and enters a world full of imagination.',
+    text: `Alice falls into a rabbit hole and
+     enters a world full of imagination.`,
   },
 
   {
     title: 'The Lord of the Rings: The Fellowship of the Ring.',
-    text: 'An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring.',
+    text: `An unusual alliance of man, elf, dwarf, wizard
+     and hobbit seek to destroy a powerful ring.`,
   },
 
   {
@@ -116,16 +130,19 @@ const shortFile2 = [
 const invalidTestFile = [
   {
     name: 'Alice in Wonderland',
-    text: 'Alice falls into a rabbit hole and enters a world full of imagination.',
+    text: `Alice falls into a rabbit hole and
+     enters a world full of imagination.`,
   },
 
   {
     title: 'The Lord of the Rings: The Fellowship of the Ring.',
-    text: 'An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring.',
+    text: `An unusual alliance of man, elf, dwarf,
+     wizard and hobbit seek to destroy a powerful ring.`,
   },
 
   {
     title: 'The Lord of the Rings: The Fellowship of the Ring.',
-    text: 'An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring.',
+    text: `An unusual alliance of man, elf, dwarf, wizard
+     and hobbit seek to destroy a powerful ring.`,
   },
 ];

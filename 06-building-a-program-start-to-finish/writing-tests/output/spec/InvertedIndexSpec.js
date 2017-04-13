@@ -44,16 +44,16 @@ describe('Tests for the InvertedIndex class', () => {
       expect(InvertedIndex.getTitles(testFile)).toEqual(result);
     });
 
-    it('should append " - Copy" to title if title already ' +
-    'exists but has different text', () => {
+    it(`should include title in array if it has the same
+     title as another but different text`, () => {
       const result = ['Alice in Wonderland',
         'The Lord of the Rings: The Fellowship of the Ring.',
-        'The Lord of the Rings: The Fellowship of the Ring. - Copy'];
+        'The Lord of the Rings: The Fellowship of the Ring.'];
       expect(InvertedIndex.getTitles(testFile3)).toEqual(result);
     });
 
-    it('should include title in array if it has the same' +
-     'text as another but different title name', () => {
+    it(`should include title in array if it has the same
+     text as another but different title name`, () => {
       const result = ['Alice in Wonderland',
         'The Lord of the Rings: The Fellowship of the Ring.',
         'The Lord of the Rings.'];
@@ -64,14 +64,14 @@ describe('Tests for the InvertedIndex class', () => {
   describe('Tests for the createIndex method', () => {
     it('should return error message for non-Array objects', () => {
       expect(() => { newIndex.createIndex('hello', 'Hello World'); })
-          .toThrow(new Error('This file\'s structure is ' +
-          'invalid. Only array of objects are allowed.'));
+          .toThrow(new Error(`This file's structure is invalid.
+       Only array of objects are allowed.`));
       expect(() => { newIndex.createIndex('test', new Set(['a', 'the'])); })
-          .toThrow(new Error('This file\'s structure is ' +
-          'invalid. Only array of objects are allowed.'));
+          .toThrow(new Error(`This file's structure is invalid.
+       Only array of objects are allowed.`));
       expect(() => { newIndex.createIndex('test', 200); })
-          .toThrow(new Error('This file\'s structure is ' +
-          'invalid. Only array of objects are allowed.'));
+          .toThrow(new Error(`This file's structure is invalid.
+       Only array of objects are allowed.`));
     });
 
     it('should return error message for files with improper key values', () => {
@@ -107,8 +107,8 @@ describe('Tests for the InvertedIndex class', () => {
       .toEqual(result);
     });
 
-    it('returns an object of key name and value of array of file indices,' +
-     'file name and file titles', () => {
+    it(`returns an object of key name and value of array of file indices,
+     file name and file titles`, () => {
       const result = [{ a: [0],
         alice: [0],
         alliance: [1],
@@ -133,52 +133,53 @@ describe('Tests for the InvertedIndex class', () => {
       };
 
       expect(() => { newIndex.createIndex('test.json', testObj); })
-       .toThrow(new Error('This file\'s structure is ' +
-       'invalid. Only array of objects are allowed.'));
+      .toThrow(new Error(`This file's structure is invalid.
+       Only array of objects are allowed.`));
     });
   });
 
-  describe('Tests for the lowerDocText method', () => {
+  describe('Tests for the lowerDocumentText method', () => {
     it('should turn the text field of documents to lower case', () => {
-      InvertedIndex.lowerDocText(lowerDocFile);
-      lowerDocFile.forEach((document) => {
+      InvertedIndex.lowerDocumentText(lowerDocumentFile);
+      lowerDocumentFile.forEach((document) => {
         expect(document.text).toEqual(document.text.toLowerCase());
       });
     });
 
     it('only takes an array of objects as argument', () => {
-      expect(() => { InvertedIndex.lowerDocFile({ a: 1 }); })
+      expect(() => { InvertedIndex.lowerDocumentFile({ a: 1 }); })
         .toThrowError(TypeError);
-      expect(() => { InvertedIndex.lowerDocFile('Taiwo'); })
+      expect(() => { InvertedIndex.lowerDocumentFile('Taiwo'); })
       .toThrowError(TypeError);
     });
 
-    it('should return the object passed to it ' +
-    'with its text fields lower cased', () => {
+    it(`should return the object passed to it
+    with its text fields lower cased`, () => {
       const result = [
         {
           title: 'Alice in Wonderland',
-          text: 'alice falls into a rabbit hole ' +
-           'and enters a world full of imagination.',
+          text: `alice falls into a rabbit hole and
+     enters a world full of imagination.`,
         },
         {
           title: 'The Lord of the Rings: The Fellowship of the Ring.',
-          text: 'an unusual alliance of man, elf, dwarf, ' +
-           'wizard and hobbit seek to destroy a powerful ring.',
+          text: `an unusual alliance of man, elf, dwarf, wizard
+     and hobbit seek to destroy a powerful ring.`,
         },
 
         {
           title: 'The Lord of the Rings: The Fellowship of the Ring.',
-          text: 'an unusual alliance of man, elf, dwarf, ' +
-           'wizard and hobbit seek to destroy a powerful ring.',
+          text: `an unusual alliance of man, elf, dwarf, wizard
+     and hobbit seek to destroy a powerful ring.`,
         },
       ];
-      expect(InvertedIndex.lowerDocText(lowerDocFile)).toEqual(result);
+      expect(InvertedIndex.lowerDocumentText(lowerDocumentFile))
+      .toEqual(result);
     });
   });
 
   describe('Tests for the Search methods', () => {
-    const docJsonMock = { 'doc.json': [{ alice: [0],
+    const documentMock = { 'doc.json': [{ alice: [0],
       alliance: [1],
       an: [1],
       man: [1],
@@ -189,8 +190,8 @@ describe('Tests for the InvertedIndex class', () => {
       unusual: [1] }, ['Alice in Wonderland',
         'The Lord of the Rings: The Fellowship of the Ring.']] };
 
-    it('should return an object of words' +
-     'that appear in a single indexed file', () => {
+    it(`should return an object of words
+     that appear in a single indexed file`, () => {
       const result = { alice: [0],
         alliance: [1],
         an: [1],
@@ -201,11 +202,11 @@ describe('Tests for the InvertedIndex class', () => {
         rabbit: [0],
         unusual: [1] };
       expect(InvertedIndex.searchIndex('doc.json', 'alice,an,hole a man',
-         docJsonMock)).toEqual(result);
+         documentMock)).toEqual(result);
     });
 
-    it('the buildSearchResult should build' +
-     'and return correct search result', () => {
+    it(`the buildSearchResult should build
+     and return correct search result`, () => {
       const result = { alice: [0],
         alliance: [1],
         an: [1],
@@ -216,11 +217,11 @@ describe('Tests for the InvertedIndex class', () => {
         rabbit: [0],
         unusual: [1] };
       expect(InvertedIndex.buildSearchResult('doc.json', 'alice,an,hole a man',
-         docJsonMock)).toEqual(result);
+         documentMock)).toEqual(result);
     });
 
-    it('returns an object of file names against ' +
-    'their search results for a search of all files', () => {
+    it(`returns an object of file names against
+    their search results for a search of all files`, () => {
       const allFilesResult = InvertedIndex.searchIndex('All Files',
       'alice,an,hole,a - man', allFilesMock);
       const result = { 'doc.json': {
@@ -262,7 +263,7 @@ describe('Tests for the InvertedIndex class', () => {
         rabbit: [0],
         unusual: [1] };
       expect(InvertedIndex.searchIndex('doc.json', 'ALICE,AN,HOLE A MAN',
-         docJsonMock)).toEqual(result);
+         documentMock)).toEqual(result);
     });
 
     it('should return words containing substring in search query', () => {
@@ -270,7 +271,7 @@ describe('Tests for the InvertedIndex class', () => {
         an: [1],
         man: [1] };
       expect(InvertedIndex.searchIndex('doc.json', 'an',
-       docJsonMock)).toEqual(result);
+       documentMock)).toEqual(result);
     });
   });
 });
