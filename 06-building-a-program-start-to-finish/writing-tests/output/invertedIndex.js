@@ -51,9 +51,8 @@ class InvertedIndex {
    * @param  {String} fileText - String from file to be tokenized
    * @return {Array} An array of unique words
    */
-  tokenize(fileText) {
-    this.text = fileText;
-    return [...new Set(this.text
+  static tokenize(fileText) {
+    return [...new Set(fileText
               .toLowerCase()
               .replace(/[^\w\s]/g, '')
               .split(/\s+/)
@@ -72,7 +71,7 @@ class InvertedIndex {
       content.forEach((fileContent, index) => {
         Object.keys(fileContent).forEach((key) => {
           if (Object.prototype.hasOwnProperty.call(fileContent, key)) {
-            const tokens = this.tokenize(fileContent[key]);
+            const tokens = InvertedIndex.tokenize(fileContent[key]);
             tokens.forEach((token) => {
               if (fileIndex[token]) {
                 if (fileIndex[token].indexOf(index) === -1) {
@@ -106,7 +105,7 @@ class InvertedIndex {
   searchIndex(fileArray, query) {
     let index;
     this.searchIndices = {};
-    const tokenized = this.tokenize(query);
+    const tokenized = InvertedIndex.tokenize(query);
     if (fileArray[0] === '') {
       fileArray = Object.keys(this.allIndices);
     }

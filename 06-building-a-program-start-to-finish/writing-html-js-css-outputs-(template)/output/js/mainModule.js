@@ -106,7 +106,7 @@ const MainController = ($scope) => {
       $scope.word = 'warning';
     }
     const fileArray = [];
-    const queriedWords = invertedIndex.tokenize(query).toString();
+    const queriedWords = InvertedIndex.tokenize(query).toString();
     fileArray.push(fileName);
     if ($scope.createIndex) {
       $scope.showIndex = false;

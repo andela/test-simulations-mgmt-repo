@@ -47,7 +47,7 @@ describe('validateFile', () => {
 describe('tokenize method', () => {
   it(`should return array of unique words
    without whitespace/characters`, () => {
-    expect(invertedIndex.tokenize(book[0].title))
+    expect(InvertedIndex.tokenize(book[0].title))
     .toEqual(['alice', 'in', 'wonderland']);
   });
 });
