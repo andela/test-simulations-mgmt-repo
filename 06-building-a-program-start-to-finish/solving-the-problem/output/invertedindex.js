@@ -16,7 +16,7 @@ class InvertedIndex {
     if (!instance) {
       instance = this;
       this.filesIndexed = {};
-      this.inputData = {};
+      this.fileContent = {};
       this.error = {};
     }
     return instance;
@@ -24,17 +24,17 @@ class InvertedIndex {
 
   /**
    * readFile read file from a given html element
-   * @param {object} inputData - the json data to index
+   * @param {object} fileContent - the json data to index
    * @return {object|boolean} - When file have bad extension it returns
    * false and return a json object if it is a good extension
    */
-  readFile(inputData) {
+  static readFile(fileContent) {
     return new Promise((resolve, reject) => {
-      if (!inputData.name.match(/\.json$/)) {
+      if (!fileContent.name.match(/\.json$/)) {
         return reject(false);
       }
       const readFile = new FileReader();
-      readFile.readAsText(inputData);
+      readFile.readAsText(fileContent);
       readFile.onload = (file) => {
         const content = file.target.result;
         try {
@@ -62,27 +62,27 @@ class InvertedIndex {
 
   /**
    * createIndex gets the json ready for indexing by tokenizing statements
-   * @param {object} inputData - the json data to index
-   * @param {string} filename - the name of the file to be indexed
+   * @param {object} fileContent - the json data to index
+   * @param {string} fileName - the name of the file to be indexed
    * @return {boolean} - true or false if the createIndex was successful
   */
-  createIndex(inputData, filename) {
-    this.filesIndexed[filename] = {};
+  createIndex(fileContent, fileName) {
+    this.filesIndexed[fileName] = {};
     const words = [];
-    let documentNum = 0;
+    let documentCount = 0;
     try {
-      if (Object.keys(inputData).length < 1) {
-        this.handleError(filename, 'File contains no document', true);
+      if (Object.keys(fileContent).length < 1) {
+        this.handleError(fileName, 'File contains no document', true);
       }
-      Object.keys(inputData).forEach((eachIndex) => {
-        if (!this.validateFile(inputData[eachIndex])) {
-          this.handleError(filename, 'Incorrect Document Structure', true);
+      Object.keys(fileContent).forEach((eachIndex) => {
+        if (!InvertedIndex.validateFile(fileContent[eachIndex])) {
+          this.handleError(fileName, 'Incorrect Document Structure', true);
         }
-        words.push(this.getDocumentTokens(inputData, documentNum));
-        documentNum += 1;
+        words.push(InvertedIndex.getDocumentTokens(fileContent, documentCount));
+        documentCount += 1;
       });
-      this.filesIndexed[filename].numOfDocs = documentNum;
-      this.filesIndexed[filename].index = this.constructIndex(words);
+      this.filesIndexed[fileName].numOfDocs = documentCount;
+      this.filesIndexed[fileName].index = InvertedIndex.constructIndex(words);
       return true;
     } catch (err) {
       if (this.error.status) {
@@ -92,12 +92,12 @@ class InvertedIndex {
   }
   /**
    * validateFile validates the structure of the file uploaded
-   * @param {object} docToValidate - The json data to be validated
+   * @param {object} documentContent - The json data to be validated
    * @return {boolean} - True when document has the right structure
    * and False if otherwise
    */
-  validateFile(docToValidate) {
-    if (!docToValidate.text || !docToValidate.title) {
+  static validateFile(documentContent) {
+    if (!documentContent.text || !documentContent.title) {
       return false;
     }
     return true;
@@ -105,16 +105,17 @@ class InvertedIndex {
   /**
    * getDocumentTokens method gets all the tokens in each document
    * and composes an object out of them
-   * @param {object} docDetails - contains the title and text of the document
-   * @param {integer} documentNum - the number of the document
+   * @param {object} documentDetails - contains
+   * the title and text of the document
+   * @param {integer} documentCount - the number of the document
    * @return {object} containing the document Number and the token
    */
-  getDocumentTokens(docDetails, documentNum) {
-    const textTokens = this
-      .tokenize(
-        `${docDetails[documentNum].text} ${docDetails[documentNum].title}`
+  static getDocumentTokens(documentDetails, documentCount) {
+    const textTokens = InvertedIndex.tokenize(
+        `${documentDetails[documentCount].text} 
+          ${documentDetails[documentCount].title}`
       );
-    return { documentNum, textTokens };
+    return { documentCount, textTokens };
   }
 
   /**
@@ -123,27 +124,29 @@ class InvertedIndex {
    * @param {string} text - the text to be tokenized
    * @return {array} array of words in the documents
   */
-  tokenize(text) {
-    text = text.replace(/[^A-Za-z\s-]/g, '').trim();
-    return text.toLowerCase().split(' ');
+  static tokenize(text) {
+    let splittedWords = text.replace(/[^A-Za-z\s+]/g, '').trim()
+      .toLowerCase().split(/\b\s+(?!$)/);
+    splittedWords = splittedWords.filter(eachWords => eachWords !== '');
+    return splittedWords;
   }
 
   /**
    * constructIndex method searches through the array of documents objects and
-   * dentifies the words in each
+   * identifies the words in each
    * @param {array} documents - array of objects, each obect is a document
    * @return {object} objects of tokens. Each token is a key in the object and
    * contains an array of documents in which it was found
   */
-  constructIndex(documents) {
+  static constructIndex(documents) {
     const indexWords = {};
     documents.forEach((eachDoc) => {
       eachDoc.textTokens.forEach((token) => {
         if (!hasProperty.call(indexWords, token)) {
           indexWords[token] = [];
         }
-        if (indexWords[token].indexOf(eachDoc.documentNum) === -1) {
-          indexWords[token].push(eachDoc.documentNum);
+        if (indexWords[token].indexOf(eachDoc.documentCount) === -1) {
+          indexWords[token].push(eachDoc.documentCount);
         }
       });
     });
@@ -152,15 +155,15 @@ class InvertedIndex {
 
   /**
    * getIndex method returns the indexed words and the documents that were found
-   * @param {string} filename - name of the file to get its index
+   * @param {string} fileName - name of the file to get its index
    * @return {Object|boolean} the index or false if unable to
   */
-  getIndex(filename) {
+  getIndex(fileName) {
     try {
-      if (!this.filesIndexed[filename]) {
-        this.handleError(filename, 'File selected not indexed', false);
+      if (!this.filesIndexed[fileName]) {
+        this.handleError(fileName, 'File selected not indexed', false);
       }
-      const file = this.filesIndexed[filename];
+      const file = this.filesIndexed[fileName];
       return file.index;
     } catch (err) {
       return this.error.status;
@@ -171,18 +174,18 @@ class InvertedIndex {
    * searchIndex searches the indexed words to determine the
    * documents that the searchterms can be found
    * @param {array} searchTerm - the search query, array of words
-   * @param {string} filename - the name of the file to search its index
+   * @param {string} fileName - the name of the file to search its index
    * @return {object|boolean} it returns boolean if the searchTerm is empty and
    * it returns object if it is not. Each index is each searcykeyword.
    * Each with an array value of the document index
   */
-  searchIndex(searchTerm, filename) {
+  searchIndex(searchTerm, fileName) {
     if ((typeof searchTerm === 'string' && searchTerm.trim() === '') ||
       searchTerm === undefined) {
       return false;
     }
     const result = [];
-    if (filename === 'all') {
+    if (fileName === 'all') {
       Object.keys(this.filesIndexed).forEach((eachFile) => {
         result.push({
           indexes: this.getSearchResults(searchTerm, eachFile),
@@ -192,9 +195,9 @@ class InvertedIndex {
       });
     } else {
       result.push({
-        indexes: this.getSearchResults(searchTerm, filename),
-        searchedFile: filename,
-        documents: this.getDocuments(filename)
+        indexes: this.getSearchResults(searchTerm, fileName),
+        searchedFile: fileName,
+        documents: this.getDocuments(fileName)
       });
     }
     return result;
@@ -203,12 +206,12 @@ class InvertedIndex {
   /**
    * getSearchResults method checks the index of the file and returns the result
    * @param {searchTokens} searchTokens - the search query of one or more words
-   * @param {string} filename - the name of the file
+   * @param {string} fileName - the name of the file
    * @return {array} result - an array of objects with the found words as keys
   */
-  getSearchResults(searchTokens, filename) {
-    const indexToSearch = this.getIndex(filename), result = {};
-    this.tokenize(searchTokens).forEach((eachSearchWord) => {
+  getSearchResults(searchTokens, fileName) {
+    const indexToSearch = this.getIndex(fileName), result = {};
+    InvertedIndex.tokenize(searchTokens).forEach((eachSearchWord) => {
       if (indexToSearch[eachSearchWord]) {
         result[eachSearchWord] = indexToSearch[eachSearchWord];
       }
@@ -218,12 +221,12 @@ class InvertedIndex {
 
   /**
    * getDocuments get an array of the documents index e.g [0, 1, 2, 3]
-   * @param {string} filename - name of the file to get its document
+   * @param {string} fileName - name of the file to get its document
    * @return {array} an array of the documents index
   */
-  getDocuments(filename) {
+  getDocuments(fileName) {
     const docs = [];
-    for (let i = 0; i < this.filesIndexed[filename].numOfDocs; i += 1) {
+    for (let i = 0; i < this.filesIndexed[fileName].numOfDocs; i += 1) {
       docs.push(i);
     }
     return docs;
@@ -231,4 +234,3 @@ class InvertedIndex {
 
 }
 
-module.export = InvertedIndex;
