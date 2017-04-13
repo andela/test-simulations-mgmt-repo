@@ -14,7 +14,7 @@
   <body ng-controller="MainController">
 
     <!--Navigation bar-->
-    <nav class="navbar navbar-inverse navbar-light bg-faded main-nav shadow bg-color">
+    <nav class="navbar navbar-inverse navbar-light bg-faded main-nav shadow bg-color container-fluid">
       <!-- Navigation links -->
       <div class="container">
         
@@ -32,7 +32,7 @@
         </div>
 
         <!--Navigation buttons-->
-        <div class="collapse navbar-collapse">
+        <div class="navbar-collapse collapse">
           <ul class="navbar-nav navbar-right main-links">
             <li><a href="#" data-toggle="modal" data-target="#aboutMessage">About App</a></li>
             <li><a href="#" data-toggle="modal" data-target="#howToUse">How to Use</a></li>
@@ -68,7 +68,7 @@
         </div>
 
         <!-- How to use modal -->
-        <div class="modal fade" id="howToUse">
+        <div class="modal fade" id="howToUse" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     
@@ -100,7 +100,7 @@
         </div>
 
         <!-- FAQ modal -->
-        <div class="modal fade" id="helpMessage">
+        <div class="modal fade" id="helpMessage" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     
@@ -144,18 +144,16 @@
     </nav>
     
     <!-- Main app page -->
-    <div class="row">
-      
+    <div class="container">
       <!-- Aside wrapper -->
-      <div class="col-sm-2 aside bg-color shadow">
-        <div> <!-- App info wrapper -->
+      <div class="col-sm-2 aside shadow bg-color"> 
+          <!-- App info wrapper -->
           <h5 class="text-center"><b>About App</b></h5>
           <p>Inverdex is an app that maps words or number to its location in a database file. It implements Index Data Structure storing a mapping from content to location.
           This Data Structure is widely used in several scenarios e.g. Cell Phone Lookup (where you have a phonebook which several contacts and you type in a person's number which in turn brings out the contact details of the person associated with that number).</p>
           <p>This application builds an index from books in a file and allows you search through the file for words in that book according to the description <a href="https://www.elastic.co/guide/en/elasticsearch/guide/current/inverted-index.html" target="_blank"><b>here</b></a>. Also, the application will allow users upload a JSON file with this <a href="https://gist.github.com/q-ode/72019451b98f079a8d737eb7a412bf14" target="_blank"><b>structure.</b></a></p>
-        </div>
       </div>
-
+      
       <!-- Table and button wrapper -->
       <div class="col-sm-10 app-wrapper">
        <!-- Messsage bar -->
@@ -165,7 +163,7 @@
 
         <!-- Upload, create-index and Search Bar wrapper -->
         <div class="container control-wrapper shadow bg-color">
-            
+        
             <!-- Upload section -->
             <div class="btn btn-primary upload">
               <span class="btn-upload">Upload File</span>
@@ -186,45 +184,44 @@
             <!-- Search index wrapper -->
             <span ng-show="indices" class="search-form pull-right">
               <input class="search" type="text" placeholder="Search here" ng-model="query">
-
               <select name="fileList" id="file-list" ng-model="selectedFile">
                   <option value=''>All</option>
                   <option ng-repeat="filename in indexedFiles" placeholder="Select a book file">{{filename}}</option>
-                </select>
-
+              </select>
               <input class="btn submit btn-color" type="submit" value="Search Index" ng-click="searchIndex(selectedFile, query)">
             </span>
-        </div>
+          </div>
+  
 
         <!-- Output section -->
         <div class="container main-section shadow bg-color">
           
           <!-- Create index output table -->
-          <table ng-show="showIndex" ng-repeat="(fileName, val) in indices" class="table table-striped">
+          <table ng-show="showIndex" ng-repeat="(fileName, val) in indices" class="table table-striped table-sm table-responsive">
               <thead>
                 <th>Term(s)</th>
                 <th ng-repeat="eachBook in val.totalBooks">Book {{eachBook+1}}</th>
               </thead>
               <tr ng-repeat="eachToken in val.uniqueWords">
-                  <td>{{eachToken}}</td>
-                  <td ng-repeat="eachBook in val.totalBooks">
-                    <img ng-src="img/{{ eachBook | iconCheck : val.indexed[eachToken]}}.png" width="20px" height="20px">
-                  </td>
+                <td>{{eachToken}}</td>
+                <td ng-repeat="eachBook in val.totalBooks">
+                  <img ng-src="img/{{ eachBook | iconCheck : val.indexed[eachToken]}}.png" width="20px" height="20px">
+                </td>
               </tr>
           </table>
 
           <!-- Search index output table -->
-          <table ng-show="!showIndex" ng-repeat="(fileName, value) in searchedIndices" class="table table-striped">
+          <table ng-show="!showIndex" ng-repeat="(fileName, value) in searchedIndices" class="table table-striped table-sm table-responsive">
             <thead>
               <th>Term(s)</th>
               <th ng-repeat="eachBook in value.totalBooks">Book {{eachBook+1}}</th>
             </thead>
-              <tr ng-repeat="(eachToken, result) in value.result">
-                  <td>{{eachToken}}</td>
-                  <td ng-repeat="eachBook in value.totalBooks">
-                    <img ng-src="img/{{ eachBook | iconCheck : result}}.png" width="20px" height="20px">
-                  </td>
-              </tr>
+            <tr ng-repeat="(eachToken, result) in value.result">
+                <td>{{eachToken}}</td>
+                <td ng-repeat="eachBook in value.totalBooks">
+                  <img ng-src="img/{{ eachBook | iconCheck : result}}.png" width="20px" height="20px">
+                </td>
+            </tr>
           </table>
         </div>
       </div>
