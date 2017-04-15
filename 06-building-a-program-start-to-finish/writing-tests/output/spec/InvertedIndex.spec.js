@@ -130,23 +130,7 @@ describe('InvertedIndex class', () => {
       const expectedOutput = indexInstance.searchIndex(term, 'books');
       expect(expectedOutput[0].indexes).toEqual({ });
     });
-    it('should return an array of objects if filename is all', () => {
-      const books1 = [{ title: 'Alice in Wonderland too',
-        text: `Alice adventure in the wonderland 
-          was full of drama and action` }];
-      indexInstance.createIndex(books, 'books');
-      indexInstance.createIndex(books1, 'books1');
-      const expectedOutput = [{ indexes: { alice: [0], wonderland: [0] },
-        searchedFile: 'books',
-        documents: [0, 1, 2] },
-      { indexes: { alice: [0], wonderland: [0] },
-        searchedFile: 'books1',
-        documents: [0] }];
-      expect(indexInstance
-        .searchIndex('Alice Wonderland', 'all')).toEqual(expectedOutput);
-    });
   });
-
   describe('Tokenize words', () => {
     it('should strip out special characters from excerpt in documents', () => {
       let excerpt = 'Alice l##$oves her ima&&gination?';
@@ -204,11 +188,11 @@ describe('InvertedIndex class', () => {
 
   describe('Validate File', () => {
     it('should return false for incorrect document structure', () => {
-      const term = { t1: 'Welcome home', text: 'This is really home' };
+      const term = [{ t1: 'Welcome home', text: 'This is really home' }];
       expect(InvertedIndex.validateFile(term)).toBeFalsy();
     });
     it('should return true for correct document structure', () => {
-      const term = { title: 'Welcome home', text: 'This is really home' };
+      const term = [{ title: 'Welcome home', text: 'This is really home' }];
       expect(InvertedIndex.validateFile(term)).toBeTruthy();
     });
   });

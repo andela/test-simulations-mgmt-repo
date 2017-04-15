@@ -57,6 +57,7 @@ class InvertedIndex {
     delete this.filesIndexed[fileName];
     this.error.status = errorStatus;
     this.error.message = errorMessage;
+    this.error.filename = fileName;
     throw this.error;
   }
 
@@ -70,37 +71,39 @@ class InvertedIndex {
     this.filesIndexed[fileName] = {};
     const words = [];
     let documentCount = 0;
+    if (InvertedIndex.validateFile(fileContent)) {
+      Object.keys(fileContent).forEach((eachIndex) => {
+        words.push(InvertedIndex
+          .getDocumentTokens(fileContent, documentCount));
+        documentCount += 1;
+      });
+      this.filesIndexed[fileName].documentCount = documentCount;
+      this.filesIndexed[fileName].index = InvertedIndex.constructIndex(words);
+      return true;
+    }
+    return false;
+  }
+  /**
+   * validateFile if file has content and
+   * validates the structure of the file uploaded
+   * @param {object} fileContent - The json data to be validated
+   * @return {boolean} - True when document has the right structure
+   * and False if otherwise
+   */
+  static validateFile(fileContent) {
     try {
       if (Object.keys(fileContent).length < 1) {
         this.handleError(fileName, 'File contains no document', true);
       }
       Object.keys(fileContent).forEach((eachIndex) => {
-        if (!InvertedIndex.validateFile(fileContent[eachIndex])) {
+        if (!fileContent[eachIndex].text || !fileContent[eachIndex].title) {
           this.handleError(fileName, 'Incorrect Document Structure', true);
         }
-        words.push(InvertedIndex.getDocumentTokens(fileContent, documentCount));
-        documentCount += 1;
       });
-      this.filesIndexed[fileName].numOfDocs = documentCount;
-      this.filesIndexed[fileName].index = InvertedIndex.constructIndex(words);
       return true;
     } catch (err) {
-      if (this.error.status) {
-        return false;
-      }
-    }
-  }
-  /**
-   * validateFile validates the structure of the file uploaded
-   * @param {object} documentContent - The json data to be validated
-   * @return {boolean} - True when document has the right structure
-   * and False if otherwise
-   */
-  static validateFile(documentContent) {
-    if (!documentContent.text || !documentContent.title) {
       return false;
     }
-    return true;
   }
   /**
    * getDocumentTokens method gets all the tokens in each document
@@ -140,13 +143,13 @@ class InvertedIndex {
   */
   static constructIndex(documents) {
     const indexWords = {};
-    documents.forEach((eachDoc) => {
-      eachDoc.textTokens.forEach((token) => {
+    documents.forEach((eachDocument) => {
+      eachDocument.textTokens.forEach((token) => {
         if (!hasProperty.call(indexWords, token)) {
           indexWords[token] = [];
         }
-        if (indexWords[token].indexOf(eachDoc.documentCount) === -1) {
-          indexWords[token].push(eachDoc.documentCount);
+        if (indexWords[token].indexOf(eachDocument.documentCount) === -1) {
+          indexWords[token].push(eachDocument.documentCount);
         }
       });
     });
@@ -166,7 +169,7 @@ class InvertedIndex {
       const file = this.filesIndexed[fileName];
       return file.index;
     } catch (err) {
-      return this.error.status;
+      return false;
     }
   }
 
@@ -211,25 +214,27 @@ class InvertedIndex {
   */
   getSearchResults(searchTokens, fileName) {
     const indexToSearch = this.getIndex(fileName), result = {};
-    InvertedIndex.tokenize(searchTokens).forEach((eachSearchWord) => {
-      if (indexToSearch[eachSearchWord]) {
-        result[eachSearchWord] = indexToSearch[eachSearchWord];
+    const tokens = InvertedIndex.tokenize(searchTokens);
+
+    for (let i = 0; i <= tokens.length; i += 1) {
+      if (indexToSearch[tokens[i]]) {
+        result[tokens[i]] = indexToSearch[tokens[i]];
       }
-    });
+    }
     return result;
   }
 
   /**
    * getDocuments get an array of the documents index e.g [0, 1, 2, 3]
    * @param {string} fileName - name of the file to get its document
-   * @return {array} an array of the documents index
+   * @return {array} an array of the documents indexed
   */
   getDocuments(fileName) {
-    const docs = [];
-    for (let i = 0; i < this.filesIndexed[fileName].numOfDocs; i += 1) {
-      docs.push(i);
+    const documents = [];
+    for (let i = 0; i < this.filesIndexed[fileName].documentCount; i += 1) {
+      documents.push(i);
     }
-    return docs;
+    return documents;
   }
 
 }
