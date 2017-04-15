@@ -217,13 +217,12 @@ export default class InvertedIndex {
    * cleans the keyword for search
    */
   static cleanValues(words) {
-    let value = words.replace(/[&\\#,+()$~%.'":*?<>\-^!@{}]/g, '')
+    const value = words.replace(/[&\\#,+()$~%.'":*?<>\-^!@{}]/g, '')
       .replace(/[[|\]]/g, '')
       .toLowerCase()
       .trim()
-      .split(/\b\s+(?!$)/);
-      
-      value = value.filter(word => word !== '');
+      .split(/\b\s+(?!$)/)
+      .filter(word => word !== '');
     return value;
   }
 }

@@ -158,10 +158,12 @@ describe('InvertedIndex validateFile Method', () => {
 });
 
 describe('InvertedIndex cleanValues Method', () => {
-
   it('Should return an array of clean keywords', () => {
-    expect(InvertedIndex.cleanValues('How, are, you doing today'))
-      .toEqual(['how', 'are', 'you', 'doing', 'today']);
+    expect(
+      InvertedIndex.cleanValues('How, are, you doing today')
+      )
+      .toEqual(
+        ['how', 'are', 'you', 'doing', 'today']
+        );
   });
-  
 });
