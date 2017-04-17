@@ -259,6 +259,17 @@ describe('Tests for the InvertedIndex class', () => {
   });
 
   describe('The buildSearchResult method', () => {
+    const documentMock = { 'doc.json': [{ alice: [0],
+      alliance: [1],
+      an: [1],
+      man: [1],
+      hole: [0],
+      a: [0],
+      falls: [0],
+      rabbit: [0],
+      unusual: [1] }, ['Alice in Wonderland',
+        'The Lord of the Rings: The Fellowship of the Ring.']] };
+
     it('should build and return correct search result', () => {
       const result = { alice: [0],
         alliance: [1],
