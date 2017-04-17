@@ -57,7 +57,6 @@ describe('InvertedIndex createIndex', () => {
 });
 
 describe('InvertedIndex searchIndex', () => {
-
   it('Should return No file has been indexed yet if no index has been created',
   () => {
     const search = () => {
@@ -95,7 +94,6 @@ describe('InvertedIndex searchIndex', () => {
 });
 
 describe('InvertedIndex getIndex Method', () => {
-
   it('Should return an object for the getIndex method', () => {
     expect(typeof getIndex).toBe('object');
   });
@@ -107,7 +105,8 @@ describe('InvertedIndex getIndex Method', () => {
 });
 
 describe('InvertedIndex readFile Method', () => {
-  it('Should return `Alice in Wonderland` as first title of the book', (done) => {
+  it('Should return `Alice in Wonderland` as first title of the book',
+  (done) => {
     const readFile = InvertedIndex.readFile(jsonFile);
     readFile.then((res) => {
       expect(res[1][0].title).toBe('Alice in Wonderland');
@@ -117,7 +116,6 @@ describe('InvertedIndex readFile Method', () => {
 });
 
 describe('InvertedIndex tokenize Method', () => {
-
   it('Should return an array of tokenize words', () => {
     expect(InvertedIndex.tokenize('alice%,monday,&tuesday#, ]]]]['))
     .toEqual(['alice', 'monday', 'tuesday']);
@@ -125,7 +123,6 @@ describe('InvertedIndex tokenize Method', () => {
 });
 
 describe('InvertedIndex validateFile Method', () => {
-
   it('Should return true for well formatted Files', () => {
     const book = JSON.stringify(myBook);
     expect(InvertedIndex.validateFile(book, 'books.json')).toBeTruthy();
