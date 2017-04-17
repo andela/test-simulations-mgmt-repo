@@ -72,7 +72,7 @@ class InvertedIndex {
     const words = [];
     let documentCount = 0;
     if (InvertedIndex.validateFile(fileContent)) {
-      Object.keys(fileContent).forEach((eachIndex) => {
+      Object.keys(fileContent).forEach(() => {
         words.push(InvertedIndex
           .getDocumentTokens(fileContent, documentCount));
         documentCount += 1;
@@ -93,11 +93,13 @@ class InvertedIndex {
   static validateFile(fileContent) {
     try {
       if (Object.keys(fileContent).length < 1) {
-        this.handleError(fileName, 'File contains no document', true);
+        this.handleError(fileContent[fileName],
+          'File contains no document', true);
       }
       Object.keys(fileContent).forEach((eachIndex) => {
         if (!fileContent[eachIndex].text || !fileContent[eachIndex].title) {
-          this.handleError(fileName, 'Incorrect Document Structure', true);
+          this.handleError(fileContent[fileName],
+            'Incorrect Document Structure', true);
         }
       });
       return true;
@@ -213,7 +215,7 @@ class InvertedIndex {
    * @return {array} result - an array of objects with the found words as keys
   */
   getSearchResults(searchTokens, fileName) {
-    const indexToSearch = this.getIndex(fileName), result = {};
+    const indexToSearch = this.getIndex(fileName) || {}, result = {};
     const tokens = InvertedIndex.tokenize(searchTokens);
 
     for (let i = 0; i <= tokens.length; i += 1) {
