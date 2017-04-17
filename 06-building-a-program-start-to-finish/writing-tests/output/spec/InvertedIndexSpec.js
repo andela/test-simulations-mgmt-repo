@@ -1,8 +1,7 @@
 const newIndex = new InvertedIndex();
 
 describe('Tests for the InvertedIndex class', () => {
-
-  describe('Tests for the validateFile method', () => {
+  describe('The validateFile method', () => {
     it('should return error message for non-Array objects', () => {
       expect(() => { newIndex.createIndex('hello', 'Hello World'); })
           .toThrow(new Error(`This file's structure is invalid.
@@ -26,7 +25,7 @@ describe('Tests for the InvertedIndex class', () => {
     });
   });
 
-  describe('Tests for the tokenize method', () => {
+  describe('The tokenize method', () => {
     it('should return a sorted array of words without non-letters', () => {
       const result = ['Alice', 'a', 'falls', 'hole', 'into', 'rabbit'];
       expect(InvertedIndex.tokenize(shortFile)).toEqual(result);
@@ -42,7 +41,7 @@ describe('Tests for the InvertedIndex class', () => {
     });
   });
 
-  describe('Tests for the getTitles method', () => {
+  describe('The getTitles method', () => {
     it('should return the titles of documents in an array', () => {
       const result = ['Alice in Wonderland',
         'The Lord of the Rings: The Fellowship of the Ring.'];
@@ -72,7 +71,7 @@ describe('Tests for the InvertedIndex class', () => {
     });
   });
 
-  describe('Tests for the createIndex method', () => {
+  describe('The createIndex method', () => {
     it('should return error message for files with improper key values', () => {
       const test = [
         {
@@ -137,7 +136,7 @@ describe('Tests for the InvertedIndex class', () => {
     });
   });
 
-  describe('Tests for the lowerDocumentText method', () => {
+  describe('The lowerDocumentText method', () => {
     it('should turn the text field of documents to lower case', () => {
       InvertedIndex.lowerDocumentText(lowerDocumentFile);
       lowerDocumentFile.forEach((document) => {
@@ -177,7 +176,7 @@ describe('Tests for the InvertedIndex class', () => {
     });
   });
 
-  describe('Tests for the Search methods', () => {
+  describe('The searchIndex method', () => {
     const documentMock = { 'doc.json': [{ alice: [0],
       alliance: [1],
       an: [1],
@@ -201,21 +200,6 @@ describe('Tests for the InvertedIndex class', () => {
         rabbit: [0],
         unusual: [1] };
       expect(InvertedIndex.searchIndex('doc.json', 'alice,an,hole a man',
-         documentMock)).toEqual(result);
-    });
-
-    it(`the buildSearchResult should build
-     and return correct search result`, () => {
-      const result = { alice: [0],
-        alliance: [1],
-        an: [1],
-        man: [1],
-        hole: [0],
-        a: [0],
-        falls: [0],
-        rabbit: [0],
-        unusual: [1] };
-      expect(InvertedIndex.buildSearchResult('doc.json', 'alice,an,hole a man',
          documentMock)).toEqual(result);
     });
 
@@ -271,6 +255,22 @@ describe('Tests for the InvertedIndex class', () => {
         man: [1] };
       expect(InvertedIndex.searchIndex('doc.json', 'an',
        documentMock)).toEqual(result);
+    });
+  });
+
+  describe('The buildSearchResult method', () => {
+    it('should build and return correct search result', () => {
+      const result = { alice: [0],
+        alliance: [1],
+        an: [1],
+        man: [1],
+        hole: [0],
+        a: [0],
+        falls: [0],
+        rabbit: [0],
+        unusual: [1] };
+      expect(InvertedIndex.buildSearchResult('doc.json', 'alice,an,hole a man',
+         documentMock)).toEqual(result);
     });
   });
 });
