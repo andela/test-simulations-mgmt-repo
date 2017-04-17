@@ -20,17 +20,14 @@ const InvertedIndex = class {
    */
   static readFile(file, fileName) {
     const validJson = /.+\.json$/;
-
     if (!validJson.exec(fileName)) {
       return false;
     }
 
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
-
       fileReader.onload = (fileReadEvent) => {
         const fileContent = fileReadEvent.target.result;
-
         try {
           JSON.parse(fileContent);
         } catch (err) {
@@ -89,7 +86,6 @@ const InvertedIndex = class {
       });
 
       validWordsArray = words.match(validWord);
-
       // make the words in array unique and sort them
       return [...new Set(validWordsArray)].sort();
     } else if (typeof fileContent === 'string') {
@@ -110,7 +106,6 @@ const InvertedIndex = class {
     const texts = [];
     fileContent.forEach((eachDocument) => {
       const fileTitle = eachDocument.title;
-
       if (texts.indexOf(eachDocument.text) === -1) {
         titles.push(fileTitle);
       } else if (titles.indexOf(fileTitle) === -1) {
@@ -149,13 +144,11 @@ const InvertedIndex = class {
   createIndex(fileName, fileContent) {
     InvertedIndex.validateFile(fileContent);
     const jsonContent = InvertedIndex.lowerDocumentText(fileContent);
-
     const indices = {};
     const words = InvertedIndex.tokenize(jsonContent);
 
     words.forEach((word) => {
       const documentsWithWord = [];
-
       jsonContent.forEach((document, documentIndex) => {
         // split doc's text into an array to allow whole word checks
         const wordsInDocument = InvertedIndex.tokenize(document.text);
@@ -169,7 +162,6 @@ const InvertedIndex = class {
 
     const fileTitles = InvertedIndex.getTitles(fileContent);
     this.indexedFiles[fileName] = [indices, fileName, fileTitles];
-
     return this.indexedFiles;
   }
 
@@ -208,11 +200,9 @@ const InvertedIndex = class {
    */
   static searchIndex(fileName, searchString, indexedFiles) {
     searchString = searchString.toLowerCase();
-
     if (fileName === 'All Files') {
       const resultForFile = {};
       const allFiles = Object.keys(indexedFiles);
-
       allFiles.forEach((file) => {
         resultForFile[file] =
             InvertedIndex.buildSearchResult(file, searchString, indexedFiles);
