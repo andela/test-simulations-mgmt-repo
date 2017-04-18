@@ -1,3 +1,4 @@
+const validBookFile = require('../samples/books.json');
 
 describe('InvertedIndex class', () => {
   beforeAll(() => {
@@ -76,13 +77,20 @@ describe('InvertedIndex class', () => {
 
   describe('Read File', () => {
     it('should return false for an invalid filename extension', () => {
-      const file = { name: 'badfileextension.jpg' };
-      const file1 = { name: 'badfileextension.jsona' };
-      InvertedIndex.readFile(file).then((response) => {
+      const badFile = { name: 'badfileextension.jpg' };
+      const anotherBadFile = { name: 'badfileextension.jsona' };
+      InvertedIndex.readFile(badFile).then((response) => {
         expect(response).toBeFalsy();
       });
-      InvertedIndex.readFile(file1).then((response) => {
+      InvertedIndex.readFile(anotherBadFile).then((response) => {
         expect(response).toBeFalsy();
+      });
+    });
+    const bookFile = new File([JSON.stringify(validBookFile)],
+      'books.json', { type: 'application/json' });
+    it('should return appropriate value for a valid json file', () => {
+      InvertedIndex.readFile(bookFile).then((response) => {
+        expect(response[0].title).toEqual(books[0].title);
       });
     });
   });
@@ -234,8 +242,8 @@ describe('InvertedIndex class', () => {
     });
   });
 
-  describe('Get Document Tokens Data', () => {
-    it('should return the approriate object for a given document',
+  describe('Get Document Tokens', () => {
+    it('should return the appropriate object for a given document',
     () => {
       const expectedOutput = { documentCount: 0,
         textTokens: ['welcome', 'this', 'is', 'a', 'test', 'document'] };
@@ -265,7 +273,7 @@ describe('InvertedIndex class', () => {
     });
   });
 
-  describe('Get Contruct Index Data', () => {
+  describe('Get Construct Index Data', () => {
     it('should return the appropriate indexed words for a given document',
     () => {
       const documentTokens = [{ documentCount: 0,

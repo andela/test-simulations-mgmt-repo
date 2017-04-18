@@ -38,9 +38,9 @@ class InvertedIndex {
       readFile.onload = (file) => {
         const content = file.target.result;
         try {
-          return resolve(JSON.parse(content));
+          resolve(JSON.parse(content));
         } catch (exception) {
-          return reject(false);
+          reject(false);
         }
       };
     });
@@ -87,6 +87,7 @@ class InvertedIndex {
    * validateFile if file has content and
    * validates the structure of the file uploaded
    * @param {object} fileContent - The json data to be validated
+   * @param {string} fileName - The name of the file being validated
    * @return {boolean} - True when document has the right structure
    * and False if otherwise
    */
