@@ -22,6 +22,19 @@ describe('InvertedIndex class', () => {
           wizard and hobbit seek to destroy a powerful ring.`
       }
     ];
+    const anotherBook = [{
+      title: 'Alice the Great',
+      text:
+        'There is no better way to greatness than not giving up'
+    },
+
+    {
+      title: 'Are you there for Development',
+      text: `I have tried so many times but it's been unyielding 
+          but I have made up my mind to develop no matter the obstacle`
+    }];
+    indexInstance.createIndex(books, 'books');
+    indexInstance.createIndex(anotherBook, 'anotherBook');
   });
   describe('InvertedIndex class', () => {
     it('should check that the class has a createIndex method', () => {
@@ -61,6 +74,19 @@ describe('InvertedIndex class', () => {
     });
   });
 
+  describe('Read File', () => {
+    it('should return false for an invalid filename extension', () => {
+      const file = { name: 'badfileextension.jpg' };
+      const file1 = { name: 'badfileextension.jsona' };
+      InvertedIndex.readFile(file).then((response) => {
+        expect(response).toBeFalsy();
+      });
+      InvertedIndex.readFile(file1).then((response) => {
+        expect(response).toBeFalsy();
+      });
+    });
+  });
+
   describe('Create Index', () => {
     it('should return mapped indices to words in a JSON file', () => {
       const expectedResult =
@@ -95,7 +121,6 @@ describe('InvertedIndex class', () => {
           lord: [1, 2],
           rings: [1, 2],
           fellowship: [1, 2] };
-      indexInstance.createIndex(books, 'books');
       expect(indexInstance.filesIndexed.books.index)
         .toEqual(expectedResult);
     });
@@ -126,33 +151,20 @@ describe('InvertedIndex class', () => {
       const expectedOutput = indexInstance.searchIndex(term, 'books');
       expect(expectedOutput[0].indexes).toEqual({ });
     });
-    it('should return appropriate result for filename all',
+    it('should return appropriate result for when all files is selected',
     () => {
-      const books1 = [{
-        title: 'Alice the Great',
-        text:
-        'There is no better way to greatness than not giving up'
-      },
-
-      {
-        title: 'Are you there for Development',
-        text: `I have tried so many times but it's been unyielding 
-          but I have made up my mind to develop no matter the obstacle`
-      }];
-      indexInstance.createIndex(books, 'books');
-      indexInstance.createIndex(books1, 'books1');
       const expectedOutput =
-        [Object({ indexes: Object({ alice: [0], the: [1, 2] }),
+        [{ indexes: { alice: [0], the: [1, 2] },
           searchedFile: 'books',
-          documents: [0, 1, 2] }),
-          Object({ indexes: Object({ }),
-            searchedFile: 'term',
-            documents: [] }),
-          Object({ indexes: Object({ alice: [0],
-            is: [0],
-            the: [0, 1] }),
-            searchedFile: 'books1',
-            documents: [0, 1] })];
+          documents: [0, 1, 2] },
+        { indexes: { alice: [0],
+          is: [0],
+          the: [0, 1] },
+          searchedFile: 'anotherBook',
+          documents: [0, 1] },
+        { indexes: { },
+          searchedFile: 'term',
+          documents: [] }];
       expect(indexInstance
         .searchIndex('Alice is the', 'all')).toEqual(expectedOutput);
     });
@@ -201,13 +213,11 @@ describe('InvertedIndex class', () => {
         lord: [1, 2],
         rings: [1, 2],
         fellowship: [1, 2] };
-      indexInstance.createIndex(books, 'books');
       expect(indexInstance.getIndex(filename))
         .toEqual(expectedOutput);
     });
     it('should return false for an empty filename', () => {
       const filename = '';
-      indexInstance.createIndex(books, 'books');
       expect(indexInstance.getIndex(filename))
         .toBeFalsy();
     });
@@ -216,11 +226,11 @@ describe('InvertedIndex class', () => {
   describe('Validate File', () => {
     it('should return false for incorrect document structure', () => {
       const term = [{ t1: 'Welcome home', text: 'This is really home' }];
-      expect(InvertedIndex.validateFile(term)).toBeFalsy();
+      expect(InvertedIndex.validateFile(term, 'term')).toBeFalsy();
     });
     it('should return true for correct document structure', () => {
       const term = [{ title: 'Welcome home', text: 'This is really home' }];
-      expect(InvertedIndex.validateFile(term)).toBeTruthy();
+      expect(InvertedIndex.validateFile(term, 'term')).toBeTruthy();
     });
   });
 
@@ -240,7 +250,6 @@ describe('InvertedIndex class', () => {
     it('should return the appropriate array of documents for a given file',
     () => {
       const expectedOutput = [0, 1, 2];
-      indexInstance.createIndex(books, 'books');
       expect(indexInstance
         .getDocuments('books')).toEqual(expectedOutput);
     });
@@ -251,7 +260,6 @@ describe('InvertedIndex class', () => {
     () => {
       const words = 'Alice is a girl';
       const expectedOutput = { alice: [0], a: [0, 1, 2] };
-      indexInstance.createIndex(books, 'books');
       expect(indexInstance
       .getSearchResults(words, 'books')).toEqual(expectedOutput);
     });

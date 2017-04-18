@@ -71,7 +71,7 @@ class InvertedIndex {
     this.filesIndexed[fileName] = {};
     const words = [];
     let documentCount = 0;
-    if (InvertedIndex.validateFile(fileContent)) {
+    if (InvertedIndex.validateFile(fileContent, fileName)) {
       Object.keys(fileContent).forEach(() => {
         words.push(InvertedIndex
           .getDocumentTokens(fileContent, documentCount));
@@ -90,15 +90,15 @@ class InvertedIndex {
    * @return {boolean} - True when document has the right structure
    * and False if otherwise
    */
-  static validateFile(fileContent) {
+  static validateFile(fileContent, fileName) {
     try {
       if (Object.keys(fileContent).length < 1) {
-        this.handleError(fileContent[fileName],
+        this.handleError(fileName,
           'File contains no document', true);
       }
       Object.keys(fileContent).forEach((eachIndex) => {
         if (!fileContent[eachIndex].text || !fileContent[eachIndex].title) {
-          this.handleError(fileContent[fileName],
+          this.handleError(fileName,
             'Incorrect Document Structure', true);
         }
       });
