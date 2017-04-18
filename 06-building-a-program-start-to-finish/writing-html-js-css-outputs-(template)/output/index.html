@@ -11,7 +11,7 @@
     <!-- Latest compiled and minified JavaScript -->
     <link rel="stylesheet" href="https://bootswatch.com/darkly/bootstrap.min.css">
     <link rel="stylesheet" href="https://unpkg.com/angular-toastr/dist/angular-toastr.css" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">    
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
@@ -99,7 +99,8 @@
                   <span ng-if="indexDisplay">Showing index for {{details.indexedFile}}</span>
                   <span ng-if="!indexDisplay">Search result for "{{searchQuery}}" in "{{details.searchedFile}}"</span>
                 </h2>
-                <table class="table table-striped" id='myTable'>
+                <div id="myTable">
+                <table class="table table-striped" >
                   <thead>
                     <th>Tokens</th>
                     <th style="text-align:center" ng-repeat="i in details.documents">Document {{i+1}}</th>
@@ -113,6 +114,7 @@
                     </tr>
                   </tbody>
                 </table>
+                </div>
               </div>
             </div>
             <br/>
@@ -159,6 +161,6 @@
   <script type="text/javascript" src="src/module.js"></script>
   <script src="https://unpkg.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="src/invertedindex.js"></script>
+  <script type="text/javascript" src="src/InvertedIndex.js"></script>
   <script type="text/javascript" src="src/app.js"></script>
 </html>

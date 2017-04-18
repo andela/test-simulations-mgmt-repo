@@ -33,3 +33,8 @@
 .padding10{
   padding: 10px;
 }
+
+#myTable{
+  z-index: 1;
+  overflow-y: scroll;
+}
