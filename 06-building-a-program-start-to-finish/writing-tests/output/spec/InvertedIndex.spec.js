@@ -4,8 +4,6 @@ const indexInstance = new InvertedIndex();
 
 describe('InvertedIndex class', () => {
   beforeAll(() => {
-    const validBook = [{ title: 'Welcome to Test Environment',
-      text: 'Enjoy this file' }];
     const books = [
       {
         title: 'Alice in Wonderland',
