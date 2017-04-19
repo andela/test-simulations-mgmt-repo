@@ -14,8 +14,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="public/css/animate.css">
 
 </head>
 <body ng-controller="dPlexController">
@@ -109,7 +109,7 @@
                     <tr ng-repeat="(key, value) in details.indexes">
                       <td>{{key}}</td>
                       <td ng-repeat="docnum in details.documents" style="text-align:center; font-weight:bold">
-                        <span ng-if="value.includes(docnum)">X</span>
+                        <span ng-if="value.includes(docnum)">&#10004;</span>
                       </td>
                     </tr>
                   </tbody>
@@ -158,9 +158,9 @@
         </div>
     </div>
 </body>
-  <script type="text/javascript" src="src/module.js"></script>
+  <script type="text/javascript" src="public/js/module.js"></script>
   <script src="https://unpkg.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="src/InvertedIndex.js"></script>
-  <script type="text/javascript" src="src/app.js"></script>
+  <script type="text/javascript" src="InvertedIndex.js"></script>
+  <script type="text/javascript" src="public/js/app.js"></script>
 </html>
