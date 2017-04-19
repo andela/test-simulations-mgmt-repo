@@ -1,38 +1,10 @@
-const validBookFile = require('../samples/books.json');
+const books = require('../samples/books.json');
+const anotherBook = require('../samples/anotherBook.json');
 
 const indexInstance = new InvertedIndex();
 
 describe('InvertedIndex class', () => {
   beforeAll(() => {
-    const books = [
-      {
-        title: 'Alice in Wonderland',
-        text:
-        'Alice falls into a rabbit hole and enters a world full of imagination.'
-      },
-
-      {
-        title: 'The Lord of the Rings: The Fellowship of the Ring.',
-        text: `An unusual alliance of man, elf, dwarf, 
-          wizard and hobbit seek to destroy a powerful ring.`
-      },
-      {
-        title: 'The Lord of the Rings: The Fellowship of the Ring.',
-        text: `An unusual alliance of man, elf, dwarf, 
-          wizard and hobbit seek to destroy a powerful ring.`
-      }
-    ];
-    const anotherBook = [{
-      title: 'Alice the Great',
-      text:
-        'There is no better way to greatness than not giving up'
-    },
-
-    {
-      title: 'Are you there for Development',
-      text: `I have tried so many times but it's been unyielding 
-          but I have made up my mind to develop no matter the obstacle`
-    }];
     indexInstance.createIndex(books, 'books');
     indexInstance.createIndex(anotherBook, 'anotherBook');
   });
@@ -85,7 +57,7 @@ describe('InvertedIndex class', () => {
         expect(response).toBeFalsy();
       });
     });
-    const bookFile = new File([JSON.stringify(validBookFile)],
+    const bookFile = new File([JSON.stringify(books)],
       'books.json', { type: 'application/json' });
     it('should return appropriate value for a valid json file', () => {
       InvertedIndex.readFile(bookFile).then((response) => {
