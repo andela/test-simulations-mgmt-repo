@@ -105,11 +105,6 @@
                             list of all the unique words that appear in any document which is also know as token, and for
                             each word, a list of the documents in which it appears.</div>
                     </center>
-                    <center>
-                        <a href="http://www.animatedimages.org/cat-arrows-111.htm"><img src="http://www.animatedimages.org/data/media/111/animated-arrow-image-0044.gif" border="0"
-                                alt="animated-arrow-image-0044" /></a>
-                    </center>
-
                     <br>
                     <div class="col-md-4 col-sm-4 col-xs-12">
                         <h4 class="upload-title">
@@ -155,7 +150,7 @@
                             <tr ng-repeat="token in tokens">
                                 <td style="text-transform: capitalize;">{{token}}</td>
                                 <td ng-repeat="book in bookIndices">
-                                    <img ng-src="/lib/images/{{ book | rowFunc : indices[token] }}.png" width="20px" height="20px">
+                                    <img ng-src="/lib/images/{{ book | checkBook : indices[token] }}.png" width="20px" height="20px">
                                 </td>
                             </tr>
                         </tbody>
@@ -182,7 +177,7 @@
                             <tr ng-repeat="(keyword, searchValue) in fileValue.result">
                                 <td style="text-transform: capitalize;">{{keyword}}</td>
                                 <td ng-repeat="val in fileValue.countBook">
-                                    <img ng-src="/lib/images/{{ val | rowFunc : searchValue}}.png" width="20px" height="20px">
+                                    <img ng-src="/lib/images/{{ val | checkBook : searchValue}}.png" width="20px" height="20px">
                                 </td>
                             </tr>
                         </tbody>

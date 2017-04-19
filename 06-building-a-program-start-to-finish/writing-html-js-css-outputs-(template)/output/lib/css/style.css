@@ -5,7 +5,6 @@ License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 --*/
 html, body{
-  font-family: 'Roboto-Regular';
   font-size: 100%;
   background:#F1EFEF;
   color: #000000;
@@ -16,15 +15,10 @@ body a {
 	-moz-transition:0.5s all;
 	-o-transition:0.5s all;
 	-ms-transition:0.5s all;
-	font-family: 'Roboto-Regular';
 }
 body a:hover,h5.top a:hover,.b-text h5 a:hover,.b-bottom-text h5 a:hover,.b-text h6 a:hover,.b-bottom-text h6 a:hover{
     color: #ee5656;
 	
-}
-@font-face {
-   font-family: 'Roboto-Regular';
-   src: url(../fonts/Roboto-Regular.ttf)format('truetype');
 }
 a:hover{
  text-decoration:none;
@@ -38,11 +32,9 @@ input[type="button"],input[type="submit"],.port-grid ,.text p,.text h3{
 }
 h1,h2,h3,h4,h5,h6{
 	margin:0;	
-	font-family:'Roboto-Regular';
 }	
 p{
 	margin:0;
-	font-family: 'Roboto-Regular';
 }
 ul{
 	margin:0;
@@ -169,7 +161,6 @@ label{
 		color: #282828;
 		font-size: 0.95em;
 		font-weight: bold;
-		font-family: 'Roboto-Regular';
 	}
 	.navbar-nav>li>a {
 		padding-top: 18px;

@@ -272,13 +272,11 @@ ul#menu li {
     color: #282828;
     font-size: 0.95em;
     font-weight: bold;
-    font-family: 'Roboto-Regular';
 }
 .welcome-text {
   color: #282828;
   font-size: 1.7em;
   font-weight: bold;
-  font-family: 'Roboto-Bold';
   background-color: #f5f5f5;
   padding: 20px;
   text-align: ;
@@ -296,7 +294,6 @@ ul#menu li {
     border: 2px solid #fff;
     color: #fff;
     text-align: center;
-    font-family: 'Roboto-Regular';
     font-size: 1.0em;
     margin: 5px;
 }
