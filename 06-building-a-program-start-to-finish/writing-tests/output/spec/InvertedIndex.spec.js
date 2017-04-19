@@ -253,7 +253,7 @@ describe('InvertedIndex class', () => {
     });
   });
 
-  describe('Get Document Data', () => {
+  describe('Get Document Method', () => {
     it('should return the appropriate array of documents for a given file',
     () => {
       const expectedOutput = [0, 1, 2];
@@ -262,7 +262,7 @@ describe('InvertedIndex class', () => {
     });
   });
 
-  describe('Get Search result Data', () => {
+  describe('Get Search result Method', () => {
     it('should return the appropriate result for tokens searched',
     () => {
       const words = 'Alice is a girl';
@@ -272,7 +272,7 @@ describe('InvertedIndex class', () => {
     });
   });
 
-  describe('Get Construct Index Data', () => {
+  describe('Get Construct Index Method', () => {
     it('should return the appropriate indexed words for a given document',
     () => {
       const documentTokens = [{ documentCount: 0,
