@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="IndexApp">
+
+<head>
+  <title>Inverted Index Application</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="./js/invertedIndex.js"></script>
+  <link href="./css/style.css" rel="stylesheet">
+  <script type="text/javascript" src="./js/app.js"></script>
+</head>
+
+<body ng-controller="IndexCtrl">
+    <!-- Top navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Inverted Index</a>
+        </div>
+      </div>
+    </div>
+    <!-- End navbar -->
+
+    <div class="container">
+      <div class="row">
+          <div class="col-xs-12 col-sm-8">
+          <div class="row">
+              <div class="fileUpload" style="margin-bottom: 0px;">Upload Book to create Index</div>
+              <div class="fileUpload btn btn-primary">
+                <span>Upload</span>
+                <div class="file-field input-field">
+                  <input type="file" id="uploadJSON" class="upload" />
+                </div>
+              </div>
+              <div class="searchwrap pull-right" style="margin-top: 8px;">
+                <input id="search" ng-model="query" type="search">
+                <button ng-click="search()">
+                  <span class="glyphicon glyphicon-search"></span> Search
+                </button>
+              </div>
+              <div ng-show="message.length > 1" style="color: red;">{{message}}</div>
+              <p style="margin-bottom: 20px;"></p>
+          </div>
+
+            <div class="row">
+              <div>
+                <p ng-show="filenames.length > 0">Click to Create Index</p>
+                <ul class="index-list">
+                  <li ng-repeat="title in filenames | orderBy:title">
+                    <a href="#" ng-class="{active: (title === filename)}" ng-click="setIndex(title)"><i class="ion-ios-albums-outline"></i> {{ title }}</a>
+                  </li>
+                </ul>
+              </div>
+              <h4 ng-show="filenames.length < 1"> Upload and Select files to Create Index</h4>
+              <p style="margin-bottom: 20px;"></p>
+              <div class='tableArea'>
+                <table class="table table-striped" ng-if="showIndex">
+                  <thead>
+                    <th> Showing Index for {{filename}}</th>
+                    <tr>
+                      <th> Keywords</th>
+                      <th ng-repeat="doc_num in [] | range:index.docCount"> doc_{{doc_num + 1}}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="(word, documents) in index.words">
+                      <td class="divider"> {{word}}</td>
+                      <td ng-repeat="doc_num in [] | range:index.docCount">
+                        <span ng-if="documents.indexOf(doc_num) !== -1" class="ion-checkmark-round"></span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+               <div ng-if="showSearchResults">
+                  <div ng-repeat="(filename, data) in searchResults">
+                      <div class='tableArea'>
+                        <table class="table table-striped">
+                          <thead>
+                            <th> Showing Index for {{filename}}</th>
+                            <tr>
+                              <th> Keywords</th>
+                              <th ng-repeat="doc_num in [] | range:data.docCount"> doc_{{doc_num + 1}}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="(word, documents) in data.words">
+                              <td class="divider"> {{word}}</td>
+                              <td ng-repeat="doc_num in [] | range:data.docCount">
+                                <span ng-if="documents.indexOf(doc_num) !== -1" class="ion-checkmark-round"></span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                  </div>
+               </div>
+            </div>
+          </div>
+        
+        <div class="col-xs-6 col-sm-3" style="padding-left: 30px;">
+          <h3> About this App </h3>
+          <p>
+            This Inverted Index allows you to perform quick searches for a number of words. An inverted index consists of a list of all
+            the unique words that appear in any document, and for each word, a list of the documents in which it appears.
+          </p>
+          <hr>
+          <p>
+            <h4> Usage </h4>
+            <p>
+             <p> 1. Upload a valid JSON file </p> <br>
+             <p> 2. Select a file in the list to create index </p> <br>
+             <p> 3. Select a file and enter word(s) to search  </p><br>
+             <strong> 3. Double Click to search  </strong>
+            </p>
+        </div>
+      </div>
+    </div>
+</body>
+</html>
